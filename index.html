@@ -184,6 +184,15 @@ h3{font-family:var(--f-hand);font-weight:800;font-size:1.45rem;letter-spacing:-.
 .ch.on{opacity:1;animation:ink .22s var(--ease)}
 @keyframes ink{from{opacity:0;transform:translateY(6px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
 .ch.pen{border-bottom:3px solid var(--accent)}
+.m{font-variant-numeric:tabular-nums}
+.ch.num{display:inline-block}
+.sheet>.flyer{position:absolute;z-index:5;pointer-events:none;white-space:nowrap;line-height:normal;transform-origin:0 0;color:var(--accent);text-shadow:0 0 14px color-mix(in srgb,var(--accent) 70%,transparent)}
+.num.src{animation:srcGlow .9s var(--ease)}
+@keyframes srcGlow{0%,40%{color:var(--accent);text-shadow:0 0 12px color-mix(in srgb,var(--accent) 60%,transparent)}}
+.num.rolling{color:var(--accent)}
+.num.landed{animation:land .55s var(--ease)}
+@keyframes land{0%{transform:scale(1.35);color:var(--accent);text-shadow:0 0 16px color-mix(in srgb,var(--accent) 70%,transparent)}60%{transform:scale(.95)}}
+.num.pop{animation:land .4s var(--ease)}
 .hl{background:var(--hl);border-radius:6px;padding:0 4px}
 .ring{border:2px solid var(--red);border-radius:40%/60%;padding:0 6px}
 .bn{display:inline-flex;flex-direction:column;align-items:center;line-height:1;font-size:.72em;vertical-align:middle;padding:.1em .35em;margin:0 .1em;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:45%/50%}
@@ -1203,13 +1212,54 @@ const $=id=>document.getElementById(id);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let lesson=null,si=0,li=0,run=0,busy=false,guided=false,waiting=null,writingChars=null;
 const spd=()=>[0,70,38,16][+$('speed').value];
-function prep(el){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);const chars=[];
-  nodes.forEach(t=>{const f=document.createDocumentFragment();for(const ch of t.data){const s=document.createElement('span');s.className='ch';s.textContent=ch;f.appendChild(s);if(ch.trim())chars.push(s);else s.classList.add('on')}t.parentNode.replaceChild(f,t)});return chars}
+/* split text into one span per character; with nums, each whole number is a single span so it can move as one */
+function prep(el,nums){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);const chars=[];
+  const mk=(txt,cls)=>{const s=document.createElement('span');s.className=cls;s.textContent=txt;return s};
+  nodes.forEach(t=>{const f=document.createDocumentFragment();
+    for(const part of nums?t.data.split(/(\d+(?:\.\d+)?)/):[t.data]){if(!part)continue;
+      if(nums&&/^\d/.test(part)){const s=mk(part,'ch num');f.appendChild(s);chars.push(s);continue}
+      for(const ch of part){const s=mk(ch,'ch');f.appendChild(s);if(ch.trim())chars.push(s);else s.classList.add('on')}}
+    t.parentNode.replaceChild(f,t)});return chars}
 let skipWrite=false;
-async function write(el,myRun){const chars=prep(el);writingChars=chars;let last=null;
-  for(const c of chars){if(run!==myRun)return;c.classList.add('on');if(!skipWrite){c.classList.add('pen');if(last)last.classList.remove('pen');last=c;await sleep(spd())}}
+async function write(el,myRun,nums){const chars=prep(el,nums);writingChars=chars;let last=null;
+  for(const c of chars){if(run!==myRun)return;
+    if(nums&&!skipWrite&&!calm()&&c.classList.contains('num')){if(last)last.classList.remove('pen');last=null;await landNum(c,myRun);continue}
+    c.classList.add('on');if(!skipWrite){c.classList.add('pen');if(last)last.classList.remove('pen');last=c;await sleep(spd())}}
   if(last)last.classList.remove('pen');writingChars=null}
-function finishWriting(){skipWrite=true}
+let flights=[];
+function finishWriting(){skipWrite=true;flights.forEach(a=>a.finish())}
+
+/* ============ moving numbers ============ */
+const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* the nearest earlier copy of this number that is on screen, in an earlier line of working */
+function findSrc(c,val){const row=c.closest('.row'),view=$('sheet').parentElement.getBoundingClientRect();
+  const all=[...$('sheet').querySelectorAll('.row .m .num.on')].filter(n=>n.textContent===val&&!row.contains(n)&&!n.closest('sup,sub'));
+  for(let i=all.length-1;i>=0;i--){const r=all[i].getBoundingClientRect();if(r.bottom>view.top&&r.top<view.bottom)return all[i]}return null}
+async function landNum(c,myRun){const val=c.textContent,sup=!!c.closest('sup,sub');
+  const src=!sup&&findSrc(c,val);
+  if(src)await fly(src,c,myRun);
+  else if(!sup&&val.replace('.','').length>=2)await roll(c,myRun);
+  else{c.classList.add('on','pop');await sleep(spd()*2)}
+  if(run===myRun){c.classList.remove('landed');void c.offsetWidth;c.classList.add('landed')}}
+/* a copy of the number lifts off the earlier line and arcs into its new place */
+async function fly(src,c,myRun){const sheet=$('sheet'),sr=sheet.getBoundingClientRect();
+  c.classList.add('on');c.style.visibility='hidden';
+  const a=src.getBoundingClientRect(),b=c.getBoundingClientRect(),cs=getComputedStyle(c);
+  const g=document.createElement('span');g.className='flyer';g.textContent=c.textContent;
+  for(const k of ['fontFamily','fontSize','fontWeight','fontStyle'])g.style[k]=cs[k];
+  g.style.left=(b.left-sr.left)+'px';g.style.top=(b.top-sr.top)+'px';sheet.appendChild(g);
+  const dx=a.left-b.left,dy=a.top-b.top,sc=parseFloat(getComputedStyle(src).fontSize)/parseFloat(cs.fontSize);
+  src.classList.remove('src');void src.offsetWidth;src.classList.add('src');
+  const anim=g.animate([{transform:`translate(${dx}px,${dy}px) scale(${sc})`},{transform:`translate(${dx/2}px,${dy/2-28}px) scale(${(sc+1)*.62})`},{transform:'none'}],
+    {duration:340+spd()*6,easing:'cubic-bezier(.45,0,.25,1)'});
+  flights.push(anim);try{await anim.finished}catch(e){}
+  flights=flights.filter(x=>x!==anim);g.remove();c.style.visibility=''}
+/* a newly worked-out number spins its digits, then settles them left to right */
+async function roll(c,myRun){const val=c.textContent,ds=[...val];c.classList.add('on','rolling');
+  const per=Math.max(3,Math.round(spd()/12)+2),tick=24+spd()/3;
+  for(let k=0;k<ds.length;k++)for(let f=0;f<per;f++){if(run!==myRun||skipWrite){c.textContent=val;c.classList.remove('rolling');return}
+    c.textContent=ds.map((d,i)=>i<k||d==='.'?d:String(Math.floor(Math.random()*10))).join('');await sleep(tick)}
+  c.textContent=val;c.classList.remove('rolling')}
 
 function openBook(les,isGuided){lesson=les;guided=isGuided;si=0;$('book').hidden=false;$('bkTitle').innerHTML=les.title;
   document.documentElement.requestFullscreen?.().catch(()=>{});showStep(0)}
@@ -1242,7 +1292,7 @@ async function advance(){
       b.textContent=k<line.more.length?'Still confused, explain again':'Got it';if(k>=line.more.length){b.onclick=null;b.addEventListener('click',()=>{b.remove()},{once:true})}}});
     side.appendChild(b)}
   row.append(m,side);$('sheet').appendChild(row);row.scrollIntoView({block:'end',behavior:'smooth'});
-  await write(m,my);if(run!==my)return;
+  await write(m,my,true);if(run!==my)return;
   await sleep(150);note.classList.add('on');side.querySelector('.moreBtn')?.classList.add('on');busy=false;
   $('tapHint').textContent=li>=st.lines.length?(si<lesson.steps.length-1?'tap for the next step ▶':'end of the working ✓'):'tap to write the next line ✍';
   autoNext();
