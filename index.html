@@ -3661,8 +3661,8 @@ input[type=checkbox] {
     next(level2) {
       const n = ri(...byLevel(level2, [3, 5], [4, 7], [6, 10])), r = ri(1, n - 1);
       const row = (k, gap) => `<div class="tri-row">${[...Array(k + 1)].map((_, i) => i === gap ? '<span class="gap">?</span>' : `<span>${C(k, i)}</span>`).join("")}</div>`;
-      const shown = level2 < 3 ? row(n - 1, -1) + row(n, r) : `<div class="tri-label">row ${n}</div>` + row(n, r);
-      return typed(`<div class="tri">${shown}</div>`, C(n, r), `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)}: add the two numbers above the gap.`);
+      const shown2 = level2 < 3 ? row(n - 1, -1) + row(n, r) : `<div class="tri-label">row ${n}</div>` + row(n, r);
+      return typed(`<div class="tri">${shown2}</div>`, C(n, r), `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)}: add the two numbers above the gap.`);
     }
   };
 
@@ -3726,8 +3726,8 @@ input[type=checkbox] {
     next(level2) {
       const e = ri(0, 6), lim = byLevel(level2, 9, 20, 50);
       const p = level2 < 2 ? ri(1, lim) : rnz(-lim, lim), q = level2 < 2 ? ri(1, lim) : rnz(-lim, lim);
-      const show = (v) => v < 0 ? "(" + mono(BigInt(v), e, true) + ")" : mono(BigInt(v), e, true);
-      return typed(`${mono(BigInt(p), e, true)} + ${show(q)} = ? <span class="mu g-small">(just the number)</span>`, p + q, `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.`);
+      const show2 = (v) => v < 0 ? "(" + mono(BigInt(v), e, true) + ")" : mono(BigInt(v), e, true);
+      return typed(`${mono(BigInt(p), e, true)} + ${show2(q)} = ? <span class="mu g-small">(just the number)</span>`, p + q, `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.`);
     }
   };
 
@@ -3915,7 +3915,7 @@ input[type=checkbox] {
     paper: 1,
     marks: 5,
     make() {
-      const square = Math.random() < 0.5, p = square ? 2 : 1, n = square ? 3 * ri(1, 2) : 2 * ri(2, 4), a = ri(1, 3), b = rnz(-3, 3);
+      const square2 = Math.random() < 0.5, p = square2 ? 2 : 1, n = square2 ? 3 * ri(1, 2) : 2 * ri(2, 4), a = ri(1, 3), b = rnz(-3, 3);
       const cfg = { a, p, b, q: -1, n }, R = p * n / (p + 1), lesson2 = { t: "coef", cfg, k: 0 }, v = TYPES.coef.ans(lesson2);
       const power = `${p === 1 ? "" : p}(${n} \u2212 r) \u2212 r`;
       return { stem: `Consider the expansion of ${question(cfg).html}.`, parts: [
@@ -4193,10 +4193,10 @@ input[type=checkbox] {
     const out = [];
     let i = 0;
     while (i < s.length) {
-      const rest = s.slice(i), num2 = rest.match(/^(\d+\.?\d*|\.\d+)/);
-      if (num2) {
-        out.push({ num: num2[0] });
-        i += num2[0].length;
+      const rest = s.slice(i), num3 = rest.match(/^(\d+\.?\d*|\.\d+)/);
+      if (num3) {
+        out.push({ num: num3[0] });
+        i += num3[0].length;
         continue;
       }
       if (/^ans/i.test(rest)) {
@@ -4249,18 +4249,18 @@ input[type=checkbox] {
         return v2;
       };
       const term = () => {
-        let v2 = signed();
+        let v2 = signed2();
         for (; ; ) {
           const x = peek();
           if (x === "*" || x === "/") {
             take();
-            const r = signed();
+            const r = signed2();
             v2 = x === "*" ? mul(v2, r) : div(v2, r);
-          } else if (startsValue(x)) v2 = mul(v2, signed());
+          } else if (startsValue(x)) v2 = mul(v2, signed2());
           else return v2;
         }
       };
-      const signed = () => peek() === "-" ? (take(), sub(F(0), signed())) : peek() === "+" ? (take(), signed()) : combos();
+      const signed2 = () => peek() === "-" ? (take(), sub(F(0), signed2())) : peek() === "+" ? (take(), signed2()) : combos();
       const combos = () => {
         let v2 = power();
         while (peek() === "C") {
@@ -4273,7 +4273,7 @@ input[type=checkbox] {
         const b = postfix();
         if (peek() !== "^") return b;
         take();
-        return pow(b, signed());
+        return pow(b, signed2());
       };
       const postfix = () => {
         let v2 = value();
@@ -4317,16 +4317,16 @@ input[type=checkbox] {
     s = String(s).replace(/−/g, "-").replace(/\s/g, "");
     const m = s.match(/^(-?)(\d+)(?:\.(\d+))?(?:\/(\d+))?$/);
     if (!m) return null;
-    let num2 = BigInt(m[2] + (m[3] || "")), den = 10n ** BigInt((m[3] || "").length);
+    let num3 = BigInt(m[2] + (m[3] || "")), den = 10n ** BigInt((m[3] || "").length);
     if (m[4] !== void 0) {
       if (BigInt(m[4]) === 0n) return null;
       den *= BigInt(m[4]);
     }
-    return F(m[1] === "-" ? -num2 : num2, den);
+    return F(m[1] === "-" ? -num3 : num3, den);
   }
   function readNumber(s) {
-    const plain = parseNum(s);
-    if (plain) return plain;
+    const plain6 = parseNum(s);
+    if (plain6) return plain6;
     const r = calculate(String(s), void 0, { shortcuts: false });
     return r.value !== void 0 && isExact(r.value) ? r.value : null;
   }
@@ -4358,11 +4358,11 @@ input[type=checkbox] {
     pd /= g;
     const two = inner.match(/^([+-]?[^+-]+)([+-][^+-]+)$/);
     if (!two) return { err: "The bracket needs exactly two terms, like (3x + 2)." };
-    const A = parseTerm(two[1]), B = parseTerm(two[2]);
-    if (!A || !B) return { err: "I can read terms like 3x, 2, x^2 or 2/x." };
-    if (A.coef === 0 || B.coef === 0) return { err: "Neither term can be 0." };
-    if (Math.abs(A.coef) > 99 || Math.abs(B.coef) > 99) return { err: "Keep the numbers under 100." };
-    const cfg = { a: A.coef, p: A.p, b: B.coef, q: B.p };
+    const A = parseTerm(two[1]), B3 = parseTerm(two[2]);
+    if (!A || !B3) return { err: "I can read terms like 3x, 2, x^2 or 2/x." };
+    if (A.coef === 0 || B3.coef === 0) return { err: "Neither term can be 0." };
+    if (Math.abs(A.coef) > 99 || Math.abs(B3.coef) > 99) return { err: "Keep the numbers under 100." };
+    const cfg = { a: A.coef, p: A.p, b: B3.coef, q: B3.p };
     if (l1 && l2) return { err: "Put the other bracket on one side only." };
     const left = (l1 + l2).replace(/^\(|\)$/g, "");
     if (left) {
@@ -4403,8 +4403,8 @@ input[type=checkbox] {
     const a = BigInt(cfg.a), b = BigInt(cfg.b);
     const steps = [];
     const S = (h, intro, lines) => steps.push({ h, intro, lines });
-    const mc = (q, opts, ans, why) => ({ type: "mc", q, opts, ans, why });
-    const num2 = (q, fields, why) => ({ type: "num", q, fields, why });
+    const mc2 = (q, opts, ans, why) => ({ type: "mc", q, opts, ans, why });
+    const num3 = (q, fields, why) => ({ type: "num", q, fields, why });
     const pick = (correct, wrongs) => {
       const o = [correct, ...[...new Set(wrongs)].filter((w) => w !== correct).slice(0, 3)];
       for (let i = o.length - 1; i > 0; i--) {
@@ -4432,7 +4432,7 @@ input[type=checkbox] {
       L(
         `term = ${bn("n", "r")} \xD7 (first)<sup>n ${MINUS} r</sup> \xD7 (second)<sup>r</sup>`,
         "nCr is a number from Pascal's triangle (or the nCr button on your calculator).",
-        mc(`What is n for this question?`, nAsk.opts.map(String), nAsk.ans, `n is the power on the bracket, so n = ${n}.`),
+        mc2(`What is n for this question?`, nAsk.opts.map(String), nAsk.ans, `n is the power on the bracket, so n = ${n}.`),
         [`Three pieces, multiplied together: a <b>number</b> (nCr), the <b>first term</b> to some power, and the <b>second term</b> to some power.`, `r is just a counter. The first term's power is n \u2212 r (counting down) and the second term's power is r (counting up). For r = 0 you get ${bn(n, 0)}${pwr(Ab, n)}${Bb}<sup>0</sup>. For r = 1 you get ${bn(n, 1)}${pwr(Ab, n - 1)}${Bb}<sup>1</sup>.`, `${bn("n", "r")} is said "n choose r". It is the number of ways to pick r things out of n. You never need to know why it appears, just where to find it: Pascal's triangle or the nCr button.`]
       ),
       L(`first = <span class="hl">${Q.A}</span>, &nbsp; second = <span class="hl">${Q.B}</span>, &nbsp; n = <span class="hl">${n}</span>`, "Write these down so you do not mix them up.", null, [`Most mistakes come from putting the wrong thing in the pattern. So write the three pieces down before you start.`]),
@@ -4441,7 +4441,7 @@ input[type=checkbox] {
         `That gives ${n + 1} terms in total.`,
         (() => {
           const p = pick(n + 1, [n, n + 2, 2 * n]);
-          return mc("How many terms will there be?", p.opts.map(String), p.ans, `r goes from 0 up to ${n}, which is ${n + 1} different values.`);
+          return mc2("How many terms will there be?", p.opts.map(String), p.ans, `r goes from 0 up to ${n}, which is ${n + 1} different values.`);
         })(),
         [`Count them on your fingers: 0, 1, 2 \u2026 ${n}. That is ${n + 1} numbers, so ${n + 1} terms. It is always one more than the power.`]
       ),
@@ -4456,7 +4456,7 @@ input[type=checkbox] {
         let ask, more;
         if (i === n && n >= 2) {
           const want = C(n, 2).toString();
-          ask = num2(`Row ${n} starts 1, ${n}, \u2026 What is the next number? (add the two numbers above it: ${C(n - 1, 1)} + ${C(n - 1, 2)})`, [{ label: "next number", answer: want }], `${C(n - 1, 1)} + ${C(n - 1, 2)} = ${want}.`);
+          ask = num3(`Row ${n} starts 1, ${n}, \u2026 What is the next number? (add the two numbers above it: ${C(n - 1, 1)} + ${C(n - 1, 2)})`, [{ label: "next number", answer: want }], `${C(n - 1, 1)} + ${C(n - 1, 2)} = ${want}.`);
         }
         if (i === 2) more = [`Row 2 is 1, 2, 1. The middle 2 comes from adding the 1 and 1 in row 1 above it. The 1s on the edges are always there.`];
         if (i === n) more = [`Reading left to right, these are ${bn(n, 0)}, ${bn(n, 1)}, ${bn(n, 2)} \u2026 ${bn(n, n)}. So ${bn(n, 1)} = ${C(n, 1)} and ${bn(n, 2)} = ${C(n, 2)}.`, `Your calculator can do it too: type ${n}, press nCr, type 2, press =. You get ${C(n, 2)}.`];
@@ -4469,7 +4469,7 @@ input[type=checkbox] {
         l3.push(L(
           `${bn(n, r)} = ${n} nCr ${r} = <span class="hl">${want}</span>`,
           i === 0 ? "nC0 is always 1." : i === 1 ? "nC1 is always n." : i === 2 ? "Type n, press nCr, type r on your calculator." : "The end of the row mirrors the start.",
-          i === 2 ? num2(`Use your calculator: ${n} nCr 2 = ?`, [{ label: `${n} nCr 2`, answer: want }], `${n} \xD7 ${n - 1} \xF7 2 = ${want}.`) : void 0,
+          i === 2 ? num3(`Use your calculator: ${n} nCr 2 = ?`, [{ label: `${n} nCr 2`, answer: want }], `${n} \xD7 ${n - 1} \xF7 2 = ${want}.`) : void 0,
           i === 2 ? [`Without a calculator: nC2 = n \xD7 (n\u22121) \xF7 2 = ${n} \xD7 ${n - 1} \xF7 2 = ${want}.`] : i === 3 ? [`Pascal's triangle is symmetrical, so ${bn(n, n - 1)} = ${bn(n, 1)} = ${n} and ${bn(n, n)} = ${bn(n, 0)} = 1.`] : void 0
         ));
       });
@@ -4483,7 +4483,7 @@ input[type=checkbox] {
         if (r === null) return L(`+ \u2026 `, "The middle terms are not needed.");
         const t = terms2[r];
         const note = r === 0 ? `r = 0. First term has power ${n}, second has power 0.` : r === n ? `r = ${n}. Now the first term has power 0 and the second has all ${n}.` : `r = ${r}. First power ${n - r}, second power ${r}.`;
-        const ask = r === 2 ? num2(`r = 2. What power goes on (${Q.A}) and what power on (${Q.B})?`, [{ label: `power on (${Q.A})`, answer: String(n - 2) }, { label: `power on (${Q.B})`, answer: "2" }], `The second term gets r = 2, the first gets what's left: ${n} ${MINUS} 2 = ${n - 2}.`) : void 0;
+        const ask = r === 2 ? num3(`r = 2. What power goes on (${Q.A}) and what power on (${Q.B})?`, [{ label: `power on (${Q.A})`, answer: String(n - 2) }, { label: `power on (${Q.B})`, answer: "2" }], `The second term gets r = 2, the first gets what's left: ${n} ${MINUS} 2 = ${n - 2}.`) : void 0;
         return L(`${i === 0 ? "" : "+ "}${un(t)}`, note, ask, [`Put r = ${r} into the pattern: ${bn("n", "r")} becomes ${bn(n, r)}, (first)<sup>n\u2212r</sup> becomes ${pwr(Ab, n - r)}, (second)<sup>r</sup> becomes ${pwr(Bb, r)}. Write them next to each other, nothing else.`]);
       });
       S("Step 4 \xB7 Write the terms", "Fill in the pattern for r = 0, 1, 2 and for the last two.", l42);
@@ -4497,7 +4497,7 @@ input[type=checkbox] {
       const first = mono(t.ap, t.ea, true) || "1", second = mono(t.bp, t.eb, true) || "1";
       const note = t.r === 0 ? `${Bb}<sup>0</sup> = 1, so this is just ${pwr(Ab, n)}.` : `${bn(n, t.r)} = ${t.coef}, ${pwr(Ab, n - t.r)} = ${first}, ${pwr(Bb, t.r)} = ${second}. Multiply them.`;
       let ask;
-      if (t.r === 1 && n >= 2) ask = num2(`What is ${pwr(Ab, n - 1)}? (raise the number AND the x)`, [{ label: "number", answer: t.ap.toString() }, { label: "power of x", answer: String(t.ea) }], `${Q.A} to the power ${n - 1}: number ${sg(a)}<sup>${n - 1}</sup> = ${sg(t.ap)}, and x<sup>${n - 1}</sup>.`);
+      if (t.r === 1 && n >= 2) ask = num3(`What is ${pwr(Ab, n - 1)}? (raise the number AND the x)`, [{ label: "number", answer: t.ap.toString() }, { label: "power of x", answer: String(t.ea) }], `${Q.A} to the power ${n - 1}: number ${sg(a)}<sup>${n - 1}</sup> = ${sg(t.ap)}, and x<sup>${n - 1}</sup>.`);
       const more = [
         `A power applies to everything inside the bracket. ${pwr(Ab, n - t.r)} means ${Q.A} \xD7 ${Q.A} \xD7 \u2026 (${n - t.r} times). The number part gives ${sg(a)}<sup>${n - t.r}</sup> = ${sg(t.ap)}${t.ea ? `, and the x part gives x<sup>${t.ea}</sup>` : ""}.`,
         `${pwr(Bb, t.r)} = ${second}.${t.bp < 0n ? " A minus to an odd power stays minus." : b < 0n ? " A minus to an even power becomes plus." : ""} Then ${t.coef} \xD7 ${sg(t.ap)} \xD7 ${sg(t.bp)} = ${sg(t.val)} and the x powers add: ${t.ea} + ${t.eb} = ${t.e}.`
@@ -4533,7 +4533,7 @@ input[type=checkbox] {
     if (c !== 0n) {
       S(`Step ${sN++} \xB7 Multiply by ${cx}`, `${cx} has an x in it, so two things change on every term.`, es.map((e, i) => {
         const v = map.get(e), res = v * c;
-        const ask = i === 1 ? num2(`What is ${cx} \xD7 ${mono(v, e, true)}?`, [{ label: "number", answer: res.toString() }, { label: "power of x", answer: String(e + 1) }], `Number: ${sg(c)} \xD7 ${sg(v)} = ${sg(res)}. Power: x \xD7 x<sup>${e}</sup> = x<sup>${e + 1}</sup>.`) : void 0;
+        const ask = i === 1 ? num3(`What is ${cx} \xD7 ${mono(v, e, true)}?`, [{ label: "number", answer: res.toString() }, { label: "power of x", answer: String(e + 1) }], `Number: ${sg(c)} \xD7 ${sg(v)} = ${sg(res)}. Power: x \xD7 x<sup>${e}</sup> = x<sup>${e + 1}</sup>.`) : void 0;
         return L(
           `${cx} \xD7 ${mono(v, e, true)} = <span class="hl">${mono(res, e + 1, true)}</span>`,
           i === 0 ? `Number \xD7 ${sg(c)}, and the power of x goes UP by 1.` : `${sg(c)} \xD7 ${sg(v)} = ${sg(res)}, power ${e} \u2192 ${e + 1}.`,
@@ -4559,7 +4559,7 @@ input[type=checkbox] {
       const parts = [p1 !== void 0 ? mono(p1, e, true) : null, p2 !== void 0 ? mono(p2, e, true) : null].filter(Boolean);
       const m = parts.length === 2 ? `${parts[0]} + ${parts[1].startsWith(MINUS) ? "(" + parts[1] + ")" : parts[1]} = <span class="hl">${mono(t, e, true)}</span>` : `${parts[0]} = <span class="hl">${mono(t, e, true)}</span>`;
       const note = parts.length === 2 ? `${xp(e) || "numbers"}: ${sg(p1)} + ${sg(p2)} = ${sg(t)}.` : `Only one ${xp(e) || "number"} term, so it stays as it is.`;
-      const ask = i === 1 && parts.length === 2 ? num2(`${sg(p1)} + ${sg(p2)} = ?`, [{ label: `number in front of ${e === 0 ? "(no x)" : "x^" + e}`, answer: t.toString() }], `${sg(p1)} + ${sg(p2)} = ${sg(t)}.`) : void 0;
+      const ask = i === 1 && parts.length === 2 ? num3(`${sg(p1)} + ${sg(p2)} = ?`, [{ label: `number in front of ${e === 0 ? "(no x)" : "x^" + e}`, answer: t.toString() }], `${sg(p1)} + ${sg(p2)} = ${sg(t)}.`) : void 0;
       return L(m, note, ask, [`Look through both lines from the last two steps and pull out every term with ${xp(e) || "no x"}. ${parts.length === 2 ? `There are two: ${parts[0]} from the "\xD7 ${cx || ds}" line and ${parts[1]} from the other line. Add just the numbers, keep the ${xp(e) || "(no x)"}.` : `There is only one, so nothing to add.`}`]);
     }));
     S(`Step ${sN} \xB7 Final answer`, "Write the totals in order, highest power first.", [
@@ -4663,28 +4663,28 @@ input[type=checkbox] {
     ];
   }
   function coefSteps(cfg, k, Q) {
-    const { a, b, p, q, n } = cfg, A = BigInt(a), B = BigInt(b);
-    const c0 = p * n, c1 = q - p, num2 = k - c0, fr = F(num2, c1);
-    const valid = fr.d === 1n && fr.n >= 0n && fr.n <= BigInt(n);
-    const rr = valid ? Number(fr.n) : null;
+    const { a, b, p, q, n } = cfg, A = BigInt(a), B3 = BigInt(b);
+    const c0 = p * n, c1 = q - p, num3 = k - c0, fr3 = F(num3, c1);
+    const valid = fr3.d === 1n && fr3.n >= 0n && fr3.n <= BigInt(n);
+    const rr = valid ? Number(fr3.n) : null;
     const tag = xp(k) || "a constant";
     const coefStr = c1 === 1 ? "" : c1 === -1 ? MINUS : sg(c1);
     const l = [];
     const simple = c0 === 0 && c1 === 1;
-    if (simple) l.push(L(`r = ${sg(k)}`, `The power of x is just r, so r is the power we want.`, Nm("Solve for r.", [{ label: "r", answer: fstr(fr) }], `The power of x is r, so r = ${sg(k)}.`), [`From the last step, the power of x in every term is r. We want x to the power ${sg(k)}, so r = ${sg(k)}.`]));
+    if (simple) l.push(L(`r = ${sg(k)}`, `The power of x is just r, so r is the power we want.`, Nm("Solve for r.", [{ label: "r", answer: fstr(fr3) }], `The power of x is r, so r = ${sg(k)}.`), [`From the last step, the power of x in every term is r. We want x to the power ${sg(k)}, so r = ${sg(k)}.`]));
     if (!simple) l.push(L(`${powExprHtml(p, q, n)} = ${sg(k)}`, `We want the power of x to be ${sg(k)}.`, void 0, [`Take the power-of-x expression from the last step and set it equal to ${sg(k)}. That gives an equation, and solving it gives r.`]));
-    if (!simple && c0 !== 0) l.push(L(`${coefStr}r = ${sg(k)} ${c0 > 0 ? MINUS : "+"} ${Math.abs(c0)} = ${sg(num2)}`, `Move the ${sg(c0)} to the other side.`, void 0, [`${sg(c0)} is on the left, so do the opposite to both sides: ${c0 > 0 ? "subtract" : "add"} ${Math.abs(c0)}.`]));
+    if (!simple && c0 !== 0) l.push(L(`${coefStr}r = ${sg(k)} ${c0 > 0 ? MINUS : "+"} ${Math.abs(c0)} = ${sg(num3)}`, `Move the ${sg(c0)} to the other side.`, void 0, [`${sg(c0)} is on the left, so do the opposite to both sides: ${c0 > 0 ? "subtract" : "add"} ${Math.abs(c0)}.`]));
     if (!simple) l.push(L(
-      `r = ${sg(num2)} \xF7 ${sg(c1)} = ${fh(fr)}`,
+      `r = ${sg(num3)} \xF7 ${sg(c1)} = ${fh(fr3)}`,
       "Divide to get r.",
-      Nm("Solve for r.", [{ label: "r", answer: fstr(fr) }], `r = ${sg(num2)} \xF7 ${sg(c1)} = ${fstr(fr)}.`),
+      Nm("Solve for r.", [{ label: "r", answer: fstr(fr3) }], `r = ${sg(num3)} \xF7 ${sg(c1)} = ${fstr(fr3)}.`),
       [`r is how many times the second bracket is used, so it has to be a whole number from 0 to ${n}. If the answer isn't, that power of x never appears.`]
     ));
-    l.push(L(valid ? `r = ${rr} is a whole number from 0 to ${n} \u2713` : `r = ${fh(fr)} is not a whole number from 0 to ${n}`, valid ? "So this term exists." : `So no term has ${tag}. The coefficient is 0.`));
+    l.push(L(valid ? `r = ${rr} is a whole number from 0 to ${n} \u2713` : `r = ${fh(fr3)} is not a whole number from 0 to ${n}`, valid ? "So this term exists." : `So no term has ${tag}. The coefficient is 0.`));
     const steps = [{ h: `Find r for ${tag}`, intro: `Which term has ${k === 0 ? "no x" : xp(k)}?`, lines: l }];
     let val2 = 0n;
     if (valid) {
-      const Cn = C(n, rr), ap = pw(A, n - rr), bp = pw(B, rr);
+      const Cn = C(n, rr), ap = pw(A, n - rr), bp = pw(B3, rr);
       val2 = Cn * ap * bp;
       steps.push({ h: `The coefficient at r = ${rr}`, intro: `Put r = ${rr} into the general term.`, lines: [
         L(`T<sub>${rr + 1}</sub> = ${bn(n, rr)}(${Q.A})<sup>${n - rr}</sup>(${Q.B})<sup>${rr}</sup>`, `This is the term we want.`),
@@ -5072,9 +5072,9 @@ input[type=checkbox] {
     },
     evalAt(cfg, xv) {
       const par3 = (e) => xv === 1 ? 1n : Math.abs(e) % 2 ? -1n : 1n;
-      const L1 = cfg.c !== void 0 ? BigInt(cfg.c) * BigInt(xv) + BigInt(cfg.d) : 1n;
-      const A = BigInt(cfg.a) * par3(cfg.p), B = BigInt(cfg.b) * par3(cfg.q);
-      return { A, B, L1, val: L1 * pw(A + B, cfg.n) };
+      const L12 = cfg.c !== void 0 ? BigInt(cfg.c) * BigInt(xv) + BigInt(cfg.d) : 1n;
+      const A = BigInt(cfg.a) * par3(cfg.p), B3 = BigInt(cfg.b) * par3(cfg.q);
+      return { A, B: B3, L1: L12, val: L12 * pw(A + B3, cfg.n) };
     },
     text(P) {
       const w = { all: "the sum of all the coefficients", even: "the sum of the coefficients of the even powers of <i>x</i>", odd: "the sum of the coefficients of the odd powers of <i>x</i>" }[P.which];
@@ -5371,7 +5371,7 @@ input[type=checkbox] {
     br: (P) => `(1 ${P.b < 0 ? MINUS : "+"} ${Math.abs(P.b) === 1 ? "" : Math.abs(P.b)}<i>x</i>)`,
     expr: (P) => `${TYPES.unkn.br(P)}<sup><i>n</i></sup>`,
     build(P) {
-      const { b, m, V } = P, B = BigInt(b), bm = pw(B, m), R = V / bm, { steps, S } = newSteps();
+      const { b, m, V } = P, B3 = BigInt(b), bm = pw(B3, m), R = V / bm, { steps, S } = newSteps();
       S("Read the question", "What is actually being asked?", [readLine(P, [`This time the unknown is the POWER n. We still use the general term, but nCr now has an n in it.`]), L("Plan: write the coefficient using nCr, make an equation, then solve for n.", "n has to be a whole number.")]);
       S(`The ${xp(m)} term`, "The first term is 1, so only the second term has x.", [
         L(`T<sub>r+1</sub> = ${bn("n", "r")}(1)<sup>n${MINUS}r</sup>(${sg(b)}<i>x</i>)<sup>r</sup>`, "(1) to any power is just 1."),
@@ -5533,9 +5533,9 @@ input[type=checkbox] {
       ]);
       const cl = [];
       for (let j = 1; j <= asUp; j++) {
-        const num2 = [];
-        for (let i = 0; i < j; i++) num2.push(`(${fh(fsub(m, F(i)))})`);
-        cl.push(L(`coefficient ${j}: ${num2.join(" \xD7 ")} \xF7 ${j}! = <span class="hl">${fh(k.c[j])}</span>`, `This is the number that goes with <i>y</i>${j > 1 ? "<sup>" + j + "</sup>" : ""}.`, void 0, j === 1 ? [`For j = 1 it is just m itself.`] : [`Build it up: the top is m(m\u22121)\u2026 with ${j} factors. The bottom is ${j}! = ${[...Array(j)].map((_, i) => i + 1).reverse().join("\xD7")} = ${[...Array(j)].reduce((s, _, i) => s * (i + 1), 1)}.`]));
+        const num3 = [];
+        for (let i = 0; i < j; i++) num3.push(`(${fh(fsub(m, F(i)))})`);
+        cl.push(L(`coefficient ${j}: ${num3.join(" \xD7 ")} \xF7 ${j}! = <span class="hl">${fh(k.c[j])}</span>`, `This is the number that goes with <i>y</i>${j > 1 ? "<sup>" + j + "</sup>" : ""}.`, void 0, j === 1 ? [`For j = 1 it is just m itself.`] : [`Build it up: the top is m(m\u22121)\u2026 with ${j} factors. The bottom is ${j}! = ${[...Array(j)].map((_, i) => i + 1).reverse().join("\xD7")} = ${[...Array(j)].reduce((s, _, i) => s * (i + 1), 1)}.`]));
       }
       S("The coefficients", `Work out the number for each power of y, up to y${asUp > 1 ? "<sup>" + asUp + "</sup>" : ""}.`, cl);
       const tl = [];
@@ -5587,7 +5587,7 @@ input[type=checkbox] {
     expr: (P) => bn(P.n, P.r),
     build(P) {
       const { n, r } = P, rr = Math.min(r, n - r), { steps, S } = newSteps();
-      const num2 = [...Array(rr)].map((_, i) => n - i), den = [...Array(rr)].map((_, i) => rr - i);
+      const num3 = [...Array(rr)].map((_, i) => n - i), den = [...Array(rr)].map((_, i) => rr - i);
       S("Read the question", "What does nCr mean?", [
         readLine(P, [`${bn(n, r)} is "n choose r": the number of ways to choose ${r} things from ${n}. It is also the number in Pascal's triangle at row ${n}, position ${r}.`]),
         L(`${bn("n", "r")} = <span class="fr"><span>n!</span><span>r!(n${MINUS}r)!</span></span>`, "The formula.", null, [`n! means n \xD7 (n\u22121) \xD7 \u2026 \xD7 2 \xD7 1. For example 5! = 5\xD74\xD73\xD72\xD71 = 120.`])
@@ -5597,8 +5597,8 @@ input[type=checkbox] {
         rr !== r ? L(`Same as ${bn(n, rr)}`, `nCr = nC(n\u2212r), so use the smaller one to save work: ${n}C${r} = ${n}C${n - r}.`, void 0, [`Choosing ${r} things to take is the same as choosing ${n - r} to leave behind, so both give the same number.`]) : L("No shortcut needed here.", "")
       ]);
       S("Cancel and calculate", "Write only the top and bottom that are needed.", [
-        L(`${bn(n, rr)} = <span class="fr"><span>${num2.join(" \xD7 ")}</span><span>${den.join(" \xD7 ")}</span></span>`, `${rr} numbers on top counting down from ${n}, and ${rr}! on the bottom.`, void 0, [`${n}! \xF7 ${n - rr}! leaves just the first ${rr} numbers of ${n}!, which is ${num2.join(" \xD7 ")}. That is why we only need these.`]),
-        L(`= ${num2.reduce((x, y) => x * y, 1)} \xF7 ${den.reduce((x, y) => x * y, 1)} = <span class="answer">${C(n, r)}</span>`, "Work it out.", Nm("What is the answer?", [{ label: "answer", answer: C(n, r).toString() }], `${num2.reduce((x, y) => x * y, 1)} \xF7 ${den.reduce((x, y) => x * y, 1)} = ${C(n, r)}.`)),
+        L(`${bn(n, rr)} = <span class="fr"><span>${num3.join(" \xD7 ")}</span><span>${den.join(" \xD7 ")}</span></span>`, `${rr} numbers on top counting down from ${n}, and ${rr}! on the bottom.`, void 0, [`${n}! \xF7 ${n - rr}! leaves just the first ${rr} numbers of ${n}!, which is ${num3.join(" \xD7 ")}. That is why we only need these.`]),
+        L(`= ${num3.reduce((x, y) => x * y, 1)} \xF7 ${den.reduce((x, y) => x * y, 1)} = <span class="answer">${C(n, r)}</span>`, "Work it out.", Nm("What is the answer?", [{ label: "answer", answer: C(n, r).toString() }], `${num3.reduce((x, y) => x * y, 1)} \xF7 ${den.reduce((x, y) => x * y, 1)} = ${C(n, r)}.`)),
         L(`Calculator: type ${n}, press nCr, type ${r}, press =`, "The same answer.")
       ]);
       return mk(P, steps);
@@ -5779,14 +5779,16 @@ input[type=checkbox] {
     let s = "";
     for (const [c, body] of list) {
       if (dec(c) === 0) continue;
-      const a = abs(c), num2 = body && isOne(a) ? "" : val(a);
-      s += s === "" ? (neg(c) ? MINUS : "") + num2 + body : (neg(c) ? ` ${MINUS} ` : " + ") + num2 + body;
+      const a = abs(c), num3 = body && isOne(a) ? "" : val(a);
+      s += s === "" ? (neg(c) ? MINUS : "") + num3 + body : (neg(c) ? ` ${MINUS} ` : " + ") + num3 + body;
     }
     return s || "0";
   }
   var lin = (m, c, v = "<i>x</i>") => terms([[m, v], [c, ""]]);
+  var quad = (a, b, c) => terms([[a, xp(2)], [b, xp(1)], [c, ""]]);
   var shift = (h, v = "<i>x</i>") => dec(h) === 0 ? v : `${v} ${neg(h) ? "+" : MINUS} ${val(abs(h))}`;
   var pt = (x, y) => `(${val(x)}, ${val(y)})`;
+  var signed = (v) => `${neg(v) ? MINUS : "+"} ${val(abs(v))}`;
 
   // source/helpers/graph-drawing.js
   var made = 0;
@@ -5803,14 +5805,14 @@ input[type=checkbox] {
     const sx = niceStep(x1 - x0), sy = niceStep(y1 - y0);
     let grid = "", nums = "";
     for (let v = Math.ceil(x0 / sx) * sx; v <= x1 + 1e-9; v += sx) {
-      const X2 = px(v).toFixed(1);
-      grid += `M${X2} 0V${H}`;
-      if (numbers && Math.abs(v) > 1e-9 && px(v) > 8 && px(v) < W - 8) nums += `<text x="${X2}" y="${Math.min(H - 3, Math.max(11, py(0) + 12)).toFixed(1)}" text-anchor="middle">${fmt(v)}</text>`;
+      const X15 = px(v).toFixed(1);
+      grid += `M${X15} 0V${H}`;
+      if (numbers && Math.abs(v) > 1e-9 && px(v) > 8 && px(v) < W - 8) nums += `<text x="${X15}" y="${Math.min(H - 3, Math.max(11, py(0) + 12)).toFixed(1)}" text-anchor="middle">${fmt(v)}</text>`;
     }
     for (let v = Math.ceil(y0 / sy) * sy; v <= y1 + 1e-9; v += sy) {
-      const Y2 = py(v).toFixed(1);
-      grid += `M0 ${Y2}H${W}`;
-      if (numbers && Math.abs(v) > 1e-9 && py(v) > 8 && py(v) < H - 6) nums += `<text x="${Math.min(W - 3, Math.max(3, px(0) - 4)).toFixed(1)}" y="${(+Y2 + 4).toFixed(1)}" text-anchor="${px(0) - 4 < 14 ? "start" : "end"}">${fmt(v)}</text>`;
+      const Y13 = py(v).toFixed(1);
+      grid += `M0 ${Y13}H${W}`;
+      if (numbers && Math.abs(v) > 1e-9 && py(v) > 8 && py(v) < H - 6) nums += `<text x="${Math.min(W - 3, Math.max(3, px(0) - 4)).toFixed(1)}" y="${(+Y13 + 4).toFixed(1)}" text-anchor="${px(0) - 4 < 14 ? "start" : "end"}">${fmt(v)}</text>`;
     }
     out.push(`<path class="g-grid" d="${grid}"/>`);
     const ax = Math.min(W, Math.max(0, px(0))), ay = Math.min(H, Math.max(0, py(0)));
@@ -5822,15 +5824,15 @@ input[type=checkbox] {
     for (const l of lines) {
       let d, lx, ly;
       if (l.x !== void 0) {
-        const X2 = px(l.x).toFixed(1);
-        d = `M${X2} 0V${H}`;
-        lx = +X2 + 4;
+        const X15 = px(l.x).toFixed(1);
+        d = `M${X15} 0V${H}`;
+        lx = +X15 + 4;
         ly = 14;
       } else if (l.y !== void 0) {
-        const Y2 = py(l.y).toFixed(1);
-        d = `M0 ${Y2}H${W}`;
+        const Y13 = py(l.y).toFixed(1);
+        d = `M0 ${Y13}H${W}`;
         lx = W - 4;
-        ly = +Y2 - 5;
+        ly = +Y13 - 5;
       } else {
         d = `M0 ${py(l.m * x0 + l.c).toFixed(1)}L${W} ${py(l.m * x1 + l.c).toFixed(1)}`;
         lx = W - 4;
@@ -5843,29 +5845,29 @@ input[type=checkbox] {
       const a = c.from ?? x0, b = c.to ?? x1, n = 360;
       let d = "", pen = false, prev = null, last = null;
       for (let i = 0; i <= n; i++) {
-        const x = a + (b - a) * i / n, y = c.f(x), Y2 = py(y);
-        if (!Number.isFinite(y) || Math.abs(Y2) > H * 20) {
+        const x = a + (b - a) * i / n, y = c.f(x), Y13 = py(y);
+        if (!Number.isFinite(y) || Math.abs(Y13) > H * 20) {
           pen = false;
           prev = null;
           continue;
         }
-        if (prev !== null && Math.abs(Y2 - prev) > H * 1.5) pen = false;
-        d += (pen ? "L" : "M") + px(x).toFixed(1) + " " + Y2.toFixed(1);
+        if (prev !== null && Math.abs(Y13 - prev) > H * 1.5) pen = false;
+        d += (pen ? "L" : "M") + px(x).toFixed(1) + " " + Y13.toFixed(1);
         pen = true;
-        prev = Y2;
-        if (Y2 >= 0 && Y2 <= H) last = { X: px(x), Y: Y2 };
+        prev = Y13;
+        if (Y13 >= 0 && Y13 <= H) last = { X: px(x), Y: Y13 };
       }
       out.push(`<path class="g-curve c${c.colour || 1}${c.dashed ? " dashed" : ""}" d="${d}" pathLength="1" clip-path="url(#${id})"/>`);
       if (c.label && last) out.push(`<text class="g-label c${c.colour || 1}" x="${Math.min(W - 4, last.X).toFixed(1)}" y="${Math.min(H - 6, Math.max(14, last.Y - 8)).toFixed(1)}" text-anchor="end">${esc(c.label)}</text>`);
     }
     const OFF = { n: [0, -10, "middle"], s: [0, 18, "middle"], e: [9, 4, "start"], w: [-9, 4, "end"], ne: [7, -8, "start"], nw: [-7, -8, "end"], se: [7, 16, "start"], sw: [-7, 16, "end"] };
     for (const p of points) {
-      const X2 = px(p.x), Y2 = py(p.y);
-      if (X2 < -1 || X2 > W + 1 || Y2 < -1 || Y2 > H + 1) continue;
-      out.push(`<circle class="g-point${p.open ? " open" : ""}" cx="${X2.toFixed(1)}" cy="${Y2.toFixed(1)}" r="4"/>`);
+      const X15 = px(p.x), Y13 = py(p.y);
+      if (X15 < -1 || X15 > W + 1 || Y13 < -1 || Y13 > H + 1) continue;
+      out.push(`<circle class="g-point${p.open ? " open" : ""}" cx="${X15.toFixed(1)}" cy="${Y13.toFixed(1)}" r="4"/>`);
       if (p.label) {
         const [dx, dy, anchor] = OFF[p.at || "ne"];
-        out.push(`<text class="g-label" x="${Math.min(W - 2, Math.max(2, X2 + dx)).toFixed(1)}" y="${Math.min(H - 3, Math.max(11, Y2 + dy)).toFixed(1)}" text-anchor="${X2 + dx > W - 60 && anchor === "start" ? "end" : anchor}">${esc(p.label)}</text>`);
+        out.push(`<text class="g-label" x="${Math.min(W - 2, Math.max(2, X15 + dx)).toFixed(1)}" y="${Math.min(H - 3, Math.max(11, Y13 + dy)).toFixed(1)}" text-anchor="${X15 + dx > W - 60 && anchor === "start" ? "end" : anchor}">${esc(p.label)}</text>`);
       }
     }
     return `<figure class="graph"><svg viewBox="-1 -1 ${W + 2} ${H + 2}" role="img" aria-label="${esc(description)}"><defs><clipPath id="${id}"><rect x="0" y="0" width="${W}" height="${H}"/></clipPath></defs>${out.join("")}</svg></figure>`;
@@ -5879,7 +5881,24 @@ input[type=checkbox] {
     const f = exactly(v);
     return { kind: "num", val: f, disp: showValue(f) };
   };
+  var approxAns = (v, sf = SF) => ({ kind: "approx", val: v, sf, disp: showValue(v, sf) });
+  var listAns = (vals, sf = SF) => {
+    const vs = vals.map(exactly);
+    return { kind: "list", vals: vs, sf, disp: vs.map((v) => showValue(v, sf)).join(", ") };
+  };
+  var pointAns = (x, y, sf = SF) => {
+    const vs = [exactly(x), exactly(y)];
+    return { kind: "point", vals: vs, sf, disp: `(${showValue(vs[0], sf)}, ${showValue(vs[1], sf)})` };
+  };
   var lineAns = (a, b, c, disp) => ({ kind: "line", a: +a, b: +b, c: +c, disp });
+  var ineqAns = (parts, disp) => ({ kind: "ineq", parts, disp });
+  var num2 = (v) => typeof v === "object" ? Number(v.n) / Number(v.d) : v;
+  var sym = (strict, less = true) => less ? strict ? "<" : "\u2264" : strict ? ">" : "\u2265";
+  var below = (a, strict = true, x = "x") => ineqAns([{ lo: -Infinity, hi: num2(a), hiIn: !strict }], `${x} ${sym(strict)} ${showValue(a)}`);
+  var above = (a, strict = true, x = "x") => ineqAns([{ lo: num2(a), hi: Infinity, loIn: !strict }], `${x} ${sym(strict, false)} ${showValue(a)}`);
+  var notEqual = (a, x = "x") => ineqAns([{ lo: -Infinity, hi: num2(a) }, { lo: num2(a), hi: Infinity }], `${x} \u2260 ${showValue(a)}`);
+  var labelled = (label, a) => ({ ...a, label });
+  var multiAns = (...parts) => ({ kind: "multi", parts, disp: parts.map((p) => `${p.label} ${p.disp}`).join("; ") });
 
   // source/topics/functions/question-types/straight-lines/gradient-between-two-points.js
   var FORMULA = `<i>m</i> = <span class="fr"><span><i>y</i>\u2082 ${MINUS} <i>y</i>\u2081</span><span><i>x</i>\u2082 ${MINUS} <i>x</i>\u2081</span></span>`;
@@ -5997,7 +6016,7 @@ input[type=checkbox] {
     text: (P) => `Find the equation of the line through A${pt(P.x1, P.y1)} and B${pt(P.x2, P.y2)}. Give your answer in the form ${Y} = <i>mx</i> + <i>c</i>.`,
     expr: (P) => `A${pt(P.x1, P.y1)}, B${pt(P.x2, P.y2)}`,
     build(P) {
-      const { x1, y1, x2, y2 } = P, dy = y2 - y1, dx = x2 - x1, ln = lineThrough(P), { m, c } = ln, { steps, S } = newSteps(), v = viewFor([x1, x2, 0], [y1, y2, fnum(c)]);
+      const { x1, y1, x2, y2 } = P, dy = y2 - y1, dx = x2 - x1, ln2 = lineThrough(P), { m, c } = ln2, { steps, S } = newSteps(), v = viewFor([x1, x2, 0], [y1, y2, fnum(c)]);
       S("Read the question", "What is being asked?", [
         readLine2(P, [`The <b>equation</b> of a line is a rule that every point on the line obeys. In ${Y} = <i>mx</i> + <i>c</i>, <i>m</i> is the gradient and <i>c</i> is where the line crosses the ${Y}-axis.`]),
         L("Plan: find the gradient <i>m</i>, then use one point to find <i>c</i>.", "Two unknowns, two steps.", null, [`Every straight line (except a vertical one) can be written as ${Y} = <i>mx</i> + <i>c</i>. Once we know <i>m</i> and <i>c</i>, we know the line.`])
@@ -6030,7 +6049,7 @@ input[type=checkbox] {
       S("Final answer", "The question asks for y = mx + c. Here are all three forms of the same line.", [
         L(`<span class="answer">${Y} = ${lin(m, c)}</span>`, "Gradient-intercept form."),
         L(`${shift(y1, Y)} = ${val(m)}(${shift(x1)})`, "Point-gradient form."),
-        L(general(ln), "General form: whole numbers, everything on one side.", void 0, [`Start from ${Y} = ${lin(m, c)}${m.d * c.d > 1n ? `, multiply by ${m.d * c.d / gcdB(m.d, c.d)} to clear the fractions,` : ""} and move everything to one side.`])
+        L(general(ln2), "General form: whole numbers, everything on one side.", void 0, [`Start from ${Y} = ${lin(m, c)}${m.d * c.d > 1n ? `, multiply by ${m.d * c.d / gcdB(m.d, c.d)} to clear the fractions,` : ""} and move everything to one side.`])
       ]);
       return mk2(P, steps);
     },
@@ -6060,6 +6079,1648 @@ input[type=checkbox] {
     },
     hints: (P) => ["First the gradient: m = (y\u2082 \u2212 y\u2081) \xF7 (x\u2082 \u2212 x\u2081).", "Then y \u2212 y\u2081 = m(x \u2212 x\u2081) with one of the points.", "Rearrange to y = mx + c."],
     example: { t: "lineeq", x1: 1, y1: 3, x2: 4, y2: 9 }
+  });
+
+  // source/topics/functions/question-types/straight-lines/the-three-forms-of-a-line.js
+  var X2 = "<i>x</i>";
+  var Y2 = "<i>y</i>";
+  function generalForm(m, c) {
+    let a = m.n * c.d, b = -m.d * c.d, d = c.n * m.d;
+    const g = gcdB(gcdB(a, b), d) || 1n;
+    a /= g;
+    b /= g;
+    d /= g;
+    if (a < 0n || a === 0n && b < 0n) {
+      a = -a;
+      b = -b;
+      d = -d;
+    }
+    return { a: Number(a), b: Number(b), d: Number(d) };
+  }
+  var generalHtml = ({ a, b, d }) => `${terms([[a, X2], [b, Y2], [d, ""]])} = 0`;
+  var plain = (f) => sg(fstr(f));
+  var coefB = (m) => fnum(m) === 1 ? "" : fnum(m) === -1 ? MINUS : val(m);
+  function wholePoint(m, c) {
+    for (const x of [1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6]) {
+      const y = fadd(fmul(m, F(x)), c);
+      if (y.d === 1n) return { x, y: Number(y.n) };
+    }
+    return { x: 0, y: c };
+  }
+  var mc = (P) => {
+    if (P.form === "general") return { m: F(-P.a, P.b), c: F(-P.d, P.b) };
+    const m = F(P.mn, P.md);
+    return { m, c: fadd(F(P.y1), fmul(m, F(-P.x1))) };
+  };
+  var given = (P) => P.form === "general" ? generalHtml(P) : `${shift(P.y1, Y2)} = ${coefB(F(P.mn, P.md))}(${shift(P.x1)})`;
+  T2("lineforms", {
+    name: "The three forms of a line",
+    group: "lines",
+    syllabus: { aa: "SL 2.1", ai: "SL 2.1" },
+    blurb: "Rearrange a line to y = mx + c to read off its gradient and y-intercept.",
+    help: "The line is ax + by + d = 0. Type a, b and d.",
+    fields: [intField2("a", "a", "2"), intField2("b", "b", "-3"), intField2("d", "d", "6")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "d"]) {
+        const r = int(v[k], -99, 99, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.b === 0) return { err: n.a === 0 ? "With a = b = 0 there is no line." : `With b = 0 the line is vertical (x = ${sg(fstr(F(-n.d, n.a)))}), so it has no gradient and no y-intercept.` };
+      return { p: { t: "lineforms", form: "general", ...n } };
+    },
+    text: (P) => `The line <i>L</i> has equation ${given(P)}. Find the gradient of <i>L</i> and the ${Y2}-intercept of <i>L</i>.`,
+    expr: (P) => given(P),
+    build(P) {
+      const { m, c } = mc(P), { steps, S } = newSteps(), gen = P.form === "general";
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`The <b>gradient</b> says how steep the line is. The <b>${Y2}-intercept</b> is where the line crosses the ${Y2}-axis: the value of ${Y2} when ${X2} = 0.`]),
+        L(`Plan: rearrange to ${Y2} = <i>mx</i> + <i>c</i>, then read off <i>m</i> and <i>c</i>.`, "In that form the gradient and intercept are sitting there for you.", null, [`In ${Y2} = <i>mx</i> + <i>c</i>, the number in front of ${X2} is the gradient and the number on its own is the ${Y2}-intercept. Any other form hides them, so we rearrange first.`])
+      ]);
+      S("The three forms of a line", "The same line can be written in three ways.", [
+        L(`${Y2} = <i>mx</i> + <i>c</i>`, "Gradient-intercept form: gradient <i>m</i>, crosses the y-axis at <i>c</i>."),
+        L(`${Y2} ${MINUS} ${Y2}\u2081 = <i>m</i>(${X2} ${MINUS} ${X2}\u2081)`, "Point-gradient form: gradient <i>m</i>, through the point (<i>x</i>\u2081, <i>y</i>\u2081).", void 0, [`Both of these are in the formula booklet. The point-gradient form is the quickest to write down when you know a point and the gradient.`]),
+        L(
+          `<i>ax</i> + <i>by</i> + <i>d</i> = 0`,
+          "General form: everything on one side, usually with whole numbers.",
+          MC("Which form is the line in the question written in?", gen ? "general form" : "point-gradient form", ["general form", "point-gradient form", "gradient-intercept form"], gen ? "Everything is on one side and the other side is 0." : `It shows a point (${val(P.x1)}, ${val(P.y1)}) and a gradient in front of the bracket.`)
+        )
+      ]);
+      const lines = [];
+      if (gen) {
+        const { a, b, d } = P;
+        lines.push(L(
+          `${terms([[b, Y2]])} = ${terms([[-a, X2], [-P.d, ""]])}`,
+          `Keep the ${Y2} term on the left. Move the ${X2} term and the number to the right, changing their signs.`,
+          void 0,
+          [`Moving a term across the = sign is the same as taking it away from both sides${a ? `: ${a > 0 ? "+" : ""}${terms([[a, X2]])} on the left becomes ${terms([[-a, X2]])} on the right` : ""}.`]
+        ));
+        if (b !== 1) lines.push(L(
+          `${Y2} = ${lin(m, c)}`,
+          b === -1 ? "Multiply both sides by \u22121: every sign changes." : `Divide every term by ${val(b)}.`,
+          Nm("What is the gradient m?", [{ label: "m", answer: plain(m) }], `${val(-a)} \xF7 ${par2(b)} = ${val(m)}.`),
+          [`Divide <b>every</b> term on the right, not just the first one: ${terms([[-a, X2]])} \xF7 ${par2(b)} and ${val(-d)} \xF7 ${par2(b)}.`]
+        ));
+      } else {
+        const { x1, y1 } = P, k = fmul(m, F(-x1));
+        lines.push(L(`${shift(y1, Y2)} = ${lin(m, k)}`, "Expand the bracket: multiply both terms inside by the gradient.", void 0, [`${val(m)} \xD7 ${X2} = ${lin(m, 0)} and ${val(m)} \xD7 ${par2(-x1)} = ${val(k)}.`]));
+        lines.push(L(
+          `${Y2} = ${lin(m, c)}`,
+          `${y1 > 0 ? "Add" : "Take away"} ${Math.abs(y1)} on both sides to get ${Y2} on its own.`,
+          Nm("What is c, the number on its own?", [{ label: "c", answer: plain(c) }], `${val(k)} ${y1 < 0 ? MINUS : "+"} ${Math.abs(y1)} = ${val(c)}.`)
+        ));
+      }
+      if (gen && P.b === 1) lines[0].ask = Nm("What is the gradient m?", [{ label: "m", answer: plain(m) }], `The number in front of x is ${val(m)}.`);
+      S(`Get ${Y2} on its own`, gen ? `Move everything except the ${Y2} term to the other side.` : "Expand the bracket, then tidy up.", lines);
+      const v = viewFor([0, m.d === 1n ? 2 : Number(m.d)], [fnum(c), fnum(c) + (m.d === 1n ? 2 * fnum(m) : Number(m.n))]), run2 = m.d === 1n ? 1 : Number(m.d), rise = fadd(c, fmul(m, F(run2)));
+      S("Read off m and c", "Compare with y = mx + c.", [
+        L(
+          `<i>m</i> = ${val(m)}, &nbsp; <i>c</i> = ${val(c)}`,
+          "The gradient is the number in front of x; the y-intercept is the number on its own.",
+          gen ? Nm("What is the y-intercept c?", [{ label: "c", answer: plain(c) }], `In ${Y2} = ${lin(m, c)} the number on its own is ${val(c)}.`) : void 0
+        ),
+        L(
+          graph({ ...v, lines: [{ m: fnum(m), c: fnum(c), colour: 1, dashed: false }], points: [{ x: 0, y: fnum(c), label: `(0, ${plain(c)})`, at: fnum(m) > 0 ? "nw" : "ne" }, { x: run2, y: fnum(rise), label: `(${run2}, ${plain(rise)})`, at: "se" }], description: `The line y = ${plain(m)}x + ${plain(c)}` }),
+          `It crosses the ${Y2}-axis at ${val(c)}. Going ${run2} across from there, it goes ${fnum(m) >= 0 ? "up" : "down"} ${val(fabs(fmul(m, F(run2))))}: a gradient of ${val(m)}.`,
+          MC("Is the gradient of this line positive or negative?", fnum(m) > 0 ? "positive" : fnum(m) < 0 ? "negative" : "zero", ["positive", "negative", "zero"], fnum(m) > 0 ? "It goes up from left to right." : fnum(m) < 0 ? "It goes down from left to right." : "It is flat.")
+        )
+      ]);
+      const w = gen ? wholePoint(m, c) : { x: P.x1, y: P.y1 };
+      S("Final answer", "Here is the same line in all three forms.", [
+        L(`gradient = <span class="answer">${val(m)}</span>, &nbsp; ${Y2}-intercept = <span class="answer">${val(c)}</span>`, "Read straight from y = mx + c."),
+        L(`${Y2} = ${lin(m, c)}`, "Gradient-intercept form."),
+        L(`${shift(w.y, Y2)} = ${w.x === 0 ? lin(m, 0) : coefB(m) + "(" + shift(w.x) + ")"}`, `Point-gradient form, using the point ${pt(w.x, w.y)} on the line.`),
+        L(generalHtml(generalForm(m, c)), "General form, with whole numbers.")
+      ]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) {
+        if (Math.random() < 0.5) return { t: "lineforms", form: "general", a: ri(1, 5), b: Math.random() < 0.5 ? 1 : -1, d: rnz(-9, 9) };
+        return { t: "lineforms", form: "point", mn: rnz(-4, 4), md: 1, x1: rnz(-4, 4), y1: rnz(-5, 5) };
+      }
+      if (lv === 2) {
+        if (Math.random() < 0.6) {
+          const b = rnz(2, 5) * (Math.random() < 0.5 ? 1 : -1), m = rnz(-3, 3), c = rnz(-5, 5);
+          let a = -m * b, d = -c * b;
+          const s = a < 0 ? -1 : 1;
+          return { t: "lineforms", form: "general", a: a * s, b: b * s, d: d * s };
+        }
+        let mn2, md2;
+        do {
+          md2 = ri(2, 4);
+          mn2 = rnz(-5, 5);
+        } while (gcdB(BigInt(mn2), BigInt(md2)) !== 1n);
+        return { t: "lineforms", form: "point", mn: mn2, md: md2, x1: md2 * rnz(-2, 2), y1: rnz(-5, 5) };
+      }
+      if (Math.random() < 0.6) {
+        let a, b, d;
+        do {
+          a = ri(1, 9);
+          b = rnz(2, 9) * (Math.random() < 0.5 ? 1 : -1);
+          d = rnz(-12, 12);
+        } while (a % b === 0 || gcdB(gcdB(BigInt(a), BigInt(b)), BigInt(d)) !== 1n);
+        return { t: "lineforms", form: "general", a, b, d };
+      }
+      let mn, md, x1;
+      do {
+        md = ri(2, 5);
+        mn = rnz(-7, 7);
+        x1 = rnz(-5, 5);
+      } while (gcdB(BigInt(mn), BigInt(md)) !== 1n || x1 % md === 0);
+      return { t: "lineforms", form: "point", mn, md, x1, y1: rnz(-6, 6) };
+    },
+    ans(P) {
+      const { m, c } = mc(P);
+      return multiAns(labelled("Gradient", exactAns(m)), labelled("y-intercept", exactAns(c)));
+    },
+    hints: (P) => ["Rearrange to y = mx + c.", P.form === "general" ? "Move the x term and the number to the other side, then divide every term by the number in front of y." : "Expand the bracket, then move the number to the right-hand side.", "Then m (in front of x) is the gradient and c (on its own) is the y-intercept."],
+    example: { t: "lineforms", form: "general", a: 2, b: -3, d: 6 }
+  });
+
+  // source/topics/functions/question-types/straight-lines/parallel-and-perpendicular-lines.js
+  var X3 = "<i>x</i>";
+  var Y3 = "<i>y</i>";
+  var L1 = "<i>L</i>\u2081";
+  var L2 = "<i>L</i>\u2082";
+  function solve(P) {
+    const m1 = F(-P.a, P.b), c1 = F(-P.d, P.b), m2 = P.rel === "par" ? m1 : fdiv(F(-1), m1), c2 = fadd(F(P.py), fmul(m2, F(-P.px)));
+    return { m1, c1, m2, c2, G: generalForm(m2, c2) };
+  }
+  var lineOne = (P) => {
+    const { m1, c1 } = solve(P);
+    return P.shown === "s" ? `${Y3} = ${lin(m1, c1)}` : generalHtml(P);
+  };
+  function square(v) {
+    let [x0, x1] = v.x, [y0, y1] = v.y;
+    const w = x1 - x0, h = y1 - y0;
+    if (w / h < 4 / 3) {
+      const e = (h * 4 / 3 - w) / 2;
+      x0 -= e;
+      x1 += e;
+    } else {
+      const e = (w * 3 / 4 - h) / 2;
+      y0 -= e;
+      y1 += e;
+    }
+    return { x: [x0, x1], y: [y0, y1] };
+  }
+  var lcm = (p, q) => p * q / gcdB(p, q);
+  T2("parperp", {
+    name: "Parallel and perpendicular lines",
+    group: "lines",
+    syllabus: { aa: "SL 2.1", ai: "SL 2.1" },
+    blurb: "Parallel lines have equal gradients; perpendicular gradients multiply to \u22121.",
+    help: "Line L\u2081 is ax + by + d = 0. L\u2082 goes through the point (p, q).",
+    fields: [{ id: "rel", kind: "sel", label: "L\u2082 is", def: "perp", opts: [["perp", "perpendicular to L\u2081"], ["par", "parallel to L\u2081"]] }, intField2("a", "a", "2"), intField2("b", "b", "-1"), intField2("d", "d", "3"), intField2("px", "p", "4"), intField2("py", "q", "1")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "d", "px", "py"]) {
+        const r = int(v[k], -99, 99, k === "px" ? "p" : k === "py" ? "q" : k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.b === 0) return { err: "With b = 0, L\u2081 is vertical. Choose b that is not 0." };
+      if (n.a === 0 && v.rel === "perp") return { err: "With a = 0, L\u2081 is flat, so the perpendicular line is vertical (x = p). Choose a that is not 0." };
+      return { p: { t: "parperp", rel: v.rel === "par" ? "par" : "perp", ...n, shown: "g", want: "s" } };
+    },
+    text: (P) => `The line ${L1} has equation ${lineOne(P)}. The line ${L2} is ${P.rel === "par" ? "parallel" : "perpendicular"} to ${L1} and passes through the point ${pt(P.px, P.py)}. Find the equation of ${L2}. Give your answer in the form ${P.want === "s" ? `${Y3} = <i>mx</i> + <i>c</i>` : `<i>ax</i> + <i>by</i> + <i>d</i> = 0, where <i>a</i>, <i>b</i>, <i>d</i> \u2208 \u2124`}.`,
+    expr: (P) => `${P.rel === "par" ? "parallel" : "perpendicular"} to ${lineOne(P)}`,
+    build(P) {
+      const { m1, c1, m2, c2, G } = solve(P), { px, py, rel } = P, perp = rel === "perp", { steps, S } = newSteps();
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`<b>Parallel</b> lines run side by side and never meet. <b>Perpendicular</b> lines cross at a right angle (90\xB0).`]),
+        L(`Plan: gradient of ${L1} \u2192 gradient of ${L2} \u2192 use the point ${pt(px, py)}.`, "A line is fixed by its gradient and one point on it.", null, [`We know a point on ${L2} already. All we are missing is its gradient, and that comes from ${L1}.`])
+      ]);
+      const g1 = [];
+      if (P.shown === "s") g1.push(L(
+        `<i>m</i>\u2081 = ${val(m1)}`,
+        `${L1} is already in the form ${Y3} = <i>mx</i> + <i>c</i>: the gradient is the number in front of ${X3}.`,
+        Nm(`What is the gradient of L\u2081?`, [{ label: "m\u2081", answer: plain(m1) }], `The number in front of x is ${val(m1)}.`)
+      ));
+      else {
+        g1.push(
+          L(`${terms([[P.b, Y3]])} = ${terms([[-P.a, X3], [-P.d, ""]])}`, `Rearrange: keep the ${Y3} term, move the rest to the other side.`),
+          L(
+            `${Y3} = ${lin(m1, c1)}, so <i>m</i>\u2081 = ${val(m1)}`,
+            P.b === 1 ? "Now read off the gradient." : `Divide every term by ${val(P.b)}, then read off the gradient.`,
+            Nm(`What is the gradient of L\u2081?`, [{ label: "m\u2081", answer: plain(m1) }], `${val(-P.a)} \xF7 ${par2(P.b)} = ${val(m1)}.`),
+            [`The gradient is hidden in the general form. Getting ${Y3} on its own shows it.`]
+          )
+        );
+      }
+      S(`Gradient of ${L1}`, "Find how steep the given line is.", g1);
+      S(`Gradient of ${L2}`, perp ? "Perpendicular: use the negative reciprocal." : "Parallel: the gradient is the same.", perp ? [
+        L(`<i>m</i>\u2081 \xD7 <i>m</i>\u2082 = ${MINUS}1`, "Perpendicular gradients multiply to \u22121.", void 0, [`So <i>m</i>\u2082 is the <b>negative reciprocal</b> of <i>m</i>\u2081: flip the fraction upside down and change its sign. For example, 2 = 2/1 flips to 1/2, and the sign change gives ${MINUS}1/2.`]),
+        L(
+          `<i>m</i>\u2082 = ${MINUS}1 \xF7 ${par2(m1)} = ${val(m2)}`,
+          `Flip ${val(m1)} and change its sign.`,
+          Nm("What is the gradient of L\u2082?", [{ label: "m\u2082", answer: plain(m2) }], `The negative reciprocal of ${val(m1)} is ${val(m2)}.`),
+          [`Check: ${val(m1)} \xD7 ${par2(m2)} = ${MINUS}1 \u2713. If you get +1, you forgot to change the sign.`]
+        )
+      ] : [
+        L(
+          `<i>m</i>\u2082 = <i>m</i>\u2081 = ${val(m1)}`,
+          "Parallel lines are equally steep, so their gradients are equal.",
+          MC("Parallel lines have gradients that are \u2026", "equal", ["negative reciprocals", "opposite in sign", "added to give 0"], "Equally steep lines never meet: same gradient."),
+          [`If the gradients were different, one line would be steeper, and sooner or later it would cross the other.`]
+        )
+      ]);
+      const k = fmul(m2, F(-px));
+      S(`Equation of ${L2}`, `Gradient ${val(m2)}, through ${pt(px, py)}.`, [
+        L(`${Y3} ${MINUS} ${Y3}\u2081 = <i>m</i>(${X3} ${MINUS} ${X3}\u2081)`, "Point-gradient form, from the formula booklet."),
+        L(`${shift(py, Y3)} = ${coefB(m2)}(${shift(px)})`, `Put in <i>m</i> = ${val(m2)} and the point ${pt(px, py)}.`, void 0, [`${X3} ${MINUS} ${X3}\u2081 with ${X3}\u2081 = ${val(px)} gives ${shift(px)}${px < 0 ? ": taking away a negative is the same as adding" : ""}.`]),
+        L(`${shift(py, Y3)} = ${lin(m2, k)}`, "Expand the bracket."),
+        L(
+          `${Y3} = ${lin(m2, c2)}`,
+          py === 0 ? "This is already y = mx + c." : `${py > 0 ? "Add" : "Take away"} ${Math.abs(py)} on both sides.`,
+          Nm("What is c, where L\u2082 crosses the y-axis?", [{ label: "c", answer: plain(c2) }], `${val(k)} ${py < 0 ? MINUS : "+"} ${Math.abs(py)} = ${val(c2)}.`)
+        )
+      ]);
+      if (P.want === "g") {
+        const D = lcm(m2.d, c2.d), gl = [];
+        if (D > 1n) gl.push(L(`${val(Number(D))}${Y3} = ${lin(fmul(m2, F(D)), fmul(c2, F(D)))}`, `Multiply every term by ${val(Number(D))} to clear the fractions.`));
+        gl.push(L(
+          generalHtml(G),
+          `Move everything to one side${G.a > 0 ? ", keeping the x term positive" : ""}.`,
+          MC("Which of these is the same line?", generalHtml(G), [generalHtml({ a: G.a, b: -G.b, d: G.d }), generalHtml({ a: G.a, b: G.b, d: -G.d }), generalHtml({ a: G.b, b: G.a, d: G.d })], "Only this one matches y = mx + c after rearranging.")
+        ));
+        S("General form", "The question wants whole numbers, all on one side.", gl);
+      }
+      const v = square(viewFor([px, 0], [py, fnum(c1), fnum(c2)]));
+      S("Check with a graph", "Both axes use the same scale, so the angle looks right.", [
+        L(
+          graph({ ...v, lines: [{ m: fnum(m1), c: fnum(c1), colour: 2, dashed: false, label: "L\u2081" }, { m: fnum(m2), c: fnum(c2), colour: 1, dashed: false, label: "L\u2082" }], points: [{ x: px, y: py, label: `(${px}, ${py})`.replace(/-/g, MINUS), at: "se" }], description: `L\u2081 and L\u2082, ${perp ? "crossing at a right angle" : "side by side"}` }),
+          perp ? `${L2} crosses ${L1} at a right angle and goes through ${pt(px, py)} \u2713` : `${L2} runs alongside ${L1} and goes through ${pt(px, py)} \u2713`,
+          perp ? MC("What is m\u2081 \xD7 m\u2082 for perpendicular lines?", `${MINUS}1`, ["1", "0", `${MINUS}2`], "Perpendicular gradients always multiply to \u22121.") : MC("Do L\u2081 and L\u2082 ever meet?", "No, never", ["Yes, once", "Yes, at every point"], "Same gradient and a different point: they stay the same distance apart.")
+        )
+      ]);
+      S("Final answer", "In the form the question asks for.", [L(`<span class="answer">${P.want === "g" ? generalHtml(G) : `${Y3} = ${lin(m2, c2)}`}</span>`, `Check: put ${X3} = ${val(px)} in and you get ${Y3} = ${val(py)} \u2713`)]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      const rel = Math.random() < (lv === 1 ? 0.5 : 0.7) ? "perp" : "par";
+      let P;
+      do {
+        if (lv < 3) {
+          let mn, md;
+          if (lv === 1) {
+            mn = rel === "perp" ? [1, -1, 2, -2, 3, -3][ri(0, 5)] : rnz(-4, 4);
+            md = 1;
+          } else do {
+            md = Math.random() < 0.3 ? 1 : ri(2, 4);
+            mn = rnz(-5, 5);
+          } while (gcdB(BigInt(mn), BigInt(md)) !== 1n);
+          const m1 = F(mn, md), c1 = F(rnz(-6, 6)), px = lv === 1 && rel === "perp" ? mn * rnz(-2, 2) : rnz(-5, 5);
+          P = { t: "parperp", rel, ...generalForm(m1, c1), px, py: ri(-5, 5), shown: "s", want: "s" };
+        } else {
+          let a, b, d;
+          do {
+            a = ri(1, 6);
+            b = rnz(-6, 6);
+            d = rnz(-10, 10);
+          } while (gcdB(gcdB(BigInt(a), BigInt(b)), BigInt(d)) !== 1n);
+          P = { t: "parperp", rel, a, b, d, px: rnz(-5, 5), py: rnz(-5, 5), shown: "g", want: "g" };
+        }
+      } while (P.a * P.px + P.b * P.py + P.d === 0);
+      return P;
+    },
+    ans(P) {
+      const { m2, c2, G } = solve(P);
+      return P.want === "g" ? lineAns(G.a, G.b, G.d, generalHtml(G)) : lineAns(fnum(m2), -1, fnum(c2), `${Y3} = ${lin(m2, c2)}`);
+    },
+    hints: (P) => [
+      P.shown === "s" ? "Read the gradient of L\u2081: the number in front of x." : "Rearrange L\u2081 to y = mx + c to find its gradient.",
+      P.rel === "par" ? "Parallel lines have the same gradient." : "Perpendicular: m\u2081 \xD7 m\u2082 = \u22121, so flip the gradient and change its sign.",
+      `Use y \u2212 y\u2081 = m(x \u2212 x\u2081) with the point (${P.px}, ${P.py}).`.replace(/-(?=\d)/g, "\u2212")
+    ],
+    example: { t: "parperp", rel: "perp", a: 2, b: -1, d: 3, px: 4, py: 1, shown: "s", want: "s" }
+  });
+
+  // source/topics/functions/question-types/straight-lines/where-two-lines-meet.js
+  var X4 = "<i>x</i>";
+  var Y4 = "<i>y</i>";
+  var ln = (P, i) => ({ a: P["a" + i], b: P["b" + i], e: P["e" + i], s: P["s" + i] });
+  var mOf = (l) => F(-l.a, l.b);
+  var cOf = (l) => F(l.e, l.b);
+  var show = (l) => l.s ? `${Y4} = ${lin(mOf(l), cOf(l))}` : `${terms([[l.a, X4], [l.b, Y4]])} = ${val(l.e)}`;
+  var meetAt = (P) => {
+    const p = ln(P, 1), q = ln(P, 2), det = p.a * q.b - q.a * p.b;
+    return { x: F(p.e * q.b - q.e * p.b, det), y: F(p.a * q.e - q.a * p.e, det) };
+  };
+  var yFrom = (l, x) => fdiv(fsub(F(l.e), fmul(F(l.a), x)), F(l.b));
+  var sLine = (m, x, y) => ({ a: -m, b: 1, e: y - m * x, s: true });
+  var gLine = (x, y) => {
+    let a, b;
+    do {
+      a = ri(1, 5);
+      b = rnz(-5, 5);
+    } while (gcdB(BigInt(a), BigInt(b)) !== 1n);
+    return { a, b, e: a * x + b * y, s: false };
+  };
+  var pack = (p, q) => ({ t: "meet", a1: p.a, b1: p.b, e1: p.e, s1: p.s, a2: q.a, b2: q.b, e2: q.e, s2: q.s });
+  T2("meet", {
+    name: "Where two lines meet",
+    group: "lines",
+    syllabus: { aa: "SL 2.4", ai: "SL 2.4" },
+    blurb: "The point on both lines: solve the two equations simultaneously.",
+    text: (P) => `The lines <i>L</i>\u2081: ${show(ln(P, 1))} and <i>L</i>\u2082: ${show(ln(P, 2))} meet at the point A. Find the exact coordinates of A.`,
+    expr: (P) => `${show(ln(P, 1))} and ${show(ln(P, 2))}`,
+    build(P) {
+      const p = ln(P, 1), q = ln(P, 2), { x, y } = meetAt(P), { steps, S } = newSteps();
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`A is on both lines, so its coordinates make <b>both</b> equations true at the same time. Finding numbers that fit two equations at once is called solving them <b>simultaneously</b>.`]),
+        L(`Plan: solve ${show(p)} and ${show(q)} together.`, p.s && q.s ? "Both say what y is, so set them equal." : p.s || q.s ? "One line already says what y is: substitute it into the other." : "Eliminate y, find x, then find y.")
+      ]);
+      const sx = [];
+      let yl;
+      if (p.s && q.s) {
+        const m1 = mOf(p), m2 = mOf(q), c1 = cOf(p), c2 = cOf(q);
+        yl = p;
+        sx.push(
+          L(`${lin(m1, c1)} = ${lin(m2, c2)}`, "Both equal y, so they equal each other.", void 0, [`At A, the two lines have the same ${Y4}. So the two expressions for ${Y4} must be equal there.`]),
+          L(`${lin(fsub(m1, m2), 0)} = ${val(fsub(c2, c1))}`, `Collect the ${X4} terms on the left and the numbers on the right.`),
+          L(`${X4} = ${val(x)}`, `Divide both sides by ${val(fsub(m1, m2))}.`, Nm("What is x?", [{ label: "x", answer: plain(x) }], `${val(fsub(c2, c1))} \xF7 ${par2(fsub(m1, m2))} = ${val(x)}.`))
+        );
+      } else if (p.s || q.s) {
+        const sl = p.s ? p : q, g = p.s ? q : p, m = mOf(sl), c = cOf(sl), A = fadd(F(g.a), fmul(F(g.b), m)), R = fsub(F(g.e), fmul(F(g.b), c));
+        yl = sl;
+        sx.push(
+          L(`${terms([[g.a, X4]])} ${g.b < 0 ? MINUS : "+"} ${Math.abs(g.b) === 1 ? "" : Math.abs(g.b)}(${lin(m, c)}) = ${val(g.e)}`, `Replace ${Y4} in ${show(g)} with ${lin(m, c)}.`, void 0, [`${show(sl)} tells us exactly what ${Y4} is, so we can swap it in. That leaves an equation with only ${X4} in it.`]),
+          L(`${terms([[g.a, X4], [fmul(F(g.b), m), X4], [fmul(F(g.b), c), ""]])} = ${val(g.e)}`, "Expand the bracket."),
+          L(`${lin(A, 0)} = ${val(R)}`, `Collect the ${X4} terms, and move the number to the right.`),
+          L(`${X4} = ${val(x)}`, `Divide both sides by ${val(A)}.`, Nm("What is x?", [{ label: "x", answer: plain(x) }], `${val(R)} \xF7 ${par2(A)} = ${val(x)}.`))
+        );
+      } else {
+        const g = Number(gcdB(BigInt(p.b), BigInt(q.b))), Lm = Math.abs(p.b * q.b) / g, k1 = Lm / Math.abs(p.b), k2 = Lm / Math.abs(q.b), same2 = p.b * q.b > 0, P1 = { a: k1 * p.a, b: k1 * p.b, e: k1 * p.e }, Q1 = { a: k2 * q.a, b: k2 * q.b, e: k2 * q.e }, A = same2 ? P1.a - Q1.a : P1.a + Q1.a, R = same2 ? P1.e - Q1.e : P1.e + Q1.e;
+        yl = Math.abs(p.b) <= Math.abs(q.b) ? p : q;
+        const eq = (l) => `${terms([[l.a, X4], [l.b, Y4]])} = ${val(l.e)}`;
+        sx.push(
+          L(
+            `${eq(P1)}<br>${eq(Q1)}`,
+            k1 === 1 && k2 === 1 ? `The ${Y4} terms already match in size.` : `Multiply ${k1 > 1 ? `the first equation by ${k1}` : ""}${k1 > 1 && k2 > 1 ? " and " : ""}${k2 > 1 ? `the second by ${k2}` : ""}, so the ${Y4} terms match in size.`,
+            void 0,
+            [`This is <b>elimination</b>: make the ${Y4} terms the same size, then add or subtract the equations so ${Y4} disappears.`]
+          ),
+          L(
+            `${lin(A, 0)} = ${val(R)}`,
+            same2 ? `Subtract the equations: the ${Y4} terms cancel.` : `Add the equations: the ${Y4} terms cancel.`,
+            MC(`Should you add or subtract the two equations to get rid of y?`, same2 ? "subtract" : "add", [same2 ? "add" : "subtract", "multiply"], same2 ? "The y terms have the same sign, so subtracting cancels them." : "The y terms have opposite signs, so adding cancels them.")
+          ),
+          L(`${X4} = ${val(x)}`, `Divide both sides by ${val(A)}.`, Nm("What is x?", [{ label: "x", answer: plain(x) }], `${val(R)} \xF7 ${par2(A)} = ${val(x)}.`))
+        );
+      }
+      S(`Find ${X4}`, "Get an equation with only x in it.", sx);
+      const yv = yl.s ? fadd(fmul(mOf(yl), x), cOf(yl)) : yFrom(yl, x), other = yl === p ? q : p;
+      S(`Find ${Y4}`, `Put ${X4} = ${val(x)} into one of the equations.`, [
+        yl.s ? L(
+          `${Y4} = ${val(mOf(yl))} \xD7 ${par2(x)} ${fnum(cOf(yl)) < 0 ? MINUS : "+"} ${val(Math.abs(fnum(cOf(yl))))} = ${val(yv)}`.replace(/^(.*?)= 1 × /, "$1= ").replace(/= −1 × /, `= ${MINUS}`),
+          `Use ${show(yl)}: it gives ${Y4} straight away.`,
+          Nm("What is y?", [{ label: "y", answer: plain(yv) }], `${Y4} = ${val(yv)}.`)
+        ) : L(
+          `${terms([[yl.a, ""]])} \xD7 ${par2(x)} ${yl.b < 0 ? MINUS : "+"} ${Math.abs(yl.b) === 1 ? "" : Math.abs(yl.b)}${Y4} = ${val(yl.e)} &nbsp;\u21D2&nbsp; ${Y4} = ${val(yv)}`,
+          `Use ${show(yl)}, then solve for ${Y4}.`,
+          Nm("What is y?", [{ label: "y", answer: plain(yv) }], `${Y4} = ${val(yv)}.`)
+        )
+      ]);
+      const v = viewFor([fnum(x)], [fnum(y), fnum(cOf(p)), fnum(cOf(q))]);
+      S("Check", "A must fit the other line too.", [
+        L(other.s ? `${val(mOf(other))} \xD7 ${par2(x)} + ${par2(cOf(other))} = ${val(y)} \u2713` : `${val(other.a)} \xD7 ${par2(x)} + ${val(other.b)} \xD7 ${par2(y)} = ${val(other.e)} \u2713`, `Put A${pt(x, y)} into ${show(other)}. Both sides agree.`),
+        L(
+          graph({ ...v, lines: [{ m: fnum(mOf(p)), c: fnum(cOf(p)), colour: 1, dashed: false, label: "L\u2081" }, { m: fnum(mOf(q)), c: fnum(cOf(q)), colour: 2, dashed: false, label: "L\u2082" }], points: [{ x: fnum(x), y: fnum(y), label: "A", at: "se" }], description: "Two lines crossing at A" }),
+          "The lines cross at A.",
+          MC("How many points do two lines with different gradients share?", "exactly one", ["none", "two", "infinitely many"], "Different gradients means they cross once, and only once.")
+        ),
+        L("Paper 2: check with your GDC", "Graph both lines and find where they cross.", void 0, [
+          "TI-84 Plus CE: Y=, type both lines as Y\u2081 and Y\u2082 (rearrange to y = \u2026 first), GRAPH, then 2nd CALC, 5: intersect, and press ENTER three times.",
+          "TI-Nspire: Menu \u25B8 Analyze Graph \u25B8 Intersection. Casio fx-CG50: G-Solv \u25B8 ISCT. The GDC gives decimals, so for an exact answer you still need the algebra."
+        ])
+      ]);
+      S("Final answer", "The coordinates of A.", [L(`A = <span class="answer">${pt(x, y)}</span>`, "It fits both equations \u2713")]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) {
+        const x = rnz(-4, 4), y = ri(-5, 5), m1 = rnz(-3, 3);
+        let m2;
+        do {
+          m2 = rnz(-3, 3);
+        } while (m2 === m1);
+        return pack(sLine(m1, x, y), sLine(m2, x, y));
+      }
+      if (lv === 2) {
+        const x = rnz(-4, 4), y = ri(-5, 5), m = rnz(-3, 3);
+        let g;
+        do {
+          g = gLine(x, y);
+        } while (g.a + g.b * m === 0);
+        return Math.random() < 0.5 ? pack(sLine(m, x, y), g) : pack(g, sLine(m, x, y));
+      }
+      let p, q, det;
+      do {
+        p = { a: ri(1, 6), b: rnz(-6, 6), e: rnz(-12, 12), s: false };
+        q = { a: ri(1, 6), b: rnz(-6, 6), e: rnz(-12, 12), s: false };
+        det = p.a * q.b - q.a * p.b;
+      } while (det === 0 || Math.abs(det) > 20 || gcdB(gcdB(BigInt(p.a), BigInt(p.b)), BigInt(p.e)) !== 1n || gcdB(gcdB(BigInt(q.a), BigInt(q.b)), BigInt(q.e)) !== 1n);
+      return pack(p, q);
+    },
+    ans(P) {
+      const { x, y } = meetAt(P);
+      return pointAns(x, y);
+    },
+    hints: (P) => ["A is on both lines, so solve the two equations simultaneously.", P.s1 && P.s2 ? "Both lines say what y is: set the two right-hand sides equal and solve for x." : P.s1 || P.s2 ? "Substitute the y = mx + c line into the other equation." : "Multiply the equations so the y terms match, then add or subtract to get rid of y.", "Then put x back into either equation to find y."],
+    example: { t: "meet", a1: -2, b1: 1, e1: -1, s1: true, a2: 1, b2: 3, e2: 11, s2: false }
+  });
+
+  // source/maths/solving-numerically.js
+  var bisect = (f, a, b) => {
+    let fa = f(a);
+    for (let i = 0; i < 200; i++) {
+      const m = (a + b) / 2, fm = f(m);
+      if (fm === 0) return m;
+      if (fa < 0 === fm < 0) {
+        a = m;
+        fa = fm;
+      } else b = m;
+    }
+    return (a + b) / 2;
+  };
+  function zeros(f, lo, hi, steps = 4e3) {
+    const out = [], h = (hi - lo) / steps;
+    let x0 = lo, y0 = f(lo);
+    for (let i = 1; i <= steps; i++) {
+      const x1 = lo + i * h, y1 = f(x1);
+      if (Number.isFinite(y0) && Number.isFinite(y1)) {
+        if (y0 === 0) out.push(x0);
+        else if (y0 < 0 !== y1 < 0 && y1 !== 0) {
+          const r = bisect(f, x0, x1);
+          if (Math.abs(f(r)) < 1e-6 * (1 + Math.abs(y0) + Math.abs(y1))) out.push(r);
+        }
+      }
+      x0 = x1;
+      y0 = y1;
+    }
+    if (y0 === 0) out.push(x0);
+    for (const t of turningPoints(f, lo, hi, steps)) if (Math.abs(t.y) < 1e-9 && !out.some((r) => Math.abs(r - t.x) < 1e-6)) out.push(t.x);
+    return out.sort((a, b) => a - b).filter((r, i, a) => i === 0 || r - a[i - 1] > 1e-7);
+  }
+  var intersections = (f, g, lo, hi) => zeros((x) => f(x) - g(x), lo, hi);
+  function turningPoints(f, lo, hi, steps = 4e3) {
+    const out = [], h = (hi - lo) / steps, d = (x) => (f(x + 1e-6) - f(x - 1e-6)) / 2e-6;
+    let x0 = lo, d0 = d(lo);
+    for (let i = 1; i <= steps; i++) {
+      const x1 = lo + i * h, d1 = d(x1);
+      if (Number.isFinite(d0) && Number.isFinite(d1) && d0 > 0 !== d1 > 0 && Math.abs(d1 - d0) < 1e6) {
+        const kind = d0 > 0 ? "max" : "min", s = kind === "max" ? -1 : 1;
+        let a = x0, b = x1;
+        for (let k = 0; k < 100; k++) {
+          const m1 = b - (b - a) / 1.618, m2 = a + (b - a) / 1.618;
+          if (s * f(m1) < s * f(m2)) b = m2;
+          else a = m1;
+        }
+        const x = (a + b) / 2;
+        out.push({ x, y: f(x), kind });
+      }
+      x0 = x1;
+      d0 = d1;
+    }
+    return out;
+  }
+
+  // source/topics/functions/question-types/graph-features/axis-intercepts.js
+  var X5 = "<i>x</i>";
+  var Y5 = "<i>y</i>";
+  var FX = "<i>f</i>(<i>x</i>)";
+  function expand2(a, roots) {
+    let cs = [a];
+    for (const r of roots) {
+      const n = Array(cs.length + 1).fill(0);
+      cs.forEach((c, i) => {
+        n[i + 1] += c;
+        n[i] -= r * c;
+      });
+      cs = n;
+    }
+    return cs.map((c) => c + 0);
+  }
+  var polyH = (cs) => terms(cs.map((c, i) => [c, xp(i)]).reverse());
+  var evalPoly = (cs) => (x) => cs.reduce((s, c, i) => s + c * x ** i, 0);
+  var lead = (a) => a === 1 ? "" : a === -1 ? MINUS : val(a);
+  function factored(a, roots) {
+    const u = [...new Set(roots)].sort((p, q) => (p === 0 ? -99 : p) - (q === 0 ? -99 : q));
+    return lead(a) + u.map((r) => {
+      const k = roots.filter((s) => s === r).length, b = r === 0 ? X5 : `(${shift(r)})`;
+      return k > 1 ? b + `<sup>${k}</sup>` : b;
+    }).join("");
+  }
+  var zerosOf = (P) => [...new Set(P.roots)].sort((p, q) => p - q);
+  var shown = (P) => P.form === "factorised" ? factored(P.a, P.roots) : polyH(expand2(P.a, P.roots));
+  var pair = (p, q) => [p, q].sort((u, v) => u - v).map((v) => String(v).replace("-", MINUS)).join(" and ");
+  function factorLines(p, q, pre, first) {
+    const B3 = -(p + q), C2 = p * q;
+    return [
+      L(
+        `${pre}(${polyH(expand2(1, [p, q]))}) = 0`,
+        `${first ? first + " Then f" : "F"}ind two numbers that multiply to ${val(C2)} and add to ${val(B3)}.`,
+        MC(`Which two numbers multiply to ${val(C2)} and add to ${val(B3)}?`, pair(-p, -q), [pair(p, q), pair(-p, q), pair(1, C2), pair(-1, -C2), pair(-p + 1, -q - 1)], `${par2(-p)} \xD7 ${par2(-q)} = ${val(C2)} and ${par2(-p)} + ${par2(-q)} = ${val(B3)}.`),
+        [`Because (${X5} + <i>m</i>)(${X5} + <i>n</i>) = ${X5}<sup>2</sup> + (<i>m</i> + <i>n</i>)${X5} + <i>mn</i>, the numbers <i>m</i> and <i>n</i> multiply to the number at the end and add to the number in front of ${X5}.`]
+      ),
+      L(`${pre}(${shift(p)})(${shift(q)}) = 0`, `So it factorises with ${val(-p)} and ${val(-q)}.`, void 0, [`Check by expanding: (${shift(p)})(${shift(q)}) = ${polyH(expand2(1, [p, q]))} \u2713`])
+    ];
+  }
+  T2("intercepts", {
+    name: "Axis intercepts",
+    group: "features",
+    syllabus: { aa: "SL 2.4", ai: "SL 2.4" },
+    blurb: "Where a graph crosses the axes: put x = 0 for the y-intercept, solve f(x) = 0 for the x-intercepts.",
+    text: (P) => `Let ${FX} = ${shown(P)}. Find the ${Y5}-intercept and the ${X5}-intercepts of the graph of ${Y5} = ${FX}.`,
+    expr: (P) => `${FX} = ${shown(P)}`,
+    build(P) {
+      const { a, roots, form } = P, cs = expand2(a, roots), c0 = cs[0], zs = zerosOf(P), f = evalPoly(cs), { steps, S } = newSteps(), deg = roots.length;
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`An <b>intercept</b> is where a graph crosses an axis. The ${Y5}-intercept is where it crosses the ${Y5}-axis. The ${X5}-intercepts (also called the <b>zeros</b> or <b>roots</b> of <i>f</i>) are where it meets the ${X5}-axis.`]),
+        L(
+          `Plan: ${Y5}-intercept: put ${X5} = 0. &nbsp; ${X5}-intercepts: solve ${FX} = 0.`,
+          "On each axis the other coordinate is 0.",
+          MC("Every point on the y-axis has which coordinate equal to 0?", "x", ["y", "both", "neither"], "Points on the y-axis look like (0, 5): x = 0."),
+          [`The ${Y5}-axis is the line ${X5} = 0, and the ${X5}-axis is the line ${Y5} = 0. So to find where the graph meets an axis, put the other letter equal to 0.`]
+        )
+      ]);
+      const yl = form === "factorised" ? [L(
+        `<i>f</i>(0) = ${a === 1 ? "" : par2(a) + " \xD7 "}${roots.map((r) => r === 0 ? "0" : par2(-r)).join(" \xD7 ")} = ${val(c0)}`,
+        "Put 0 in place of every x, then multiply.",
+        Nm("What is f(0)?", [{ label: "f(0)", answer: String(c0) }], `${a === 1 ? "" : par2(a) + " \xD7 "}${roots.map((r) => par2(-r)).join(" \xD7 ")} = ${val(c0)}.`),
+        [`Each bracket (${X5} ${MINUS} <i>r</i>) becomes (0 ${MINUS} <i>r</i>) = ${MINUS}<i>r</i>. Multiply them all, with the number in front.`]
+      )] : [L(
+        `<i>f</i>(0) = ${val(c0)}`,
+        "Every term with an x is 0 when x = 0, so only the constant term is left.",
+        Nm("What is f(0)?", [{ label: "f(0)", answer: String(c0) }], `Only the constant term survives: f(0) = ${val(c0)}.`),
+        [`For example 2 \xD7 0<sup>2</sup> = 0 and 5 \xD7 0 = 0. So the ${Y5}-intercept of any polynomial is its constant term.`]
+      )];
+      yl.push(L(`${Y5}-intercept: ${pt(0, c0)}`, `The graph crosses the ${Y5}-axis at ${Y5} = ${val(c0)}.`));
+      S(`The ${Y5}-intercept`, `Put ${X5} = 0.`, yl);
+      const xl = [];
+      if (form === "factorised") xl.push(L(`${factored(a, roots)} = 0`, "It is already factorised, which makes this quick."));
+      else {
+        const [p, q] = roots.filter((r, i) => !(r === 0 && roots.indexOf(0) === i && deg === 3));
+        xl.push(L(`${shown(P)} = 0`, `Set ${FX} = 0.`));
+        xl.push(...factorLines(p, q, deg === 3 ? lead(a) + X5 : lead(a), deg === 3 ? `Every term has a factor ${lead(a)}${X5}, so take it out.` : a !== 1 ? `Take out the common factor ${val(a)}, so the bracket starts with ${X5}<sup>2</sup>.` : ""));
+      }
+      xl.push(
+        L(zs.map((z) => z === 0 ? `${X5} = 0` : `${shift(z)} = 0`).join(" &nbsp;or&nbsp; "), "A product is 0 only when one of its factors is 0.", void 0, a === 1 ? void 0 : [`The number in front (${val(a)}) can never be 0, so one of the other factors must be.`]),
+        L(
+          `${X5} = ${zs.map(val).join(", ")}`,
+          zs.length < deg ? "A repeated bracket gives the same intercept twice: the graph just touches the x-axis there." : `${zs.length} ${X5}-intercepts.`,
+          Nm("What are the x-intercepts?", zs.map((z, i) => ({ label: zs.length === 1 ? "x" : i === 0 ? "smallest x" : i === zs.length - 1 ? "largest x" : "middle x", answer: String(z) })), `Each bracket gives one: x = ${zs.map(val).join(", ")}.`)
+        )
+      );
+      S(`The ${X5}-intercepts`, `Solve ${FX} = 0 by factorising.`, xl);
+      const tp = turningPoints(f, zs[0] - 1.5, zs[zs.length - 1] + 1.5).map((t) => t.y), v = viewFor([...zs, 0], [c0, ...tp]), onY = zs.includes(0);
+      S("See it on a graph", "A sketch shows the intercepts.", [L(
+        graph({
+          ...v,
+          curves: [{ f, colour: 1, label: "y = f(x)" }],
+          points: [...zs.map((z) => ({ x: z, y: 0, label: pt(z, 0), at: z === 0 ? "se" : "n" })), ...onY ? [] : [{ x: 0, y: c0, label: pt(0, c0), at: "e" }]],
+          description: "The graph of y = f(x) with its axis intercepts marked"
+        }),
+        onY ? `The graph passes through the origin, so (0, 0) is both the ${Y5}-intercept and an ${X5}-intercept.` : `It crosses the ${Y5}-axis once and meets the ${X5}-axis at ${zs.length} place${zs.length > 1 ? "s" : ""}.`
+      )]);
+      S("Final answer", "Give both.", [L(
+        `${Y5}-intercept: <span class="answer">${Y5} = ${val(c0)}</span>; &nbsp; ${X5}-intercepts: <span class="answer">${X5} = ${zs.map(val).join(", ")}</span>`,
+        `Check: f(${val(zs[0])}) = ${val(f(zs[0]))} \u2713`
+      )]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      const two = (lo) => {
+        let p, q;
+        do {
+          p = rnz(-lo, lo);
+          q = rnz(-lo, lo);
+        } while (p === q);
+        return [p, q];
+      };
+      if (lv === 1) return { t: "intercepts", a: 1, roots: two(5), form: "expanded" };
+      if (lv === 2) return { t: "intercepts", a: [1, 1, -1, 2, -2][ri(0, 4)], roots: two(6), form: "expanded" };
+      if (Math.random() < 0.5) {
+        let r;
+        do {
+          r = [ri(-4, 4), ri(-4, 4), ri(-4, 4)];
+        } while (new Set(r).size < (Math.random() < 0.25 ? 2 : 3) || new Set(r).size === 1);
+        return { t: "intercepts", a: [1, 1, -1, 2, -2][ri(0, 4)], roots: r, form: "factorised" };
+      }
+      return { t: "intercepts", a: [1, 1, -1, 2][ri(0, 3)], roots: [0, ...two(5)], form: "expanded" };
+    },
+    ans(P) {
+      return multiAns(labelled("y-intercept: y =", exactAns(expand2(P.a, P.roots)[0])), labelled("x-intercepts: x =", listAns(zerosOf(P))));
+    },
+    hints: (P) => [`The y-intercept is f(0).`, `For the x-intercepts, solve f(x) = 0.`, P.form === "factorised" ? "Each bracket equal to 0 gives one x-intercept." : P.roots.length === 3 ? "Take out the common factor x first, then factorise the quadratic." : "Factorise: find two numbers that multiply to the constant and add to the x-coefficient."],
+    example: { t: "intercepts", a: 1, roots: [-1, 3], form: "expanded" }
+  });
+
+  // source/topics/functions/question-types/quadratics/vertex-and-axis-of-symmetry.js
+  var X6 = "<i>x</i>";
+  var Y6 = "<i>y</i>";
+  var plain2 = (v) => sg(typeof v === "object" ? fstr(v) : v);
+  var fr = (top, bottom) => `<span class="fr"><span>${top}</span><span>${bottom}</span></span>`;
+  function vertexOf({ a, b, c }) {
+    const h = F(-b, 2 * a), k = fadd(fadd(fmul(F(a), fmul(h, h)), fmul(F(b), h)), F(c));
+    return { h, k };
+  }
+  T2("vertex", {
+    name: "Vertex and axis of symmetry",
+    group: "quadratics",
+    syllabus: { aa: "SL 2.6", ai: "SL 2.5" },
+    blurb: "Every parabola is symmetrical about a vertical line, x = \u2212b/(2a), and its vertex sits on that line.",
+    help: "Type a, b and c for y = ax\xB2 + bx + c.",
+    fields: [intField2("a", "a", "1"), intField2("b", "b", "-6"), intField2("c", "c", "5")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c"]) {
+        const r = int(v[k], -20, 20, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.a === 0) return { err: "a cannot be 0, or there is no x\xB2 term and the graph is a straight line." };
+      return { p: { t: "vertex", ...n } };
+    },
+    text: (P) => `Let <i>f</i>(${X6}) = ${quad(P.a, P.b, P.c)}. (a) Find the equation of the axis of symmetry of the graph of <i>f</i>. (b) Find the coordinates of the vertex.`,
+    expr: (P) => `${Y6} = ${quad(P.a, P.b, P.c)}`,
+    build(P) {
+      const { a, b, c } = P, { h, k } = vertexOf(P), { steps, S } = newSteps(), f = (x) => a * x * x + b * x + c, hn = fnum(h), kn = fnum(k), min = a > 0;
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`The graph of a quadratic is a <b>parabola</b>: a U shape (or an upside-down U). It is symmetrical, so one half is the mirror image of the other. The mirror line is the <b>axis of symmetry</b>, and the point where the curve turns round is the <b>vertex</b>.`]),
+        L(`Plan: the axis is ${X6} = ${MINUS}${fr("<i>b</i>", "2<i>a</i>")}; then put that ${X6} into <i>f</i> to get the ${Y6}-coordinate of the vertex.`, "The vertex is on the axis of symmetry, so they share the same x.", null, [`The vertex is the lowest point of a U-shaped parabola (or the highest point of an upside-down one). It must lie on the mirror line, because the curve is the same on both sides of it.`])
+      ]);
+      S("Read off a, b and c", "Compare with ax\xB2 + bx + c.", [
+        L(
+          `<i>a</i> = ${val(a)}, &nbsp;<i>b</i> = ${val(b)}, &nbsp;<i>c</i> = ${val(c)}`,
+          "Each is the number in front of its term, sign included.",
+          Nm("What is b?", [{ label: "b", answer: String(b) }], `b is the number in front of x, with its sign: ${sg(b)}.`),
+          [`In ${quad(a, b, c)}, the number in front of ${X6}\xB2 is <i>a</i>, the number in front of ${X6} is <i>b</i>, and the number on its own is <i>c</i>.${b < 0 ? ` Keep the minus sign: <i>b</i> = ${val(b)}, not ${Math.abs(b)}.` : ""}`]
+        )
+      ]);
+      S("The axis of symmetry", "Use x = \u2212b/(2a), from the formula booklet.", [
+        L(`${X6} = ${MINUS}${fr("<i>b</i>", "2<i>a</i>")}`, "The formula for the axis of symmetry.", void 0, [`Why does it work? The two solutions of <i>ax</i>\xB2 + <i>bx</i> + <i>c</i> = 0 are ${fr(`${MINUS}<i>b</i> \xB1 \u221A\u0394`, "2<i>a</i>")}. The axis is exactly half-way between them, and the \xB1 parts cancel, leaving ${MINUS}<i>b</i> \xF7 2<i>a</i>.`]),
+        L(
+          `${X6} = ${MINUS}${fr(val(b), `2 \xD7 ${par2(a)}`)} = ${val(h)}`,
+          `Put in <i>a</i> = ${val(a)} and <i>b</i> = ${val(b)}.`,
+          Nm("What is the x-coordinate of the axis of symmetry?", [{ label: "x", answer: fstr(h) }], `\u2212(${b}) \xF7 (2 \xD7 ${a}) = ${plain2(h)}.`),
+          [`Careful with the signs: ${MINUS}(${val(b)}) ${b < 0 ? "is positive" : "is negative"}, and 2 \xD7 ${par2(a)} = ${val(2 * a)}. So ${X6} = ${val(-b)} \xF7 ${par2(2 * a)} = ${val(h)}.`]
+        )
+      ]);
+      const t1 = fmul(F(a), fmul(h, h)), t2 = fmul(F(b), h);
+      S("The vertex", "The vertex is on the axis, so put this x into f.", [
+        L(`<i>f</i>(${val(h)}) = ${a === 1 ? "" : a === -1 ? MINUS : val(a)}(${val(h)})\xB2${b ? ` ${signed(b)}(${val(h)})` : ""}${c ? ` ${signed(c)}` : ""}`, `Replace every ${X6} with ${val(h)}.`, void 0, [`The vertex is the point on the curve with ${X6} = ${val(h)}. Its ${Y6}-coordinate is whatever the function gives for that ${X6}.`]),
+        L(
+          `= ${terms([[t1, ""], [t2, ""], [c, ""]])} = ${val(k)}`,
+          "Square first, then multiply, then add.",
+          Nm("What is the y-coordinate of the vertex?", [{ label: "y", answer: fstr(k) }], `${plain2(t1)} + ${plain2(t2)} + ${plain2(c)} = ${plain2(k)}.`),
+          [`${val(a)} \xD7 (${val(h)})\xB2 = ${val(t1)} and ${par2(b)} \xD7 (${val(h)}) = ${val(t2)}. Add these and ${val(c)}.`]
+        ),
+        L(`vertex = ${pt(h, k)}`, "Both coordinates together.")
+      ]);
+      const v = viewFor([hn - 2.6, hn + 2.6], [kn, kn + 5 * a]);
+      S("Sketch it", "See the symmetry.", [L(
+        graph({
+          ...v,
+          curves: [{ f, colour: 1, label: "y = f(x)" }],
+          lines: [{ x: hn, colour: 2, label: `x = ${plain2(h)}` }],
+          points: [{ x: hn, y: kn, label: `(${plain2(h)}, ${plain2(k)})`, at: min ? "se" : "ne" }, { x: 0, y: c, label: `(0, ${plain2(c)})`, at: "w" }, { x: 2 * hn, y: c, label: "", at: "e" }],
+          description: "The parabola with its axis of symmetry and vertex"
+        }),
+        `The dashed line is the axis of symmetry. The point (0, ${val(c)}) where the curve crosses the ${Y6}-axis has a mirror image at ${X6} = ${val(fmul(F(2), h))}.`,
+        MC("Is the vertex a maximum or a minimum point?", min ? "minimum" : "maximum", [min ? "maximum" : "minimum", "neither"], `a = ${a} is ${min ? "positive, so the parabola is U-shaped and the vertex is its lowest point" : "negative, so the parabola is upside down and the vertex is its highest point"}.`),
+        [`If <i>a</i> &gt; 0 the parabola opens upwards and the vertex is a <b>minimum</b>. If <i>a</i> &lt; 0 it opens downwards and the vertex is a <b>maximum</b>.`]
+      )]);
+      S("Final answer", "Check: the vertex must lie on the axis of symmetry.", [
+        L(`(a) <span class="answer">${X6} = ${val(h)}</span> &nbsp; (b) <span class="answer">${pt(h, k)}</span>`, `Same ${X6} in both \u2713. The vertex is a ${min ? "minimum" : "maximum"}, because <i>a</i> ${min ? "&gt;" : "&lt;"} 0.`)
+      ]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) {
+        const h = rnz(-5, 5);
+        return { t: "vertex", a: 1, b: -2 * h, c: ri(-8, 8) };
+      }
+      if (lv === 2) {
+        const a2 = [-1, 2, -2, 3][ri(0, 3)], h = rnz(-4, 4);
+        return { t: "vertex", a: a2, b: -2 * a2 * h, c: ri(-9, 9) };
+      }
+      const a = [1, -1, 2, -2, 3][ri(0, 4)];
+      let b;
+      do
+        b = rnz(-9, 9);
+      while (b % (2 * a) === 0);
+      return { t: "vertex", a, b, c: ri(-6, 6) };
+    },
+    ans(P) {
+      const { h, k } = vertexOf(P);
+      return multiAns(labelled("Axis of symmetry: x =", exactAns(h)), labelled("Vertex", pointAns(h, k)));
+    },
+    hints: (P) => ["The axis of symmetry is x = \u2212b/(2a). It is in the formula booklet.", `Here a = ${sg(P.a)} and b = ${sg(P.b)}.`, "The vertex lies on the axis: put that x into f(x) to get its y-coordinate."],
+    example: { t: "vertex", a: 1, b: -6, c: 5 }
+  });
+
+  // source/topics/functions/question-types/quadratics/completing-the-square.js
+  var X7 = "<i>x</i>";
+  var plain3 = (v) => sg(typeof v === "object" ? fstr(v) : v);
+  var lead2 = (a) => a === 1 ? "" : a === -1 ? MINUS : val(a);
+  function squareOf({ a, b, c }) {
+    const p = F(b, 2 * a), k = fsub(F(c), fmul(F(a), fmul(p, p)));
+    return { p, h: F(-p.n, p.d), k };
+  }
+  var vertexForm = (a, h, k) => `${lead2(a)}(${shift(h)})\xB2${fnum(k) === 0 ? "" : " " + signed(k)}`;
+  T2("square", {
+    name: "Completing the square",
+    group: "quadratics",
+    syllabus: { aa: "SL 2.6" },
+    blurb: "Rewrite ax\xB2 + bx + c as a(x \u2212 h)\xB2 + k. Then the vertex (h, k) can be read straight off.",
+    help: "Type a, b and c for ax\xB2 + bx + c.",
+    fields: [intField2("a", "a", "1"), intField2("b", "b", "6"), intField2("c", "c", "2")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c"]) {
+        const r = int(v[k], -20, 20, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.a === 0) return { err: "a cannot be 0: then there is no x\xB2 term to make a square from." };
+      if (n.b === 0) return { err: "With b = 0 it is already in the form a(x \u2212 h)\xB2 + k, with h = 0." };
+      return { p: { t: "square", ...n } };
+    },
+    text: (P) => `Write ${quad(P.a, P.b, P.c)} in the form ${P.a === 1 ? "" : "<i>a</i>"}(${X7} ${MINUS} <i>h</i>)\xB2 + <i>k</i>, where ${P.a === 1 ? "" : "<i>a</i>, "}<i>h</i> and <i>k</i> are constants. Write down the value${P.a === 1 ? "s of <i>h</i> and <i>k</i>" : "s of <i>a</i>, <i>h</i> and <i>k</i>"}.`,
+    expr: (P) => quad(P.a, P.b, P.c),
+    build(P) {
+      const { a, b, c } = P, { p, h, k } = squareOf(P), B3 = F(b, a), { steps, S } = newSteps(), one = a === 1;
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`Both forms describe the same quadratic. The form ${one ? "" : "<i>a</i>"}(${X7} ${MINUS} <i>h</i>)\xB2 + <i>k</i> is useful because it shows the vertex (<i>h</i>, <i>k</i>) straight away.`]),
+        L(`Plan: ${one ? "" : `take out the factor ${val(a)}, `}halve the coefficient of ${X7}, make a square, then tidy the number on the end.`, "This is called completing the square.", null, [`The trick is that (${X7} + <i>p</i>)\xB2 = ${X7}\xB2 + 2<i>p</i>${X7} + <i>p</i>\xB2. So if we know the ${X7} term, half of its coefficient tells us <i>p</i>.`])
+      ]);
+      if (!one) S(`Take out the factor ${val(a)}`, "Only from the x\xB2 and x terms.", [
+        L(
+          `${val(a)}(${terms([[1, xp(2)], [B3, xp(1)]])}) ${signed(c)}`,
+          `Divide the ${X7}\xB2 and ${X7} terms by ${val(a)}; leave ${val(c)} outside.`,
+          Nm(`What is the coefficient of x inside the bracket?`, [{ label: "coefficient", answer: fstr(B3) }], `${b} \xF7 ${a} = ${plain3(B3)}.`),
+          [`Check by multiplying back: ${val(a)} \xD7 ${X7}\xB2 = ${terms([[a, xp(2)]])} and ${val(a)} \xD7 (${terms([[B3, xp(1)]])}) = ${terms([[b, xp(1)]])} \u2713. The constant ${val(c)} stays outside so we don't have to divide it.`]
+        )
+      ]);
+      const inner = terms([[1, xp(2)], [B3, xp(1)]]), pp = fmul(p, p);
+      S("Make a square", "Halve the coefficient of x.", [
+        L(
+          `half of ${val(B3)} is ${val(p)}`,
+          `This number goes inside the bracket with ${X7}.`,
+          Nm(`What is half of ${plain3(B3)}?`, [{ label: "half", answer: fstr(p) }], `${plain3(B3)} \xF7 2 = ${plain3(p)}.`)
+        ),
+        L(
+          `(${shift(h)})\xB2 = ${inner} + ${val(pp)}`,
+          `Squaring gives the two terms we want, plus an extra ${val(pp)}.`,
+          void 0,
+          [`(${shift(h)})\xB2 = (${shift(h)})(${shift(h)}). Multiply out: ${terms([[1, xp(2)], [p, xp(1)], [p, xp(1)]])} + (${val(p)})\xB2 = ${inner} + ${val(pp)}.`]
+        ),
+        L(`${inner} = (${shift(h)})\xB2 ${MINUS} ${val(pp)}`, `So take the extra ${val(pp)} away again.`, void 0, [`We have added ${val(pp)} to make the square, so we must take it off to keep the value the same.`])
+      ]);
+      const ap = fmul(F(a), pp);
+      S("Tidy up", "Put it back and collect the numbers.", [
+        L(one ? `(${shift(h)})\xB2 ${MINUS} ${val(pp)} ${signed(c)}` : `${val(a)}[(${shift(h)})\xB2 ${MINUS} ${val(pp)}] ${signed(c)}`, "Replace the x\xB2 and x terms."),
+        ...one ? [] : [L(`${val(a)}(${shift(h)})\xB2 ${signed(fmul(F(-1), ap))} ${signed(c)}`, `Multiply out the square bracket: ${val(a)} \xD7 ${val(pp)} = ${val(ap)}.`)],
+        L(
+          vertexForm(a, h, k),
+          "Collect the numbers.",
+          Nm("What is the number on the end (k)?", [{ label: "k", answer: fstr(k) }], `${plain3(c)} \u2212 ${one ? "" : `(${plain3(a)}) \xD7 `}${plain3(pp)} = ${plain3(k)}.`),
+          [`${val(c)} ${MINUS} ${one ? "" : `${par2(a)} \xD7 `}${val(pp)} = ${val(k)}.`]
+        )
+      ]);
+      const hn = fnum(h), kn = fnum(k), f = (x) => a * x * x + b * x + c;
+      S("What h and k mean", "(h, k) is the vertex.", [
+        L(
+          `<i>h</i> = ${val(h)}, &nbsp;<i>k</i> = ${val(k)}`,
+          `Compare with ${lead2(a)}(${X7} ${MINUS} <i>h</i>)\xB2 + <i>k</i>.`,
+          MC("What is h?", plain3(h), [plain3(p), plain3(k), plain3(fmul(h, F(2)))], `The bracket is x \u2212 h. ${fnum(h) < 0 ? `x + ${plain3(p)} is x \u2212 (${plain3(h)}), so h = ${plain3(h)}` : `So h = ${plain3(h)}`}.`),
+          [`Watch the sign: the form has ${X7} <b>minus</b> <i>h</i>. ${fnum(h) < 0 ? `(${shift(h)}) is (${X7} ${MINUS} (${val(h)})), so <i>h</i> = ${val(h)}, not ${val(p)}.` : `Here it is (${shift(h)}), so <i>h</i> = ${val(h)}.`}`]
+        ),
+        L(
+          graph({ ...viewFor([hn - 2.6, hn + 2.6], [kn, kn + 5 * a]), curves: [{ f, colour: 1 }], lines: [{ x: hn, colour: 2, label: `x = ${plain3(h)}` }], points: [{ x: hn, y: kn, label: `(${plain3(h)}, ${plain3(k)})`, at: a > 0 ? "se" : "ne" }], description: "The parabola and its vertex" }),
+          `The ${a > 0 ? "lowest" : "highest"} point is (<i>h</i>, <i>k</i>) = ${pt(h, k)}.`,
+          void 0,
+          [`(${shift(h)})\xB2 is never negative, and it is 0 only when ${X7} = ${val(h)}. So ${a > 0 ? "the smallest" : "the largest"} value of the function is <i>k</i> = ${val(k)}, at ${X7} = ${val(h)}.`]
+        )
+      ]);
+      S("Final answer", "Check by expanding back.", [L(`${quad(a, b, c)} = <span class="answer">${vertexForm(a, h, k)}</span>`, `${one ? "" : `<i>a</i> = ${val(a)}, `}<i>h</i> = ${val(h)}, <i>k</i> = ${val(k)}. Expanding gives back ${quad(a, b, c)} \u2713`)]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) return { t: "square", a: 1, b: 2 * rnz(-6, 6), c: ri(-9, 9) };
+      if (lv === 2) {
+        const a2 = [2, 3, -1, -2][ri(0, 3)];
+        return { t: "square", a: a2, b: 2 * a2 * rnz(-4, 4), c: ri(-9, 9) };
+      }
+      if (ri(0, 2) === 0) return { t: "square", a: 1, b: 2 * rnz(-4, 4) + (Math.random() < 0.5 ? 1 : -1), c: ri(-6, 6) };
+      const a = [2, -2, 3, -3, -1][ri(0, 4)];
+      let b;
+      do
+        b = rnz(-12, 12);
+      while (b % (2 * a) === 0);
+      return { t: "square", a, b, c: ri(-6, 6) };
+    },
+    ans(P) {
+      const { h, k } = squareOf(P), hk = [labelled("h =", exactAns(h)), labelled("k =", exactAns(k))];
+      return P.a === 1 ? multiAns(...hk) : multiAns(labelled("a =", exactAns(P.a)), ...hk);
+    },
+    hints: (P) => [P.a === 1 ? "Halve the coefficient of x: that number goes in the bracket." : `First take out the factor ${sg(P.a)} from the x\xB2 and x terms.`, "(x + p)\xB2 = x\xB2 + 2px + p\xB2, so take away the extra p\xB2.", "In a(x \u2212 h)\xB2 + k, watch the sign of h: (x + 3)\xB2 means h = \u22123."],
+    example: { t: "square", a: 1, b: 6, c: 2 }
+  });
+
+  // source/topics/functions/question-types/quadratics/solve-by-factorising.js
+  var X8 = "<i>x</i>";
+  var plain4 = (v) => sg(typeof v === "object" ? fstr(v) : v);
+  var gcd = (a, b) => Number(gcdB(BigInt(a), BigInt(b)));
+  var fac = (v, u) => u === 0 ? terms([[v, X8]]) : `(${terms([[v, X8], [-u, ""]])})`;
+  function factorsOf({ a, b, c }) {
+    const D = b * b - 4 * a * c;
+    if (D < 0) return null;
+    const s = iroot(BigInt(D), 2);
+    if (s === null) return null;
+    const r1 = F(-b - Number(s) * Math.sign(a), 2 * a), r2 = F(-b + Number(s) * Math.sign(a), 2 * a);
+    const v1 = Number(r1.d), u1 = Number(r1.n), v2 = Number(r2.d), u2 = Number(r2.n), g = a / (v1 * v2);
+    const same2 = u1 * v2 === u2 * v1;
+    return { g, v1, u1, v2, u2, roots: same2 ? [r1] : [r1, r2], same: same2 };
+  }
+  function factorised(fs) {
+    const { g, v1, u1, v2, u2, same: same2 } = fs, G = g === 1 ? "" : g === -1 ? MINUS : val(g);
+    if (same2) return `${G}${fac(v1, u1)}\xB2`;
+    return G + (u2 === 0 ? fac(v2, u2) + fac(v1, u1) : fac(v1, u1) + fac(v2, u2));
+  }
+  T2("factorise", {
+    name: "Solve by factorising",
+    group: "quadratics",
+    syllabus: { aa: "SL 2.7" },
+    blurb: "Write the quadratic as two brackets multiplied together. If a product is 0, one of the brackets must be 0.",
+    help: "Type a, b and c for ax\xB2 + bx + c = 0. It must factorise (b\xB2 \u2212 4ac must be a square number).",
+    fields: [intField2("a", "a", "1"), intField2("b", "b", "-2"), intField2("c", "c", "-15")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c"]) {
+        const r = int(v[k], -30, 30, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.a === 0) return { err: "a cannot be 0, or it is not a quadratic." };
+      if (n.b * n.b - 4 * n.a * n.c < 0) return { err: "That equation has no real solutions (b\xB2 \u2212 4ac is negative)." };
+      if (!factorsOf(n)) return { err: "That one does not factorise with whole numbers. Use the quadratic formula instead." };
+      return { p: { t: "factorise", ...n } };
+    },
+    text: (P) => `Solve the equation ${quad(P.a, P.b, P.c)} = 0 by factorising.`,
+    expr: (P) => `${quad(P.a, P.b, P.c)} = 0`,
+    build(P) {
+      const { a, b, c } = P, fs = factorsOf(P), { g, v1, u1, v2, u2, roots, same: same2 } = fs, { steps, S } = newSteps(), A = a / g, B3 = b / g, C2 = c / g;
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`To <b>solve</b> means to find every value of ${X8} that makes the left side equal 0. A quadratic equation has at most two solutions.`]),
+        L("Plan: factorise into two brackets, then set each bracket equal to 0.", "If two numbers multiply to give 0, at least one of them is 0.", null, [`For example, if (${X8} ${MINUS} 3)(${X8} + 5) = 0, then either ${X8} ${MINUS} 3 = 0 or ${X8} + 5 = 0. That gives ${X8} = 3 or ${X8} = ${MINUS}5.`])
+      ]);
+      const eq = `${quad(A, B3, C2)} = 0`;
+      if (g !== 1) S("Take out the common factor", "Every term divides by " + val(g) + ".", [
+        L(`${val(g)}(${quad(A, B3, C2)}) = 0`, `${val(a)}, ${val(b)} and ${val(c)} all divide by ${val(g)}.`),
+        L(eq, `Divide both sides by ${val(g)}: 0 \xF7 ${par2(g)} is still 0.`, void 0, [`Taking out a common factor first keeps the numbers small. It doesn't change the solutions.`])
+      ]);
+      const fl = [];
+      if (C2 === 0) {
+        fl.push(L(
+          `${X8}(${terms([[A, X8], [B3, ""]])}) = 0`,
+          `There is no number on its own, so ${X8} is a factor of both terms.`,
+          MC("What is the common factor of both terms?", "x", [plain4(A), "x\xB2", plain4(B3)], `Both terms have an x in them.`),
+          [`${terms([[A, xp(2)]])} = ${X8} \xD7 ${terms([[A, X8]])} and ${terms([[B3, X8]])} = ${X8} \xD7 ${val(B3)}. Take the ${X8} outside a bracket.`]
+        ));
+      } else if (A === 1) {
+        const m = -u1, n = -u2;
+        fl.push(L(
+          `two numbers that multiply to ${val(C2)} and add to ${val(B3)}: ${val(m)} and ${val(n)}`,
+          `Check: ${par2(m)} \xD7 ${par2(n)} = ${val(C2)} and ${par2(m)} + ${par2(n)} = ${val(B3)}.`,
+          MC(`Which two numbers multiply to ${plain4(C2)} and add to ${plain4(B3)}?`, `${plain4(m)} and ${plain4(n)}`, [`${plain4(-m)} and ${plain4(-n)}`, `${plain4(m)} and ${plain4(-n)}`, `${plain4(-m)} and ${plain4(n)}`], `${plain4(m)} \xD7 ${plain4(n)} = ${plain4(C2)} and ${plain4(m)} + ${plain4(n)} = ${plain4(B3)}.`),
+          [`List the pairs of whole numbers that multiply to ${val(C2)}${C2 < 0 ? " (one positive, one negative)" : ""}. Pick the pair that adds to ${val(B3)}.`, `(${X8} + <i>m</i>)(${X8} + <i>n</i>) = ${X8}\xB2 + (<i>m</i> + <i>n</i>)${X8} + <i>mn</i>. So the two numbers must add to the ${X8} coefficient and multiply to the number on its own.`]
+        ));
+      } else {
+        const m = -v1 * u2, n = -u1 * v2;
+        fl.push(
+          L(
+            `<i>ac</i> = ${val(A)} \xD7 ${val(C2)} = ${val(A * C2)}; two numbers that multiply to ${val(A * C2)} and add to ${val(B3)}: ${val(m)} and ${val(n)}`,
+            `When <i>a</i> \u2260 1, look for numbers that multiply to <i>ac</i> (not just <i>c</i>).`,
+            MC(`Which two numbers multiply to ${plain4(A * C2)} and add to ${plain4(B3)}?`, `${plain4(m)} and ${plain4(n)}`, [`${plain4(-m)} and ${plain4(-n)}`, `${plain4(u1)} and ${plain4(u2)}`, `${plain4(m)} and ${plain4(-n)}`], `${plain4(m)} \xD7 ${plain4(n)} = ${plain4(A * C2)} and ${plain4(m)} + ${plain4(n)} = ${plain4(B3)}.`),
+            [`This is sometimes called the "ac method". The two numbers let us split the middle term into two pieces, so we can factorise in pairs.`]
+          ),
+          L(`${terms([[A, xp(2)], [m, X8], [n, X8], [C2, ""]])} = 0`, `Split ${terms([[B3, X8]])} into ${terms([[m, X8]])} and ${terms([[n, X8]])}.`),
+          L(`${terms([[v1, X8]])}${fac(v2, u2)} ${signed(-u1)}${fac(v2, u2)} = 0`, "Factorise the first pair and the second pair.", void 0, [`The first two terms share ${terms([[v1, X8]])}; the last two share ${val(-u1)}. Both leave the same bracket ${fac(v2, u2)}, which is how you know it has worked.`])
+        );
+      }
+      if (C2 !== 0) fl.push(L(`${factorised({ ...fs, g: 1 })} = 0`, same2 ? "The same bracket twice." : `Check by expanding: you get ${quad(A, B3, C2)} back \u2713`));
+      S("Factorise", "Two brackets multiplied together.", fl);
+      const sol = roots.map((r) => {
+        const u = Number(r.n), v = Number(r.d);
+        if (u === 0) return L(`${X8} = 0`, `The factor ${X8} on its own gives ${X8} = 0.`);
+        return L(`${terms([[v, X8], [-u, ""]])} = 0 &nbsp;\u21D2&nbsp; ${X8} = ${val(r)}`, v === 1 ? `${u > 0 ? "Add" : "Take away"} ${Math.abs(u)} on both sides.` : `${u > 0 ? "Add" : "Take away"} ${Math.abs(u)}, then divide by ${v}.`);
+      });
+      if (!same2) sol[sol.length - 1].ask = Nm("What are the two solutions?", [{ label: "smaller x", answer: fstr(roots[0]) }, { label: "larger x", answer: fstr(roots[1]) }], `x = ${roots.map(plain4).join(" or x = ")}.`);
+      S("Each bracket = 0", "One bracket or the other must be zero.", sol);
+      const xs = roots.map(fnum), f = (x) => a * x * x + b * x + c, mid = (xs[0] + xs[xs.length - 1]) / 2;
+      S("Final answer", "Check on a sketch: the graph crosses the x-axis at the solutions.", [
+        L(
+          graph({ ...viewFor([...xs, xs[0] - 1.5, xs[xs.length - 1] + 1.5], [f(mid), c]), curves: [{ f, colour: 1 }], points: roots.map((r, i) => ({ x: fnum(r), y: 0, label: plain4(r), at: i ? "se" : "sw" })), description: "The parabola crossing the x-axis at the solutions" }),
+          `The solutions are where <i>y</i> = ${quad(a, b, c)} crosses the ${X8}-axis.`
+        ),
+        L(`<span class="answer">${roots.map((r) => `${X8} = ${val(r)}`).join(" or ")}</span>`, same2 ? "A repeated root: the graph just touches the x-axis." : "Two solutions, one from each bracket \u2713")
+      ]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      const make = (g, v12, u12, v22, u22) => ({ t: "factorise", a: g * v12 * v22, b: -g * (v12 * u22 + u12 * v22), c: g * u12 * u22 });
+      if (lv === 1) {
+        let m, n;
+        do {
+          m = rnz(-9, 9);
+          n = rnz(-9, 9);
+        } while (m === n || Math.abs(m * n) > 40);
+        return make(1, 1, m, 1, n);
+      }
+      if (lv === 2) {
+        const k = ri(0, 2);
+        if (k === 0) return make(1, 1, 0, 1, rnz(-9, 9));
+        if (k === 1) {
+          const m2 = ri(1, 9);
+          return make(1, 1, -m2, 1, m2);
+        }
+        let m, n;
+        do {
+          m = rnz(-6, 6);
+          n = rnz(-6, 6);
+        } while (m === n);
+        return make([2, 3, -1, -2][ri(0, 3)], 1, m, 1, n);
+      }
+      let v1, u1, v2, u2;
+      do {
+        v1 = [2, 3, 4, 5][ri(0, 3)];
+        v2 = [1, 1, 2, 3][ri(0, 3)];
+        u1 = rnz(-7, 7);
+        u2 = rnz(-6, 6);
+      } while (gcd(u1, v1) !== 1 || gcd(u2, v2) !== 1 || u1 * v2 === u2 * v1 || v1 * v2 > 12);
+      return make(Math.random() < 0.2 ? -1 : 1, v1, u1, v2, u2);
+    },
+    ans: (P) => listAns(factorsOf(P).roots),
+    hints: (P) => [P.c === 0 ? "Both terms contain x, so take x out as a factor." : P.a === 1 ? `Find two numbers that multiply to ${sg(P.c)} and add to ${sg(P.b)}.` : "Take out any common factor. Then find two numbers that multiply to ac and add to b.", "Write it as two brackets multiplied together, = 0.", "Set each bracket equal to 0 and solve."],
+    example: { t: "factorise", a: 1, b: -2, c: -15 }
+  });
+
+  // source/topics/functions/question-types/rational-functions/asymptotes.js
+  var X9 = "<i>x</i>";
+  var Y7 = "<i>y</i>";
+  var ratHtml = ({ a, b, c, d }) => `<span class="fr"><span>${lin(a, b)}</span><span>${lin(c, d)}</span></span>`;
+  var ratF = ({ a, b, c, d }) => (x) => (a * x + b) / (c * x + d);
+  var plain5 = (v) => typeof v === "object" ? sg(fstr(v)) : sg(String(v));
+  function ratGraph(P, points = []) {
+    const va = fnum(F(-P.d, P.c)), ha = P.a / P.c, v = viewFor([va - 5, va + 5, ...points.map((p) => p.x)], [ha - 5, ha + 5, ...points.map((p) => p.y)]);
+    return graph({
+      ...v,
+      curves: [{ f: ratF(P), colour: 1, label: "y = f(x)" }],
+      lines: [{ x: va, label: `x = ${plain5(F(-P.d, P.c))}` }, { y: ha, label: `y = ${plain5(F(P.a, P.c))}` }],
+      points,
+      description: "The graph of y = f(x) with its vertical and horizontal asymptotes dashed"
+    });
+  }
+  function solveBottom({ c, d }) {
+    const va = F(-d, c), out = [L(
+      `${lin(c, d)} = 0`,
+      "Set the denominator (the bottom) equal to 0.",
+      void 0,
+      [`At this value of ${X9} the bottom of the fraction is 0, and you can never divide by 0, so <i>f</i> has no value there. Just beside it the bottom is tiny, so <i>f</i>(${X9}) is huge (positive or negative): the graph shoots up or down beside a vertical line.`]
+    )];
+    if (d !== 0) out.push(L(`${terms([[c, X9]])} = ${val(-d)}`, `${d > 0 ? "Take away" : "Add"} ${Math.abs(d)} on both sides.`));
+    if (c !== 1) out.push(L(`${X9} = ${fh(va)}`, `Divide both sides by ${par2(c)}.`));
+    return { va, out };
+  }
+  T2("ratasym", {
+    name: "Asymptotes of a rational function",
+    group: "rational",
+    syllabus: { aa: "SL 2.8" },
+    blurb: "The vertical asymptote is where the bottom is 0; the horizontal one is what y heads for when x is huge.",
+    help: "The function is f(x) = (ax + b)/(cx + d). Type a, b, c and d.",
+    fields: [intField2("a", "a", "2"), intField2("b", "b", "1"), intField2("c", "c", "1"), intField2("d", "d", "-3")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c", "d"]) {
+        const r = int(v[k], -20, 20, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.c === 0) return { err: "c cannot be 0: then the bottom has no x and the graph is a straight line." };
+      if (n.a * n.d === n.b * n.c) return { err: "Then the top and the bottom cancel, so f is a constant with a gap in it and has no asymptotes." };
+      return { p: { t: "ratasym", ...n } };
+    },
+    text: (P) => `The function <i>f</i> is defined by <i>f</i>(${X9}) = ${ratHtml(P)}. Write down the equation of (a) the vertical asymptote and (b) the horizontal asymptote of the graph of <i>f</i>.`,
+    expr: (P) => `<i>f</i>(${X9}) = ${ratHtml(P)}`,
+    build(P) {
+      const { a, b, c, d } = P, ha = F(a, c), f = ratF(P), { steps, S } = newSteps(), { va, out } = solveBottom(P);
+      const top = fadd(fmul(F(a), va), F(b));
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`An <b>asymptote</b> is a line that the graph gets closer and closer to but never quite reaches. A vertical asymptote is a line ${X9} = a number; a horizontal asymptote is a line ${Y7} = a number.`]),
+        L(
+          "Plan: the vertical asymptote is where the bottom is 0; the horizontal asymptote is the value <i>y</i> heads for when <i>x</i> is huge.",
+          "Two separate jobs, one for each line.",
+          null,
+          [`For any <i>y</i> = (<i>ax</i> + <i>b</i>)/(<i>cx</i> + <i>d</i>) there is a shortcut: ${X9} = ${MINUS}<i>d</i>/<i>c</i> and ${Y7} = <i>a</i>/<i>c</i>. Here you will see why it works.`]
+        )
+      ]);
+      out[out.length - 1].ask = Nm("Where is the bottom equal to 0?", [{ label: "x", answer: fstr(va) }], `${lin(c, d)} = 0 when ${X9} = ${fh(va)}.`);
+      S("The vertical asymptote", "You can never divide by 0.", [
+        ...out,
+        L(
+          `Top at ${X9} = ${fh(va)}: ${val(a)} \xD7 ${par2(va)} + ${par2(b)} = ${val(top)} \u2260 0`,
+          "The top is not 0 there, so the graph really does shoot off to infinity.",
+          void 0,
+          [`If the top were 0 as well, the top and bottom would cancel and there would just be a gap in the graph, not an asymptote.`]
+        )
+      ]);
+      const big = a === 0 ? [
+        L(`<i>f</i>(${X9}) = ${ratHtml(P)}`, `The top is just the number ${val(b)}.`),
+        L(`<i>f</i>(1000) = <span class="fr"><span>${val(b)}</span><span>${val(c * 1e3 + d)}</span></span> \u2248 ${val(f(1e3))}`, "Try a huge x: a number divided by a huge number is close to 0."),
+        L(`${Y7} = 0`, "So the graph gets closer and closer to the x-axis.", Nm("What value does y head for when x is huge?", [{ label: "y", answer: "0" }], "A fixed number divided by a huge number is almost 0."))
+      ] : [
+        L(
+          `<i>f</i>(${X9}) \u2248 <span class="fr"><span>${terms([[a, X9]])}</span><span>${terms([[c, X9]])}</span></span> = ${fh(ha)}`,
+          `When ${X9} is huge, the numbers ${val(b)} and ${val(d)} hardly matter next to ${terms([[a, X9]])} and ${terms([[c, X9]])}.`,
+          void 0,
+          [`Think of ${X9} = 1 000 000. Then ${terms([[a, X9]])} is in the millions and ${val(b)} is tiny beside it. The ${X9}s on the top and bottom cancel, leaving ${val(a)} \xF7 ${par2(c)}.`]
+        ),
+        L(`<i>f</i>(1000) = <span class="fr"><span>${val(a * 1e3 + b)}</span><span>${val(c * 1e3 + d)}</span></span> \u2248 ${sg(String(+f(1e3).toPrecision(4)))}`, `A check with ${X9} = 1000: very close to ${val(ha)}.`),
+        L(`${Y7} = ${fh(ha)}`, "The horizontal asymptote: divide the numbers in front of x.", Nm("What value does y head for when x is huge?", [{ label: "y", answer: fstr(ha) }], `${val(a)} \xF7 ${par2(c)} = ${fh(ha).replace(/<[^>]+>/g, "")}.`))
+      ];
+      S("The horizontal asymptote", "What happens to f(x) when x is very large?", big);
+      S("Sketch it", "The graph hugs both dashed lines.", [L(
+        ratGraph(P),
+        `The graph splits into two branches, one on each side of ${X9} = ${val(va)}.`,
+        MC("Which line does the graph get close to as x gets very large?", `y = ${plain5(ha)}`, [`x = ${plain5(ha)}`, `y = ${plain5(va)}`, `y = ${plain5(F(b, d || 1))}`, "y = 0"], a === 0 ? "A fixed number divided by a huge number is almost 0." : `For huge x, f(x) \u2248 ${sg(a + "x")}/${sg(c + "x")} = ${plain5(ha)}.`)
+      )]);
+      S("Final answer", "Asymptotes are lines, so give equations.", [L(`(a) <span class="answer">${X9} = ${fh(va)}</span> &nbsp; (b) <span class="answer">${Y7} = ${fh(ha)}</span>`, "Shortcut check: x = \u2212d/c and y = a/c \u2713")]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      let a, b, c, d;
+      do {
+        if (lv === 1) {
+          c = 1;
+          a = ri(1, 4);
+          b = ri(-6, 6);
+          d = rnz(-5, 5);
+        } else if (lv === 2) {
+          c = [1, 2, 3, -1, -2][ri(0, 4)];
+          d = c * rnz(-4, 4);
+          a = ri(0, 4) ? rnz(-6, 6) : 0;
+          b = rnz(-6, 6);
+        } else {
+          c = [2, 3, 4, 5, -2, -3, -4][ri(0, 6)];
+          d = rnz(-9, 9);
+          a = ri(0, 5) ? rnz(-7, 7) : 0;
+          b = rnz(-9, 9);
+        }
+      } while (a * d === b * c);
+      return { t: "ratasym", a, b, c, d };
+    },
+    ans: (P) => multiAns(labelled("Vertical asymptote: x =", exactAns(F(-P.d, P.c))), labelled("Horizontal asymptote: y =", exactAns(F(P.a, P.c)))),
+    hints: (P) => ["The vertical asymptote is where the denominator is 0.", `Solve ${lin(P.c, P.d)} = 0.`, "For the horizontal asymptote, ignore the plain numbers when x is huge: y = (number in front of x on top) \xF7 (number in front of x on the bottom)."],
+    example: { t: "ratasym", a: 2, b: 1, c: 1, d: -3 }
+  });
+
+  // source/topics/functions/question-types/rational-functions/intercepts-of-a-rational-function.js
+  var X10 = "<i>x</i>";
+  var Y8 = "<i>y</i>";
+  var fr2 = (t, b) => `<span class="fr"><span>${t}</span><span>${b}</span></span>`;
+  T2("ratint", {
+    name: "Intercepts of a rational function",
+    group: "rational",
+    syllabus: { aa: "SL 2.8" },
+    blurb: "Where the graph of (ax + b)/(cx + d) crosses the axes: the top is 0 on the x-axis, and x = 0 on the y-axis.",
+    help: "The function is f(x) = (ax + b)/(cx + d). Type a, b, c and d.",
+    fields: [intField2("a", "a", "2"), intField2("b", "b", "-6"), intField2("c", "c", "1"), intField2("d", "d", "4")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c", "d"]) {
+        const r = int(v[k], -20, 20, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.a === 0) return { err: "a cannot be 0 for this type: then the top is never 0 and the graph has no x-intercept." };
+      if (n.c === 0) return { err: "c cannot be 0: then the bottom has no x and the graph is a straight line." };
+      if (n.d === 0) return { err: "d cannot be 0: then the bottom is 0 when x = 0 and the graph has no y-intercept." };
+      if (n.a * n.d === n.b * n.c) return { err: "Then the top and the bottom cancel, so f is a constant with a gap in it." };
+      return { p: { t: "ratint", ...n } };
+    },
+    text: (P) => `Let <i>f</i>(${X10}) = ${ratHtml(P)}. Find (a) the ${X10}-intercept and (b) the ${Y8}-intercept of the graph of <i>f</i>. Give your answers as exact values.`,
+    expr: (P) => `<i>f</i>(${X10}) = ${ratHtml(P)}`,
+    build(P) {
+      const { a, b, c, d } = P, xi = F(-b, a), yi = F(b, d), { steps, S } = newSteps();
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`An <b>intercept</b> is where a graph crosses an axis. On the ${X10}-axis every point has ${Y8} = 0; on the ${Y8}-axis every point has ${X10} = 0.`]),
+        L(
+          `Plan: for the ${X10}-intercept put <i>f</i>(${X10}) = 0; for the ${Y8}-intercept put ${X10} = 0.`,
+          "Each axis has its own rule.",
+          null,
+          [`So the ${X10}-intercept is a value of ${X10} (with ${Y8} = 0), and the ${Y8}-intercept is a value of ${Y8} (with ${X10} = 0).`]
+        )
+      ]);
+      const xl = [
+        L(`${ratHtml(P)} = 0`, `On the ${X10}-axis, ${Y8} = 0.`),
+        L(
+          `${lin(a, b)} = 0`,
+          "A fraction is 0 only when its top is 0.",
+          MC("When is a fraction equal to 0?", "when its top is 0", ["when its bottom is 0", "when its top equals its bottom", "never"], "0 divided by any non-zero number is 0. If the bottom were 0 there would be no answer at all."),
+          [`For example 0/5 = 0, but 5/0 has no value. So only the top matters here, as long as the bottom is not 0 at the same time.`]
+        )
+      ];
+      if (b !== 0) xl.push(L(`${terms([[a, X10]])} = ${val(-b)}`, `${b > 0 ? "Take away" : "Add"} ${Math.abs(b)} on both sides.`));
+      xl.push(L(
+        `${X10} = ${fh(xi)}`,
+        a === 1 ? "That is the x-intercept." : `Divide both sides by ${par2(a)}.`,
+        Nm("What is the x-intercept?", [{ label: "x", answer: fstr(xi) }], `${lin(a, b)} = 0 gives x = ${plain5(xi)}.`)
+      ));
+      xl.push(L(`Bottom at ${X10} = ${fh(xi)}: ${val(c)} \xD7 ${par2(xi)} + ${par2(d)} = ${val(F(-b * c + a * d, a))} \u2260 0`, "Check the bottom is not 0 there, so f really has a value."));
+      S(`The ${X10}-intercept`, "Put f(x) = 0.", xl);
+      S(`The ${Y8}-intercept`, "Put x = 0.", [
+        L(`<i>f</i>(0) = ${fr2(`${val(a)} \xD7 0 + ${par2(b)}`, `${val(c)} \xD7 0 + ${par2(d)}`)}`, "Every x becomes 0.", void 0, [`Anything times 0 is 0, so only the plain numbers are left: the top becomes ${val(b)} and the bottom becomes ${val(d)}.`]),
+        L(
+          `<i>f</i>(0) = ${fr2(val(b), val(d))}${yi.d === BigInt(Math.abs(d)) && d > 0 ? "" : " = " + fh(yi)}`,
+          "Simplify.",
+          Nm("What is the y-intercept?", [{ label: "y", answer: fstr(yi) }], `f(0) = ${b}/${d} = ${plain5(yi)}.`)
+        )
+      ]);
+      S("Sketch it", "The two intercepts on the graph, with the asymptotes dashed.", [L(
+        ratGraph(P, b === 0 ? [{ x: 0, y: 0, label: "(0, 0)", at: "se" }] : [{ x: fnum(xi), y: 0, label: `(${plain5(xi)}, 0)`, at: "se" }, { x: 0, y: fnum(yi), label: `(0, ${plain5(yi)})`, at: "nw" }]),
+        b === 0 ? "Both intercepts are at the origin." : `The graph crosses the x-axis at x = ${val(xi)} and the y-axis at y = ${val(yi)}.`
+      )]);
+      S("Final answer", "Give each intercept as an exact value.", [L(
+        `(a) <span class="answer">${X10} = ${fh(xi)}</span> &nbsp; (b) <span class="answer">${Y8} = ${fh(yi)}</span>`,
+        `As points: (${plain5(xi)}, 0) and (0, ${plain5(yi)}).`
+      )]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      let a, b, c, d;
+      do {
+        if (lv === 1) {
+          a = 1;
+          c = 1;
+          b = rnz(-6, 6);
+          d = rnz(-6, 6);
+        } else if (lv === 2) {
+          a = rnz(-4, 4);
+          b = a * ri(-4, 4);
+          c = rnz(-3, 3);
+          d = rnz(-6, 6);
+        } else {
+          a = rnz(-6, 6);
+          b = ri(-9, 9);
+          c = rnz(-5, 5);
+          d = rnz(-9, 9);
+        }
+      } while (a * d === b * c);
+      return { t: "ratint", a, b, c, d };
+    },
+    ans: (P) => multiAns(labelled("x-intercept: x =", exactAns(F(-P.b, P.a))), labelled("y-intercept: y =", exactAns(F(P.b, P.d)))),
+    hints: (P) => ["On the x-axis y = 0, and a fraction is 0 only when its top is 0.", `Solve ${lin(P.a, P.b)} = 0.`, "For the y-intercept, put x = 0: f(0) = b/d."],
+    example: { t: "ratint", a: 2, b: -6, c: 1, d: 4 }
+  });
+
+  // source/topics/functions/question-types/rational-functions/reciprocal-graphs.js
+  var X11 = "<i>x</i>";
+  var Y9 = "<i>y</i>";
+  var frac = ({ a, b, c }) => `${a < 0 ? MINUS : ""}<span class="fr"><span>${Math.abs(a)}</span><span>${lin(b, c)}</span></span>`;
+  var rhs = (P) => frac(P) + (P.k ? " " + signed(P.k) : "");
+  var moves = ({ b, c, k }) => {
+    const m = [];
+    if (b === 1 && c !== 0) m.push(`${Math.abs(c)} ${c < 0 ? "right" : "left"}`);
+    if (k) m.push(`${Math.abs(k)} ${k > 0 ? "up" : "down"}`);
+    return !m.length ? "Stretching it does not move the asymptotes." : b === 1 ? `Moving it ${m.join(" and ")} moves the asymptotes with it.` : "Stretching and moving it moves the asymptotes with it.";
+  };
+  var basic = (P) => P.a === 1 && P.b === 1 && P.c === 0 && P.k === 0;
+  T2("reciprocal", {
+    name: "Reciprocal graphs",
+    group: "rational",
+    syllabus: { aa: "SL 2.8" },
+    blurb: "y = 1/x and its transformations: the x it cannot take, and the y it never reaches.",
+    help: "The function is f(x) = a/(bx + c) + k. Type a, b, c and k.",
+    fields: [intField2("a", "a", "3"), intField2("b", "b", "1"), intField2("c", "c", "-2"), intField2("k", "k", "1")],
+    parse(v) {
+      const n = {};
+      for (const k of ["a", "b", "c", "k"]) {
+        const r = int(v[k], -20, 20, k);
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.a === 0) return { err: "a cannot be 0: then f is just the constant k." };
+      if (n.b === 0) return { err: "b cannot be 0: then the bottom has no x and f is a constant." };
+      return { p: { t: "reciprocal", ...n } };
+    },
+    text: (P) => `The function <i>f</i> is defined by <i>f</i>(${X11}) = ${rhs(P)}. Write down (a) the largest possible domain of <i>f</i> and (b) the range of <i>f</i>.`,
+    expr: (P) => `<i>f</i>(${X11}) = ${rhs(P)}`,
+    build(P) {
+      const { a, b, c, k } = P, xv = F(-c, b), f = (x) => a / (b * x + c) + k, { steps, S } = newSteps(), one = basic(P);
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`The <b>domain</b> is every ${X11} you are allowed to put in. The <b>range</b> is every ${Y9} that can come out.`]),
+        L(
+          `Plan: find the ${X11} that makes the bottom 0 (not allowed), then the ${Y9} the graph never reaches.`,
+          one ? "This is the basic reciprocal graph." : `This is the graph of ${Y9} = 1/${X11}, moved and stretched.`,
+          null,
+          [`Every graph like this has a vertical asymptote (the ${X11} you can't put in) and a horizontal asymptote (the ${Y9} that never comes out).`]
+        )
+      ]);
+      const dl = [L(`${lin(b, c)} = 0`, "You can never divide by 0, so find where the bottom is 0.")];
+      if (c !== 0 && b !== 1) dl.push(L(`${terms([[b, X11]])} = ${val(-c)}`, `${c > 0 ? "Take away" : "Add"} ${Math.abs(c)} on both sides.`));
+      dl.push(
+        L(
+          `${X11} = ${fh(xv)}`,
+          b === 1 ? c === 0 ? "The bottom is just x." : `${c > 0 ? "Take away" : "Add"} ${Math.abs(c)} on both sides.` : `Divide by ${par2(b)}.`,
+          Nm("Which x makes the bottom 0?", [{ label: "x", answer: fstr(xv) }], `${lin(b, c)} = 0 when x = ${plain5(xv)}.`)
+        ),
+        L(`Domain: ${X11} \u2260 ${fh(xv)}`, "Every other x is fine.", void 0, [`The graph has a vertical asymptote at ${X11} = ${val(xv)}: next to it the bottom is tiny, so ${Y9} is huge.`])
+      );
+      S("The domain", "Which x cannot go in?", dl);
+      S("The range", "Which y never comes out?", [
+        L(
+          `${frac(P)} \u2260 0`,
+          `The top is ${val(a)}, never 0, so this fraction can never be 0.`,
+          MC("Can the fraction ever equal 0?", "no, because its top is never 0", ["yes, when x = 0", "yes, when the bottom is 0", "yes, when x is very large"], "A fraction is 0 only when its top is 0, and the top here is a fixed non-zero number."),
+          [`It can get very close to 0 when ${X11} is huge, but it never gets there. That is why there is a horizontal asymptote.`]
+        ),
+        L(
+          `${Y9} = ${frac(P)}${k ? " " + signed(k) : ""} \u2260 ${k ? "0 " + signed(k) + " = " : ""}${val(k)}`,
+          k ? `Adding ${val(k)} moves every y-value; ${Y9} can never be ${val(k)}.` : `So ${Y9} can never be 0.`,
+          Nm("Which y-value is never reached?", [{ label: "y", answer: String(k) }], k ? `The fraction is never 0, so y is never 0 ${signed(k)} = ${val(k)}.` : "The fraction is never 0, so y is never 0.")
+        ),
+        L(`Range: ${Y9} \u2260 ${val(k)}`, "Every other y does come out.", void 0, [`To check, make ${X11} the subject: ${Y9} ${k ? signed(-k) + " " : ""}= ${frac(P)} gives ${lin(b, c)} = ${val(a)}/(${Y9}${k ? " " + signed(-k) : ""}), which works for every ${Y9} except ${val(k)}.`])
+      ]);
+      const v = viewFor([fnum(xv) - 5, fnum(xv) + 5], [k - 5, k + 5]), lines = [{ x: fnum(xv), label: `x = ${plain5(xv)}` }, { y: k, label: `y = ${k}`.replace("-", MINUS) }];
+      if (one) lines.push({ m: 1, c: 0, colour: 2, label: "y = x" });
+      S("Sketch it", one ? "y = 1/x is its own inverse." : "The asymptotes are the domain and range gaps.", [
+        L(
+          graph({ ...v, curves: [{ f, colour: 1, label: "y = f(x)" }], lines, description: "The graph of y = f(x) with its asymptotes dashed" }),
+          one ? `Swap ${X11} and ${Y9} in ${Y9} = 1/${X11}: ${X11} = 1/${Y9}, so ${Y9} = 1/${X11} again. 1/${X11} is <b>self-inverse</b>: its graph is symmetric in the line ${Y9} = ${X11}.` : `The vertical asymptote ${X11} = ${val(xv)} is the gap in the domain; the horizontal asymptote ${Y9} = ${val(k)} is the gap in the range.`,
+          void 0,
+          [one ? `Since f\u207B\xB9(${X11}) = f(${X11}), the domain and range are the same: both are every number except 0.` : `The basic graph ${Y9} = 1/${X11} has asymptotes ${X11} = 0 and ${Y9} = 0, and it is self-inverse. ${moves(P)}`]
+        )
+      ]);
+      S("Final answer", "Domain for x, range for y.", [L(`(a) <span class="answer">${X11} \u2260 ${fh(xv)}</span> &nbsp; (b) <span class="answer">${Y9} \u2260 ${val(k)}</span>`, "Also written x \u2208 \u211D, x \u2260 \u2026 and y \u2208 \u211D, y \u2260 \u2026 .")]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) return ri(0, 2) === 0 ? { t: "reciprocal", a: 1, b: 1, c: 0, k: 0 } : { t: "reciprocal", a: ri(1, 5), b: 1, c: ri(-5, 5), k: ri(-4, 4) };
+      if (lv === 2) return { t: "reciprocal", a: rnz(-6, 6), b: 1, c: rnz(-6, 6), k: rnz(-6, 6) };
+      return { t: "reciprocal", a: rnz(-8, 8), b: [2, 3, 4, -2, -3][ri(0, 4)], c: rnz(-9, 9), k: rnz(-7, 7) };
+    },
+    ans: (P) => multiAns(labelled("Domain", notEqual(F(-P.c, P.b))), labelled("Range", notEqual(P.k, "y"))),
+    hints: (P) => ["The bottom of a fraction can never be 0. That gives the x that is not allowed.", `Solve ${lin(P.b, P.c)} = 0 for the domain.`, `The fraction part is never 0, so y is never ${val(P.k)}.`],
+    example: { t: "reciprocal", a: 3, b: 1, c: -2, k: 1 }
+  });
+
+  // source/topics/functions/question-types/exponentials-and-logs/exponential-graphs.js
+  var X12 = "<i>x</i>";
+  var Y10 = "<i>y</i>";
+  var B = (P) => P.base === "e" ? Math.E : P.base;
+  var powH = ({ base, k }) => `${base === "e" ? "<i>e</i>" : val(base)}<sup>${terms([[k, X12]])}</sup>`;
+  var powT = ({ base, k }) => `${base}^(${sg(terms([[k, "x"]]))})`;
+  var termH = (P) => P.a === 1 ? powH(P) : P.a === -1 ? MINUS + powH(P) : P.base === "e" ? val(P.a) + powH(P) : `${val(P.a)} \xD7 ${powH(P)}`;
+  var rhs2 = (P) => termH(P) + (P.c ? " " + signed(P.c) : "");
+  var fOf = (P) => (x) => P.a * B(P) ** (P.k * x) + P.c;
+  var grows = (P) => B(P) > 1 === P.k > 0;
+  T2("expgraph", {
+    name: "Exponential graphs",
+    group: "explog",
+    syllabus: { aa: "SL 2.9", ai: "SL 2.5" },
+    blurb: "Where an exponential graph crosses the y-axis, the line it flattens out towards, and the values it can take.",
+    text: (P) => `Consider the function <i>f</i>(${X12}) = ${rhs2(P)}, for ${X12} \u2208 \u211D. Write down (a) the ${Y10}-intercept of the graph of <i>f</i>, (b) the equation of its horizontal asymptote and (c) the range of <i>f</i>.`,
+    expr: (P) => `<i>f</i>(${X12}) = ${rhs2(P)}`,
+    build(P) {
+      const { a, c } = P, f = fOf(P), { steps, S } = newSteps(), g = grows(P), yi = a + c, far = (g ? -10 : 10) / Math.abs(P.k), pos = a > 0;
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`In an <b>exponential</b> function the ${X12} is in the power. ${P.base === "e" ? `<i>e</i> \u2248 2.718 is a special number, like \u03C0; your calculator has a key for it.` : ""}`]),
+        L(
+          `Plan: put ${X12} = 0 for the ${Y10}-intercept; see what happens to ${powH(P)} far to the ${g ? "left" : "right"} for the asymptote; then decide which side of it the graph lies.`,
+          "Three short jobs.",
+          null,
+          [`The key fact: a positive number to any power is always positive. It can get very close to 0, but it never reaches 0 and never goes negative.`]
+        )
+      ]);
+      S(`The ${Y10}-intercept`, "On the y-axis, x = 0.", [
+        L(`<i>f</i>(0) = ${termH({ ...P, k: 0 }).replace(/<sup>.*?<\/sup>/, "<sup>0</sup>")}${c ? " " + signed(c) : ""}`, "Put x = 0 into the power."),
+        L(
+          `= ${val(a)} \xD7 1${c ? " " + signed(c) : ""} = ${val(yi)}`,
+          `Anything to the power 0 is 1, so ${P.base === "e" ? "<i>e</i>" : val(P.base)}<sup>0</sup> = 1.`,
+          Nm("What is the y-intercept?", [{ label: "y", answer: String(yi) }], `f(0) = ${a} \xD7 1 ${c < 0 ? "\u2212" : "+"} ${Math.abs(c)} = ${yi}.`.replace(/-/g, MINUS)),
+          [`For example 2<sup>0</sup> = 1, <i>e</i><sup>0</sup> = 1, 10<sup>0</sup> = 1. So the ${Y10}-intercept of <i>a</i>\xB7<i>b</i><sup>${X12}</sup> + <i>c</i> is always <i>a</i> + <i>c</i>.`]
+        )
+      ]);
+      S("The horizontal asymptote", `Far to the ${g ? "left" : "right"}, the power gets tiny.`, [
+        L(
+          `${X12} = ${sg(far)}: ${powH(P).replace(/<sup>.*?<\/sup>/, `<sup>${sg(P.k * far)}</sup>`)} \u2248 ${sg(String(+(B(P) ** (P.k * far)).toPrecision(3)))}`,
+          `As ${X12} goes ${g ? "down" : "up"}, ${powH(P)} gets closer and closer to 0.`,
+          void 0,
+          [`A negative power means 1 over a positive power: ${P.base === "e" ? "<i>e</i>" : val(P.base)}<sup>${MINUS}10</sup> = 1/${P.base === "e" ? "<i>e</i>" : val(P.base)}<sup>10</sup>, which is tiny.${B(P) < 1 ? ` Here the base ${val(P.base)} is less than 1, so a positive power makes it smaller.` : ""}`]
+        ),
+        L(
+          `<i>f</i>(${X12}) \u2192 ${val(a)} \xD7 0${c ? " " + signed(c) : ""} = ${val(c)}`,
+          `So the graph flattens out towards ${Y10} = ${val(c)} but never reaches it.`,
+          Nm("What is the horizontal asymptote? y = ?", [{ label: "y", answer: String(c) }], `The power \u2192 0, so y \u2192 ${c}.`.replace(/-/g, MINUS))
+        ),
+        L(`${Y10} = ${val(c)}`, "The horizontal asymptote: just the number added on the end.")
+      ]);
+      S("The range", "Which side of the asymptote is the graph?", [
+        L(`${powH(P)} &gt; 0, so ${termH(P)} ${pos ? "&gt;" : "&lt;"} 0`, pos ? `${a === 1 ? "It" : `Multiplying by ${val(a)}`} keeps it positive.` : `Multiplying by ${val(a)} (negative) makes it always negative.`),
+        L(
+          `${Y10} ${pos ? "&gt;" : "&lt;"} ${val(c)}`,
+          `Add ${par2(c)} to both sides. The inequality is strict, because the graph never touches its asymptote.`,
+          MC("What is the range of f?", `y ${pos ? ">" : "<"} ${sg(c)}`, [`y ${pos ? "<" : ">"} ${sg(c)}`, `y ${pos ? "\u2265" : "\u2264"} ${sg(c)}`, `y > ${sg(yi)}`, "y \u2208 \u211D"], `The power is always positive, so ${pos ? "a positive multiple of it is above 0" : "a negative multiple of it is below 0"}, and y is always ${pos ? "above" : "below"} ${sg(c)}.`)
+        )
+      ]);
+      const v = viewFor([-4, 4], [c, yi, c + (pos ? 6 : -6)]);
+      S("Sketch it", "The curve passes through the y-intercept and hugs the asymptote.", [L(
+        graph({
+          ...v,
+          curves: [{ f, colour: 1, label: "y = f(x)" }],
+          lines: [{ y: c, label: `y = ${sg(c)}` }],
+          points: [{ x: 0, y: yi, label: `(0, ${sg(yi)})`, at: pos === g ? "nw" : "ne" }],
+          description: "The exponential graph with its horizontal asymptote dashed"
+        }),
+        `The graph is ${pos ? "above" : "below"} the dashed line ${Y10} = ${val(c)}, and gets closer to it ${g ? "to the left" : "to the right"}.`
+      )]);
+      S("Final answer", "Check each part on the sketch.", [L(
+        `(a) <span class="answer">${Y10} = ${val(yi)}</span> &nbsp; (b) <span class="answer">${Y10} = ${val(c)}</span> &nbsp; (c) <span class="answer">${Y10} ${pos ? "&gt;" : "&lt;"} ${val(c)}</span>`,
+        `The y-intercept (0, ${val(yi)}) is ${pos ? "above" : "below"} the asymptote, as it should be \u2713`
+      )]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      let a, base, k, c;
+      if (lv === 1) {
+        base = ["e", 2, 3][ri(0, 2)];
+        a = ri(1, 3);
+        k = 1;
+        c = ri(-4, 4);
+      } else if (lv === 2) {
+        base = ["e", 2, 3, "e"][ri(0, 3)];
+        a = rnz(-4, 4);
+        k = base === "e" ? [1, 2, -1][ri(0, 2)] : 1;
+        c = rnz(-6, 6);
+      } else {
+        base = ["e", 2, 3, 0.5, "e"][ri(0, 4)];
+        a = rnz(-5, 5);
+        k = base === "e" ? [1, 2, -1, -2][ri(0, 3)] : [1, -1][ri(0, 1)];
+        c = rnz(-7, 7);
+      }
+      return { t: "expgraph", a, base, k, c };
+    },
+    ans: (P) => multiAns(
+      labelled("y-intercept: y =", exactAns(P.a + P.c)),
+      labelled("Horizontal asymptote: y =", exactAns(P.c)),
+      labelled("Range", P.a > 0 ? above(P.c, true, "y") : below(P.c, true, "y"))
+    ),
+    hints: (P) => ["Anything to the power 0 is 1, so put x = 0.", `The power ${powT(P)} gets closer and closer to 0 but never reaches it.`, `So the graph never reaches y = ${sg(P.c)}. Is it above or below that line?`],
+    example: { t: "expgraph", a: 2, base: "e", k: 1, c: -3 }
+  });
+
+  // source/topics/functions/question-types/exponentials-and-logs/logarithm-graphs.js
+  var X13 = "<i>x</i>";
+  var Y11 = "<i>y</i>";
+  var B2 = (P) => P.base === "e" ? Math.E : P.base;
+  var logH = ({ base }) => base === "e" ? "ln" : `log<sub>${base}</sub>`;
+  var baseH = ({ base }) => base === "e" ? "<i>e</i>" : String(base);
+  var arg = ({ h }) => h === 0 ? X13 : `(${shift(h)})`;
+  var termH2 = (P) => `${P.a === 1 ? "" : P.a === -1 ? MINUS : val(P.a) + " "}${logH(P)}${P.h === 0 ? " " : ""}${arg(P)}`;
+  var rhs3 = (P) => termH2(P) + (P.k ? " " + signed(P.k) : "");
+  function logRoot(P) {
+    const m = F(-P.k, P.a), v = P.h + B2(P) ** fnum(m);
+    const exact2 = P.base === "e" ? P.k === 0 ? F(P.h + 1) : null : m.d === 1n ? fadd(F(P.h), fpow(F(P.base), Number(m.n))) : null;
+    return { m, v, exact: exact2 };
+  }
+  T2("loggraph", {
+    name: "Logarithm graphs",
+    group: "explog",
+    syllabus: { aa: "SL 2.9", ai: "AHL 2.9" },
+    blurb: "A log graph only exists to one side of its vertical asymptote. Find the domain, the asymptote and where it crosses the x-axis.",
+    text: (P) => `Consider the function <i>f</i>(${X13}) = ${rhs3(P)}. Write down (a) the largest possible domain of <i>f</i> and (b) the equation of the vertical asymptote of the graph of <i>f</i>. (c) Find the ${X13}-intercept of the graph of <i>f</i>${logRoot(P).exact ? "" : ". Give your answer to 3 significant figures"}.`,
+    expr: (P) => `<i>f</i>(${X13}) = ${rhs3(P)}`,
+    build(P) {
+      const { a, h, k } = P, f = (x) => a * Math.log(x - h) / Math.log(B2(P)) + k, { m, v, exact: exact2 } = logRoot(P), { steps, S } = newSteps(), ln2 = P.base === "e";
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`${ln2 ? "ln" : "log<sub>" + P.base + "</sub>"} undoes ${baseH(P)}<sup>${X13}</sup>: ${ln2 ? "ln" : "log<sub>" + P.base + "</sub>"} ${X13} is the power you raise ${baseH(P)} to, to get ${X13}. ${ln2 ? "ln is short for the natural logarithm, log base <i>e</i>." : ""}`]),
+        L(
+          `Plan: the inside of a log must be positive; the asymptote is where the inside is 0; the ${X13}-intercept is where ${Y11} = 0.`,
+          "Three short jobs.",
+          null,
+          [`ln ${X13} is the <b>inverse</b> of <i>e</i><sup>${X13}</sup>, so the graph of ${Y11} = ln ${X13} is the graph of ${Y11} = <i>e</i><sup>${X13}</sup> reflected in the line ${Y11} = ${X13}. <i>e</i><sup>${X13}</sup> only gives out positive numbers, so ln only takes in positive numbers, and the horizontal asymptote ${Y11} = 0 of <i>e</i><sup>${X13}</sup> becomes the vertical asymptote ${X13} = 0 of ln ${X13}.`]
+        )
+      ]);
+      S("The domain", "You can only take the log of a positive number.", [
+        L(`${shift(h)} &gt; 0`, "The inside of the log must be positive.", void 0, [`There is no power of ${baseH(P)} that gives 0 or a negative number, so ${logH(P)} of 0 or of a negative number does not exist.`]),
+        L(
+          `${X13} &gt; ${val(h)}`,
+          h === 0 ? "Nothing to move." : `${h > 0 ? "Add" : "Take away"} ${Math.abs(h)} on both sides.`,
+          Nm("The domain is x > what?", [{ label: "x >", answer: String(h) }], `${sg(shift(h).replace(/<[^>]+>/g, ""))} > 0 gives x > ${sg(h)}.`)
+        )
+      ]);
+      S("The vertical asymptote", "Where the inside of the log reaches 0.", [
+        L(
+          `${X13} \u2192 ${val(h)}: ${shift(h)} \u2192 0, so ${logH(P)}${arg(P)} \u2192 ${MINUS}\u221E`,
+          `Just to the right of ${X13} = ${val(h)}, the log is a huge negative number.`,
+          void 0,
+          [`For example ${logH(P)}(0.001) \u2248 ${sg((Math.log(1e-3) / Math.log(B2(P))).toFixed(2))}, and it gets more negative the closer you get to 0.`]
+        ),
+        L(
+          `${X13} = ${val(h)}`,
+          "The vertical asymptote: the edge of the domain.",
+          MC("What is the vertical asymptote?", `x = ${sg(h)}`, [`x = ${sg(-h)}`, `y = ${sg(h)}`, `y = ${sg(k)}`, "x = 0"], `The inside, ${sg(shift(h).replace(/<[^>]+>/g, ""))}, is 0 when x = ${sg(h)}.`)
+        )
+      ]);
+      const sol = [
+        L(`${termH2(P)} ${signed(k)} = 0`, "On the x-axis, y = 0."),
+        L(`${logH(P)}${arg(P)} = ${fh(m)}`, `${k > 0 ? "Take away" : "Add"} ${Math.abs(k)}${a !== 1 ? `, then divide by ${a < 0 ? "(" + val(a) + ")" : val(a)}` : ""}.`),
+        L(
+          `${shift(h)} = ${baseH(P)}<sup>${fh(m)}</sup>`,
+          `Undo the log: raise ${baseH(P)} to both sides.`,
+          MC(
+            `Undo the log. What does ${shift(h).replace(/<[^>]+>/g, "")} equal?`,
+            `${ln2 ? "e" : P.base}^(${sg(fstr(m))})`,
+            [`${ln2 ? "e" : P.base} \xD7 ${sg(fstr(m))}`, `${sg(fstr(m))}^${ln2 ? "e" : P.base}`, `${ln2 ? "ln" : "log"}(${sg(fstr(m))})`],
+            `${logH(P).replace(/<[^>]+>/g, "")} and ${ln2 ? "e" : P.base}^x undo each other, so raise ${ln2 ? "e" : P.base} to the power of both sides.`
+          ),
+          [`If ${logH(P)} A = <i>n</i>, then A = ${baseH(P)}<sup><i>n</i></sup>. That is what a log means.`]
+        ),
+        L(
+          `${X13} = ${h ? val(h) + " + " : ""}${baseH(P)}<sup>${fh(m)}</sup>${exact2 ? ` = ${fh(exact2)}` : ` \u2248 ${val(v)}`}`,
+          exact2 ? "An exact value." : "Not exact, so use your calculator and round to 3 s.f.",
+          exact2 ? Nm("What is the x-intercept?", [{ label: "x", answer: fstr(exact2) }], `x = ${sg(fstr(exact2))}.`) : void 0
+        )
+      ];
+      if (k === 0) sol.splice(1, 2, L(`${logH(P)}${arg(P)} = 0`, a === 1 ? "Nothing to move." : `Divide by ${val(a)}.`), L(`${shift(h)} = 1`, `The log of 1 is 0, because ${baseH(P)}<sup>0</sup> = 1.`));
+      S(`The ${X13}-intercept`, "Put y = 0 and undo the log.", sol);
+      const vw = viewFor([h - 1, v + 2, h + 8], [k, f(h + 8), f(h + 0.3)]), pt2 = { x: v, y: 0, label: `(${exact2 ? sg(fstr(exact2)) : val(v)}, 0)`, at: a > 0 ? "se" : "ne" };
+      S("Sketch it", "The graph only exists to the right of the asymptote.", [L(graph({
+        ...vw,
+        curves: [{ f, from: h + 1e-9, colour: 1, label: "y = f(x)" }],
+        lines: [{ x: h, label: `x = ${sg(h)}` }],
+        points: [pt2],
+        description: "The log graph with its vertical asymptote dashed"
+      }), `The curve ${a > 0 ? "rises" : "falls"} slowly from the asymptote and crosses the x-axis once.`)]);
+      S("Final answer", "Domain, asymptote, intercept.", [L(
+        `(a) <span class="answer">${X13} &gt; ${val(h)}</span> &nbsp; (b) <span class="answer">${X13} = ${val(h)}</span> &nbsp; (c) <span class="answer">${X13} = ${exact2 ? fh(exact2) : val(v)}</span>`,
+        exact2 ? `Check: f(${sg(fstr(exact2))}) = ${a === 1 ? "" : sg(a) + " \xD7 "}${logH(P).replace(/<[^>]+>/g, "")}(${sg(fstr(fadd(exact2, F(-h))))}) ${signed(k)} = 0 \u2713` : `On a GDC, the zero of the graph is at x \u2248 ${val(v)} \u2713`
+      )]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      let a, base, h, k;
+      if (lv === 1) {
+        base = ["e", 10, 2][ri(0, 2)];
+        a = 1;
+        h = ri(-3, 4);
+        k = base === "e" ? ri(-1, 2) : -ri(0, base === 10 ? 1 : 3);
+      } else if (lv === 2) {
+        base = ["e", 10, 2, 3][ri(0, 3)];
+        a = [1, 2, -1, 3][ri(0, 3)];
+        h = rnz(-4, 5);
+        k = base === "e" ? ri(-4, 4) : -a * ri(base === 10 ? -1 : -1, base === 10 ? 1 : 2);
+      } else {
+        base = ["e", 10, 2, 3, "e"][ri(0, 4)];
+        a = rnz(-4, 4);
+        h = rnz(-6, 6);
+        const lim = base === "e" ? 2.5 : base === 10 ? 1 : 3;
+        do
+          k = rnz(-6, 6);
+        while (Math.abs(k / a) > lim);
+      }
+      if (base === "e") while (Math.abs(k / a) > 2.5) k -= Math.sign(k);
+      return { t: "loggraph", a, base, h, k };
+    },
+    ans(P) {
+      const { v, exact: exact2 } = logRoot(P);
+      return multiAns(labelled("Domain", above(P.h)), labelled("Vertical asymptote: x =", exactAns(P.h)), labelled("x-intercept: x =", exact2 ? exactAns(exact2) : approxAns(v)));
+    },
+    hints: (P) => ["You can only take the log of a positive number, so the inside must be more than 0.", "The vertical asymptote is where the inside of the log is 0.", `For the x-intercept, put y = 0, get the log on its own, then undo it with ${P.base === "e" ? "e" : P.base} to the power.`],
+    example: { t: "loggraph", a: 2, base: "e", h: 1, k: -4 }
+  });
+
+  // source/topics/functions/question-types/solving-equations/solve-with-a-gdc.js
+  var X14 = "<i>x</i>";
+  var Y12 = "<i>y</i>";
+  var plus = (c) => c < 0 ? ` ${MINUS} ${-c}` : ` + ${c}`;
+  var EQ = {
+    expline: { cs: [2, 3, 4, 5], make: (c) => ({ f: Math.exp, g: (x) => x + c, fh: `e<sup>${X14}</sup>`, gh: `${X14}${plus(c)}`, fp: "e\u02E3", gp: `x${plus(c)}`, ft: "e^(X)", gt: `X+${c}`, lo: -12, hi: 12 }) },
+    lnline: { cs: [2, 3, 4, 5, 6], make: (c) => ({ f: Math.log, g: (x) => c - x, fh: `ln ${X14}`, gh: `${c} ${MINUS} ${X14}`, fp: "ln x", gp: `${c} \u2212 x`, ft: "ln(X)", gt: `${c}\u2212X`, lo: 0, hi: 12 }) },
+    cubicexp: { cs: [2, 3, 4, 5, 6], make: (c) => ({ f: (x) => x ** 3 - c * x, g: (x) => Math.exp(-x), fh: `${X14}<sup>3</sup> ${MINUS} ${c}${X14}`, gh: `e<sup>${MINUS}${X14}</sup>`, fp: `x\xB3 \u2212 ${c}x`, gp: "e\u207B\u02E3", ft: `X^3\u2212${c}X`, gt: "e^(\u2212X)", lo: -12, hi: 12 }) },
+    pow2sq: { cs: [-3, -2, -1, 0], make: (c) => ({ f: (x) => 2 ** x, g: (x) => x * x + c, fh: `2<sup>${X14}</sup>`, gh: `${X14}<sup>2</sup>${c ? plus(c) : ""}`, fp: "2\u02E3", gp: `x\xB2${c ? plus(c) : ""}`, ft: "2^X", gt: `X^2${c ? (c < 0 ? "\u2212" : "+") + Math.abs(c) : ""}`, lo: -12, hi: 12 }) },
+    quadln: { cs: [1, 2], make: (c) => ({ f: (x) => x * x - c, g: Math.log, fh: `${X14}<sup>2</sup>${plus(-c)}`, gh: `ln ${X14}`, fp: `x\xB2 \u2212 ${c}`, gp: "ln x", ft: `X^2\u2212${c}`, gt: "ln(X)", lo: 0, hi: 12 }) },
+    quadexp: { cs: [2, 3, 4, 5, 6], make: (c) => ({ f: (x) => c - x * x, g: Math.exp, fh: `${c} ${MINUS} ${X14}<sup>2</sup>`, gh: `e<sup>${X14}</sup>`, fp: `${c} \u2212 x\xB2`, gp: "e\u02E3", ft: `${c}\u2212X^2`, gt: "e^(X)", lo: -12, hi: 12 }) }
+  };
+  var snap = (r) => Math.abs(r - Math.round(r)) < 1e-7 ? Math.round(r) : r;
+  function solve2(P) {
+    const E = EQ[P.e].make(P.c), all = intersections(E.f, E.g, E.lo, E.hi).map(snap);
+    const roots = P.lo === void 0 ? all : all.filter((r) => r >= P.lo && r <= P.hi);
+    return { E, all, roots };
+  }
+  var dom = (P) => P.lo === void 0 ? "" : ` for ${sg(P.lo)} \u2264 ${X14} \u2264 ${sg(P.hi)}`;
+  var many = (n) => n === 1 ? "answer" : "answers";
+  function fair(P) {
+    const { E, all, roots } = solve2(P), d = (x) => E.f(x) - E.g(x), slope = (x) => (d(x + 1e-5) - d(x - 1e-5)) / 2e-5;
+    if (!roots.length || roots.length > 4) return false;
+    for (let i = 0; i < all.length; i++) {
+      const r = all[i];
+      if (i && r - all[i - 1] < 0.3) return false;
+      if (r !== 0 && Math.abs(r) < 0.1) return false;
+      if (Math.abs(slope(r)) < 0.15 || Math.abs(E.f(r)) > 40) return false;
+      if (P.lo !== void 0 && (Math.abs(r - P.lo) < 0.2 || Math.abs(r - P.hi) < 0.2)) return false;
+    }
+    return true;
+  }
+  T2("gdcsolve", {
+    name: "Solve an equation with a GDC",
+    group: "solving",
+    syllabus: { aa: "SL 2.10", ai: "SL 2.4" },
+    blurb: "Draw both sides as graphs: the solutions are the x-coordinates where they cross.",
+    text: (P) => {
+      const { E, roots } = solve2(P);
+      return `Solve the equation ${E.fh} = ${E.gh}${dom(P)}. Give your ${many(roots.length)} correct to 3 significant figures.`;
+    },
+    expr: (P) => {
+      const E = EQ[P.e].make(P.c);
+      return `${E.fh} = ${E.gh}`;
+    },
+    build(P) {
+      const { E, all, roots } = solve2(P), n = roots.length, { steps, S } = newSteps(), out = all.filter((r) => !roots.includes(r));
+      const xs = P.lo === void 0 ? [...all.map((r) => r - 1.5), ...all.map((r) => r + 1.5)] : [P.lo - 0.5, P.hi + 0.5], v = viewFor(xs, all.map(E.f));
+      const wlo = Math.floor(v.x[0]), whi = Math.ceil(v.x[1]), nsp = (s) => s.replace(/X/g, "x");
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`To <b>solve</b> means to find every value of ${X14} that makes the two sides equal${P.lo === void 0 ? "" : `, but only the ones in the <b>domain</b> ${sg(P.lo)} \u2264 ${X14} \u2264 ${sg(P.hi)}`}.`]),
+        L(
+          `Plan: draw ${Y12} = ${E.fh} and ${Y12} = ${E.gh}. The solutions are the ${X14}-coordinates where they cross.`,
+          "Where the two graphs meet, the two sides are equal.",
+          MC("Why use a GDC here, not algebra?", "x is mixed up with e\u02E3, ln x or 2\u02E3, so no rearranging gets x on its own", ["The numbers are too big", "Algebra gives the wrong answer", "The equation has no solutions"], "There is no algebra that undoes a mixture like this, so we find the answers from the graphs instead."),
+          [`Try it: to get ${X14} on its own you would need to undo the ${E.fh.includes("ln") || E.gh.includes("ln") ? "ln" : "power"} on one side, but that messes up the other side. There is no way round it, so we let the GDC find the crossings.`, `At a crossing point, the two graphs have the same ${Y12} for the same ${X14}. That is exactly what ${E.fh} = ${E.gh} means.`]
+        )
+      ]);
+      const sk = [L(
+        graph({
+          ...v,
+          curves: [{ f: E.f, colour: 1, label: "y = " + E.fp }, { f: E.g, colour: 2, label: "y = " + E.gp }],
+          lines: P.lo === void 0 ? [] : [{ x: P.lo, colour: 3 }, { x: P.hi, colour: 3 }],
+          points: all.map((r, i) => ({ x: r, y: E.f(r), open: !roots.includes(r), label: "x \u2248 " + val(r), at: i % 2 ? "se" : "nw" })),
+          description: `The graphs of y = ${E.fp} and y = ${E.gp}, crossing ${all.length} times`
+        }),
+        `The graphs cross ${n === 1 ? "once" : n === 2 ? "twice" : n + " times"}${P.lo === void 0 ? "" : " inside the domain (between the dashed lines)"}.`,
+        MC(`How many solutions are there${P.lo === void 0 ? "" : " in the domain"}?`, String(n), ["0", "1", "2", "3", "4"], `Count the crossing points${P.lo === void 0 ? "" : " between the dashed lines"}: there ${n === 1 ? "is 1" : "are " + n}.`),
+        [`Zoom out on your GDC to be sure there are no more crossings off the screen. Here the curves only move further apart outside this window.`]
+      )];
+      if (out.length) sk.push(L(`${X14} \u2248 ${out.map(val).join(" and ")} ${out.length > 1 ? "are" : "is"} outside ${sg(P.lo)} \u2264 ${X14} \u2264 ${sg(P.hi)}`, `So ${out.length > 1 ? "they are" : "it is"} not ${out.length > 1 ? "solutions" : "a solution"} here. Always check the domain.`, void 0, [`The question only wants ${X14} from ${sg(P.lo)} to ${sg(P.hi)}. The open circle${out.length > 1 ? "s are" : " is"} a real crossing, but outside that range.`]));
+      S("Graph both sides", "Each side of the equation becomes a graph.", sk);
+      S("Find the crossings on your GDC", "Enter both sides, then let the GDC find each crossing.", [
+        L(`TI-84 Plus CE: press <b>Y=</b>, type Y\u2081 = ${E.ft} and Y\u2082 = ${E.gt}, then <b>GRAPH</b>.`, "Each side of the equation becomes a graph.", void 0, [`If you cannot see the crossings, press <b>WINDOW</b> and set Xmin = ${sg(wlo)}, Xmax = ${sg(whi)}${P.lo === void 0 ? "" : ` (the domain, with a little extra)`}.`]),
+        L(`<b>2nd</b> <b>TRACE</b> (CALC) \u25B8 <b>5: intersect</b>. Press <b>ENTER</b> for the first curve, <b>ENTER</b> for the second, move the cursor near a crossing and press <b>ENTER</b> for "Guess?".`, "The GDC homes in on the crossing nearest your guess.", void 0, ["Do this once for each crossing, moving the cursor to a different one each time. The GDC shows X= and Y= at the bottom: you want X."]),
+        L(`TI-Nspire: on a Graphs page type f1(x) = ${nsp(E.ft)} and f2(x) = ${nsp(E.gt)}. Then <b>Menu \u25B8 Analyze Graph \u25B8 Intersection</b>, and click to the left and then to the right of a crossing.`, "Same idea: the two clicks are the lower and upper bounds round the crossing."),
+        L(`Casio fx-CG50: <b>MENU \u25B8 Graph</b>, Y1 = ${E.ft}, Y2 = ${E.gt}, <b>DRAW</b> (F6), then <b>G-Solv</b> (SHIFT F5) \u25B8 <b>ISCT</b> (F5). Press \u25B6 to jump to the next crossing.`, "The Casio finds them from left to right."),
+        L(
+          `Another way: ${E.fh} ${MINUS} (${E.gh}) = 0, so find the zeros of ${Y12} = ${E.fh} ${MINUS} (${E.gh}).`,
+          "Move everything to one side and look for where one graph crosses the x-axis.",
+          void 0,
+          [`TI-84: 2nd CALC \u25B8 2: zero. TI-Nspire: Menu \u25B8 Analyze Graph \u25B8 Zero. Casio: G-Solv \u25B8 ROOT. Where ${E.fh} ${MINUS} (${E.gh}) = 0, the two sides are equal, so you get the same answers.`]
+        )
+      ]);
+      const r0 = roots[0], wr = [ff(r0, 2), ff(r0, 4), ff(E.f(r0), 3), ff(-r0, 3)].map(sg);
+      S("Read off the solutions", "Write each x-coordinate to 3 significant figures.", [
+        ...roots.map((r, i) => L(
+          `${X14} = ${Number.isInteger(r) ? r < 0 ? MINUS + -r : r : sg(ff(r, 7)) + "\u2026"} \u2248 <b>${val(r)}</b>`,
+          Number.isInteger(r) ? `A whole number: check it in the equation, both sides give ${val(E.f(r))}.` : `Round to 3 significant figures.`,
+          i === 0 && !Number.isInteger(r) ? MC(`What is ${n > 1 ? "the smallest solution" : "the solution"} to 3 significant figures?`, val(r), wr, `${sg(ff(r, 7))} rounds to ${val(r)}: three figures, counting from the first one that isn't 0.`) : void 0
+        )),
+        L(`Check: ${X14} = ${Number.isInteger(r0) ? val(r0) : sg(ff(r0, 7)) + "\u2026"} gives ${E.fh} \u2248 ${val(E.f(r0))} and ${E.gh} \u2248 ${val(E.g(r0))}`, "The two sides agree, so it really is a solution \u2713", void 0, ["Use the full value from the GDC for a check like this. The rounded value makes the two sides agree only roughly."])
+      ]);
+      S("Final answer", n > 1 ? "Give every solution." : "One solution.", [L(`${X14} = <span class="answer">${roots.map(val).join(" or ")}</span>`, `${n > 1 ? "All" : "It is"} correct to 3 s.f.${P.lo === void 0 ? "" : ` and in the domain ${sg(P.lo)} \u2264 ${X14} \u2264 ${sg(P.hi)}`} \u2713`)]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      const keys = lv === 1 ? ["expline", "lnline"] : Object.keys(EQ);
+      for (; ; ) {
+        const e = keys[ri(0, keys.length - 1)], cs = EQ[e].cs, P = { t: "gdcsolve", e, c: cs[ri(0, cs.length - 1)] };
+        if (lv === 3 && Math.random() < 0.75) {
+          const pos = e === "lnline" || e === "quadln";
+          P.lo = pos ? ri(1, 2) : ri(-4, 0);
+          P.hi = P.lo + ri(2, 5);
+          const { all, roots } = solve2(P);
+          if (all.length > 1 && roots.length === all.length && Math.random() < 0.8) continue;
+        }
+        if (fair(P)) return P;
+      }
+    },
+    ans: (P) => listAns(solve2(P).roots),
+    hints: (P) => {
+      const E = EQ[P.e].make(P.c);
+      return ["There is no algebra for this: use your GDC.", `Graph y = ${E.fp} and y = ${E.gp}${P.lo === void 0 ? "" : `, for ${sg(P.lo)} \u2264 x \u2264 ${sg(P.hi)}`}, and find where they cross.`, 'Use "intersect" (TI-84), "Intersection" (TI-Nspire) or "ISCT" (Casio). Give each x to 3 s.f.'];
+    },
+    example: { t: "gdcsolve", e: "expline", c: 3 }
   });
 
   // source/topics/functions/functions.js
@@ -6250,9 +7911,9 @@ input[type=checkbox] {
     const at2 = eqs[eqs.length - 1];
     let from = at2 - 1;
     while (from >= 0 && !/^[=:]$/.test(chars[from].textContent)) from--;
-    const rhs = chars.slice(at2 + 1);
-    if (!/^[−-]?\d+(\.\d+)?([a-z]\d*)*\.?$/.test(rhs.map((c) => c.textContent).join(""))) return null;
-    const target = rhs.find((c) => c.classList.contains("num"));
+    const rhs4 = chars.slice(at2 + 1);
+    if (!/^[−-]?\d+(\.\d+)?([a-z]\d*)*\.?$/.test(rhs4.map((c) => c.textContent).join(""))) return null;
+    const target = rhs4.find((c) => c.classList.contains("num"));
     if (!target) return null;
     const ops = [];
     for (let i = from + 1; i < at2; i++) {
@@ -6261,7 +7922,7 @@ input[type=checkbox] {
     }
     const lhs = chars.slice(from + 1, at2).map((c) => c.textContent).join("");
     const letters = (t) => [...new Set(t.match(/[a-z]/g) || [])].sort().join("");
-    if (letters(lhs) !== letters(rhs.map((c) => c.textContent).join(""))) return null;
+    if (letters(lhs) !== letters(rhs4.map((c) => c.textContent).join(""))) return null;
     const acts = /[×÷+−\-]/.test(lhs) || ops.some((c) => c.closest("sup") || c.closest(".bn"));
     if (!acts || ops.length < 1 || ops.length === 1 && !ops[0].closest("sup,.bn")) return null;
     if (ops.length === 1 && ops[0].textContent === target.textContent) return null;
@@ -6664,7 +8325,7 @@ input[type=checkbox] {
       const own = types.some((t) => t.parse);
       $("subfolders").innerHTML = (own ? `<button class="subfolder own" data-f="own"><span class="fname">Your own question</span><span class="fdesc">Type in a question from your homework</span></button>` : "") + groups.map((x) => `<button class="subfolder" data-f="${x.g}"><span class="fname">${x.label}</span><span class="fdesc">${x.desc}</span><span class="fcount">${x.list.length} question type${x.list.length > 1 ? "s" : ""}</span></button>`).join("");
     };
-    const show = (f) => {
+    const show2 = (f) => {
       $("learnHome").hidden = true;
       $("learnOpen").hidden = false;
       const own = f === "own", grp = groups.find((x) => x.g === f);
@@ -6694,7 +8355,7 @@ input[type=checkbox] {
     });
     $("subfolders").addEventListener("click", (e) => {
       const b = e.target.closest(".subfolder");
-      if (b) show(b.dataset.f);
+      if (b) show2(b.dataset.f);
     });
     $("learnBack").onclick = home;
     $("learnCards").addEventListener("click", (e) => {
@@ -6753,17 +8414,17 @@ input[type=checkbox] {
     }
     function filter() {
       const q = $("search").value.trim().toLowerCase();
-      let mine = 0, shown = 0;
+      let mine = 0, shown2 = 0;
       document.querySelectorAll(".folder").forEach((f) => {
         const t = TOPICS.find((x) => x.id === f.dataset.topic), ok0 = onCourse(t);
         if (ok0) mine++;
         const hay = (f.dataset.keys + " " + f.textContent).toLowerCase(), ok = ok0 && (!q || q.split(/\s+/).every((w) => hay.includes(w)));
         f.hidden = !ok;
-        if (ok) shown++;
+        if (ok) shown2++;
       });
       $("noTopics").hidden = mine > 0;
       $("noTopics").innerHTML = `<p><b>No topics for ${courseShort()} yet.</b></p><p>More topics are on the way. If you take a different course, pick it in the bar above.</p>`;
-      $("noresult").hidden = shown > 0 || mine === 0;
+      $("noresult").hidden = shown2 > 0 || mine === 0;
     }
     $("folders").addEventListener("click", (e) => {
       const f = e.target.closest(".folder");
@@ -6953,11 +8614,11 @@ input[type=checkbox] {
       return asDecimal(l.value) - asDecimal(r.value);
     };
     try {
-      const c = g(0, 0), A = g(1, 0) - c, B = g(0, 1) - c;
-      for (const [x, y] of [[3, -2], [-5, 7], [11, 4]]) if (Math.abs(g(x, y) - (A * x + B * y + c)) > 1e-9 * (1 + Math.abs(A * x) + Math.abs(B * y) + Math.abs(c))) return { ok: false };
-      if (A === 0 && B === 0) return { ok: false };
-      const big = Math.max(Math.abs(A), Math.abs(B), Math.abs(c), Math.abs(a.a), Math.abs(a.b), Math.abs(a.c)), tol = 1e-9 * big * big;
-      return { ok: Math.abs(A * a.b - B * a.a) <= tol && Math.abs(A * a.c - c * a.a) <= tol && Math.abs(B * a.c - c * a.b) <= tol };
+      const c = g(0, 0), A = g(1, 0) - c, B3 = g(0, 1) - c;
+      for (const [x, y] of [[3, -2], [-5, 7], [11, 4]]) if (Math.abs(g(x, y) - (A * x + B3 * y + c)) > 1e-9 * (1 + Math.abs(A * x) + Math.abs(B3 * y) + Math.abs(c))) return { ok: false };
+      if (A === 0 && B3 === 0) return { ok: false };
+      const big = Math.max(Math.abs(A), Math.abs(B3), Math.abs(c), Math.abs(a.a), Math.abs(a.b), Math.abs(a.c)), tol = 1e-9 * big * big;
+      return { ok: Math.abs(A * a.b - B3 * a.a) <= tol && Math.abs(A * a.c - c * a.a) <= tol && Math.abs(B3 * a.c - c * a.b) <= tol };
     } catch (e) {
       return typeof e === "string" && SYNTAX.test(e) ? { bad: `${e} Write it like y = 2x \u2212 5.` } : { ok: false };
     }
@@ -7680,9 +9341,9 @@ input[type=checkbox] {
             right(el);
             sound("match");
           },
-          onMiss: (pair, el) => {
+          onMiss: (pair2, el) => {
             if (wrong(el)) return later(() => finish("lives"), 700);
-            hint.innerHTML = `Not a pair. Remember: ${pair.why}.`;
+            hint.innerHTML = `Not a pair. Remember: ${pair2.why}.`;
           },
           onCleared: () => {
             if (st.over) return;
@@ -7799,7 +9460,7 @@ input[type=checkbox] {
     let ans, result = null, asDec = false, justDone = false;
     const history = [];
     const esc2 = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-    const show = (v) => isExact(v) && !asDec ? v.d === 1n ? group(sg(v.n)) : fh(v) : sg(ff(asDecimal(v), 10));
+    const show2 = (v) => isExact(v) && !asDec ? v.d === 1n ? group(sg(v.n)) : fh(v) : sg(ff(asDecimal(v), 10));
     const group = (t) => t.replace(/\B(?=(\d{3})+(?!\d))/g, "\u2009");
     const fit = () => out.classList.toggle("long", out.textContent.length > 16);
     function preview() {
@@ -7807,7 +9468,7 @@ input[type=checkbox] {
       result = null;
       const r = calculate(input.value, ans);
       out.className = "calc-out preview";
-      out.innerHTML = r.value !== void 0 ? "= " + show(r.value) : "";
+      out.innerHTML = r.value !== void 0 ? "= " + show2(r.value) : "";
       fit();
     }
     function equals() {
@@ -7827,11 +9488,11 @@ input[type=checkbox] {
       justDone = true;
       asDec = false;
       out.className = "calc-out done";
-      out.innerHTML = "= " + show(r.value);
+      out.innerHTML = "= " + show2(r.value);
       fit();
       history.unshift({ text, value: r.value });
       history.length = Math.min(history.length, CALC_HISTORY_SIZE);
-      hist.innerHTML = history.map((h, i) => `<li><button data-h="${i}"><span class="calc-h-q">${esc2(h.text)}</span><span class="calc-h-a">= ${show(h.value)}</span></button></li>`).join("");
+      hist.innerHTML = history.map((h, i) => `<li><button data-h="${i}"><span class="calc-h-q">${esc2(h.text)}</span><span class="calc-h-a">= ${show2(h.value)}</span></button></li>`).join("");
     }
     function type(t) {
       if (justDone) {
@@ -7868,7 +9529,7 @@ input[type=checkbox] {
       if (k === "@toggle") {
         if (result && isExact(result)) {
           asDec = !asDec;
-          out.innerHTML = "= " + show(result);
+          out.innerHTML = "= " + show2(result);
           fit();
         }
         return;
@@ -7930,9 +9591,9 @@ input[type=checkbox] {
     document.body.appendChild(kb);
     let target = null, watch = null;
     function render(kind) {
-      const sym = SYMBOLS[kind] || SYMBOLS.number;
-      const cell = ([show2, types, name]) => `<button class="mkb-key sym" data-t="${types}"${name ? ` aria-label="${name}"` : ""}>${show2}</button>`;
-      const symCells = [...sym.map(cell)];
+      const sym2 = SYMBOLS[kind] || SYMBOLS.number;
+      const cell = ([show3, types, name]) => `<button class="mkb-key sym" data-t="${types}"${name ? ` aria-label="${name}"` : ""}>${show3}</button>`;
+      const symCells = [...sym2.map(cell)];
       while (symCells.length % 3) symCells.push("<span></span>");
       kb.innerHTML = `<div class="mkb-bar"><span>Maths keys</span><button class="mkb-hide" data-a="hide" aria-label="Hide the maths keys">\u25BE</button></div>
       <div class="mkb-grid"><div class="mkb-syms">${symCells.join("")}</div>
@@ -7941,7 +9602,7 @@ input[type=checkbox] {
         <div class="mkb-side"><button class="mkb-key" data-a="left" aria-label="move left">\u25C0</button><button class="mkb-key" data-a="right" aria-label="move right">\u25B6</button>
           <button class="mkb-key done" data-a="done" aria-label="done">\u2713</button></div></div>`;
     }
-    function show(input) {
+    function show2(input) {
       target = input;
       render(input.dataset.maths);
       kb.hidden = false;
@@ -7993,12 +9654,12 @@ input[type=checkbox] {
     }, true);
     document.addEventListener("focusin", (e) => {
       const i = e.target.closest?.("input[data-maths]");
-      if (i) show(i);
+      if (i) show2(i);
       else if (!kb.contains(e.target)) hide();
     });
     document.addEventListener("click", (e) => {
       const i = e.target.closest?.("input[data-maths]");
-      if (i && kb.hidden) show(i);
+      if (i && kb.hidden) show2(i);
     });
     document.addEventListener("focusout", (e) => {
       if (e.target === target && !kb.contains(e.relatedTarget)) setTimeout(() => {
@@ -8012,9 +9673,9 @@ input[type=checkbox] {
 
   // source/screens/cheat-sheet-tab.js
   function initCheatSheet() {
-    const show = () => $("p-cheat").innerHTML = getTopic().cheatSheet;
-    show();
-    document.addEventListener("topicchange", show);
+    const show2 = () => $("p-cheat").innerHTML = getTopic().cheatSheet;
+    show2();
+    document.addEventListener("topicchange", show2);
   }
 
   // source/screens/exam/exam-question.js
@@ -8081,8 +9742,8 @@ input[type=checkbox] {
         const i = +b.closest(".exam-part").dataset.i;
         if (a === "check") check(i);
         if (a === "lesson") {
-          const L2 = q.parts[i].lesson;
-          openBook(getTopic().types[L2.t].build(L2), false);
+          const L3 = q.parts[i].lesson;
+          openBook(getTopic().types[L3.t].build(L3), false);
         }
       }
     };
