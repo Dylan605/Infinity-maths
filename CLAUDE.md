@@ -7,6 +7,7 @@ Edit files in `source/`. Never edit the root `index.html`: it is built. After a 
 Don't grow a file when the new code is a separate thing. Make a new file for it:
 
 - **A new question type** gets its own file in `source/topics/<topic>/question-types/<group>/`, plus one import line in `source/topics/<topic>/<topic>.js`. The import order is the order the types appear in the app.
+- **A new revision game** gets its own file in `source/topics/<topic>/games/`, listed in `game-list.js`.
 - **A new screen or tab** gets its own file in `source/screens/`, exporting an `init…()` function that `source/start.js` calls.
 - **A new topic** gets its own folder, `source/topics/<topic>/`, laid out like `binomials/`.
 - **New styles for a new screen** go in their own `source/styles/<screen>.css`, added to `styles/all-styles.css` at the right point in the cascade.

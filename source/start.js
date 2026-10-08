@@ -6,7 +6,7 @@ import {initHub} from './screens/home-screen.js';
 import {initTabs} from './screens/tabs.js';
 import {makeBuilder} from './screens/your-own-question.js';
 import {initPractice} from './screens/practice-tab.js';
-import {initGames} from './screens/games-tab.js';
+import {initGames} from './screens/games/games-tab.js';
 
 initNotebook();
 const learn=initLearn();

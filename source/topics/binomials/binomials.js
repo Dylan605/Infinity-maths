@@ -27,4 +27,4 @@ import './question-types/other-skills/solve-ncr-for-n.js';
 import './question-types/other-skills/expand-with-letters.js';
 
 export {TYPES,genQ} from './question-list.js';
-export {GAMES} from './game-questions.js';
+export {GAMES} from './games/game-list.js';

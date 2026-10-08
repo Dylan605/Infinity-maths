@@ -194,7 +194,6 @@ body {
 .custom,
 .pq,
 .gcard,
-.arena,
 .formula,
 .searchbar input,
 .ask {
@@ -1253,7 +1252,7 @@ input[type=checkbox] {
   accent-color: var(--accent);
 }
 
-/* source/styles/practice-games-cheat-sheet.css */
+/* source/styles/practice-and-cheat-sheet.css */
 .pq {
   border-radius: 20px;
   padding: 18px;
@@ -1283,79 +1282,6 @@ input[type=checkbox] {
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--accent);
-}
-.games {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
-}
-.gcard {
-  border-radius: 20px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
-}
-.gcard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--glow);
-}
-.gcard h4 {
-  font-family: var(--f-hand);
-  font-weight: 800;
-  font-size: 1.15rem;
-  margin: 0;
-  line-height: 1.2;
-}
-.gcard .best {
-  font-size: .85rem;
-  color: var(--pencil);
-}
-.arena {
-  border-radius: 22px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  animation: pop .4s var(--ease);
-}
-.arena[hidden] {
-  display: none !important;
-}
-.hud {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  font-weight: 800;
-  font-size: 1.05rem;
-  align-items: center;
-}
-.hud .t {
-  color: var(--red);
-}
-.gq {
-  font-family: var(--f-math);
-  font-size: 1.7rem;
-  line-height: 1.3;
-  overflow-x: auto;
-}
-.gq .m {
-  font-size: inherit;
-}
-.bar {
-  height: 8px;
-  background: var(--line);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.bar i {
-  display: block;
-  height: 100%;
-  background: var(--grad);
-  border-radius: 999px;
-  transition: width 1s linear;
 }
 .fr {
   display: inline-flex;
@@ -1469,6 +1395,861 @@ input[type=checkbox] {
   box-shadow: none;
 }
 
+/* source/styles/games.css */
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+.gcard {
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.gcard:hover {
+  transform: translateY(-5px) rotate(-.4deg);
+  box-shadow: var(--glow);
+}
+.gcard:hover .gcard-icon {
+  transform: scale(1.15) rotate(-8deg);
+}
+.gcard-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gcard-top .stars {
+  margin-left: auto;
+}
+.gcard-icon {
+  font-size: 1.6rem;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--shade);
+  transition: transform .4s var(--ease);
+}
+.gcard-new {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--btnfg);
+  background: var(--grad);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.gcard h4 {
+  font-family: var(--f-hand);
+  font-weight: 800;
+  font-size: 1.15rem;
+  margin: 4px 0 0;
+  line-height: 1.2;
+}
+.gcard-skill {
+  margin: 0;
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.gcard .what {
+  flex: 1;
+}
+.gcard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+}
+.gcard .best {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--pencil);
+}
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1rem;
+  color: var(--line);
+}
+.star.on {
+  color: #facc15;
+  text-shadow: 0 0 10px rgba(250, 204, 21, .5);
+}
+.stars.big {
+  font-size: 2.4rem;
+  gap: 8px;
+}
+.star.pop {
+  animation: starPop .5s var(--ease);
+}
+@keyframes starPop {
+  0% {
+    transform: scale(0) rotate(-90deg);
+  }
+  70% {
+    transform: scale(1.35);
+  }
+}
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  animation: fade .25s both;
+}
+.stage[hidden] {
+  display: none !important;
+}
+.playing .bg i {
+  animation-play-state: paused;
+}
+.playing .cover {
+  visibility: hidden;
+}
+.stage-card {
+  box-sizing: border-box;
+  position: relative;
+  width: min(760px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  border-radius: 28px;
+  padding: 18px 20px 24px;
+  background: var(--solid);
+  border: 1px solid var(--glassb);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: pop .4s var(--ease) both;
+}
+.stage-card.hit {
+  animation: hit .55s var(--ease);
+}
+.stage-card.miss {
+  animation: miss .5s var(--ease);
+}
+@keyframes hit {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 65%, transparent), 0 30px 80px rgba(0, 0, 0, .35);
+  }
+  100% {
+    box-shadow: 0 0 0 24px transparent, 0 30px 80px rgba(0, 0, 0, .35);
+  }
+}
+@keyframes miss {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--red) 65%, transparent), 0 30px 80px rgba(0, 0, 0, .35);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: none;
+    box-shadow: 0 0 0 24px transparent, 0 30px 80px rgba(0, 0, 0, .35);
+  }
+}
+.g-hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.g-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.g-icon {
+  font-size: 1.8rem;
+}
+.g-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.g-level {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.g-timer {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+.g-timer svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+.g-timer circle {
+  fill: none;
+  stroke-width: 5;
+}
+.g-timer .track {
+  stroke: var(--line);
+}
+.g-timer .ring {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke .3s;
+}
+.g-timer.low {
+  color: var(--red);
+  animation: pulse 1s ease-in-out infinite;
+}
+.g-timer.low .ring {
+  stroke: var(--red);
+}
+@keyframes pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}
+.g-score {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.g-points {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.g-combo {
+  transform-origin: left center;
+  font-weight: 800;
+  font-size: .95rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--grad);
+  color: var(--btnfg);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .25s, transform .25s var(--ease);
+}
+.g-combo.on {
+  opacity: 1;
+  transform: none;
+}
+.g-combo.on.bump {
+  animation: bump .45s var(--ease);
+}
+@keyframes bump {
+  50% {
+    transform: scale(1.25);
+  }
+}
+.g-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.g-spacer {
+  flex: 1;
+}
+.g-lives {
+  display: flex;
+  gap: 4px;
+  font-size: 1.4rem;
+  color: var(--red);
+}
+.heart.gone {
+  opacity: .18;
+  filter: grayscale(1);
+}
+.heart.breaking {
+  animation: heartBreak .7s var(--ease);
+}
+@keyframes heartBreak {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.7);
+  }
+  100% {
+    opacity: .18;
+    transform: scale(1);
+  }
+}
+.g-icon-btn {
+  font: inherit;
+  font-size: 1.05rem;
+  width: 40px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  cursor: pointer;
+}
+.g-body {
+  position: relative;
+  flex: 1;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+.g-count {
+  font-size: clamp(4rem, 16vw, 7rem);
+  font-weight: 800;
+  text-align: center;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: countIn .6s var(--ease) both;
+}
+@keyframes countIn {
+  0% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(.95);
+  }
+  100% {
+    transform: none;
+  }
+}
+.g-question {
+  font-family: var(--f-math);
+  font-size: clamp(1.25rem, 4vw, 1.7rem);
+  line-height: 1.45;
+  text-align: center;
+  overflow-x: auto;
+  animation: rise .35s var(--ease);
+}
+.g-small {
+  font-size: .65em;
+}
+.g-prompt {
+  margin: 0;
+  text-align: center;
+  font-weight: 800;
+  color: var(--pencil);
+}
+.g-hint {
+  margin: 0;
+  min-height: 1.4em;
+  text-align: center;
+  color: var(--red);
+  font-weight: 600;
+}
+.tri {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.tri-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tri-row span {
+  min-width: 2.3em;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: var(--shade);
+  text-align: center;
+}
+.tri-row .gap {
+  background: var(--hl);
+  font-weight: 700;
+  animation: bob 1.2s ease-in-out infinite;
+}
+.tri-label {
+  font-size: .75em;
+  color: var(--pencil);
+}
+.g-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.g-choice {
+  position: relative;
+  font: inherit;
+  font-family: var(--f-math);
+  font-size: 1.2rem;
+  min-height: 72px;
+  padding: 14px 16px 14px 46px;
+  border-radius: 18px;
+  border: 1.5px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform .2s var(--ease),
+    border-color .2s,
+    background .2s,
+    box-shadow .2s;
+  animation: rise .35s var(--ease) both;
+}
+.g-choice:nth-child(2) {
+  animation-delay: .05s;
+}
+.g-choice:nth-child(3) {
+  animation-delay: .1s;
+}
+.g-choice:nth-child(4) {
+  animation-delay: .15s;
+}
+.g-choice:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px rgba(124, 58, 237, .18);
+}
+.g-choice:active:not(:disabled) {
+  transform: scale(.97);
+}
+.g-choice:disabled {
+  cursor: default;
+}
+.g-choice kbd {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 700 .75rem var(--f-ui);
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--shade);
+  color: var(--pencil);
+}
+.g-choice.good {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 18%, transparent);
+  animation: popGood .45s var(--ease);
+}
+.g-choice.bad {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+}
+.g-choices.two .g-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--f-ui);
+  font-weight: 800;
+  font-size: 1.35rem;
+  padding: 16px;
+  min-height: 110px;
+}
+.g-choices.two .g-choice kbd {
+  position: static;
+  transform: none;
+}
+.g-pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.g-display {
+  min-width: min(280px, 100%);
+  min-height: 58px;
+  padding: 10px 18px;
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  background: var(--glass2);
+  font-family: var(--f-math);
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: border-color .2s, background .2s;
+}
+.g-display.empty .g-typed::before {
+  content: "your answer";
+  color: var(--pencil);
+  opacity: .6;
+  font: 1rem var(--f-ui);
+}
+.g-caret {
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.g-display.good {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 16%, transparent);
+}
+.g-display.bad {
+  border-color: var(--red);
+}
+.g-display.good .g-caret,
+.g-display.bad .g-caret {
+  display: none;
+}
+.g-display.bad .g-typed {
+  text-decoration: line-through;
+  opacity: .55;
+}
+.g-correct {
+  color: var(--green);
+  font-weight: 700;
+}
+.g-keys {
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  gap: 8px;
+}
+.g-key {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.3rem;
+  height: 54px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .15s var(--ease), background .2s;
+}
+.g-key:hover {
+  background: var(--shade);
+}
+.g-key.pressed {
+  animation: keyPress .2s var(--ease);
+}
+@keyframes keyPress {
+  50% {
+    transform: scale(.86);
+  }
+}
+.g-key.go {
+  grid-column: span 2;
+  background: var(--grad);
+  color: var(--btnfg);
+  border-color: transparent;
+}
+.g-board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols,4), 1fr);
+  gap: 10px;
+  perspective: 800px;
+}
+.g-card {
+  font: inherit;
+  font-family: var(--f-math);
+  font-size: 1.15rem;
+  min-height: 84px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1.5px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition:
+    transform .25s var(--ease),
+    border-color .2s,
+    background .2s,
+    box-shadow .2s;
+  animation: cardIn .45s var(--ease) both;
+  animation-delay: var(--d);
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: rotateY(90deg) scale(.8);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.g-card:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+.g-card.picked {
+  border-color: var(--accent);
+  background: var(--shade);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: var(--glow);
+}
+.g-card.wrong {
+  border-color: var(--red);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
+}
+.g-card.matched {
+  opacity: .2;
+  pointer-events: none;
+  animation: matched .5s var(--ease) forwards;
+}
+@keyframes matched {
+  0% {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: var(--green);
+    background: color-mix(in srgb, var(--green) 22%, transparent);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(.6);
+  }
+}
+.g-shake {
+  animation: shake .35s;
+}
+.g-pop {
+  position: absolute;
+  z-index: 3;
+  font-weight: 800;
+  font-size: 1.4rem;
+  pointer-events: none;
+  color: var(--green);
+  text-shadow: 0 2px 12px color-mix(in srgb, var(--green) 50%, transparent);
+  animation: floatUp 1s var(--ease) forwards;
+}
+.g-pop.bad {
+  color: var(--red);
+  text-shadow: none;
+}
+.g-pop.time {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -80%) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -260%);
+  }
+}
+.g-confetti {
+  position: absolute;
+  z-index: 3;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: confetti .95s cubic-bezier(.2, .7, .4, 1) forwards;
+}
+@keyframes confetti {
+  to {
+    transform: translate(var(--dx), calc(var(--dy) + 80px)) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+.g-banner {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 45%;
+  white-space: nowrap;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  letter-spacing: -.02em;
+  pointer-events: none;
+  padding: 10px 26px;
+  border-radius: 999px;
+  background: var(--grad);
+  color: var(--btnfg);
+  box-shadow: 0 14px 40px rgba(124, 58, 237, .45);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: bannerIn 1.3s var(--ease) forwards;
+}
+.g-banner.level {
+  background:
+    linear-gradient(
+      120deg,
+      #f59e0b,
+      var(--b3));
+}
+@keyframes bannerIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.4);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -110%);
+  }
+}
+.g-why {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--red) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 35%, transparent);
+  animation: rise .3s var(--ease);
+}
+.g-why p {
+  margin: 0;
+  flex: 1 1 240px;
+}
+.g-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  animation: rise .4s var(--ease);
+}
+.g-reason {
+  margin: 0;
+  font-weight: 800;
+  color: var(--pencil);
+}
+.g-final {
+  font-size: clamp(3.2rem, 12vw, 5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.g-best {
+  margin: 0;
+  font-weight: 700;
+}
+.g-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 540px;
+  margin-top: 6px;
+}
+.g-stats div {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--shade);
+}
+.g-stats b {
+  font-size: 1.3rem;
+}
+.g-stats span {
+  font-size: .72rem;
+  color: var(--pencil);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.g-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+@media (max-width: 520px) {
+  .stage {
+    padding: 0;
+  }
+  .stage-card {
+    border-radius: 0;
+    height: 100%;
+    max-height: none;
+    padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+  }
+  .g-name {
+    font-size: .9rem;
+  }
+  .g-icon {
+    font-size: 1.4rem;
+  }
+  .g-timer {
+    width: 54px;
+    height: 54px;
+    font-size: 1.1rem;
+  }
+  .g-points {
+    font-size: 1.5rem;
+  }
+  .g-choices:not(.two) {
+    grid-template-columns: 1fr;
+  }
+  .g-keys {
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+  }
+  .g-board {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .g-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* source/styles/small-screens.css */
 @media (max-width: 520px) {
   .topbar .title {
@@ -1554,15 +2335,8 @@ input[type=checkbox] {
   </section>
 
   <section class="panel" id="p-revise" hidden>
-    <div class="explain"><p>Quick-fire games, 45 seconds each. They train the small skills that every binomial question needs, so the real thing feels slow and easy. Your best scores are saved on this device.</p></div>
+    <div class="explain"><p><b>Quick-fire games</b> that train the small skills every binomial question needs. You get 45 seconds and 3 lives. Answer correctly several times in a row for a combo multiplier and bonus time, and the questions get harder as you level up. Your best scores and stars are saved on this device.</p></div>
     <div class="games" id="games"></div>
-    <div class="arena" id="arena" hidden>
-      <div class="hud"><span id="gname"></span><span class="t">⏱ <span id="gtime">45</span>s</span><span>Score <span id="gscore">0</span></span><span class="spacer"></span><button class="btn small" id="gquit">Quit</button></div>
-      <div class="bar"><i id="gbar" style="width:100%"></i></div>
-      <div class="gq" id="gq"></div>
-      <div id="gui"></div>
-      <p class="fb" id="gfb"></p>
-    </div>
   </section>
 
   <section class="panel cheat" id="p-cheat" hidden>
@@ -3231,127 +4005,216 @@ input[type=checkbox] {
     example: { t: "letters", u: "x", v: "y", neg: true, n: 5 }
   });
 
-  // source/topics/binomials/game-questions.js
+  // source/topics/binomials/games/game-helpers.js
   var mcq = (q, correct, wrongs, why) => {
     const opts = shuffle([correct, ...[...new Set(wrongs)].filter((w) => w !== correct).slice(0, 3)]);
     return { q, type: "mc", opts, ans: opts.indexOf(correct), why };
   };
-  var GAMES = [
-    {
-      id: "pascal",
-      name: "Pascal race",
-      how: "Fill the missing number in a row of Pascal's triangle.",
-      next() {
-        const n = ri(3, 9), r = ri(1, n - 1);
-        const row = [];
-        for (let k = 0; k <= n; k++) row.push(k === r ? '<span class="hl">?</span>' : C(n, k).toString());
-        return { q: `Row ${n}: &nbsp; ${row.join(" &nbsp; ")}`, type: "num", answer: C(n, r).toString(), why: `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)} (add the two above).` };
-      }
+  var typed = (q, answer, why) => ({ q, type: "num", answer: String(answer), why });
+  var byLevel = (level, easy, medium, hard) => level <= 1 ? easy : level === 2 ? medium : hard;
+
+  // source/topics/binomials/games/match-up.js
+  var KINDS = {
+    ncr: () => {
+      const n = ri(4, 10), r = ri(0, n);
+      return { a: bn(n, r), b: String(C(n, r)), why: `${n}C${r} = ${C(n, r)}` };
     },
-    {
-      id: "powers",
-      name: "Power pairs",
-      how: "Which powers go on the two terms for a given r?",
-      next() {
-        const n = ri(4, 12), r = ri(0, n);
-        const ok = `(first)<sup>${n - r}</sup>(second)<sup>${r}</sup>`;
-        return mcq(`In (first + second)<sup>${n}</sup>, the term with r = ${r} is nCr \xD7 \u2026`, ok, [`(first)<sup>${r}</sup>(second)<sup>${n - r}</sup>`, `(first)<sup>${n}</sup>(second)<sup>${r}</sup>`, `(first)<sup>${n - r}</sup>(second)<sup>${r + 1}</sup>`, `(first)<sup>${n - r - 1}</sup>(second)<sup>${r}</sup>`], `Second term gets r = ${r}, first gets n \u2212 r = ${n - r}. They add to ${n}.`);
-      }
+    term: () => {
+      const t = ri(1, 12);
+      return { a: `${ord(t)} term`, b: `r = ${t - 1}`, why: `the ${ord(t)} term uses r = ${t - 1}` };
     },
-    {
-      id: "signs",
-      name: "Sign spotter",
-      how: "Is the term plus or minus? Only the second term's sign and its power matter.",
-      next() {
-        const b = rnz(-5, 5), n = ri(3, 9), r = ri(0, n);
-        const a = ri(1, 3);
-        const neg = b < 0 && r % 2 === 1;
-        return mcq(`In (${a === 1 ? "" : a}x ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup>, the term with r = ${r} is \u2026`, neg ? "negative" : "positive", ["negative", "positive"], b < 0 ? `(${sg(b)})<sup>${r}</sup>: a minus to an ${r % 2 ? "odd" : "even"} power is ${r % 2 ? "negative" : "positive"}.` : "The second term is positive, so every term is positive.");
-      }
+    power: () => {
+      const k = ri(2, 5), e = ri(2, 4);
+      return { a: `(${k}<i>x</i>)<sup>${e}</sup>`, b: mono(BigInt(k) ** BigInt(e), e, true), why: `(${k}x)^${e} = ${k}^${e} x^${e} = ${BigInt(k) ** BigInt(e)}x^${e}` };
     },
-    {
-      id: "bump",
-      name: "Times x",
-      how: "Multiply a term by something with an x in it. Number \xD7 number, powers add.",
-      next() {
-        const c = rnz(-3, 3), v = rnz(-9, 9), e = ri(1, 6);
-        const res = mono(BigInt(c * v), e + 1, true);
-        const wrongs = [mono(BigInt(c * v), e, true), mono(BigInt(c + v), e + 1, true), mono(BigInt(-c * v), e + 1, true), mono(BigInt(c * v), e * 2, true)];
-        return mcq(`${mono(BigInt(c), 1, true)} \xD7 ${mono(BigInt(v), e, true)} = ?`, res, wrongs, `Numbers: ${sg(c)} \xD7 ${sg(v)} = ${sg(c * v)}. Powers: 1 + ${e} = ${e + 1}.`);
-      }
-    },
-    {
-      id: "like",
-      name: "Like-term sums",
-      how: "Add two like terms. Type just the number.",
-      next() {
-        const e = ri(0, 6), p = rnz(-20, 20), q = rnz(-20, 20);
-        return { q: `${mono(BigInt(p), e, true)} + ${q < 0 ? "(" + mono(BigInt(q), e, true) + ")" : mono(BigInt(q), e, true)} = ? <span class="mu" style="font-size:.7em">(just the number)</span>`, type: "num", answer: String(p + q), why: `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.` };
-      }
-    },
-    {
-      id: "ncr",
-      name: "nCr sprint",
-      how: "Work out nCr fast. nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical.",
-      next() {
-        const n = ri(4, 15), rs = [0, 1, 2, n - 2, n - 1, n], r = rs[ri(0, 5)];
-        return { q: `${n} nCr ${r} = ?`, type: "num", answer: C(n, r).toString(), why: r === 0 || r === n ? "nC0 and nCn are always 1." : r === 1 || r === n - 1 ? "nC1 and nC(n\u22121) are always n." : `${n} \xD7 ${n - 1} \xF7 2 = ${C(n, 2)}.` };
-      }
-    },
-    {
-      id: "findr",
-      name: "Find r",
-      how: "Which r gives the power of x you want?",
-      next() {
-        if (Math.random() < 0.5) {
-          const n2 = 2 * ri(2, 6), r2 = ri(0, n2), k2 = n2 - 2 * r2;
-          return { q: `In (<i>x</i> + 1/<i>x</i>)<sup>${n2}</sup>, which r gives ${xp(k2) || "no x"}? <span class="mu" style="font-size:.7em">(power of x = ${n2} \u2212 2r)</span>`, type: "num", answer: String(r2), why: `${n2} \u2212 2r = ${k2}, so r = ${r2}.` };
-        }
-        const n = ri(3, 9), r = ri(0, n), k = 2 * n - 3 * r;
-        return { q: `In (<i>x</i>\xB2 + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k) || "no x"}? <span class="mu" style="font-size:.7em">(power of x = ${2 * n} \u2212 3r)</span>`, type: "num", answer: String(r), why: `${2 * n} \u2212 3r = ${k}, so r = ${r}.` };
-      }
-    },
-    {
-      id: "termname",
-      name: "Term numbers",
-      how: "Link term numbers, r and the number of terms.",
-      next() {
-        const n = ri(4, 14), v = ri(0, 3);
-        if (v === 0) {
-          const t = ri(2, n);
-          return mcq(`The ${ord(t)} term of an expansion uses r = ?`, String(t - 1), [String(t), String(t + 1), String(t - 2)], `The (r+1)th term uses r, so r = ${t} \u2212 1 = ${t - 1}.`);
-        }
-        if (v === 1) {
-          const r = ri(1, n);
-          return mcq(`The term with r = ${r} is the \u2026`, ord(r + 1) + " term", [ord(r) + " term", ord(r + 2) + " term", ord(r - 1 < 1 ? r + 3 : r - 1) + " term"], `r + 1 = ${r + 1}, so it is the ${ord(r + 1)} term.`);
-        }
-        if (v === 2) return mcq(`How many terms does (a + b)<sup>${n}</sup> have?`, String(n + 1), [String(n), String(n + 2), String(2 * n)], `Always one more than the power: ${n} + 1 = ${n + 1}.`);
-        const m = 2 * ri(2, 7);
-        return mcq(`The middle term of (a + b)<sup>${m}</sup> is the \u2026`, ord(m / 2 + 1) + " term", [ord(m / 2) + " term", ord(m / 2 + 2) + " term", ord(m) + " term"], `${m + 1} terms, so the middle is number ${m / 2 + 1} (r = ${m / 2}).`);
-      }
-    },
-    {
-      id: "sumx1",
-      name: "Put x = 1",
-      how: "Sum of the coefficients: replace x with 1.",
-      next() {
-        const a = ri(1, 4), b = rnz(-4, 4), n = ri(2, 6);
-        const v = (BigInt(a) + BigInt(b)) ** BigInt(n);
-        return { q: `Sum of the coefficients of (${a === 1 ? "" : a}<i>x</i> ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup> = ?`, type: "num", answer: v.toString(), why: `Put x = 1: (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b)})<sup>${n}</sup> = ${sg(a + b)}<sup>${n}</sup> = ${sg(v)}.` };
-      }
-    },
-    {
-      id: "extcoef",
-      name: "Negative powers",
-      how: "Work out m(m\u22121)/2 for the x\xB2 coefficient of (1 + x)^m.",
-      next() {
-        const ms = [F(-1), F(-2), F(-3), F(-4), F(1, 2), F(-1, 2), F(3), F(1, 3)];
-        const m = ms[ri(0, ms.length - 1)];
-        const c2 = fdiv(fmul(m, fsub(m, F(1))), F(2));
-        return { q: `The coefficient of <i>x</i>\xB2 in (1 + <i>x</i>)<sup>${fstr(m)}</sup> is m(m\u22121)/2 = ? <span class="mu" style="font-size:.7em">(fractions like 3/8 are fine)</span>`, type: "num", answer: fstr(c2), why: `${fstr(m)} \xD7 ${fstr(fsub(m, F(1)))} \xF7 2 = ${fstr(c2)}.` };
-      }
+    count: () => {
+      const n = ri(3, 15);
+      return { a: `(a + b)<sup>${n}</sup>`, b: `${n + 1} terms`, why: `(a + b)^${n} has ${n} + 1 = ${n + 1} terms` };
     }
-  ];
+  };
+  var game = {
+    id: "match",
+    name: "Match up",
+    icon: "\u{1F0CF}",
+    skill: "Mixed skills",
+    type: "match",
+    how: "Tap two cards that belong together. Clear the board for bonus time.",
+    next(level) {
+      const kinds = byLevel(level, ["ncr", "term"], ["ncr", "term", "power"], ["ncr", "term", "power", "count"]), count = byLevel(level, 4, 5, 6);
+      const pairs = [], seen = /* @__PURE__ */ new Set();
+      for (let tries = 0; pairs.length < count && tries < 200; tries++) {
+        const p = KINDS[kinds[pairs.length % kinds.length]]();
+        if (seen.has(p.a) || seen.has(p.b)) continue;
+        seen.add(p.a);
+        seen.add(p.b);
+        pairs.push(p);
+      }
+      return { type: "match", pairs };
+    }
+  };
+
+  // source/topics/binomials/games/pascal-race.js
+  var game2 = {
+    id: "pascal",
+    name: "Pascal race",
+    icon: "\u{1F53A}",
+    skill: "Pascal's triangle",
+    how: "Fill the gap. Every number is the two above it added together.",
+    next(level) {
+      const n = ri(...byLevel(level, [3, 5], [4, 7], [6, 10])), r = ri(1, n - 1);
+      const row = (k, gap) => `<div class="tri-row">${[...Array(k + 1)].map((_, i) => i === gap ? '<span class="gap">?</span>' : `<span>${C(k, i)}</span>`).join("")}</div>`;
+      const shown = level < 3 ? row(n - 1, -1) + row(n, r) : `<div class="tri-label">row ${n}</div>` + row(n, r);
+      return typed(`<div class="tri">${shown}</div>`, C(n, r), `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)}: add the two numbers above the gap.`);
+    }
+  };
+
+  // source/topics/binomials/games/power-pairs.js
+  var game3 = {
+    id: "powers",
+    name: "Power pairs",
+    icon: "\u26A1",
+    skill: "The powers in each term",
+    how: "Pick the powers for the term with this r. The second term gets r, the first gets n \u2212 r.",
+    next(level) {
+      const n = ri(...byLevel(level, [3, 6], [4, 10], [6, 14])), r = ri(0, n);
+      const ok = `(first)<sup>${n - r}</sup>(second)<sup>${r}</sup>`;
+      return mcq(`In (first + second)<sup>${n}</sup>, the term with r = ${r} is nCr \xD7 \u2026`, ok, [`(first)<sup>${r}</sup>(second)<sup>${n - r}</sup>`, `(first)<sup>${n}</sup>(second)<sup>${r}</sup>`, `(first)<sup>${n - r}</sup>(second)<sup>${r + 1}</sup>`, `(first)<sup>${n - r - 1}</sup>(second)<sup>${r}</sup>`], `Second term gets r = ${r}, first gets n \u2212 r = ${n - r}. They add to ${n}.`);
+    }
+  };
+
+  // source/topics/binomials/games/sign-spotter.js
+  var game4 = {
+    id: "signs",
+    name: "Sign spotter",
+    icon: "\u{1F6A6}",
+    skill: "Signs of terms",
+    how: "Plus or minus? Swipe with \u2190 and \u2192. A minus to an odd power stays minus.",
+    next(level) {
+      const n = ri(...byLevel(level, [2, 5], [3, 9], [6, 12])), r = ri(0, n);
+      const b = rnz(-5, 5), a = level < 3 ? ri(1, 3) : rnz(-3, 3);
+      const negA = a < 0 && (n - r) % 2 === 1, negB = b < 0 && r % 2 === 1, neg = negA !== negB;
+      const first = `${a < 0 ? MINUS : ""}${Math.abs(a) === 1 ? "" : Math.abs(a)}x`;
+      const why = a < 0 || b < 0 ? `(${a < 0 ? first : "first"})<sup>${n - r}</sup> is ${negA ? "negative" : "positive"} and (${sg(b)})<sup>${r}</sup> is ${negB ? "negative" : "positive"}, so the term is ${neg ? "negative" : "positive"}.` : "Both terms are positive, so every term is positive.";
+      return { q: `In (${first} ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup>, the term with r = ${r} is \u2026`, type: "mc", opts: ["+ positive", `${MINUS} negative`], ans: neg ? 1 : 0, why };
+    }
+  };
+
+  // source/topics/binomials/games/times-x.js
+  var game5 = {
+    id: "bump",
+    name: "Times x",
+    icon: "\u2716\uFE0F",
+    skill: "Multiplying terms",
+    how: "Multiply the numbers and add the powers of x.",
+    next(level) {
+      const c = level < 2 ? ri(1, 3) : rnz(...byLevel(level, 0, [-3, 3], [-5, 5])), v = level < 2 ? ri(1, 9) : rnz(...byLevel(level, 0, [-9, 9], [-12, 12])), e = ri(1, byLevel(level, 4, 6, 9));
+      const res = mono(BigInt(c * v), e + 1, true);
+      const wrongs = [mono(BigInt(c * v), e, true), mono(BigInt(c + v), e + 1, true), mono(BigInt(-c * v), e + 1, true), mono(BigInt(c * v), e * 2, true)];
+      return mcq(`${mono(BigInt(c), 1, true)} \xD7 ${mono(BigInt(v), e, true)} = ?`, res, wrongs, `Numbers: ${sg(c)} \xD7 ${sg(v)} = ${sg(c * v)}. Powers: 1 + ${e} = ${e + 1}.`);
+    }
+  };
+
+  // source/topics/binomials/games/like-terms.js
+  var game6 = {
+    id: "like",
+    name: "Like-term sums",
+    icon: "\u2795",
+    skill: "Collecting like terms",
+    how: "Add the two terms. Type just the number in front.",
+    next(level) {
+      const e = ri(0, 6), lim = byLevel(level, 9, 20, 50);
+      const p = level < 2 ? ri(1, lim) : rnz(-lim, lim), q = level < 2 ? ri(1, lim) : rnz(-lim, lim);
+      const show = (v) => v < 0 ? "(" + mono(BigInt(v), e, true) + ")" : mono(BigInt(v), e, true);
+      return typed(`${mono(BigInt(p), e, true)} + ${show(q)} = ? <span class="mu g-small">(just the number)</span>`, p + q, `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.`);
+    }
+  };
+
+  // source/topics/binomials/games/ncr-sprint.js
+  var game7 = {
+    id: "ncr",
+    name: "nCr sprint",
+    icon: "\u{1F3AF}",
+    skill: "Working out nCr",
+    how: "nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical.",
+    next(level) {
+      const n = ri(...byLevel(level, [4, 10], [4, 15], [5, 12]));
+      const rs = byLevel(level, [0, 1, n - 1, n], [0, 1, 2, n - 2, n - 1, n], [2, 3, n - 3, n - 2]), r = rs[ri(0, rs.length - 1)];
+      const why = r === 0 || r === n ? "nC0 and nCn are always 1." : r === 1 || r === n - 1 ? "nC1 and nC(n\u22121) are always n." : r === 2 || r === n - 2 ? `${n} \xD7 ${n - 1} \xF7 2 = ${C(n, 2)}.` : `${n} \xD7 ${n - 1} \xD7 ${n - 2} \xF7 6 = ${C(n, 3)}.`;
+      return typed(`${n} nCr ${r} = ?`, C(n, r), why);
+    }
+  };
+
+  // source/topics/binomials/games/find-r.js
+  var game8 = {
+    id: "findr",
+    name: "Find r",
+    icon: "\u{1F50D}",
+    skill: "Finding the right term",
+    how: "Set the power of x equal to the one you want, and solve for r.",
+    next(level) {
+      const hint = (t) => level < 3 ? ` <span class="mu g-small">(power of x = ${t})</span>` : "";
+      if (level === 1 || level === 2 && Math.random() < 0.5) {
+        const n2 = 2 * ri(2, level === 1 ? 4 : 6), r2 = ri(0, n2), k2 = n2 - 2 * r2;
+        return typed(`In (<i>x</i> + 1/<i>x</i>)<sup>${n2}</sup>, which r gives ${xp(k2) || "no x"}?${hint(`${n2} \u2212 2r`)}`, r2, `${n2} \u2212 2r = ${k2}, so r = ${r2}.`);
+      }
+      const n = ri(3, 9), r = ri(0, n), k = 2 * n - 3 * r;
+      return typed(`In (<i>x</i>\xB2 + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k) || "no x"}?${hint(`${2 * n} \u2212 3r`)}`, r, `${2 * n} \u2212 3r = ${k}, so r = ${r}.`);
+    }
+  };
+
+  // source/topics/binomials/games/term-numbers.js
+  var game9 = {
+    id: "termname",
+    name: "Term numbers",
+    icon: "\u{1F522}",
+    skill: "Which term is which",
+    how: "The (r+1)th term uses r, and there is always one more term than the power.",
+    next(level) {
+      const n = ri(...byLevel(level, [4, 8], [4, 14], [8, 20])), v = level === 1 ? [0, 2][ri(0, 1)] : ri(0, 3);
+      if (v === 0) {
+        const t = ri(2, n);
+        return mcq(`The ${ord(t)} term of an expansion uses r = ?`, String(t - 1), [String(t), String(t + 1), String(t - 2)], `The (r+1)th term uses r, so r = ${t} \u2212 1 = ${t - 1}.`);
+      }
+      if (v === 1) {
+        const r = ri(1, n);
+        return mcq(`The term with r = ${r} is the \u2026`, ord(r + 1) + " term", [ord(r) + " term", ord(r + 2) + " term", ord(r - 1 < 1 ? r + 3 : r - 1) + " term"], `r + 1 = ${r + 1}, so it is the ${ord(r + 1)} term.`);
+      }
+      if (v === 2) return mcq(`How many terms does (a + b)<sup>${n}</sup> have?`, String(n + 1), [String(n), String(n + 2), String(2 * n)], `Always one more than the power: ${n} + 1 = ${n + 1}.`);
+      const m = 2 * ri(2, byLevel(level, 5, 7, 10));
+      return mcq(`The middle term of (a + b)<sup>${m}</sup> is the \u2026`, ord(m / 2 + 1) + " term", [ord(m / 2) + " term", ord(m / 2 + 2) + " term", ord(m) + " term"], `${m + 1} terms, so the middle is number ${m / 2 + 1} (r = ${m / 2}).`);
+    }
+  };
+
+  // source/topics/binomials/games/put-x-equals-1.js
+  var game10 = {
+    id: "sumx1",
+    name: "Put x = 1",
+    icon: "1\uFE0F\u20E3",
+    skill: "Sum of the coefficients",
+    how: "Replace x with 1, then work out the bracket.",
+    next(level) {
+      const a = ri(1, byLevel(level, 2, 4, 5)), b = level < 2 ? ri(1, 3) : rnz(-4, 4), n = ri(...byLevel(level, [2, 3], [2, 6], [4, 7]));
+      const v = (BigInt(a) + BigInt(b)) ** BigInt(n);
+      return typed(`Sum of the coefficients of (${a === 1 ? "" : a}<i>x</i> ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup> = ?`, v, `Put x = 1: (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b)})<sup>${n}</sup> = ${sg(a + b)}<sup>${n}</sup> = ${sg(v)}.`);
+    }
+  };
+
+  // source/topics/binomials/games/negative-powers.js
+  var game11 = {
+    id: "extcoef",
+    name: "Negative powers",
+    icon: "\u{1F300}",
+    skill: "Negative and fractional powers",
+    how: "The x\xB2 coefficient of (1 + x)^m is m(m \u2212 1)/2. Fractions like 3/8 are fine.",
+    next(level) {
+      const ms = byLevel(level, [F(-1), F(-2), F(2), F(3)], [F(-1), F(-2), F(-3), F(-4), F(1, 2), F(-1, 2), F(3), F(1, 3)], [F(1, 2), F(-1, 2), F(1, 3), F(-1, 3), F(3, 2), F(-3, 2), F(2, 3)]);
+      const m = ms[ri(0, ms.length - 1)], c2 = fdiv(fmul(m, fsub(m, F(1))), F(2));
+      return typed(`The coefficient of <i>x</i>\xB2 in (1 + <i>x</i>)<sup>${fstr(m)}</sup> is m(m\u22121)/2 = ?`, fstr(c2), `${fstr(m)} \xD7 ${fstr(fsub(m, F(1)))} \xF7 2 = ${fstr(c2)}.`);
+    }
+  };
+
+  // source/topics/binomials/games/game-list.js
+  var GAMES = [game, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11];
 
   // source/settings.js
   var GROUPS = [["expand", "Expanding brackets"], ["find", "Finding terms and coefficients"], ["unknown", "Unknowns and estimates"], ["other", "Other skills"]];
@@ -3359,7 +4222,16 @@ input[type=checkbox] {
   var TABS = ["learn", "practice", "revise", "cheat"];
   var WRITE_SPEED_MS = [0, 70, 38, 16];
   var GAME_SECONDS = 45;
+  var GAME_LIVES = 3;
+  var GAME_POINTS = 10;
+  var GAME_COMBO_EVERY = 3;
+  var GAME_MAX_COMBO = 4;
+  var GAME_COMBO_BONUS_SECONDS = 3;
+  var GAME_BOARD_BONUS_SECONDS = 5;
+  var GAME_LEVEL_UP_EVERY = 6;
+  var GAME_STARS = [60, 180, 360];
   var BEST_SCORE_KEY = "bin_best_";
+  var SOUND_KEY = "infinity_sound";
   var GROUP_DESCRIPTIONS = {
     expand: "Multiplying out brackets with a power",
     find: "Coefficients, the constant term, a particular term and more",
@@ -4039,137 +4911,563 @@ input[type=checkbox] {
     newPractice();
   }
 
-  // source/screens/games-tab.js
-  function initGames() {
-    const bestKey = (id) => BEST_SCORE_KEY + id;
-    const getBest = (id) => {
-      try {
-        return +localStorage.getItem(bestKey(id)) || 0;
-      } catch (e) {
-        return 0;
-      }
-    };
-    const setBest = (id, v) => {
-      try {
-        localStorage.setItem(bestKey(id), v);
-      } catch (e) {
-      }
-    };
-    function renderGames() {
-      $("games").innerHTML = GAMES.map((g) => `<div class="gcard"><h4>${g.name}</h4><p class="what">${g.how}</p><span class="best">Best: ${getBest(g.id)}</span><button class="btn primary small" data-g="${g.id}">Play ${GAME_SECONDS}s</button></div>`).join("");
+  // source/screens/games/game-effects.js
+  function popup(text, from, kind = "good") {
+    const card = document.getElementById("stageCard");
+    if (!card || !from) return;
+    const a = from.getBoundingClientRect(), c = card.getBoundingClientRect(), p = document.createElement("span");
+    p.className = "g-pop " + kind;
+    p.textContent = text;
+    p.style.left = a.left + a.width / 2 - c.left + "px";
+    p.style.top = a.top - c.top + "px";
+    card.appendChild(p);
+    setTimeout(() => p.remove(), 1100);
+  }
+  function confetti(from, count = 24) {
+    if (calm()) return;
+    const card = document.getElementById("stageCard");
+    if (!card || !from) return;
+    const a = from.getBoundingClientRect(), c = card.getBoundingClientRect(), colours = ["var(--accent)", "var(--accent2)", "var(--b3)", "var(--green)", "#facc15"];
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("i");
+      s.className = "g-confetti";
+      const ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 120;
+      s.style.left = a.left + a.width / 2 - c.left + "px";
+      s.style.top = a.top + a.height / 2 - c.top + "px";
+      s.style.background = colours[i % colours.length];
+      s.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+      s.style.setProperty("--dy", Math.sin(ang) * dist - 40 + "px");
+      s.style.setProperty("--spin", Math.random() * 720 - 360 + "deg");
+      card.appendChild(s);
+      setTimeout(() => s.remove(), 1e3);
     }
-    renderGames();
-    let gTimer = null, gRun = null;
-    $("games").addEventListener("click", (e) => {
-      const b = e.target.closest("button[data-g]");
-      if (b) startGame(GAMES.find((g) => g.id === b.dataset.g));
+  }
+  function banner(text, kind = "") {
+    const card = document.getElementById("stageCard");
+    if (!card) return;
+    const b = document.createElement("div");
+    b.className = "g-banner " + kind;
+    b.textContent = text;
+    card.appendChild(b);
+    setTimeout(() => b.remove(), 1300);
+  }
+  function replay(el, cls) {
+    if (!el) return;
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+  var audio = null;
+  var soundOn = () => {
+    try {
+      return localStorage.getItem(SOUND_KEY) === "on";
+    } catch (e) {
+      return false;
+    }
+  };
+  var setSound = (on) => {
+    try {
+      localStorage.setItem(SOUND_KEY, on ? "on" : "off");
+    } catch (e) {
+    }
+  };
+  var TUNES = {
+    right: [[660, 0.07], [880, 0.1]],
+    wrong: [[220, 0.18, "sawtooth"], [180, 0.22, "sawtooth"]],
+    combo: [[523, 0.07], [659, 0.07], [784, 0.07], [1047, 0.14]],
+    level: [[392, 0.09], [523, 0.09], [659, 0.09], [784, 0.2]],
+    tick: [[1e3, 0.03, "square"]],
+    go: [[784, 0.25]],
+    count: [[440, 0.12]],
+    end: [[523, 0.12], [392, 0.12], [330, 0.25]],
+    best: [[523, 0.1], [659, 0.1], [784, 0.1], [1047, 0.1], [1319, 0.3]],
+    match: [[740, 0.06], [988, 0.09]]
+  };
+  function sound(name) {
+    if (!soundOn() || !TUNES[name]) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      let t = audio.currentTime;
+      for (const [f, d, type = "triangle"] of TUNES[name]) {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.type = type;
+        o.frequency.value = f;
+        g.gain.setValueAtTime(1e-4, t);
+        g.gain.exponentialRampToValueAtTime(0.15, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(1e-4, t + d);
+        o.connect(g).connect(audio.destination);
+        o.start(t);
+        o.stop(t + d + 0.02);
+        t += d * 0.85;
+      }
+    } catch (e) {
+    }
+  }
+
+  // source/screens/games/answer-input.js
+  function choiceTiles(box, opts, onPick) {
+    box.innerHTML = `<div class="g-choices${opts.length === 2 ? " two" : ""}">${opts.map((o, i) => `<button class="g-choice" data-i="${i}"><kbd>${opts.length === 2 ? i ? "\u2192" : "\u2190" : i + 1}</kbd><span>${o}</span></button>`).join("")}</div>`;
+    let done = false;
+    const tiles = [...box.querySelectorAll(".g-choice")];
+    const pick = (i) => {
+      if (done || !tiles[i]) return;
+      done = true;
+      tiles.forEach((t) => t.disabled = true);
+      onPick(i, tiles[i]);
+    };
+    tiles.forEach((t, i) => t.onclick = () => pick(i));
+    return (e) => {
+      if (/^[1-4]$/.test(e.key)) pick(+e.key - 1);
+      else if (opts.length === 2 && e.key === "ArrowLeft") pick(0);
+      else if (opts.length === 2 && e.key === "ArrowRight") pick(1);
+      else return false;
+      return true;
+    };
+  }
+  function markChoices(box, ans, picked) {
+    const tiles = box.querySelectorAll(".g-choice");
+    tiles[ans]?.classList.add("good");
+    if (picked !== ans) {
+      tiles[picked]?.classList.add("bad");
+      replay(tiles[picked], "g-shake");
+    }
+  }
+  var KEYS = ["7", "8", "9", "\u232B", "4", "5", "6", "\u2212", "1", "2", "3", "/", "0", ".", "\u2713"];
+  function numberPad(box, onSubmit) {
+    box.innerHTML = `<div class="g-pad"><div class="g-display" id="gDisplay" aria-live="polite"><span class="g-typed"></span><span class="g-caret"></span></div>
+    <div class="g-keys">${KEYS.map((k) => `<button class="g-key${k === "\u2713" ? " go" : ""}" data-k="${k}" aria-label="${{ "\u232B": "delete", "\u2713": "check", "\u2212": "minus", "/": "fraction", ".": "decimal point" }[k] || k}">${k}</button>`).join("")}</div></div>`;
+    const display = box.querySelector(".g-display"), typed2 = box.querySelector(".g-typed");
+    let text = "", done = false;
+    const paint = () => {
+      typed2.textContent = text;
+      display.classList.toggle("empty", !text);
+    };
+    const press = (k) => {
+      if (done) return;
+      if (k === "\u2713") {
+        if (!text) return replay(display, "g-shake");
+        done = true;
+        return onSubmit(text.replace("\u2212", "-"), display);
+      }
+      if (k === "\u232B") text = text.slice(0, -1);
+      else if (k === "\u2212") {
+        if (!text) text = "\u2212";
+      } else if (text.length < 9) text += k;
+      const b = box.querySelector(`[data-k="${k}"]`);
+      if (b) replay(b, "pressed");
+      paint();
+    };
+    box.querySelectorAll(".g-key").forEach((b) => b.onclick = () => press(b.dataset.k));
+    paint();
+    return (e) => {
+      const k = e.key === "Enter" ? "\u2713" : e.key === "Backspace" ? "\u232B" : e.key === "-" ? "\u2212" : e.key;
+      if (!KEYS.includes(k)) return false;
+      press(k);
+      return true;
+    };
+  }
+
+  // source/screens/games/saved-scores.js
+  var key = (id) => BEST_SCORE_KEY + id;
+  var getBest = (id) => {
+    try {
+      return +localStorage.getItem(key(id)) || 0;
+    } catch (e) {
+      return 0;
+    }
+  };
+  var saveBest = (id, score) => {
+    if (score <= getBest(id)) return false;
+    try {
+      localStorage.setItem(key(id), score);
+    } catch (e) {
+    }
+    return true;
+  };
+  var starsFor = (score) => GAME_STARS.filter((s) => score >= s).length;
+  var starRow = (n, cls = "") => `<span class="stars ${cls}" aria-label="${n} of 3 stars">${[0, 1, 2].map((i) => `<span class="star${i < n ? " on" : ""}">\u2605</span>`).join("")}</span>`;
+
+  // source/screens/games/game-results.js
+  function showResults(body, game12, st, reason, { onAgain, onBack }) {
+    const prev = getBest(game12.id), isBest = saveBest(game12.id, st.score), stars = starsFor(st.score);
+    const acc = st.answered ? Math.round(st.correct / st.answered * 100) : 0;
+    body.innerHTML = `<div class="g-results">
+    <p class="g-reason">${reason === "time" ? "\u23F1 Time's up!" : "\u{1F494} Out of lives!"}</p>
+    <div class="g-final" id="gFinal">0</div>
+    ${starRow(0, "big")}
+    <p class="g-best">${isBest ? prev ? `\u{1F389} New best! Your old best was ${prev}.` : "\u{1F389} First score saved!" : prev ? `Your best: ${prev}` : "Have another go!"}</p>
+    <div class="g-stats"><div><b>${st.correct}/${st.answered}</b><span>right</span></div><div><b>${acc}%</b><span>accuracy</span></div>
+      <div><b>${st.bestStreak}</b><span>best streak</span></div><div><b>${st.level}</b><span>level reached</span></div></div>
+    <div class="g-actions"><button class="btn primary" id="gAgain">Play again \u21BB</button><button class="btn" id="gBack">All games</button></div>
+  </div>`;
+    const keys = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        act(onAgain);
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        act(onBack);
+      }
+    };
+    const detach = () => document.removeEventListener("keydown", keys);
+    const act = (fn) => {
+      detach();
+      fn();
+    };
+    document.addEventListener("keydown", keys);
+    body.querySelector("#gAgain").onclick = () => act(onAgain);
+    body.querySelector("#gBack").onclick = () => act(onBack);
+    (async () => {
+      const el = body.querySelector("#gFinal"), steps = calm() ? 1 : 24;
+      for (let i = 1; i <= steps; i++) {
+        if (!el.isConnected) return;
+        el.textContent = Math.round(st.score * i / steps);
+        await sleep(30);
+      }
+      const starEls = body.querySelectorAll(".g-results .star");
+      for (let i = 0; i < stars; i++) {
+        await sleep(260);
+        if (!el.isConnected) return;
+        starEls[i].classList.add("on", "pop");
+        sound("right");
+      }
+      if (isBest && st.score > 0) {
+        await sleep(200);
+        if (el.isConnected) {
+          confetti(el, 40);
+          sound("best");
+        }
+      }
+    })();
+    return detach;
+  }
+
+  // source/screens/games/game-stage.js
+  var RING = 2 * Math.PI * 26;
+  function openStage(game12, { onQuit }) {
+    let el = $("stage");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "stage";
+      el.className = "stage";
+      el.setAttribute("role", "dialog");
+      el.setAttribute("aria-modal", "true");
+      el.innerHTML = `<div class="stage-card" id="stageCard">
+      <div class="g-hud">
+        <div class="g-title"><span class="g-icon" id="gIcon"></span><div><div class="g-name" id="gName"></div><span class="g-level" id="gLevel"></span></div></div>
+        <div class="g-timer" id="gTimer"><svg viewBox="0 0 60 60" aria-hidden="true"><circle class="track" cx="30" cy="30" r="26"/><circle class="ring" id="gRing" cx="30" cy="30" r="26" stroke-dasharray="${RING}"/></svg><span id="gTime"></span></div>
+        <div class="g-score"><span class="g-points" id="gScore" aria-live="polite"></span><span class="g-combo" id="gCombo"></span></div>
+      </div>
+      <div class="g-sub"><div class="g-lives" id="gLives"></div><span class="g-spacer"></span>
+        <button class="g-icon-btn" id="gSound"></button><button class="btn small" id="gQuit">\u2715 Quit</button></div>
+      <div class="g-body" id="gBody"></div>
+    </div>`;
+      document.body.appendChild(el);
+      const paint = () => {
+        $("gSound").textContent = soundOn() ? "\u{1F50A}" : "\u{1F507}";
+        $("gSound").setAttribute("aria-label", soundOn() ? "Sound on" : "Sound off");
+      };
+      $("gSound").onclick = () => {
+        setSound(!soundOn());
+        paint();
+      };
+      paint();
+    }
+    $("gQuit").onclick = onQuit;
+    $("gIcon").textContent = game12.icon;
+    $("gName").textContent = game12.name;
+    el.hidden = false;
+    document.body.classList.add("playing");
+    return el;
+  }
+  function closeStage() {
+    const el = $("stage");
+    if (el) el.hidden = true;
+    document.body.classList.remove("playing");
+  }
+  var stageBody = () => $("gBody");
+  function showTime(msLeft, total) {
+    const s = Math.max(0, Math.ceil(msLeft / 1e3));
+    $("gTime").textContent = s;
+    $("gRing").style.strokeDashoffset = RING * (1 - Math.min(1, Math.max(0, msLeft / total)));
+    $("gTimer").classList.toggle("low", s <= 10);
+  }
+  function showScore(score) {
+    $("gScore").textContent = score;
+  }
+  function showCombo(mult) {
+    const c = $("gCombo");
+    c.textContent = mult > 1 ? `\xD7${mult}` : "";
+    c.classList.toggle("on", mult > 1);
+    if (mult > 1) replay(c, "bump");
+  }
+  function showLevel(level) {
+    $("gLevel").textContent = "Level " + level;
+  }
+  function showLives(lives, lost = false) {
+    $("gLives").innerHTML = [...Array(GAME_LIVES)].map((_, i) => `<span class="heart${i < lives ? "" : " gone"}${lost && i === lives ? " breaking" : ""}">\u2665</span>`).join("");
+    $("gLives").setAttribute("aria-label", `${lives} lives left`);
+  }
+  var flashStage = (kind) => replay($("stageCard"), kind);
+
+  // source/screens/games/match-board.js
+  function matchBoard(box, pairs, { onMatch, onMiss, onCleared }) {
+    const cards = shuffle(pairs.flatMap((p, i) => [{ i, html: p.a }, { i, html: p.b }]));
+    box.innerHTML = `<div class="g-board" style="--cols:${cards.length === 10 ? 5 : 4}">${cards.map((c, k) => `<button class="g-card" data-k="${k}" style="--d:${k * 40}ms"><span>${c.html}</span></button>`).join("")}</div>`;
+    const els = [...box.querySelectorAll(".g-card")];
+    let first = null, busy2 = false, left = pairs.length;
+    els.forEach((el, k) => el.onclick = () => {
+      if (busy2 || el.classList.contains("matched")) return;
+      if (first === k) {
+        el.classList.remove("picked");
+        first = null;
+        return;
+      }
+      if (first === null) {
+        first = k;
+        el.classList.add("picked");
+        return;
+      }
+      const a = els[first], b = el, ca = cards[first], cb = cards[k];
+      first = null;
+      if (ca.i === cb.i) {
+        a.classList.remove("picked");
+        a.classList.add("matched");
+        b.classList.add("matched");
+        a.disabled = b.disabled = true;
+        onMatch(b);
+        if (--left === 0) setTimeout(onCleared, 450);
+      } else {
+        busy2 = true;
+        b.classList.add("picked");
+        replay(a, "g-shake");
+        replay(b, "g-shake");
+        a.classList.add("wrong");
+        b.classList.add("wrong");
+        onMiss(pairs[ca.i], b);
+        setTimeout(() => {
+          a.classList.remove("picked", "wrong");
+          b.classList.remove("picked", "wrong");
+          busy2 = false;
+        }, 700);
+      }
     });
-    function startGame(g) {
-      clearInterval(gTimer);
-      const st = { g, score: 0, t: GAME_SECONDS, cur: null, locked: false };
-      gRun = st;
-      $("arena").hidden = false;
-      $("gname").textContent = g.name;
-      $("gscore").textContent = "0";
-      $("gtime").textContent = String(GAME_SECONDS);
-      $("gbar").style.width = "100%";
-      $("gfb").textContent = "";
-      $("arena").scrollIntoView({ block: "start", behavior: "smooth" });
-      gTimer = setInterval(() => {
-        st.t--;
-        $("gtime").textContent = st.t;
-        $("gbar").style.width = st.t / GAME_SECONDS * 100 + "%";
-        if (st.t <= 0) endGame(st);
-      }, 1e3);
-      nextQ(st);
+    return () => false;
+  }
+
+  // source/screens/games/game-round.js
+  var current = null;
+  function playRound(game12, { onExit }) {
+    current?.stop();
+    const total = GAME_SECONDS * 1e3;
+    const st = { score: 0, lives: GAME_LIVES, streak: 0, bestStreak: 0, correct: 0, answered: 0, level: 1, left: total, paused: true, over: false, keys: null };
+    let frame = 0, last = 0, lastSecond = GAME_SECONDS, timers = [], detachResults = null;
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+    const stop = () => {
+      st.over = true;
+      cancelAnimationFrame(frame);
+      timers.forEach(clearTimeout);
+      document.removeEventListener("keydown", onKey);
+      detachResults?.();
+    };
+    const quit = () => {
+      stop();
+      current = null;
+      closeStage();
+      onExit();
+    };
+    current = { stop };
+    openStage(game12, { onQuit: quit });
+    showScore(0);
+    showCombo(1);
+    showLevel(1);
+    showLives(st.lives);
+    showTime(total, total);
+    const body = stageBody();
+    function onKey(e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        return quit();
+      }
+      if (st.keys && st.keys(e)) e.preventDefault();
     }
-    function nextQ(st) {
-      st.cur = st.g.next();
-      st.locked = false;
-      $("gq").innerHTML = st.cur.q;
-      $("gfb").textContent = "";
-      $("gfb").className = "fb";
-      const ui = $("gui");
-      ui.innerHTML = "";
-      const answer = (ok) => {
-        if (st.locked) return;
-        st.locked = true;
+    document.addEventListener("keydown", onKey);
+    function tick(now) {
+      if (st.over) return;
+      const dt = now - last;
+      last = now;
+      if (!st.paused) {
+        st.left -= dt;
+        const s = Math.ceil(st.left / 1e3);
+        if (s < lastSecond) {
+          lastSecond = s;
+          if (s <= 5 && s > 0) sound("tick");
+        }
+      }
+      showTime(st.left, total);
+      if (st.left <= 0) return finish("time");
+      frame = requestAnimationFrame(tick);
+    }
+    const addTime = (sec) => {
+      st.left += sec * 1e3;
+      lastSecond = Math.ceil(st.left / 1e3);
+      popup(`+${sec}s`, document.getElementById("gTimer"), "time");
+    };
+    const resume = () => {
+      st.paused = false;
+      last = performance.now();
+    };
+    async function countdown() {
+      for (const n of ["3", "2", "1", "Go!"]) {
+        if (st.over) return;
+        body.innerHTML = `<div class="g-count">${n}</div>`;
+        sound(n === "Go!" ? "go" : "count");
+        await sleep(n === "Go!" ? 450 : 650);
+      }
+      if (st.over) return;
+      resume();
+      frame = requestAnimationFrame(tick);
+      ask();
+    }
+    const multiplier = () => Math.min(GAME_MAX_COMBO, 1 + Math.floor((st.streak - 1) / GAME_COMBO_EVERY));
+    function right(from) {
+      const before = st.streak ? multiplier() : 1;
+      st.answered++;
+      st.correct++;
+      st.streak++;
+      st.bestStreak = Math.max(st.bestStreak, st.streak);
+      const mult = multiplier(), pts = GAME_POINTS * mult;
+      st.score += pts;
+      showScore(st.score);
+      showCombo(mult);
+      popup("+" + pts, from);
+      flashStage("hit");
+      sound("right");
+      confetti(from, 10);
+      if (mult > before) {
+        banner(`\xD7${mult} combo!`, "combo");
+        sound("combo");
+        addTime(GAME_COMBO_BONUS_SECONDS);
+      }
+      const level = Math.min(3, 1 + Math.floor(st.correct / GAME_LEVEL_UP_EVERY));
+      if (level > st.level) {
+        st.level = level;
+        showLevel(level);
+        later(() => {
+          banner(`Level ${level}!`, "level");
+          sound("level");
+        }, mult > before ? 800 : 0);
+      }
+    }
+    function wrong(from) {
+      st.answered++;
+      st.streak = 0;
+      st.lives--;
+      showCombo(1);
+      showLives(st.lives, true);
+      flashStage("miss");
+      sound("wrong");
+      popup("\u2717", from, "bad");
+      return st.lives <= 0;
+    }
+    function explain(why, then) {
+      st.paused = true;
+      const w = document.createElement("div");
+      w.className = "g-why";
+      w.setAttribute("role", "status");
+      w.innerHTML = `<p>${why}</p><button class="btn primary small">${st.lives > 0 ? "Next \u2192" : "See results"}</button>`;
+      body.appendChild(w);
+      const go = () => {
+        if (!w.isConnected || st.over) return;
+        w.remove();
+        resume();
+        then();
+      };
+      w.querySelector("button").onclick = go;
+      st.keys = (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          go();
+          return true;
+        }
+        return false;
+      };
+      later(go, st.lives > 0 ? 3500 : 2e3);
+    }
+    function ask() {
+      if (st.over) return;
+      const q = game12.next(st.level);
+      st.keys = null;
+      if (q.type === "match") {
+        body.innerHTML = `<p class="g-prompt">Tap the pairs that go together</p><div class="g-answers"></div><p class="g-hint" aria-live="polite"></p>`;
+        const hint = body.querySelector(".g-hint");
+        st.keys = matchBoard(body.querySelector(".g-answers"), q.pairs, {
+          onMatch: (el) => {
+            right(el);
+            sound("match");
+          },
+          onMiss: (pair, el) => {
+            if (wrong(el)) return later(() => finish("lives"), 700);
+            hint.innerHTML = `Not a pair. Remember: ${pair.why}.`;
+          },
+          onCleared: () => {
+            if (st.over) return;
+            banner("Board cleared!", "combo");
+            addTime(GAME_BOARD_BONUS_SECONDS);
+            later(ask, 700);
+          }
+        });
+        return;
+      }
+      body.innerHTML = `<div class="g-question">${q.q}</div><div class="g-answers"></div>`;
+      const box = body.querySelector(".g-answers");
+      const done = (ok, from) => {
         if (ok) {
-          st.score++;
-          $("gscore").textContent = st.score;
-          $("gfb").className = "fb good";
-          $("gfb").textContent = "\u2713";
-          setTimeout(() => {
-            if (gRun === st && st.t > 0) nextQ(st);
-          }, 350);
+          right(from);
+          later(ask, 550);
         } else {
-          $("gfb").className = "fb bad";
-          $("gfb").innerHTML = "\u2717 " + st.cur.why;
-          setTimeout(() => {
-            if (gRun === st && st.t > 0) nextQ(st);
-          }, 2200);
+          const out = wrong(from);
+          later(() => explain(q.why, out ? () => finish("lives") : ask), 450);
         }
       };
-      if (st.cur.type === "mc") {
-        const o = document.createElement("div");
-        o.className = "opts";
-        st.cur.opts.forEach((t, i) => {
-          const b = document.createElement("button");
-          b.className = "opt";
-          b.innerHTML = t;
-          b.onclick = () => {
-            b.classList.add(i === st.cur.ans ? "good" : "bad");
-            answer(i === st.cur.ans);
-          };
-          o.appendChild(b);
-        });
-        ui.appendChild(o);
-      } else {
-        const f = document.createElement("div");
-        f.className = "fields";
-        const inp = document.createElement("input");
-        inp.id = "ginp";
-        inp.inputMode = "numeric";
-        inp.autocomplete = "off";
-        inp.placeholder = "answer";
-        const go = document.createElement("button");
-        go.className = "btn primary small";
-        go.textContent = "Go";
-        const chk = () => {
-          const v = inp.value;
-          if (v.trim() === "") return;
-          answer(sameNum(v, st.cur.answer));
-        };
-        go.onclick = chk;
-        inp.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") chk();
-        });
-        f.append(inp, go);
-        ui.appendChild(f);
-        setTimeout(() => inp.focus(), 30);
-      }
+      if (q.type === "mc") st.keys = choiceTiles(box, q.opts, (i, tile) => {
+        markChoices(box, q.ans, i);
+        done(i === q.ans, tile);
+      });
+      else st.keys = numberPad(box, (text, display) => {
+        const ok = sameNum(text, q.answer);
+        display.classList.add(ok ? "good" : "bad");
+        if (!ok) display.insertAdjacentHTML("beforeend", `<span class="g-correct">${q.answer}</span>`);
+        done(ok, display);
+      });
     }
-    function endGame(st) {
-      clearInterval(gTimer);
-      gRun = null;
-      const best = getBest(st.g.id);
-      const isBest = st.score > best;
-      if (isBest) setBest(st.g.id, st.score);
-      $("gq").innerHTML = `Time! You scored <span class="hl">${st.score}</span>${isBest ? " \u2014 new best!" : ` (best ${best})`}`;
-      $("gui").innerHTML = "";
-      $("gfb").textContent = "";
-      const b = document.createElement("button");
-      b.className = "btn primary";
-      b.textContent = "Play again";
-      b.onclick = () => startGame(st.g);
-      $("gui").appendChild(b);
-      renderGames();
+    function finish(reason) {
+      if (st.over) return;
+      stop();
+      current = { stop };
+      sound("end");
+      showTime(Math.max(0, st.left), total);
+      detachResults = showResults(body, game12, st, reason, { onAgain: () => playRound(game12, { onExit }), onBack: quit });
     }
-    $("gquit").onclick = () => {
-      clearInterval(gTimer);
-      gRun = null;
-      $("arena").hidden = true;
+    countdown();
+  }
+
+  // source/screens/games/games-tab.js
+  function initGames() {
+    const render = () => {
+      $("games").innerHTML = GAMES.map((g) => {
+        const best = getBest(g.id);
+        return `<div class="gcard" data-g="${g.id}">
+      <div class="gcard-top"><span class="gcard-icon" aria-hidden="true">${g.icon}</span>${g.type === "match" ? '<span class="gcard-new">New</span>' : ""}${starRow(starsFor(best))}</div>
+      <h4>${g.name}</h4><p class="gcard-skill">${g.skill}</p><p class="what">${g.how}</p>
+      <div class="gcard-foot"><span class="best">${best ? `Best ${best}` : "Not played yet"}</span><button class="btn primary small" data-g="${g.id}">Play \u25B6</button></div>
+    </div>`;
+      }).join("");
     };
+    render();
+    $("games").addEventListener("click", (e) => {
+      const c = e.target.closest("[data-g]");
+      if (c) playRound(GAMES.find((g) => g.id === c.dataset.g), { onExit: render });
+    });
   }
 
   // source/start.js

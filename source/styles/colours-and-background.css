@@ -35,7 +35,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16p
 @keyframes drift3{to{transform:translate(-22vmax,14vmax) scale(.85)}}
 
 /* glass surfaces */
-.glass,.sheetHome,.qcard,.subfolder,.folder,.explain,.custom,.pq,.gcard,.arena,.formula,.searchbar input,.ask{
+.glass,.sheetHome,.qcard,.subfolder,.folder,.explain,.custom,.pq,.gcard,.formula,.searchbar input,.ask{
   background:var(--glass);border:1px solid var(--glassb);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--shadow)}
 
 /* entrance animations */

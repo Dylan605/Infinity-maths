@@ -3,5 +3,6 @@
 @import url('./colours-and-background.css');
 @import url('./page-layout.css');
 @import url('./notebook.css');
-@import url('./practice-games-cheat-sheet.css');
+@import url('./practice-and-cheat-sheet.css');
+@import url('./games.css');
 @import url('./small-screens.css');

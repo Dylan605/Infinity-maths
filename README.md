@@ -20,7 +20,7 @@ build.mjs                          packs source/ into index.html
 source/
   page.html                        the page itself: tabs, buttons, notebook
   start.js                         starts the app: loads the questions, then each screen
-  settings.js                      group names, difficulty names, tabs, writing speeds, game length
+  settings.js                      group names, difficulty names, tabs, writing speeds, and game rules (time, lives, combos, stars)
   images/                          logo-light, logo-dark, tab-icon
   styles/
     all-styles.css                 loads the others in order (keep the order)
@@ -28,7 +28,8 @@ source/
     colours-and-background.css     light and dark colours, fonts, moving background, glass
     page-layout.css                logo, folders, tabs, cards, buttons, forms
     notebook.css                   the notebook and its writing animations
-    practice-games-cheat-sheet.css those three tabs
+    practice-and-cheat-sheet.css   the Practice tab, the question form and the cheat sheet
+    games.css                      the revision games: cards, game stage, number pad, effects, results
     small-screens.css              phones, and less motion for people who ask for it
   helpers/                         small tools used everywhere
     page-helpers.js                find an element, wait, check reduced motion
@@ -55,7 +56,11 @@ source/
       unknowns-and-estimates/      find-k-from-a-coefficient, find-k-when-coefficients-are-equal,
                                    find-n-from-a-coefficient, estimate-a-number, negative-or-fractional-power
       other-skills/                evaluate-ncr, solve-ncr-for-n, expand-with-letters
-    game-questions.js              questions for the revision games
+    games/                         one file per revision game
+      game-list.js                 every game, in the order shown on the tab
+      game-helpers.js              multiple-choice, typed answers, values per level
+      match-up.js  pascal-race.js  power-pairs.js  sign-spotter.js  times-x.js  like-terms.js
+      ncr-sprint.js  find-r.js  term-numbers.js  put-x-equals-1.js  negative-powers.js
   notebook/
     notebook.js                    writes the working line by line, asks Try-it questions
     number-animation.js            numbers merging into the answer
@@ -65,7 +70,15 @@ source/
     learn-tab.js                   Learn folders and question cards
     your-own-question.js           the type-your-own-question form
     practice-tab.js                Practice
-    games-tab.js                   Revision games and best scores
+    games/
+      games-tab.js                 the game cards on the Revision games tab
+      game-round.js                one round: countdown, clock, lives, combos, levels
+      game-stage.js                the full-screen stage and its scoreboard
+      answer-input.js              answer tiles (tap or 1–4) and the number pad
+      match-board.js               the Match up board
+      game-effects.js              floating points, confetti, banners, sound
+      game-results.js              the end-of-round screen
+      saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
 ```
 
@@ -94,6 +107,10 @@ Make a new file in the right group folder under `topics/binomials/question-types
 ## When to make a new file
 
 Whenever the new code is a separate thing: a question type, a screen, a topic, or styles for a new screen. Split any file that passes about 150 lines or starts doing two jobs. `CLAUDE.md` has the full rules.
+
+## Adding a revision game
+
+Make a file in `topics/binomials/games/` that exports `game = {id, name, icon, skill, how, next(level)}`, copying a neighbour, and add it to `game-list.js`. `next(level)` gets 1, 2 or 3 and returns a question from `mcq(...)` or `typed(...)` in `game-helpers.js`, or `{type:'match', pairs}`. The round, scoring, levels and effects come for free.
 
 ## Adding a topic
 
