@@ -23,7 +23,8 @@ export const lineAns=(a,b,c,disp)=>({kind:'line',a:+a,b:+b,c:+c,disp});
 /* an inequality or set of values: parts are intervals {lo, hi, loIn, hiIn} (lo, hi may be ±Infinity), joined by "or" */
 export const ineqAns=(parts,disp)=>({kind:'ineq',parts,disp});
 const num=v=>typeof v==='object'?Number(v.n)/Number(v.d):v;
-const sym=(strict,less=true)=>less?(strict?'<':'≤'):(strict?'>':'≥');
+/* written as HTML, so a < next to a fraction's markup stays good HTML */
+const sym=(strict,less=true)=>less?(strict?'&lt;':'≤'):(strict?'&gt;':'≥');
 /* x < a (or ≤ when strict is false) */
 export const below=(a,strict=true,x='x')=>ineqAns([{lo:-Infinity,hi:num(a),hiIn:!strict}],`${x} ${sym(strict)} ${showValue(a)}`);
 export const above=(a,strict=true,x='x')=>ineqAns([{lo:num(a),hi:Infinity,loIn:!strict}],`${x} ${sym(strict,false)} ${showValue(a)}`);

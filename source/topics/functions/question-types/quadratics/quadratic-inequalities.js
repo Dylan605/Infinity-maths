@@ -19,8 +19,7 @@ const RELS=['>','<','>=','<='];
 const ineq=P=>P.moved?`${terms([[P.a,xp(2)]])} ${REL[P.rel]} ${terms([[-P.b,X],[-P.c,'']])}`:`${quad(P.a,P.b,P.c)} ${REL[P.rel]} 0`;
 /* is the solution outside the roots (the arms of the parabola) or between them? strict means < or > */
 const shapeOf=P=>{const up=P.rel[0]==='>',out=up===(P.a>0);return {up,out,strict:P.rel.length===1}};
-const html=a=>({...a,disp:a.disp.replace(/ < /g,' &lt; ').replace(/ > /g,' &gt; ')});
-function answer(P){const [r1,r2]=factorsOf(P).roots,{out,strict}=shapeOf(P);return html(out?outside(r1,r2,strict):between(r1,r2,strict))}
+function answer(P){const [r1,r2]=factorsOf(P).roots,{out,strict}=shapeOf(P);return out?outside(r1,r2,strict):between(r1,r2,strict)}
 const txt=h=>h.replace(/<sup>2<\/sup>/g,'²').replace(/<[^>]+>/g,'');
 const at=(P,x)=>fadd(fadd(fmul(F(P.a),fmul(x,x)),fmul(F(P.b),x)),F(P.c));
 

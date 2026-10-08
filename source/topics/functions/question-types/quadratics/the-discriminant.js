@@ -25,12 +25,10 @@ export function discOf({A,B,C}){const sq=[B[0]*B[0],2*B[0]*B[1],B[1]*B[1]],ac=[4
 const polyK=([d0,d1,d2])=>terms([[d2,K+'²'],[d1,K],[d0,'']]);
 /* the k values that make Δ = 0, smallest first */
 export function critical(P){const [d0,d1,d2]=discOf(P).d;if(d2===0)return [F(-d0,d1)];const fs=factorsOf({a:d2,b:d1,c:d0});return fs?fs.roots:null}
-/* the shown answer uses &lt; and &gt;, so it stays good HTML next to a fraction */
-const html=a=>({...a,disp:a.disp.replace(/ < /g,' &lt; ').replace(/ > /g,' &gt; ')});
 function answer(P){const ks=critical(P),[,d1,d2]=discOf(P).d;
   if(P.want==='equal')return listAns(ks);
-  if(!d2)return html((P.want==='two')===(d1>0)?above(ks[0],true,'k'):below(ks[0],true,'k'));
-  return html(P.want==='two'?outside(ks[0],ks[1],true,'k'):between(ks[0],ks[1],true,'k'))}
+  if(!d2)return ((P.want==='two')===(d1>0)?above(ks[0],true,'k'):below(ks[0],true,'k'));
+  return P.want==='two'?outside(ks[0],ks[1],true,'k'):between(ks[0],ks[1],true,'k')}
 
 T('discrim',{name:'The discriminant',group:'quadratics',syllabus:{aa:'SL 2.7'},
   blurb:'Δ = b² − 4ac tells you how many roots a quadratic has: use it to find an unknown k.',
@@ -48,7 +46,7 @@ T('discrim',{name:'The discriminant',group:'quadratics',syllabus:{aa:'SL 2.7'},
       L(`Δ = ${sb} ${MINUS} ${sAC}`,'Put a, b and c into b² − 4ac.'),
       L(`Δ = ${both(B)?`(${polyK(sq)})`:polyK(sq)} ${MINUS} ${ac.filter(Boolean).length>1?`(${polyK(ac)})`:polyK(ac)}`,'Expand each part.',undefined,
         [`${both(B)?`(${co(B)})² = (${co(B)})(${co(B)}) = ${polyK(sq)}`:`${sb} = ${polyK(sq)}`}, and ${sAC} = ${polyK(ac)}.`]),
-      L(`Δ = ${polyK(d)}`,'Collect like terms.',Nm(`In the simplified Δ, what is the term with no ${strip(K)}?`,[{label:'number',answer:String(d0)}],`${plain(sq[0])} − ${plain(ac[0])} = ${plain(d0)}.`),[`Take away every term of the second part: the signs inside the bracket all change.`])]);
+      L(`Δ = ${polyK(d)}`,'Collect like terms.',Nm(`In the simplified Δ, what is the term with no ${strip(K)}?`,[{label:'number',answer:String(d0)}],`${plain(sq[0])} − ${plain(ac[0])} = ${plain(d0)}.`),ac.filter(Boolean).length>1?[`Take away every term in the second bracket: the signs inside it all change.`]:undefined)]);
     const sl=[],rel=cond.slice(2);
     if(d2===0){const kk=ks[0],flip=d1<0,move=d0?`${d0>0?'Take away':'Add'} ${Math.abs(d0)} on both sides.`:'There is nothing to move.';
       if(want==='equal')sl.push(L(`${polyK(d)} = 0`,'Set Δ = 0.'),L(`${K} = ${val(kk)}`,`${move} Then divide by ${val(d1)}.`,Nm('What is k?',[{label:'k',answer:fstr(kk)}],`k = ${plain(-d0)} ÷ ${plain(d1)} = ${plain(kk)}.`)));
