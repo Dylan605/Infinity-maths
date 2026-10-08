@@ -1,0 +1,1328 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Infinity Maths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: a leather cover (home, with tabs on the page edge) that opens to a cream lined page inside a leather frame; each line of working is handwritten in */
+:root{
+  --leather:#4b2a16; --leather2:#6a3d20; --stitch:#d2a86a; --emboss:#e9cf9c;
+  --paper:#f7f0dc; --rule:#d9c8a0; --margin:#c86b5a; --card:#fdf8ea; --ink:#1f2a5c; --pencil:#6e6557; --red:#a3362a; --green:#2a6e45;
+  --hl:#ffe68a; --line:#d8cbaa; --btn:#1f2a5c; --btnfg:#f7f0dc; --shade:rgba(31,42,92,.08);
+  --f-hand:"Caveat","Comic Sans MS",cursive; --f-math:"Patrick Hand","Comic Sans MS",cursive; --f-ui:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --leather:#2a170b; --leather2:#3e2412; --stitch:#a57c47; --emboss:#d8b67f;
+  --paper:#2a2518; --rule:#3f3826; --margin:#8a4b3f; --card:#332d1e; --ink:#e4dcc4; --pencil:#b3a88e; --red:#ff9a8c; --green:#7fd6a0;
+  --hl:#5c5120; --line:#4a4230; --btn:#e4dcc4; --btnfg:#2a2518; --shade:rgba(228,220,196,.1); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --leather:#2a170b; --leather2:#3e2412; --stitch:#a57c47; --emboss:#d8b67f;
+  --paper:#2a2518; --rule:#3f3826; --margin:#8a4b3f; --card:#332d1e; --ink:#e4dcc4; --pencil:#b3a88e; --red:#ff9a8c; --green:#7fd6a0;
+  --hl:#5c5120; --line:#4a4230; --btn:#e4dcc4; --btnfg:#2a2518; --shade:rgba(228,220,196,.1); color-scheme:dark}
+html,body{height:100%}
+body{background:var(--leather);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5}
+.leather{background-color:var(--leather);background-image:
+  radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.07),transparent 50%),
+  radial-gradient(ellipse at 80% 90%,rgba(0,0,0,.25),transparent 55%),
+  repeating-radial-gradient(circle at 37% 61%,transparent 0 3px,rgba(0,0,0,.06) 3px 4px),
+  repeating-radial-gradient(circle at 71% 23%,transparent 0 5px,rgba(255,255,255,.035) 5px 6px)}
+.paper{background-color:var(--paper);background-image:linear-gradient(to bottom,transparent 31px,var(--rule) 31px,var(--rule) 32px);background-size:100% 32px}
+.cover{max-width:900px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:14px;min-height:100%}
+.plate{border:2px dashed var(--stitch);border-radius:14px;padding:18px 20px;color:var(--emboss);text-align:center}
+.plate h1{font-family:var(--f-hand);font-weight:700;font-size:2.8rem;line-height:1;margin:0;letter-spacing:.02em;text-shadow:0 1px 0 rgba(0,0,0,.6),0 -1px 0 rgba(255,255,255,.15)}
+.plate p{margin:6px 0 0;opacity:.85;font-size:.95rem}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 8px}
+.tab{font:inherit;font-weight:700;background:var(--leather2);border:1.5px solid var(--stitch);border-bottom:0;border-radius:10px 10px 0 0;padding:8px 14px;color:var(--emboss);cursor:pointer;opacity:.75}
+.tab[aria-selected="true"]{background:var(--paper);color:var(--ink);opacity:1}
+.sheetHome{background:var(--paper);border:3px solid var(--stitch);border-radius:6px;padding:20px 18px 28px;display:flex;flex-direction:column;gap:14px;box-shadow:inset 0 0 0 6px var(--card),0 10px 30px rgba(0,0,0,.4)}
+.hub{display:flex;flex-direction:column;gap:18px}
+.searchbar{display:flex;flex-direction:column;gap:6px}
+.searchbar .tag{color:var(--emboss)}
+.searchbar input{font:inherit;font-size:1.15rem;padding:12px 16px;border-radius:999px;border:2px solid var(--stitch);background:var(--paper);color:var(--ink);width:100%;min-width:0}
+.searchbar input:focus-visible{outline:2px solid var(--emboss);outline-offset:2px}
+.folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.folder{font:inherit;text-align:left;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:6px;padding:34px 18px 18px;border-radius:4px 14px 10px 10px;border:2px dashed var(--stitch);background:var(--leather2);color:var(--emboss);margin-top:14px}
+.folder::before{content:"";position:absolute;top:-14px;left:-2px;width:90px;height:16px;background:var(--leather2);border:2px dashed var(--stitch);border-bottom:0;border-radius:8px 8px 0 0}
+.folder:hover{background:var(--leather)}
+.folder:focus-visible{outline:2px solid var(--emboss);outline-offset:3px}
+.folder[hidden]{display:none!important}
+.fname{font-family:var(--f-hand);font-size:2rem;font-weight:700;line-height:1}
+.fdesc{font-size:.95rem;opacity:.9}
+.fcount{font-size:.8rem;opacity:.7}
+.crumb{display:flex;align-items:center;gap:12px;color:var(--emboss)}
+.crumb .btn{background:var(--leather2);color:var(--emboss);border-color:var(--stitch)}
+.crumbname{font-family:var(--f-hand);font-size:1.8rem;font-weight:700}
+.panel{display:flex;flex-direction:column;gap:14px}
+.panel[hidden]{display:none!important}
+h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
+.explain{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 16px;max-width:70ch}
+.explain p{margin:0 0 6px}.explain p:last-child{margin:0}
+.qlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.qcard{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tag{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);font-weight:700}
+.qcard .m{font-size:1.5rem;overflow-x:auto}
+.what{color:var(--pencil);font-size:.9rem;margin:0}
+.btn{font:inherit;font-weight:700;border-radius:8px;padding:9px 16px;cursor:pointer;border:1.5px solid var(--btn);background:var(--card);color:var(--ink)}
+.btn.primary{background:var(--btn);color:var(--btnfg)}
+.btn.small{padding:5px 10px;font-size:.88rem}
+.btn:disabled{opacity:.4;cursor:default}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,.opt:focus-visible,select:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.m{font-family:var(--f-math);font-size:1.35rem;line-height:1.35}
+.m i{font-style:italic}
+.custom{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px 16px}
+.custom input[type=text]{font:inherit;font-family:var(--f-math);font-size:1.4rem;border:1.5px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--paper);color:var(--ink);width:100%;min-width:0}
+.rowb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rowb label{display:flex;align-items:center;gap:6px;font-size:.92rem}
+.preview{font-family:var(--f-math);font-size:1.5rem;min-height:1.6em}
+.err{color:var(--red);font-size:.92rem;margin:0}
+.hint{color:var(--pencil);font-size:.92rem;margin:0}
+
+/* open notebook */
+.book{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;padding:8px;padding-top:calc(8px + env(safe-area-inset-top,0px));padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+.book[hidden]{display:none!important}
+.inner{flex:1;display:flex;flex-direction:column;border:3px solid var(--stitch);border-radius:8px;overflow:hidden;background:var(--paper);box-shadow:inset 0 0 0 5px var(--card),0 10px 40px rgba(0,0,0,.5);min-height:0}
+.topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1.5px solid var(--line);background:var(--card);flex-wrap:wrap}
+.topbar .title{font-family:var(--f-hand);font-size:1.5rem;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog{display:flex;gap:5px;flex-wrap:wrap}
+.prog span{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink)}
+.prog span.on{background:var(--ink)}
+.page{flex:1;overflow:auto;position:relative;cursor:pointer;min-height:0}
+.sheet{min-height:100%;padding:16px 16px 140px 56px;position:relative}
+.sheet::before{content:"";position:absolute;top:0;bottom:0;left:40px;width:2px;background:var(--margin)}
+@media (min-width:600px){.sheet{padding-left:80px}.sheet::before{left:60px}}
+.sheet>*{position:relative}
+.sh{font-family:var(--f-hand);font-weight:700;font-size:2rem;line-height:32px;margin:0;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:5px}
+.intro{font-family:var(--f-hand);font-size:1.45rem;line-height:32px;color:var(--pencil);margin:0;max-width:60ch}
+.row{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-top:8px}
+.row .m{font-size:1.6rem;line-height:32px;min-width:0;overflow-x:auto;max-width:100%}
+.row .m.big{font-size:2.1rem;line-height:1.3}
+.side{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:6px;padding-top:4px}
+.note{font-family:var(--f-hand);font-size:1.3rem;line-height:1.2;color:var(--red);max-width:44ch;margin:0;opacity:0;transform:translateX(-6px);transition:opacity .4s,transform .4s}
+.note.on{opacity:1;transform:none}
+.note::before{content:"→ "}
+.more{font-family:var(--f-ui);font-size:.95rem;line-height:1.45;background:var(--card);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:8px 12px;max-width:50ch;margin:0}
+.more .m{font-size:1.15rem;line-height:1.4}
+.moreBtn{align-self:flex-start;opacity:0;transition:opacity .4s}
+.moreBtn.on{opacity:1}
+.ch{opacity:0}
+.ch.on{opacity:1;animation:ink .14s ease-out}
+@keyframes ink{from{opacity:.2;transform:translateY(2px) scale(1.08)}to{opacity:1;transform:none}}
+.ch.pen{border-bottom:3px solid var(--ink)}
+.hl{background:var(--hl);border-radius:4px;padding:0 4px}
+.ring{border:2px solid var(--red);border-radius:40%/60%;padding:0 6px}
+.bn{display:inline-flex;flex-direction:column;align-items:center;line-height:1;font-size:.72em;vertical-align:middle;padding:.1em .35em;margin:0 .1em;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:45%/50%}
+.mu{color:var(--pencil)}
+.answer{background:var(--hl);border-radius:6px;padding:4px 10px;display:inline-block}
+.tap{position:absolute;right:16px;bottom:16px;font-family:var(--f-hand);font-size:1.2rem;color:var(--pencil);pointer-events:none;opacity:.8}
+.ask{background:var(--card);border:2px dashed var(--red);border-radius:12px;padding:14px 16px;margin:10px 0;display:flex;flex-direction:column;gap:10px;max-width:560px;cursor:default}
+.ask .q{font-family:var(--f-hand);font-size:1.45rem;line-height:1.2;margin:0}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-family:var(--f-math);font-size:1.25rem;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:6px 14px;cursor:pointer}
+.opt.good{border-color:var(--green);background:var(--shade)}
+.opt.bad{border-color:var(--red);text-decoration:line-through;opacity:.6}
+.fields{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.fields label{display:flex;flex-direction:column;gap:3px;font-size:.8rem;color:var(--pencil)}
+.fields input{font:inherit;font-family:var(--f-math);font-size:1.3rem;width:6em;border:1.5px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--paper);color:var(--ink)}
+.fb{font-family:var(--f-hand);font-size:1.3rem;line-height:1.2;margin:0;min-height:1.3em}
+.fb.good{color:var(--green)}.fb.bad{color:var(--red)}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.bottom{display:flex;gap:8px;align-items:center;padding:10px 12px;border-top:1.5px solid var(--line);background:var(--card);flex-wrap:wrap}
+.bottom .spacer{flex:1}
+.bottom label{display:flex;align-items:center;gap:6px;font-size:.88rem;color:var(--pencil)}
+
+/* practice + games */
+.pq{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.pq .m{font-size:1.6rem;overflow-x:auto}
+.pq input{font:inherit;font-family:var(--f-math);font-size:1.3rem;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--paper);color:var(--ink);width:100%;max-width:520px;min-width:0}
+.score{font-family:var(--f-hand);font-size:1.4rem;color:var(--pencil)}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gcard{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.gcard h4{font-family:var(--f-hand);font-size:1.5rem;margin:0;line-height:1}
+.gcard .best{font-size:.85rem;color:var(--pencil)}
+.arena{background:var(--card);border:2px solid var(--stitch);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.arena[hidden]{display:none!important}
+.hud{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--f-hand);font-size:1.4rem}
+.hud .t{color:var(--red)}
+.gq{font-family:var(--f-math);font-size:1.8rem;line-height:1.3;overflow-x:auto}
+.gq .m{font-size:inherit}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red);transition:width 1s linear}
+@media (prefers-reduced-motion:reduce){.ch.on,.shake{animation:none}.note,.moreBtn,.bar i{transition:none}}
+
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;font-size:.85em;margin:0 .12em}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .2em}
+.fr>span:last-child{padding:0 .2em}
+.qs{font-family:var(--f-math);font-size:1.55rem;line-height:1.4;display:block;max-width:34ch}
+.blab{display:flex;flex-direction:column;gap:4px;font-weight:700}
+.blab select,.bfields select{font:inherit;font-weight:400;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);min-width:0;max-width:100%}
+.bfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bfields label{display:flex;flex-direction:column;gap:3px;font-size:.85rem;color:var(--pencil)}
+.bfields label.wide{grid-column:1/-1}
+.cname{font-family:var(--f-hand);font-size:1.5rem;margin:0;line-height:1.05}
+.qcard .m{font-size:1.15rem;overflow-x:auto}
+.cheat h3{margin-top:6px}
+.cheat table{border-collapse:collapse;width:100%;font-size:.95rem}
+.cheat th{text-align:left;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--pencil);border-bottom:2px solid var(--line);padding:6px 10px 6px 0}
+.cheat td{padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.cheat .scroll{overflow-x:auto}
+.cheat ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.formula{font-family:var(--f-math);font-size:1.4rem;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;overflow-x:auto}
+.topbar .title{overflow-wrap:anywhere}
+@media (max-width:520px){.topbar .title{order:3;flex-basis:100%;white-space:normal;font-size:1.25rem}}
+.rowb select{font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);min-width:0;max-width:100%}
+</style>
+
+<div class="cover leather" id="home">
+  <div class="plate"><h1>Infinity Maths</h1><p>Every topic, written out step by step and explained until it makes sense.</p></div>
+
+  <div id="hub" class="hub">
+    <div class="searchbar">
+      <label for="search" class="tag">Search for a topic</label>
+      <input type="search" id="search" placeholder="Try: binomial, pascal, nCr, expand…" autocomplete="off">
+    </div>
+    <div class="folders" id="folders">
+      <button class="folder" id="f-binomial" data-keys="binomial binomials binomial expansion expand expansion pascal pascals triangle ncr combinations choose algebra powers brackets series coefficient constant term independent of x middle term ascending powers approximation estimate negative fractional power sum of coefficients greatest coefficient unknown k find n factorial theorem">
+        <span class="fico" aria-hidden="true"></span>
+        <span class="fname">Binomials</span>
+        <span class="fdesc">The whole topic: expansion, Pascal's triangle, nCr, coefficients, terms, unknowns, estimates and negative or fractional powers</span>
+        <span class="fcount">18 question types · watch, do it with me, practice, revision games, cheat sheet</span>
+      </button>
+    </div>
+    <p class="hint empty" id="noresult" hidden style="color:var(--emboss)">Nothing matches that yet. Only Binomials has been added so far.</p>
+  </div>
+
+  <div id="folderView" hidden>
+  <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname">Binomials</span></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-t="learn">Watch &amp; learn</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="guided">Do it with me</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="practice">Practice</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="revise">Revision games</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="cheat">Cheat sheet</button>
+  </div>
+  <div class="sheetHome paper">
+
+  <section class="panel" id="p-learn">
+    <div class="explain">
+      <p><b>What the words mean.</b> A <b>binomial</b> is a bracket with two things in it, like (2x + 3). The <b>power</b> on the bracket says how many times it is multiplied by itself. <b>Expand</b> means multiply it all out, and <b>simplify</b> means add terms with the same power of x.</p>
+      <p>Choose what your question asks, type it in, and the notebook writes the working one line at a time. If a line doesn't make sense, press <b>I don't get this</b> and it explains it another way.</p>
+    </div>
+    <div class="custom" id="bLearn"></div>
+    <h3>Every type of question</h3>
+    <p class="hint">Each type has a worked example. Press one to watch it.</p>
+    <div class="qlist" id="typeListLearn"></div>
+  </section>
+
+  <section class="panel" id="p-guided" hidden>
+    <div class="explain"><p>Same working, but the notebook stops and asks you to fill in a number or pick the next step before it writes it. Hints if you're stuck, and "Show me" after two tries.</p></div>
+    <div class="custom" id="bGuided"></div>
+    <h3>Every type of question</h3>
+    <p class="hint">Press one to work through its example with the notebook asking you questions.</p>
+    <div class="qlist" id="typeListGuided"></div>
+  </section>
+
+  <section class="panel" id="p-practice" hidden>
+    <div class="explain"><p>New questions every time, from every type. Type your answer and check it. Stuck? Press <b>Hint</b>, or <b>Show me the working</b> to open that exact question in the notebook.</p>
+      <p class="hint">Type powers with ^ like <b>2x^5 + 11x^4</b>. Fractions like <b>3/4</b> are fine. Spaces don't matter.</p></div>
+    <div class="rowb"><label class="blab">Question type<select id="pType"></select></label><button class="btn" id="pNew">New question</button></div>
+    <div class="score" id="score">Correct: 0 / 0</div>
+    <div class="pq" id="pq"></div>
+  </section>
+
+  <section class="panel" id="p-revise" hidden>
+    <div class="explain"><p>Quick-fire games, 45 seconds each. They train the small skills that every binomial question needs, so the real thing feels slow and easy. Your best scores are saved on this device.</p></div>
+    <div class="games" id="games"></div>
+    <div class="arena" id="arena" hidden>
+      <div class="hud"><span id="gname"></span><span class="t">⏱ <span id="gtime">45</span>s</span><span>Score <span id="gscore">0</span></span><span class="spacer"></span><button class="btn small" id="gquit">Quit</button></div>
+      <div class="bar"><i id="gbar" style="width:100%"></i></div>
+      <div class="gq" id="gq"></div>
+      <div id="gui"></div>
+      <p class="fb" id="gfb"></p>
+    </div>
+  </section>
+
+  <section class="panel cheat" id="p-cheat" hidden>
+    <div class="explain"><p>Everything you need in one place. Read it before a test, then try the revision games.</p></div>
+    <h3>The three things to know</h3>
+    <div class="formula">T<sub>r+1</sub> = <span class="bn"><span>n</span><span>r</span></span> (first)<sup>n−r</sup> (second)<sup>r</sup> &nbsp;&nbsp; r = 0, 1, 2 … n</div>
+    <ul>
+      <li><b>nCr</b> comes from Pascal's triangle or your calculator's nCr button. nC0 = 1, nC1 = n, nC2 = n(n−1)/2.</li>
+      <li>There are <b>n + 1 terms</b>. The two powers always add up to n.</li>
+      <li>The (r+1)th term uses r. So the 4th term uses r = 3.</li>
+    </ul>
+    <h3>Read the wording, pick the method</h3>
+    <div class="scroll"><table>
+      <thead><tr><th>The question says…</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>"Expand and simplify"</td><td>Use the pattern for every r, add the terms. If there is another bracket, multiply, then collect like terms.</td></tr>
+        <tr><td>"First three and last two terms, do not simplify"</td><td>Write nCr × (first)<sup>n−r</sup> × (second)<sup>r</sup> for r = 0, 1, 2, n−1, n. Do not calculate.</td></tr>
+        <tr><td>"Coefficient of x<sup>k</sup>"</td><td>Find the power of x in terms of r, set it equal to k, solve for r, then work out that one term.</td></tr>
+        <tr><td>"Constant term" or "independent of x"</td><td>Same as above with k = 0.</td></tr>
+        <tr><td>"Coefficient of x<sup>k</sup> in (…)(…)<sup>n</sup>"</td><td>Find two coefficients from the long bracket (x<sup>k−1</sup> and x<sup>k</sup>), multiply each by its partner, add.</td></tr>
+        <tr><td>"The 4th term" / "the term in position…"</td><td>Use r = (term number) − 1.</td></tr>
+        <tr><td>"Middle term"</td><td>n even: one middle term, r = n/2. n odd: two middle terms.</td></tr>
+        <tr><td>"Ascending powers of x"</td><td>Start with r = 0 (the number term) and go up. Stop at the power you are asked for.</td></tr>
+        <tr><td>"Find k" or "find n"</td><td>Write the coefficient using k (or n), set it equal to the given number, solve.</td></tr>
+        <tr><td>"Estimate 1.02<sup>8</sup>"</td><td>Write it as (1 + 0.02)<sup>8</sup>, expand the first few terms, add.</td></tr>
+        <tr><td>Negative or fractional power</td><td>(1 + y)<sup>m</sup> = 1 + my + m(m−1)/2! y² + m(m−1)(m−2)/3! y³ + … Take out the first term if it is not 1. Valid only for |y| &lt; 1.</td></tr>
+        <tr><td>"Sum of the coefficients"</td><td>Put x = 1. For even or odd powers also put x = −1 and use (f(1) ± f(−1)) ÷ 2.</td></tr>
+        <tr><td>"Greatest coefficient"</td><td>Compare neighbours: t(r+1) ÷ t(r) = (n−r)/(r+1) × b/a. Find where it drops below 1.</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Quick checks</h3>
+    <ul>
+      <li>Powers of the two brackets add to n in every term.</li>
+      <li>Put x = 1 into the question and the answer: they should give the same number.</li>
+      <li>The coefficients are symmetrical: nCr = nC(n−r).</li>
+    </ul>
+    <h3>Common mistakes</h3>
+    <ul>
+      <li>Forgetting to raise the number as well as the x: (2x)³ = 8x³, not 2x³.</li>
+      <li>Losing the minus sign: (−3)² = 9 but (−3)³ = −27. Keep the sign with the second term.</li>
+      <li>Using r = 4 for the 4th term. It is r = 3.</li>
+      <li>Forgetting that multiplying by x raises every power by 1.</li>
+      <li>Using the nCr pattern with a negative or fractional power. That needs the extended formula.</li>
+    </ul>
+  </section>
+
+  </div>
+  </div>
+</div>
+
+<!-- open notebook -->
+<div class="book leather" id="book" hidden>
+  <div class="inner">
+  <div class="topbar">
+    <button class="btn small" id="close">✕ Close</button>
+    <div class="title" id="bkTitle"></div>
+    <div class="prog" id="prog"></div>
+  </div>
+  <div class="page"><div class="sheet paper" id="sheet"></div><div class="tap" id="tapHint">tap to write the next line ✍</div></div>
+  <div class="bottom">
+    <button class="btn" id="bPrev">◀ Step</button>
+    <button class="btn primary" id="bNext">Next line ▶</button>
+    <button class="btn" id="bSkip">Skip step</button>
+    <span class="spacer"></span>
+    <label><input type="checkbox" id="auto"> Auto play</label>
+    <label>Speed <input type="range" id="speed" min="1" max="3" value="2" style="width:80px"></label>
+  </div>
+  </div>
+</div>
+
+<script>
+/* ============ maths helpers ============ */
+const MINUS='−';
+const C=(n,r)=>{let v=1n;for(let i=1;i<=r;i++)v=v*BigInt(n-i+1)/BigInt(i);return v};
+const pw=(c,k)=>{let v=1n;for(let i=0;i<k;i++)v*=c;return v};
+const sg=s=>String(s).replace(/-/g,MINUS);
+const xp=e=>e===0?'':e===1?'<i>x</i>':'<i>x</i><sup>'+sg(e)+'</sup>';
+function mono(c,e,first){ if(c===0n)return''; const neg=c<0n,a=neg?-c:c;
+  const body=(a===1n&&e!==0?'':a.toString())+xp(e);
+  return first?(neg?MINUS:'')+body:(neg?' '+MINUS+' ':' + ')+body}
+function raw(c,e){ if(e<0){const neg=c<0n,a=neg?-c:c;return(neg?MINUS:'')+a+'/'+xp(-e)} return mono(c,e,true)}
+function poly(map){const es=[...map.keys()].filter(e=>map.get(e)!==0n).sort((x,y)=>y-x);
+  return es.length?es.map((e,i)=>mono(map.get(e),e,i===0)).join(''):'0'}
+const add=(m,e,c)=>m.set(e,(m.get(e)||0n)+c);
+const bn=(n,r)=>`<span class="bn"><span>${n}</span><span>${r}</span></span>`;
+const pwr=(base,k)=>k===1?base:`${base}<sup>${k}</sup>`;
+const strip=h=>h.replace(/<[^>]+>/g,'');
+
+function question(cfg){
+  const a=BigInt(cfg.a),b=BigInt(cfg.b);
+  const A=raw(a,cfg.p),Bp=raw(b<0n?-b:b,cfg.q),sign=b<0n?` ${MINUS} `:' + ';
+  let left='';
+  if(cfg.c!==undefined){const m=new Map();add(m,1,BigInt(cfg.c));add(m,0,BigInt(cfg.d));left='('+poly(m)+')'}
+  return {left,A,Bp,sign,B:raw(b,cfg.q),n:cfg.n,html:`${left}(${A}${sign}${Bp})<sup>${cfg.n}</sup>`};
+}
+function expand(cfg){ const a=BigInt(cfg.a),b=BigInt(cfg.b),n=cfg.n,terms=[],map=new Map();
+  for(let r=0;r<=n;r++){const coef=C(n,r),ap=pw(a,n-r),bp=pw(b,r),ea=cfg.p*(n-r),eb=cfg.q*r;
+    const t={r,coef,ap,bp,ea,eb,val:coef*ap*bp,e:ea+eb};terms.push(t);add(map,t.e,t.val)}
+  return {terms,map}}
+
+/* ============ lesson builder ============ */
+function L(m,note,ask,more){return {m,note,ask,more}}
+const TINY=`<p>Tiny example: (x + 1)² means (x + 1)(x + 1).<br>Multiply every bit of the first bracket by every bit of the second:</p><p class="m">x·x = x², &nbsp; x·1 = x, &nbsp; 1·x = x, &nbsp; 1·1 = 1</p><p>Add them: x² + x + x + 1 = <b>x² + 2x + 1</b>. The pattern (nCr and powers) is just a shortcut for doing this many times.</p>`;
+function buildExpand(cfg,mode){
+  const Q=question(cfg),{terms,map}=expand(cfg),n=cfg.n,hasM=cfg.c!==undefined;
+  const full=mode==='full'||(mode!=='terms'&&(hasM||n<=6));
+  const a=BigInt(cfg.a),b=BigInt(cfg.b);
+  const steps=[];
+  const S=(h,intro,lines)=>steps.push({h,intro,lines});
+  const mc=(q,opts,ans,why)=>({type:'mc',q,opts,ans,why});
+  const num=(q,fields,why)=>({type:'num',q,fields,why});
+  const pick=(correct,wrongs)=>{const o=[correct,...[...new Set(wrongs)].filter(w=>w!==correct).slice(0,3)];for(let i=o.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return {opts:o,ans:o.indexOf(correct)}};
+  const Ab=`(${Q.A})`,Bb=`(${Q.B})`;
+
+  // 1 read the question
+  const l1=[L(`<span class="big">${Q.html}</span>`,'This is the question.',null,[`The little number ${n} on the bracket is the <b>power</b>. It means the bracket is multiplied by itself ${n} times: (…)(…)(…)… ${n} of them.`,`Doing that by hand would take ages, so maths has a shortcut called the <b>binomial expansion</b>. That is what the next steps do.`,TINY])];
+  if(hasM){
+    l1.push(L(`<span class="ring">${Q.left}</span> ← bracket on the left`,'Leave this one alone for now. We use it at the end.',null,[`There are two brackets. Only one of them has a power, and that is the one that needs the special pattern. The other one is normal and just gets multiplied in at the end.`]));
+    l1.push(L(`<span class="ring">(${Q.A}${Q.sign}${Q.Bp})<sup>${n}</sup></span> ← bracket with a power`,`This is the hard part. We will use a pattern, not multiply ${n} brackets by hand.`,null,[`"Expand" means: get rid of the brackets by multiplying everything out, so the answer is just a list of terms like 2x⁵ + 11x⁴ + …`,TINY]));
+    l1.push(L(`Plan: 1. expand the power &nbsp; 2. multiply by ${Q.left} &nbsp; 3. tidy up`,'"Simplify" = add together terms with the same power of x.',null,[`"Like terms" are terms with the same power of x. 8x⁴ and 3x⁴ are like terms, so they add to 11x⁴. 8x⁴ and 3x³ are NOT like terms, so they stay apart.`]));
+  }else if(full){
+    l1.push(L(`<span class="ring">${Q.A}</span> is the first term, <span class="ring">${Q.B}</span> is the second term`,'The sign stays with the second term.',null,[`If the bracket is (2x − 3), the second term is −3, not 3. The minus is part of it. That matters later because (−3)² = 9 but (−3)³ = −27.`]));
+    l1.push(L(`Plan: write every term with the pattern, then add them up`,'"Expand and simplify" = no brackets, and no repeated powers of x.',null,[TINY]));
+  }else{
+    l1.push(L(`<span class="ring">${Q.A}</span> is the first term, <span class="ring">${Q.B}</span> is the second term`,'The sign stays with the second term.',null,[`If the bracket is (2x − 3), the second term is −3, not 3. The minus is part of it.`]));
+    l1.push(L(`Only need: first 3 terms + last 2 terms`,'"Do not simplify" = leave the nCr and the powers as they are. No working out.',null,[`The full expansion has ${n+1} terms, which is far too many to write. The question only wants the start and the end, written in the pattern form. You are not asked to calculate anything.`]));
+  }
+  S('Step 1 · Read the question','First, what is actually being asked?',l1);
+
+  // 2 the pattern
+  const nAsk=pick(n,[n+1,n-1,2,n+2]);
+  S('Step 2 · The pattern','Every term in the expansion is made the same way.',[
+    L(`term = ${bn('n','r')} × (first)<sup>n ${MINUS} r</sup> × (second)<sup>r</sup>`,'nCr is a number from Pascal\'s triangle (or the nCr button on your calculator).',
+      mc(`What is n for this question?`,nAsk.opts.map(String),nAsk.ans,`n is the power on the bracket, so n = ${n}.`),
+      [`Three pieces, multiplied together: a <b>number</b> (nCr), the <b>first term</b> to some power, and the <b>second term</b> to some power.`,`r is just a counter. The first term's power is n − r (counting down) and the second term's power is r (counting up). For r = 0 you get ${bn(n,0)}${pwr(Ab,n)}${Bb}<sup>0</sup>. For r = 1 you get ${bn(n,1)}${pwr(Ab,n-1)}${Bb}<sup>1</sup>.`,`${bn('n','r')} is said "n choose r". It is the number of ways to pick r things out of n. You never need to know why it appears, just where to find it: Pascal's triangle or the nCr button.`]),
+    L(`first = <span class="hl">${Q.A}</span>, &nbsp; second = <span class="hl">${Q.B}</span>, &nbsp; n = <span class="hl">${n}</span>`,'Write these down so you do not mix them up.',null,[`Most mistakes come from putting the wrong thing in the pattern. So write the three pieces down before you start.`]),
+    L(`r goes 0, 1, 2, … , ${n}`,`That gives ${n+1} terms in total.`,
+      (()=>{const p=pick(n+1,[n,n+2,2*n]);return mc('How many terms will there be?',p.opts.map(String),p.ans,`r goes from 0 up to ${n}, which is ${n+1} different values.`)})(),
+      [`Count them on your fingers: 0, 1, 2 … ${n}. That is ${n+1} numbers, so ${n+1} terms. It is always one more than the power.`]),
+    L(`powers of first + second always add up to ${n}`,'As the first term\'s power goes down by 1, the second\'s goes up by 1.',null,[`(n − r) + r = n, always. So if the second term has power 3, the first must have power ${n} − 3 = ${n-3}. Good way to check your work.`]),
+  ]);
+
+  // 3 coefficients
+  const l3=[];
+  if(n<=8){
+    for(let i=0;i<=n;i++){
+      const row=[];for(let r=0;r<=i;r++)row.push(C(i,r).toString());
+      const html=`<span class="${i===n?'hl':'mu'}">row ${i}: &nbsp; ${row.join(' &nbsp; ')}</span>`;
+      let ask,more;
+      if(i===n&&n>=2){const want=C(n,2).toString();ask=num(`Row ${n} starts 1, ${n}, … What is the next number? (add the two numbers above it: ${C(n-1,1)} + ${C(n-1,2)})`,[{label:'next number',answer:want}],`${C(n-1,1)} + ${C(n-1,2)} = ${want}.`)}
+      if(i===2)more=[`Row 2 is 1, 2, 1. The middle 2 comes from adding the 1 and 1 in row 1 above it. The 1s on the edges are always there.`];
+      if(i===n)more=[`Reading left to right, these are ${bn(n,0)}, ${bn(n,1)}, ${bn(n,2)} … ${bn(n,n)}. So ${bn(n,1)} = ${C(n,1)} and ${bn(n,2)} = ${C(n,2)}.`,`Your calculator can do it too: type ${n}, press nCr, type 2, press =. You get ${C(n,2)}.`];
+      l3.push(L(html,i===0?'Start with 1.':i===n?`This is our row. These are the nCr numbers for n = ${n}.`:i===1?'Each row starts and ends with 1.':'Each number is the two above it added together.',ask,more));
+    }
+  }else{
+    const rs=[0,1,2,n-1,n];
+    rs.forEach((r,i)=>{const want=C(n,r).toString();
+      l3.push(L(`${bn(n,r)} = ${n} nCr ${r} = <span class="hl">${want}</span>`,
+        i===0?'nC0 is always 1.':i===1?'nC1 is always n.':i===2?'Type n, press nCr, type r on your calculator.':'The end of the row mirrors the start.',
+        i===2?num(`Use your calculator: ${n} nCr 2 = ?`,[{label:`${n} nCr 2`,answer:want}],`${n} × ${n-1} ÷ 2 = ${want}.`):undefined,
+        i===2?[`Without a calculator: nC2 = n × (n−1) ÷ 2 = ${n} × ${n-1} ÷ 2 = ${want}.`]:i===3?[`Pascal's triangle is symmetrical, so ${bn(n,n-1)} = ${bn(n,1)} = ${n} and ${bn(n,n)} = ${bn(n,0)} = 1.`]:undefined))});
+    l3.push(L(`${bn(n,'r')} values: ${rs.map(r=>C(n,r)).join(', ')} …`,'The middle numbers are big but the calculator does them.'));
+  }
+  S(`Step 3 · The nCr numbers`,n<=8?'Pascal\'s triangle gives them. Each number is the sum of the two above it.':`For n = ${n} the triangle is too tall, so use the nCr button.`,l3);
+
+  // 4 write the terms
+  const un=t=>`${bn(n,t.r)}${pwr(Ab,n-t.r)}${pwr(Bb,t.r)}`;
+  if(!full){
+    const rows=[0,1,2,null,n-1,n];
+    const l4=rows.map((r,i)=>{ if(r===null)return L(`+ … `,'The middle terms are not needed.');
+      const t=terms[r];
+      const note=r===0?`r = 0. First term has power ${n}, second has power 0.`:r===n?`r = ${n}. Now the first term has power 0 and the second has all ${n}.`:`r = ${r}. First power ${n-r}, second power ${r}.`;
+      const ask=r===2?num(`r = 2. What power goes on (${Q.A}) and what power on (${Q.B})?`,[{label:`power on (${Q.A})`,answer:String(n-2)},{label:`power on (${Q.B})`,answer:'2'}],`The second term gets r = 2, the first gets what's left: ${n} ${MINUS} 2 = ${n-2}.`):undefined;
+      return L(`${i===0?'':'+ '}${un(t)}`,note,ask,[`Put r = ${r} into the pattern: ${bn('n','r')} becomes ${bn(n,r)}, (first)<sup>n−r</sup> becomes ${pwr(Ab,n-r)}, (second)<sup>r</sup> becomes ${pwr(Bb,r)}. Write them next to each other, nothing else.`])});
+    S('Step 4 · Write the terms','Fill in the pattern for r = 0, 1, 2 and for the last two.',l4);
+    S('Step 5 · Done','That is the full answer for this type of question.',[
+      L(`<span class="answer">${un(terms[0])} + ${un(terms[1])} + ${un(terms[2])} + … + ${un(terms[n-1])} + ${un(terms[n])}</span>`,'Leave it exactly like this. The question said do not simplify.',null,[`If you simplified, you would work out each piece, e.g. ${bn(n,1)} = ${n} and ${pwr(Bb,1)} = ${Q.B}. The question says not to, so stop here.`]),
+      L('Check: nCr numbers go 0, 1, 2 … n. Powers add to n. Sign kept with the second term.','Three things to check before moving on.')]);
+    return {title:`Q: ${Q.html}`,steps};
+  }
+
+  // full expansion: compute each term
+  const l4=terms.map(t=>{
+    const first=mono(t.ap,t.ea,true)||'1',second=mono(t.bp,t.eb,true)||'1';
+    const note=t.r===0?`${Bb}<sup>0</sup> = 1, so this is just ${pwr(Ab,n)}.`:`${bn(n,t.r)} = ${t.coef}, ${pwr(Ab,n-t.r)} = ${first}, ${pwr(Bb,t.r)} = ${second}. Multiply them.`;
+    let ask;
+    if(t.r===1&&n>=2)ask=num(`What is ${pwr(Ab,n-1)}? (raise the number AND the x)`,[{label:'number',answer:t.ap.toString()},{label:'power of x',answer:String(t.ea)}],`${Q.A} to the power ${n-1}: number ${sg(a)}<sup>${n-1}</sup> = ${sg(t.ap)}, and x<sup>${n-1}</sup>.`);
+    const more=[`A power applies to everything inside the bracket. ${pwr(Ab,n-t.r)} means ${Q.A} × ${Q.A} × … (${n-t.r} times). The number part gives ${sg(a)}<sup>${n-t.r}</sup> = ${sg(t.ap)}${t.ea?`, and the x part gives x<sup>${t.ea}</sup>`:''}.`,
+      `${pwr(Bb,t.r)} = ${second}.${t.bp<0n?' A minus to an odd power stays minus.':b<0n?' A minus to an even power becomes plus.':''} Then ${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)} and the x powers add: ${t.ea} + ${t.eb} = ${t.e}.`];
+    return L(`${un(t)} = ${t.coef} × ${first} × ${second} = <span class="hl">${mono(t.val,t.e,true)}</span>`,note,ask,more)});
+  S('Step 4 · Work out each term','Use the pattern for every r, and multiply the three pieces.',l4);
+
+  if(!hasM){
+    S('Step 5 · Final answer','Add the terms up, highest power first.',[
+      L(`${Q.html} = <span class="answer">${poly(map)}</span>`,'No brackets left, and every power of x appears once. Done.',null,[`Quick check: put x = 1. The bracket becomes (${strip(Q.A).replace(/x/g,'1')}${Q.sign}${strip(Q.Bp).replace(/x/g,'1')})<sup>${n}</sup>, and the answer with x = 1 is just all the numbers added up. They should match.`])]);
+    return {title:`Q: ${Q.html}`,steps};
+  }
+
+  S('Step 5 · The bracket is expanded',`So (${Q.A}${Q.sign}${Q.Bp})<sup>${n}</sup> is this long line.`,[
+    L(`(${Q.A}${Q.sign}${Q.Bp})<sup>${n}</sup> = <span class="answer">${poly(map)}</span>`,'No brackets left. Now bring back the bracket from the left.'),
+    L(`${Q.left} × (${poly(map)})`,'Every term inside gets multiplied by BOTH parts of the left bracket.',null,[`Think of ${Q.left} as two separate multipliers. First multiply the whole long line by ${mono(BigInt(cfg.c),1,true)||'0'}, then multiply the whole long line by ${sg(cfg.d)}, then add the two results. That is all "expanding" means.`,TINY])]);
+
+  const c=BigInt(cfg.c),d=BigInt(cfg.d),r1=new Map(),r2=new Map(),tot=new Map();
+  const es=[...map.keys()].filter(e=>map.get(e)!==0n).sort((x,y)=>y-x);
+  es.forEach(e=>{const v=map.get(e);if(c!==0n){add(r1,e+1,v*c);add(tot,e+1,v*c)}if(d!==0n){add(r2,e,v*d);add(tot,e,v*d)}});
+  const cx=mono(c,1,true),ds=mono(d,0,true);let sN=6;
+  if(c!==0n){
+    S(`Step ${sN++} · Multiply by ${cx}`,`${cx} has an x in it, so two things change on every term.`,es.map((e,i)=>{
+      const v=map.get(e),res=v*c;
+      const ask=i===1?num(`What is ${cx} × ${mono(v,e,true)}?`,[{label:'number',answer:res.toString()},{label:'power of x',answer:String(e+1)}],`Number: ${sg(c)} × ${sg(v)} = ${sg(res)}. Power: x × x<sup>${e}</sup> = x<sup>${e+1}</sup>.`):undefined;
+      return L(`${cx} × ${mono(v,e,true)} = <span class="hl">${mono(res,e+1,true)}</span>`,i===0?`Number × ${sg(c)}, and the power of x goes UP by 1.`:`${sg(c)} × ${sg(v)} = ${sg(res)}, power ${e} → ${e+1}.`,ask,
+        [`${cx} is two things: the number ${sg(c)} and an x. Multiply the numbers: ${sg(c)} × ${sg(v)} = ${sg(res)}. Multiply the x's: x × x<sup>${e}</sup> = x<sup>${e+1}</sup> (when you multiply powers of x, you add the little numbers: 1 + ${e} = ${e+1}).`,`So it is NOT just "times ${sg(c)}". The x in ${cx} bumps every power up by one.`])}));
+  }
+  if(d!==0n){
+    S(`Step ${sN++} · Multiply by ${sg(ds)}`,`${sg(ds)} has no x, so only the numbers change.`,es.map((e,i)=>{
+      const v=map.get(e),res=v*d;
+      return L(`${sg(ds)} × ${mono(v,e,true)} = <span class="hl">${mono(res,e,true)}</span>`,i===0?`Number × ${sg(d)}. The power of x stays the same.`:`${sg(d)} × ${sg(v)} = ${sg(res)}.`,undefined,
+        [`${sg(ds)} is just a number, there is no x to add on. So x<sup>${e}</sup> stays x<sup>${e}</sup> and only the number in front changes: ${sg(d)} × ${sg(v)} = ${sg(res)}.${d<0n?' Careful with the minus: it flips the sign of every term.':''}`])}));
+  }
+  const esT=[...tot.keys()].sort((x,y)=>y-x);
+  S(`Step ${sN++} · Collect like terms`,'"Like terms" have the same power of x. Add their numbers.',esT.map((e,i)=>{
+    const p1=r1.get(e),p2=r2.get(e),t=tot.get(e);
+    const parts=[p1!==undefined?mono(p1,e,true):null,p2!==undefined?mono(p2,e,true):null].filter(Boolean);
+    const m=parts.length===2?`${parts[0]} + ${parts[1].startsWith(MINUS)?'('+parts[1]+')':parts[1]} = <span class="hl">${mono(t,e,true)}</span>`:`${parts[0]} = <span class="hl">${mono(t,e,true)}</span>`;
+    const note=parts.length===2?`${xp(e)||'numbers'}: ${sg(p1)} + ${sg(p2)} = ${sg(t)}.`:`Only one ${xp(e)||'number'} term, so it stays as it is.`;
+    const ask=(i===1&&parts.length===2)?num(`${sg(p1)} + ${sg(p2)} = ?`,[{label:`number in front of ${e===0?'(no x)':'x^'+e}`,answer:t.toString()}],`${sg(p1)} + ${sg(p2)} = ${sg(t)}.`):undefined;
+    return L(m,note,ask,[`Look through both lines from the last two steps and pull out every term with ${xp(e)||'no x'}. ${parts.length===2?`There are two: ${parts[0]} from the "× ${cx||ds}" line and ${parts[1]} from the other line. Add just the numbers, keep the ${xp(e)||'(no x)'}.`:`There is only one, so nothing to add.`}`])}));
+  S(`Step ${sN} · Final answer`,'Write the totals in order, highest power first.',[
+    L(`${Q.html} = <span class="answer">${poly(tot)}</span>`,'Expanded (no brackets) and simplified (no repeated powers). Done.',null,[`Check it with x = 1: the question becomes ${strip(Q.left).replace(/x/g,'1')} × (${strip(Q.A).replace(/x/g,'1')}${Q.sign}${strip(Q.Bp).replace(/x/g,'1')})<sup>${n}</sup>, and the answer becomes all its numbers added together. If they match, you are almost certainly right.`])]);
+  return {title:`Q: ${Q.html}`,steps};
+}
+
+
+/* ============ extra maths helpers ============ */
+const ri=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+const rnz=(lo,hi)=>{let v=0;while(v===0)v=ri(lo,hi);return v};
+const gcdB=(a,b)=>{a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b]}return a};
+const F=(n,d=1n)=>{n=BigInt(n);d=BigInt(d);if(d<0n){n=-n;d=-d}const g=gcdB(n,d)||1n;return {n:n/g,d:d/g}};
+const fadd=(x,y)=>F(x.n*y.d+y.n*x.d,x.d*y.d);
+const fsub=(x,y)=>F(x.n*y.d-y.n*x.d,x.d*y.d);
+const fmul=(x,y)=>F(x.n*y.n,x.d*y.d);
+const fdiv=(x,y)=>F(x.n*y.d,x.d*y.n);
+const fpow=(x,k)=>{let r=F(1);for(let i=0;i<Math.abs(k);i++)r=fmul(r,x);return k<0?fdiv(F(1),r):r};
+const feq=(x,y)=>x.n===y.n&&x.d===y.d;
+const fabs=x=>F(x.n<0n?-x.n:x.n,x.d);
+const fstr=f=>f.d===1n?String(f.n):f.n+'/'+f.d;
+const fh=f=>f.d===1n?sg(f.n):`${f.n<0n?MINUS:''}<span class="fr"><span>${f.n<0n?-f.n:f.n}</span><span>${f.d}</span></span>`;
+function fmono(f,e,first){if(f.n===0n)return'';const neg=f.n<0n,a=fabs(f);const unit=a.n===1n&&a.d===1n;
+  const body=(unit&&e!==0?'':fh(a))+xp(e);return first?(neg?MINUS:'')+body:(neg?' '+MINUS+' ':' + ')+body}
+function fseries(map){const es=[...map.keys()].filter(e=>map.get(e).n!==0n).sort((x,y)=>x-y);return es.map((e,i)=>fmono(map.get(e),e,i===0)).join('')||'0'}
+function parseNum(s){s=String(s).replace(/−/g,'-').replace(/\s/g,'');
+  const m=s.match(/^(-?)(\d+)(?:\.(\d+))?(?:\/(\d+))?$/);if(!m)return null;
+  let num=BigInt(m[2]+(m[3]||'')),den=10n**BigInt((m[3]||'').length);
+  if(m[4]!==undefined){if(BigInt(m[4])===0n)return null;den*=BigInt(m[4])}
+  return F(m[1]==='-'?-num:num,den)}
+const sameNum=(a,b)=>{const x=parseNum(a),y=parseNum(b);return !!x&&!!y&&feq(x,y)};
+const ord=n=>n+(n%100>=11&&n%100<=13?'th':(['th','st','nd','rd'][n%10]||'th'));
+function iroot(x,k){if(x<2n)return x;let lo=1n,hi=x;while(lo<=hi){const mid=(lo+hi)/2n;const v=pw(mid,k);if(v===x)return mid;if(v<x)lo=mid+1n;else hi=mid-1n}return null}
+const ff=(x,sf=8)=>{if(x===0)return'0';const ax=Math.abs(x);if(ax<1e-6||ax>=1e15)return x.toExponential(3);return String(+x.toPrecision(sf))};
+const swapTerms=c=>({...c,a:c.b,p:c.q,b:c.a,q:c.p});
+function productMap(cfg){const R=expand(cfg).map;if(cfg.c===undefined)return R;const c=BigInt(cfg.c),d=BigInt(cfg.d),t=new Map();
+  R.forEach((v,e)=>{if(c!==0n)add(t,e+1,v*c);if(d!==0n)add(t,e,v*d)});return t}
+
+/* ============ question parser ============ */
+function parseTerm(s){const r=s.match(/^([+-]?)(\d*)(?:(x)(?:\^(\d))?|\/(x)(?:\^(\d))?)?$/);if(!r)return null;
+  const[,sgn,dg,hx,px,dx,pdx]=r;if(!hx&&!dx&&dg==='')return null;
+  const coef=(sgn==='-'?-1:1)*(dg===''?1:+dg);const p=hx?(px?+px:1):dx?-(pdx?+pdx:1):0;
+  if(Math.abs(p)>2)return null;return {coef,p}}
+function parseExpr(txt){
+  const s=String(txt).replace(/−/g,'-').replace(/[×·*]/g,'').replace(/\s/g,'').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,ch=>'^'+'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(ch)).replace(/X/g,'x').replace(/\^(\d+)\^/g,'^$1');
+  if(!s)return {err:'Type the bracket first, like (2x+3)^5.'};
+  const m=s.match(/^(.*?)\(([^()]+)\)\^(\(?-?\d+(?:\/\d+)?\)?)(.*)$/);if(!m)return {err:'I need a bracket with a power, like (x+2)^5.'};
+  const [,l1,inner,pS,l2]=m;
+  const pm=pS.replace(/[()]/g,'').match(/^(-?)(\d+)(?:\/(\d+))?$/);let pn=(pm[1]?-1:1)*+pm[2],pd=pm[3]?+pm[3]:1;
+  if(pd===0)return {err:'The bottom of a fraction cannot be 0.'};
+  const g=Number(gcdB(BigInt(Math.abs(pn)),BigInt(pd)))||1;pn/=g;pd/=g;
+  const two=inner.match(/^([+-]?[^+-]+)([+-][^+-]+)$/);if(!two)return {err:'The bracket needs exactly two terms, like (3x + 2).'};
+  const A=parseTerm(two[1]),B=parseTerm(two[2]);if(!A||!B)return {err:'I can read terms like 3x, 2, x^2 or 2/x.'};
+  if(A.coef===0||B.coef===0)return {err:'Neither term can be 0.'};
+  if(Math.abs(A.coef)>99||Math.abs(B.coef)>99)return {err:'Keep the numbers under 100.'};
+  const cfg={a:A.coef,p:A.p,b:B.coef,q:B.p};
+  if(l1&&l2)return {err:'Put the other bracket on one side only.'};
+  const left=(l1+l2).replace(/^\(|\)$/g,'');
+  if(left){const ts=left.match(/[+-]?[^+-]+/g);if(!ts||ts.join('')!==left||ts.length>2)return {err:'The other bracket should look like (2x+3) or x.'};
+    let c=0,d=0;for(const t of ts){const T=parseTerm(t);if(!T||T.p<0||T.p>1)return {err:'The other bracket can only have an x term and a number, like (2x − 1).'};if(T.p===1)c+=T.coef;else d+=T.coef}
+    if(c===0&&d===0)return {err:'The other bracket cannot be 0.'};cfg.c=c;cfg.d=d}
+  return {cfg,pw:{n:pn,d:pd}}}
+function intCfg(expr){const r=parseExpr(expr);if(r.err!==undefined)return r;
+  if(r.pw.d!==1||r.pw.n<1||r.pw.n>20)return {err:'For this type the power must be a whole number from 1 to 20.'};
+  r.cfg.n=r.pw.n;return {cfg:r.cfg}}
+const int=(s,lo,hi,name)=>{const t=String(s).trim().replace(/−/g,'-');if(!/^-?\d+$/.test(t))return {err:`${name} must be a whole number.`};const v=+t;if(v<lo||v>hi)return {err:`${name} must be between ${lo} and ${hi}.`};return {v}};
+
+/* ============ lesson helpers ============ */
+const Mc=(q,opts,ans,why)=>({type:'mc',q,opts,ans,why});
+const Nm=(q,fields,why)=>({type:'num',q,fields,why});
+const PK=(correct,wrongs)=>{const o=[correct,...[...new Set(wrongs)].filter(w=>w!==correct).slice(0,3)];for(let i=o.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return {opts:o,ans:o.indexOf(correct)}};
+const MC=(q,correct,wrongs,why)=>{const k=PK(String(correct),wrongs.map(String));return Mc(q,k.opts,k.ans,why)};
+function newSteps(){const steps=[];return {steps,S:(h,intro,lines)=>steps.push({h:'Step '+(steps.length+1)+' · '+h,intro,lines})}}
+const qs=h=>`<span class="qs">${h}</span>`;
+const sgn=n=>n<0?MINUS:'';
+function powExprHtml(p,q,n){const c0=p*n,c1=q-p;let s='';
+  if(c0!==0)s+=sg(c0);
+  if(c1!==0){const a=Math.abs(c1);s+=(s===''?(c1<0?MINUS:''):(c1<0?' '+MINUS+' ':' + '))+(a===1?'':a)+'r'}
+  return s||'0'}
+const WHATCOEF=`In 5<i>x</i>³ ${MINUS} 2<i>x</i> + 7, the <b>coefficient</b> of <i>x</i>³ is 5 (the number in front), the coefficient of <i>x</i> is ${MINUS}2, and the <b>constant term</b> is 7 (the part with no <i>x</i>).`;
+
+/* general term lines used by several types */
+function gtLines(cfg,Q){const {p,q,n}=cfg;
+  return [
+    L(`T<sub>r+1</sub> = ${bn(n,'r')}(${Q.A})<sup>${n}${MINUS}r</sup>(${Q.B})<sup>r</sup>`,'This is any term. r = 0 gives the 1st term, r = 1 the 2nd, r = 2 the 3rd, and so on.',
+      MC('Which value of r gives the 1st term?',0,[1,2,n],'The 1st term uses r = 0. In general the (r+1)th term uses r.'),
+      [`T means "term". T<sub>r+1</sub> is the (r+1)th term, so the 4th term is T<sub>4</sub> and it uses r = 3.`,`Copy the two brackets in exactly: first = ${Q.A}, second = ${Q.B}. Keep the sign with the second one.`]),
+    L(`power of <i>x</i> = ${sg(p)}(${n} ${MINUS} r) + ${sg(q)}(r)`,'Each bracket brings its own power of x. Add them.',undefined,
+      [`In (${Q.A})<sup>${n}${MINUS}r</sup> the power of x is ${sg(p)} × (${n} ${MINUS} r). In (${Q.B})<sup>r</sup> it is ${sg(q)} × r.`,`Example: (2/<i>x</i>)² = 4/<i>x</i>² = 4<i>x</i><sup>${MINUS}2</sup>. The 1/x counts as power ${MINUS}1, and 2 copies make ${MINUS}2.`]),
+    L(`= ${powExprHtml(p,q,n)}`,'Tidy up. This gives the power of x for every r.',
+      Nm('What is the power of x when r = 0?',[{label:'power of x',answer:String(p*n)}],`When r = 0 the second bracket is raised to 0, so only the first bracket matters: ${sg(p)} × ${n} = ${sg(p*n)}.`),
+      [`Multiply out: ${sg(p)}(${n} ${MINUS} r) = ${sg(p*n)} ${p>0?MINUS:'+'} ${Math.abs(p)}r (when p is not 0), then add ${sg(q)}r and collect the r's.`])];}
+
+/* find r for a target power, then evaluate that term */
+function coefSteps(cfg,k,Q){
+  const {a,b,p,q,n}=cfg,A=BigInt(a),B=BigInt(b);
+  const c0=p*n,c1=q-p,num=k-c0,fr=F(num,c1);
+  const valid=fr.d===1n&&fr.n>=0n&&fr.n<=BigInt(n);const rr=valid?Number(fr.n):null;
+  const tag=xp(k)||'a constant';
+  const coefStr=c1===1?'':c1===-1?MINUS:sg(c1);
+  const l=[];
+  const simple=(c0===0&&c1===1);
+  if(simple)l.push(L(`r = ${sg(k)}`,`The power of x is just r, so r is the power we want.`,Nm('Solve for r.',[{label:'r',answer:fstr(fr)}],`The power of x is r, so r = ${sg(k)}.`),[`From the last step, the power of x in every term is r. We want x to the power ${sg(k)}, so r = ${sg(k)}.`]));
+  if(!simple)l.push(L(`${powExprHtml(p,q,n)} = ${sg(k)}`,`We want the power of x to be ${sg(k)}.`,undefined,[`Take the power-of-x expression from the last step and set it equal to ${sg(k)}. That gives an equation, and solving it gives r.`]));
+  if(!simple&&c0!==0)l.push(L(`${coefStr}r = ${sg(k)} ${c0>0?MINUS:'+'} ${Math.abs(c0)} = ${sg(num)}`,`Move the ${sg(c0)} to the other side.`,undefined,[`${sg(c0)} is on the left, so do the opposite to both sides: ${c0>0?'subtract':'add'} ${Math.abs(c0)}.`]));
+  if(!simple)l.push(L(`r = ${sg(num)} ÷ ${sg(c1)} = ${fh(fr)}`,'Divide to get r.',
+    Nm('Solve for r.',[{label:'r',answer:fstr(fr)}],`r = ${sg(num)} ÷ ${sg(c1)} = ${fstr(fr)}.`),
+    [`r is how many times the second bracket is used, so it has to be a whole number from 0 to ${n}. If the answer isn't, that power of x never appears.`]));
+  l.push(L(valid?`r = ${rr} is a whole number from 0 to ${n} ✓`:`r = ${fh(fr)} is not a whole number from 0 to ${n}`,valid?'So this term exists.':`So no term has ${tag}. The coefficient is 0.`));
+  const steps=[{h:`Find r for ${tag}`,intro:`Which term has ${k===0?'no x':xp(k)}?`,lines:l}];
+  let val=0n;
+  if(valid){
+    const Cn=C(n,rr),ap=pw(A,n-rr),bp=pw(B,rr);val=Cn*ap*bp;
+    steps.push({h:`The coefficient at r = ${rr}`,intro:`Put r = ${rr} into the general term.`,lines:[
+      L(`T<sub>${rr+1}</sub> = ${bn(n,rr)}(${Q.A})<sup>${n-rr}</sup>(${Q.B})<sup>${rr}</sup>`,`This is the term we want.`),
+      L(`coefficient = ${Cn} × (${sg(a)})<sup>${n-rr}</sup> × (${sg(b)})<sup>${rr}</sup>`,'Only the numbers matter for the coefficient. The x parts already give the right power.',undefined,[`(${Q.A})<sup>${n-rr}</sup> has a number part ${sg(a)}<sup>${n-rr}</sup> and an x part. We only keep the number part, because the question asks for the number in front.`]),
+      L(`= ${Cn} × ${sg(ap)} × ${sg(bp)} = <span class="hl">${sg(val)}</span>`,`${bp<0n?'A minus to an odd power stays minus. ':''}Multiply the three numbers.`,
+        Nm('Work out the coefficient.',[{label:'coefficient',answer:val.toString()}],`${Cn} × ${sg(ap)} × ${sg(bp)} = ${sg(val)}.`),
+        [`Do it in two parts: first ${Cn} × ${sg(ap)} = ${sg(Cn*ap)}, then × ${sg(bp)} = ${sg(val)}.`])]});
+  }
+  return {steps,val,valid,r:rr};
+}
+
+/* shared step: how to write the (r+1)th term out in full */
+function termLines(cfg,Q,r,t){const n=cfg.n;
+  const first=mono(t.ap,t.ea,true)||'1',second=mono(t.bp,t.eb,true)||'1';
+  return [
+    L(`${bn(n,r)} = <span class="hl">${t.coef}</span>`,`The nCr number for r = ${r}.`),
+    L(`(${Q.A})<sup>${n-r}</sup> = <span class="hl">${first}</span>`,`Raise the number AND the x to the power ${n-r}.`,undefined,[`A power applies to everything inside: (2<i>x</i>)³ = 2³ × <i>x</i>³ = 8<i>x</i>³, not 2<i>x</i>³.`]),
+    L(`(${Q.B})<sup>${r}</sup> = <span class="hl">${second}</span>`,`${t.bp<0n?'A minus to an odd power stays minus.':'Raise the number and the x to the power '+r+'.'}`,undefined,[`If the second term is negative, a minus sign raised to an even power becomes plus and to an odd power stays minus: (${MINUS}3)² = 9 but (${MINUS}3)³ = ${MINUS}27.`])];
+}
+
+/* extra: solve C(n,m) = R for n */
+function findN(m,R){for(let n=m;n<=120;n++)if(C(n,m)===R)return n;return null}
+function solveNLines(m,R){const n=findN(m,R);const l=[];
+  if(m===1){l.push(L(`n = ${R}`,'nC1 is just n.'))}
+  else if(m===2){const N2=2n*R,disc=1n+8n*R,s=iroot(disc,2)||0n;
+    l.push(L(`n(n ${MINUS} 1) ÷ 2 = ${R}`,'nC2 written out is n(n−1)/2.',undefined,[`${bn('n',2)} = n! ÷ (2! × (n−2)!) = n(n−1) ÷ 2, because everything else cancels.`]));
+    l.push(L(`n(n ${MINUS} 1) = ${N2}`,'Multiply both sides by 2.',Nm(`Which two consecutive whole numbers multiply to ${N2}? Type the bigger one.`,[{label:'n',answer:String(n)}],`${n-1} × ${n} = ${N2}.`)));
+    l.push(L(`n² ${MINUS} n ${MINUS} ${N2} = 0`,'Or move everything to one side to get a quadratic.'));
+    l.push(L(`n = (1 ± √${disc}) ÷ 2 = (1 ± ${s}) ÷ 2`,'Quadratic formula with a = 1, b = −1, c = −'+N2+'.',undefined,[`n = (−b ± √(b²−4ac)) ÷ 2a with a = 1, b = ${MINUS}1, c = ${MINUS}${N2} gives (1 ± √(1+${4n*N2})) ÷ 2.`]));
+    l.push(L(`n = ${n} <span class="mu">(the other answer is negative, so reject it)</span>`,'n must be a positive whole number.'))}
+  else{l.push(L(`n(n ${MINUS} 1)(n ${MINUS} 2) = ${6n*R}`,'Multiply both sides by 6 (that is 3!).'));
+    for(let t=Math.max(3,n-3);t<=n;t++)l.push(L(`n = ${t}: ${t} × ${t-1} × ${t-2} = ${t*(t-1)*(t-2)}`,t===n?'That matches.':'Too small, try the next one.'));
+    l.push(L(`n = ${n}`,'Found by trying values.'))}
+  return {lines:l,n}}
+
+/* ============ the question types ============ */
+const TYPES={};
+const GROUPS=[['expand','Expanding brackets'],['find','Finding terms and coefficients'],['unknown','Unknowns and estimates'],['other','Other skills']];
+function T(id,def){def.id=id;TYPES[id]=def}
+const exprField=def=>({id:'expr',kind:'expr',label:'The expression',def});
+const intField=(id,label,def)=>({id,kind:'int',label,def});
+const readLine=(P,more)=>L(qs(TYPES[P.t].text(P)),'This is the question.',null,more);
+const mk=(P,steps)=>({title:TYPES[P.t].name+' · '+(TYPES[P.t].expr?TYPES[P.t].expr(P):''),steps});
+
+T('expand',{name:'Expand and simplify',group:'expand',
+  blurb:'Multiply out a bracket with a power, with or without another bracket in front.',
+  help:'Type the bracket with its power. You can put another bracket in front, like (2x+3)(x+1)^4.',
+  fields:[exprField('(2x+3)(x+1)^4')],
+  parse(v){const r=intCfg(v.expr);return r.err!==undefined?r:{p:{t:'expand',cfg:r.cfg}}},
+  text:P=>`Expand and simplify ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  build:P=>{const l=buildExpand(P.cfg,'full');l.title=TYPES.expand.name+' · '+question(P.cfg).html;return l},
+  gen(){const hasM=Math.random()<.6;let cfg={a:ri(1,2),p:1,b:rnz(-3,3),q:0,n:hasM?ri(2,4):ri(3,5)};if(Math.random()<.3)cfg=swapTerms(cfg);if(hasM){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'expand',cfg}},
+  ans(P){const m=productMap(P.cfg);return {kind:'poly',map:m,disp:poly(m)}},
+  hints:P=>['Expand the bracket with the power first, using nCr and the pattern.',P.cfg.c!==undefined?'Then multiply every term by both parts of the other bracket, and collect like terms.':'Add the terms up, highest power first.'],
+  example:{t:'expand',cfg:{a:1,p:1,b:1,q:0,n:4,c:2,d:3}}});
+
+T('terms',{name:'First three and last two terms',group:'expand',
+  blurb:'Write the start and the end of an expansion using the pattern, without simplifying.',
+  help:'Type the bracket with a power of 4 or more. Example: (3x+2/x)^15',
+  fields:[exprField('(3x+2/x)^15')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'This type works on a single bracket.'};if(r.cfg.n<4)return {err:'Use a power of 4 or more, so the first three and last two terms do not overlap.'};return {p:{t:'terms',cfg:r.cfg}}},
+  text:P=>`Write down the first three and last two terms of ${question(P.cfg).html}. Do not simplify.`,
+  expr:P=>question(P.cfg).html,
+  build:P=>{const l=buildExpand(P.cfg,'terms');l.title=TYPES.terms.name+' · '+question(P.cfg).html;return l},
+  gen(){return TYPES.rth.gen(3)},
+  example:{t:'terms',cfg:{a:3,p:1,b:2,q:-1,n:15}}});
+
+T('coef',{name:'Find the coefficient of x^k',group:'find',
+  blurb:'Find the number in front of a given power of x, without expanding everything.',
+  help:'Type the bracket and the power of x you want. If there is another bracket in front, I switch to the product method.',
+  fields:[exprField('(2x+1)^6'),intField('k','Power of x (k)','3')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;const k=int(v.k,-60,60,'The power of x');if(k.err)return k;
+    if(r.cfg.c!==undefined)return {p:{t:'pcoef',cfg:r.cfg,k:k.v}};
+    if(r.cfg.p===r.cfg.q)return {err:'Both terms have the same power of x. Combine them first.'};return {p:{t:'coef',cfg:r.cfg,k:k.v}}},
+  text:P=>P.k===0?`Find the constant term (the term independent of <i>x</i>) in the expansion of ${question(P.cfg).html}.`:`Find the coefficient of ${xp(P.k)} in the expansion of ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  build(P){const {cfg,k}=P,Q=question(cfg),{steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[WHATCOEF]),
+      L(k===0?`constant term = the term with no <i>x</i> = the term in <i>x</i><sup>0</sup>`:`coefficient of ${xp(k)} = the number in front of ${xp(k)}`,'Say it in your own words first.',null,[WHATCOEF]),
+      L('Plan: do NOT expand everything. Find the one term that has the right power of x.','There are lots of terms but we need only one.',null,[`The full expansion has ${cfg.n+1} terms. Writing them all is slow and easy to get wrong. The general term lets us jump straight to the one we want.`])]);
+    S('The general term','Every term in the expansion has the same shape.',gtLines(cfg,Q));
+    const cs=coefSteps(cfg,k,Q);cs.steps.forEach(s=>S(s.h,s.intro,s.lines));
+    S('Final answer','Say it in a sentence.',[L(`${k===0?'constant term':'coefficient of '+xp(k)} = <span class="answer">${sg(cs.val)}</span>`,cs.valid?`Check: at r = ${cs.r} the power of x is ${powExprHtml(cfg.p,cfg.q,cfg.n).replace(/r/g,'('+cs.r+')')} = ${sg(k)} ✓`:'There is no term with that power, so the answer is 0.')]);
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:Math.random()<.45?-1:0,n:ri(4,10)};let k;
+    if(cfg.q===-1){const r=ri(0,cfg.n);k=cfg.n-2*r;if(Math.random()<.25)k=0}else k=Math.random()<.2?0:ri(0,cfg.n);
+    if(cfg.q===-1&&cfg.n%2&&k===0)k=1;return {t:'coef',cfg,k}},
+  ans(P){const v=productMap(P.cfg).get(P.k)||0n;return {kind:'num',val:F(v),disp:sg(v)}},
+  hints:P=>['General term: nCr × (first)^(n−r) × (second)^r.','Work out the power of x in terms of r, set it equal to '+P.k+', and solve for r.','Put that r into the term and multiply the numbers.'],
+  example:{t:'coef',cfg:{a:2,p:1,b:1,q:0,n:6},k:3}});
+
+T('const',{name:'Find the constant term',group:'find',
+  blurb:'The term with no x, often when one term has 1/x.',
+  help:'Type a bracket like (x+2/x)^6. The constant term is the term independent of x.',
+  fields:[exprField('(2x−3/x)^10')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {p:{t:'pcoef',cfg:r.cfg,k:0}};
+    if(r.cfg.p===r.cfg.q)return {err:'Both terms have the same power of x. Combine them first.'};return {p:{t:'coef',cfg:r.cfg,k:0}}},
+  example:{t:'coef',cfg:{a:2,p:1,b:-3,q:-1,n:10},k:0}});
+
+T('pcoef',{name:'Coefficient in a product',group:'find',
+  blurb:'Find a coefficient when another bracket multiplies the expansion.',
+  help:'Type the other bracket and the bracket with the power, then the power of x. Example: (1+2x)(3−x)^7',
+  fields:[exprField('(1+2x)(3−x)^7'),intField('k','Power of x (k)','3')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c===undefined)return {err:'Put another bracket in front, like (1+2x)(3−x)^7.'};
+    const k=int(v.k,-60,60,'The power of x');if(k.err)return k;if(r.cfg.p===r.cfg.q)return {err:'Both terms have the same power of x. Combine them first.'};return {p:{t:'pcoef',cfg:r.cfg,k:k.v}}},
+  text:P=>P.k===0?`Find the constant term in the expansion of ${question(P.cfg).html}.`:`Find the coefficient of ${xp(P.k)} in the expansion of ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  build(P){const {cfg,k}=P,n=cfg.n,c=BigInt(cfg.c),d=BigInt(cfg.d),R={...cfg};delete R.c;delete R.d;const Q=question(R),QL=question(cfg).left;
+    const cx=mono(c,1,true),dS=mono(d,0,true);const {steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[WHATCOEF]),
+      L(`Two brackets: ${QL} and ${Q.html}`,'Only the one with the power needs the pattern.',null,[`${QL} is a normal bracket, with at most an x term and a number. The bracket with the power is the long one.`]),
+      L('Plan: find which pairs of terms multiply to make '+(xp(k)||'a constant')+'.','We do not need to expand everything.')]);
+    const pairs=[];
+    if(c!==0n)pairs.push(L(`${cx} × [term in ${xp(k-1)||'no x'}] gives ${xp(k)||'a constant'}`,`x × x<sup>${k-1}</sup> = x<sup>${k}</sup>, so we need the ${xp(k-1)||'constant'} term from the long bracket.`,
+      MC(`${cx} has an x. Which power of x do we need from the long bracket to make ${xp(k)||'a constant'}?`,sg(k-1),[sg(k),sg(k+1),sg(k-2)],`x × x<sup>${k-1}</sup> = x<sup>${k}</sup>, so the long bracket must give x<sup>${k-1}</sup>.`),
+      [`When you multiply powers of x you add the little numbers. 1 + ${k-1} = ${k}.`]));
+    if(d!==0n)pairs.push(L(`${sg(dS)} × [term in ${xp(k)||'no x'}] gives ${xp(k)||'a constant'}`,`${sg(dS)} has no x, so the long bracket must already give ${xp(k)||'a constant'}.`));
+    pairs.push(L(`answer = ${c!==0n?`(${sg(c)}) × [coef of ${xp(k-1)||'constant'}]`:''}${c!==0n&&d!==0n?' + ':''}${d!==0n?`(${sg(d)}) × [coef of ${xp(k)||'constant'}]`:''}`,'Add the contributions.'));
+    S('Only two ways to make the power','Multiplying a long expansion by (cx + d) gives us exactly these routes.',pairs);
+    S('The general term','Now find those coefficients in the long bracket.',gtLines(cfg,Q));
+    let total=0n,av=0n;
+    if(c!==0n){const cs=coefSteps(R,k-1,Q);cs.steps.forEach(s=>S(s.h+' (for the '+cx+' part)',s.intro,s.lines));total+=c*cs.val;av=cs.val}
+    let bv=0n;
+    if(d!==0n){const cs=coefSteps(R,k,Q);cs.steps.forEach(s=>S(s.h+' (for the '+sg(dS)+' part)',s.intro,s.lines));bv=cs.val;total+=d*cs.val}
+    S('Combine','Multiply each coefficient by its partner and add.',[
+      L(`${c!==0n?`(${sg(c)})(${sg(av)})`:''}${c!==0n&&d!==0n?' + ':''}${d!==0n?`(${sg(d)})(${sg(bv)})`:''}`,'Put the numbers in.',undefined,[`The first number in each pair comes from the front bracket. The second is the coefficient we just found in the long bracket.`]),
+      L(`${k===0?'constant term':'coefficient of '+xp(k)} = <span class="answer">${sg(total)}</span>`,'Done.',Nm('What is the total?',[{label:'answer',answer:total.toString()}],`${c!==0n?sg(c*av):''}${c!==0n&&d!==0n?' + ':''}${d!==0n?sg(d*bv):''} = ${sg(total)}.`))]);
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:ri(5,9),c:ri(1,3),d:rnz(-3,3)};return {t:'pcoef',cfg,k:ri(2,cfg.n)}},
+  ans(P){const v=productMap(P.cfg).get(P.k)||0n;return {kind:'num',val:F(v),disp:sg(v)}},
+  hints:P=>['Only two pairs of terms multiply to make x^'+P.k+': the x with the x^'+(P.k-1)+' term, and the number with the x^'+P.k+' term.','Find each coefficient from the general term, multiply by its partner, then add.'],
+  example:{t:'pcoef',cfg:{a:3,p:0,b:-1,q:1,n:7,c:2,d:1},k:3}});
+
+T('rth',{name:'Find a particular term',group:'find',
+  blurb:'Find the 3rd, 4th, 5th … term of an expansion.',
+  help:'Type the bracket and which term you want (1 = the first term).',
+  fields:[exprField('(2x+3)^7'),intField('tn','Which term? (1 = first)','4')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'Use a single bracket for this type.'};
+    const t=int(v.tn,1,r.cfg.n+1,'The term number');if(t.err)return t;return {p:{t:'rth',cfg:r.cfg,tn:t.v}}},
+  text:P=>`Find the ${ord(P.tn)} term in the expansion of ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  build(P){const {cfg,tn}=P,Q=question(cfg),n=cfg.n,r=tn-1,t=expand(cfg).terms[r],{steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[`"The ${ord(tn)} term" means counting from the left, like the 1st, 2nd, 3rd term. In this expansion the terms are T<sub>1</sub>, T<sub>2</sub>, T<sub>3</sub> … T<sub>${n+1}</sub>.`]),
+      L(`There are ${n+1} terms in total`,'The power plus one.',null,[`r goes 0, 1, 2 … ${n}. That is ${n+1} numbers, so ${n+1} terms.`])]);
+    S('Which r?','The general term uses r, but the question gives a term number.',[
+      L(`T<sub>r+1</sub> = ${bn(n,'r')}(${Q.A})<sup>${n}${MINUS}r</sup>(${Q.B})<sup>r</sup>`,'The general term again.',undefined,[`The first term uses r = 0, the second r = 1, and so on. That is why the term is called T<sub>r+1</sub>: one more than r.`]),
+      L(`${ord(tn)} term: r + 1 = ${tn}`,'Match the term number to r + 1.'),
+      L(`r = ${tn} ${MINUS} 1 = <span class="hl">${r}</span>`,'Take one away.',Nm(`The ${ord(tn)} term uses which r?`,[{label:'r',answer:String(r)}],`r + 1 = ${tn}, so r = ${r}.`))]);
+    S('Put r into the general term','Copy it out without simplifying.',[
+      L(`T<sub>${tn}</sub> = ${bn(n,r)}(${Q.A})<sup>${n-r}</sup>(${Q.B})<sup>${r}</sup>`,'This is already a correct answer if the question says do not simplify.')]);
+    S('Simplify it','Work out the three pieces, then multiply.',[...termLines(cfg,Q,r,t),
+      L(`T<sub>${tn}</sub> = ${t.coef} × (${mono(t.ap,t.ea,true)||'1'}) × (${mono(t.bp,t.eb,true)||'1'}) = <span class="answer">${mono(t.val,t.e,true)||'0'}</span>`,'Multiply the numbers, and add the powers of x.',
+        Nm('What is the number in front (the coefficient)?',[{label:'coefficient',answer:t.val.toString()}],`${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}.`),
+        [`Numbers: ${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}. Powers of x: ${t.ea} + ${t.eb} = ${t.e}.`])]);
+    return mk(P,steps)},
+  gen(tn){const n=ri(5,9),cfg={a:ri(1,3),p:Math.random()<.2?2:1,b:rnz(-3,3),q:0,n};return {t:'rth',cfg,tn:tn||ri(2,n)}},
+  ans(P){const t=expand(P.cfg).terms[P.tn-1];return {kind:'poly',map:new Map([[t.e,t.val]]),disp:mono(t.val,t.e,true)}},
+  hints:P=>[`The ${ord(P.tn)} term uses r = ${P.tn-1}.`,'T = nCr × (first)^(n−r) × (second)^r. Work out each piece, then multiply.'],
+  example:{t:'rth',cfg:{a:2,p:1,b:3,q:0,n:7},tn:4}});
+
+T('middle',{name:'Find the middle term',group:'find',
+  blurb:'Find the term (or two terms) in the middle of an expansion.',
+  help:'Type the bracket with its power. An even power has one middle term, an odd power has two.',
+  fields:[exprField('(x+2)^8')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'Use a single bracket for this type.'};return {p:{t:'middle',cfg:r.cfg}}},
+  text:P=>`Find the middle term${P.cfg.n%2?'s':''} in the expansion of ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  build(P){const {cfg}=P,Q=question(cfg),n=cfg.n,terms=expand(cfg).terms,odd=n%2===1,rs=odd?[(n-1)/2,(n+1)/2]:[n/2],{steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[`The middle of a list is the term with the same number of terms on each side of it.`]),
+      L(`number of terms = n + 1 = ${n+1}`,'Count the terms.',Nm('How many terms are there?',[{label:'terms',answer:String(n+1)}],`The power is ${n}, so there are ${n}+1 = ${n+1} terms.`),[`The terms use r = 0, 1, 2 … ${n}. That is ${n+1} values.`])]);
+    S('Find the middle',odd?`${n+1} is even, so there are two middle terms.`:`${n+1} is odd, so there is exactly one middle term.`,odd?[
+      L(`middle positions: ${(n+1)/2}th and ${(n+3)/2}th terms`,'Halfway between the two ends.',null,[`With ${n+1} terms, half of them is ${(n+1)/2}. So the ${(n+1)/2}th and the next one are the two in the middle.`]),
+      L(`r = ${rs[0]} and r = ${rs[1]}`,'Each term number is r + 1, so subtract 1.',Nm('What is the smaller r?',[{label:'r',answer:String(rs[0])}],`The ${(n+1)/2}th term uses r = ${(n+1)/2} − 1 = ${rs[0]}.`))]:[
+      L(`middle position: ${(n+2)/2}th term`,'Half of n, plus one.',null,[`The terms from the left are 1st … ${n+1}th. The middle one has ${n/2} terms before it and ${n/2} after, so it is number ${n/2+1}.`]),
+      L(`r = ${(n+2)/2} ${MINUS} 1 = <span class="hl">${rs[0]}</span>`,'Term number is r + 1, so subtract 1.',Nm('Which r gives the middle term?',[{label:'r',answer:String(rs[0])}],`The ${(n+2)/2}th term uses r = ${rs[0]}.`))]);
+    rs.forEach(r=>{const t=terms[r];
+      S(`Work out T<sub>${r+1}</sub>`,`Use r = ${r} in the general term.`,[
+        L(`T<sub>${r+1}</sub> = ${bn(n,r)}(${Q.A})<sup>${n-r}</sup>(${Q.B})<sup>${r}</sup>`,'The general term with r put in.'),...termLines(cfg,Q,r,t),
+        L(`T<sub>${r+1}</sub> = <span class="answer">${mono(t.val,t.e,true)||'0'}</span>`,'Multiply them together.',Nm('What is the coefficient?',[{label:'coefficient',answer:t.val.toString()}],`${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}.`))])});
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:2*ri(2,5)};return {t:'middle',cfg}},
+  ans(P){const t=expand(P.cfg).terms[P.cfg.n/2];return {kind:'poly',map:new Map([[t.e,t.val]]),disp:mono(t.val,t.e,true)}},
+  hints:P=>[`${P.cfg.n+1} terms, so the middle one is term number ${P.cfg.n/2+1}, which uses r = ${P.cfg.n/2}.`,'Work out nCr × (first)^(n−r) × (second)^r.'],
+  example:{t:'middle',cfg:{a:1,p:1,b:2,q:0,n:8}}});
+
+T('ascend',{name:'Ascending powers of x',group:'find',
+  blurb:'Write the first few terms with the smallest power of x first.',
+  help:'Type a bracket like (2+3x)^6 and the highest power of x you need.',
+  fields:[exprField('(2−3x)^6'),intField('upto','Up to and including x^','2')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'Use a single bracket for this type.'};
+    let cfg=r.cfg;if(cfg.q===0&&cfg.p>=1)cfg=swapTerms(cfg);
+    if(cfg.p!==0||cfg.q<1)return {err:'One term must be a plain number and the other must have a positive power of x, like (2 + 3x).'};
+    const u=int(v.upto,1,40,'The highest power');if(u.err)return u;return {p:{t:'ascend',cfg,upto:u.v}}},
+  rmax:P=>Math.min(P.cfg.n,Math.floor(P.upto/P.cfg.q)),
+  text(P){const nt=TYPES.ascend.rmax(P)+1;return `Find the first ${nt} term${nt>1?'s':''} in the expansion of ${question(P.cfg).html} in ascending powers of <i>x</i>, up to and including ${xp(P.upto)}.`},
+  expr:P=>question(P.cfg).html,
+  build(P){const {cfg,upto}=P,Q=question(cfg),n=cfg.n,q=cfg.q,rm=TYPES.ascend.rmax(P),terms=expand(cfg).terms,{steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[`<b>Ascending powers</b> means the powers of x go UP: x⁰ (the number), then x, then x², and so on. It is the opposite of the usual way of writing a polynomial.`,`"Up to and including ${xp(upto)}" means stop after the ${xp(upto)} term. Ignore everything with a bigger power.`]),
+      L(`Start with the number term (${Q.A}), because it has no x.`,'The power of x goes up by '+q+' each time.',null,[`The first bracket term has no x, so its power is 0. The second term brings in ${xp(q)}. Each time r goes up by 1 the power of x goes up by ${q}.`])]);
+    S('How many terms?','Count which r values give a power we need.',[
+      L(`power of <i>x</i> = ${q===1?'':q}r`,'Only the second term has x, and it is used r times.'),
+      L(`${q===1?'':q}r ≤ ${upto}${q===1?'':' → r ≤ '+upto/q} → r = 0, 1, … , ${rm}`,`So the terms we need are r = 0 up to r = ${rm}.`,
+        Nm('How many terms is that?',[{label:'terms',answer:String(rm+1)}],`r = 0, 1, … ${rm} is ${rm+1} terms.`),[`Count the whole numbers r from 0 up to ${rm}. That is ${rm+1} of them.`])]);
+    const cl=[];for(let r=0;r<=rm;r++)cl.push(L(`${bn(n,r)} = <span class="hl">${terms[r].coef}</span>`,r===0?'nC0 is always 1.':r===1?'nC1 is always n.':'Pascal\'s triangle or the nCr button.'));
+    S('The nCr numbers',`For n = ${n}.`,cl);
+    S('Write the terms','Put each r into the pattern, without simplifying yet.',terms.slice(0,rm+1).map((t,r)=>L(`${r?'+ ':''}${bn(n,r)}(${Q.A})<sup>${n-r}</sup>(${Q.B})<sup>${r}</sup>`,`r = ${r}.`,undefined,r===0?[`For r = 0 the second bracket is raised to 0, so it disappears and only (${Q.A})<sup>${n}</sup> is left.`]:undefined)));
+    S('Simplify each term','Work out the numbers and the power of x.',terms.slice(0,rm+1).map((t,r)=>L(`T<sub>${r+1}</sub> = ${t.coef} × ${sg(t.ap)} × ${t.bp<0n?'('+sg(t.bp)+(t.eb?xp(t.eb):'')+')':sg(t.bp)+(t.eb?xp(t.eb):'')} = <span class="hl">${mono(t.val,t.e,true)}</span>`,r===0?`(${sg(cfg.a)})<sup>${n}</sup> = ${sg(t.ap)}.`:`(${sg(cfg.a)})<sup>${n-r}</sup> = ${sg(t.ap)}, (${sg(cfg.b)})<sup>${r}</sup> = ${sg(t.bp)}.`,
+      r===1?Nm(`What is the coefficient of ${xp(q)}?`,[{label:'coefficient',answer:t.val.toString()}],`${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}.`):undefined)));
+    const mp=new Map();terms.slice(0,rm+1).forEach(t=>add(mp,t.e,t.val));
+    S('Final answer','Add them in order, smallest power first.',[L(`${Q.html} = <span class="answer">${[...mp.keys()].sort((x,y)=>x-y).map((e,i)=>mono(mp.get(e),e,i===0)).join('')} + …</span>`,`The "+ …" shows that there are more terms, with powers bigger than ${xp(upto)}.`)]);
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,4),p:0,b:rnz(-3,3),q:1,n:ri(4,9)};return {t:'ascend',cfg,upto:ri(2,3)}},
+  ans(P){const mp=new Map(),rm=TYPES.ascend.rmax(P);expand(P.cfg).terms.slice(0,rm+1).forEach(t=>add(mp,t.e,t.val));return {kind:'poly',map:mp,disp:[...mp.keys()].sort((x,y)=>x-y).map((e,i)=>mono(mp.get(e),e,i===0)).join('')}},
+  hints:P=>['Start with r = 0 (the plain number) and go up. The power of x is r.','Use nCr × (first)^(n−r) × (second)^r for each r.'],
+  example:{t:'ascend',cfg:{a:2,p:0,b:-3,q:1,n:6},upto:2}});
+
+T('unkv',{name:'Find k from a coefficient',group:'unknown',
+  blurb:'(a + kx)^n has a known coefficient. Work backwards to find k.',
+  help:'The bracket is (a + kx)^n. Say which power of x has a known coefficient, and what it is.',
+  fields:[intField('a','a (the number)','2'),intField('n','Power n','6'),intField('m','Coefficient of x^m. m =','2'),intField('V','Its value','960')],
+  parse(v){const a=int(v.a,-20,20,'a');if(a.err)return a;if(a.v===0)return {err:'a cannot be 0.'};const n=int(v.n,2,20,'The power n');if(n.err)return n;
+    const m=int(v.m,1,n.v,'m');if(m.err)return m;const V=int(v.V,-1e12,1e12,'The value');if(V.err)return V;if(V.v===0)return {err:'The value cannot be 0.'};
+    return {p:{t:'unkv',a:a.v,n:n.v,m:m.v,V:BigInt(V.v)}}},
+  text:P=>`In the expansion of (${sg(P.a)} + <i>kx</i>)<sup>${P.n}</sup> the coefficient of ${xp(P.m)} is ${sg(P.V)}.${P.pos?' Given that <i>k</i> &gt; 0, find':' Find'} the value of <i>k</i>.`,
+  expr:P=>`(${sg(P.a)} + <i>kx</i>)<sup>${P.n}</sup>`,
+  solve(P){const co=C(P.n,P.m)*pw(BigInt(P.a),P.n-P.m);const R=F(P.V,co),neg=R.n<0n;let roots=[],exact=false,disp;
+    if(P.m%2===0){if(neg)return {co,R,none:true};const f=fracRoot(fabs(R),P.m);exact=!!f;roots=f?(P.pos?[f]:[f,F(-f.n,f.d)]):[];
+      const approx=Math.pow(Number(R.n)/Number(R.d),1/P.m);disp=exact?(P.pos?fstr(f):'±'+fstr(f)):(P.pos?ff(approx,5):'±'+ff(approx,5));return {co,R,exact,roots,disp,approx,val:exact?f:null}}
+    const f=fracRoot(fabs(R),P.m);exact=!!f;const approx=Math.sign(Number(R.n))*Math.pow(Math.abs(Number(R.n)/Number(R.d)),1/P.m);
+    const val=exact?F(neg?-f.n:f.n,f.d):null;return {co,R,exact,roots:val?[val]:[],disp:exact?fstr(val):ff(approx,5),approx,val}},
+  build(P){const {a,n,m,V}=P,s=TYPES.unkv.solve(P),{steps,S}=newSteps();const A=BigInt(a),Cn=C(n,m);
+    S('Read the question','What is actually being asked?',[readLine(P,[`The letter k is a number we do not know yet. The question gives us one fact (the coefficient), and that fact lets us find k.`]),
+      L('Plan: write the coefficient in terms of k, put it equal to '+sg(V)+', then solve.','An equation with one unknown.',null,[`We will get something like "number × k² = number". Then divide and take a root.`])]);
+    S(`The ${xp(m)} term`,'Use the general term, with k inside the second bracket.',[
+      L(`T<sub>r+1</sub> = ${bn(n,'r')}(${sg(a)})<sup>${n}${MINUS}r</sup>(<i>kx</i>)<sup>r</sup>`,'The general term.'),
+      L(`power of <i>x</i> = r, so we need r = ${m}`,`(<i>kx</i>)<sup>r</sup> has ${xp(1)}<sup>r</sup>, and we want ${xp(m)}.`,Nm('Which r gives the x-power in the question?',[{label:'r',answer:String(m)}],`The power of x equals r, so r = ${m}.`)),
+      L(`T<sub>${m+1}</sub> = ${bn(n,m)}(${sg(a)})<sup>${n-m}</sup>(<i>kx</i>)<sup>${m}</sup>`,'Put r in.'),
+      L(`= ${Cn} × ${sg(pw(A,n-m))} × <i>k</i>${m>1?'<sup>'+m+'</sup>':''}${xp(m)} = <span class="hl">${sg(s.co)}<i>k</i>${m>1?'<sup>'+m+'</sup>':''}</span>${xp(m)}`,'Multiply the numbers. The k stays as a letter.',
+        Nm('What number multiplies k (before the x)?',[{label:'number',answer:s.co.toString()}],`${Cn} × ${sg(pw(A,n-m))} = ${sg(s.co)}.`),[`(<i>kx</i>)<sup>${m}</sup> = <i>k</i><sup>${m}</sup><i>x</i><sup>${m}</sup>. The nCr and a-power are plain numbers, so multiply them.`])]);
+    S('Make an equation','The question tells us this coefficient.',[
+      L(`${sg(s.co)}<i>k</i>${m>1?'<sup>'+m+'</sup>':''} = ${sg(V)}`,'Coefficient = the value given.'),
+      L(`<i>k</i>${m>1?'<sup>'+m+'</sup>':''} = ${sg(V)} ÷ ${sg(s.co)} = ${fh(s.R)}`,'Divide both sides.',undefined,[`To get k${m>1?'^'+m:''} on its own, divide both sides by the number in front of it.`])]);
+    const sl=[];
+    if(s.none)sl.push(L(`<i>k</i><sup>${m}</sup> is negative`,`An even power can never be negative, so there is no real k.`));
+    else if(m===1)sl.push(L(`<i>k</i> = ${fh(s.R)}`,'Nothing else to do.'));
+    else{sl.push(L(`<i>k</i> = ${m===2?'':`<sup>${m}</sup>`}√(${fh(fabs(s.R))})${m>2?'':''} ${m%2===0&&!P.pos?'(positive or negative)':''}`,m===2?'Square root both sides.':`Take the ${ord(m)} root of both sides.`,undefined,[`The opposite of raising to the power ${m} is taking the ${m===2?'square':ord(m)} root.${m%2===0?' An even power loses the sign, so the answer can be positive or negative.':''}`]));
+      sl.push(L(`<i>k</i> = <span class="hl">${s.exact?(m%2===0&&!P.pos?'±':'')+fh(s.exact?(s.val||fracRoot(fabs(s.R),m)):s.R):'≈ '+s.disp}</span>`,s.exact?'Exact.':'Not a whole number, so use a calculator.',
+        s.exact?Nm('What is k?'+(m%2===0&&!P.pos?' Give the positive value.':''),[{label:'k',answer:fstr(s.exact?fabs(s.val||fracRoot(fabs(s.R),m)):s.R)}],`k = ${s.disp}.`):undefined))}
+    S('Solve for k','Now it is just algebra.',sl);
+    S('Final answer','Check by putting k back in.',[L(`<i>k</i> = <span class="answer">${s.none?'no real value':s.disp}</span>`,s.none?'':`Check: ${Cn} × ${sg(pw(A,n-m))} × (${s.exact?s.disp.replace('±',''):'k'})<sup>${m}</sup> = ${sg(V)} ✓`)]);
+    return mk(P,steps)},
+  gen(){const a=ri(1,4),n=ri(4,8),m=ri(1,3),k=rnz(1,3);const co=C(n,m)*pw(BigInt(a),n-m);const kk=m%2===0?Math.abs(k):k;return {t:'unkv',a,n,m,V:co*pw(BigInt(kk),m),pos:m%2===0}},
+  ans(P){const s=TYPES.unkv.solve(P);return {kind:s.exact?'num':'approx',val:s.exact?(s.val||s.roots[0]):s.approx,disp:s.disp}},
+  hints:P=>[`The ${xp(P.m)} term uses r = ${P.m}. Its coefficient is nCr × a^(n−r) × k^r.`,'Set that equal to the given value and solve for k.'],
+  example:{t:'unkv',a:2,n:6,m:2,V:960n,pos:true}});
+
+T('unkeq',{name:'Find k when two coefficients are equal',group:'unknown',
+  blurb:'Two neighbouring coefficients of (a + kx)^n are the same. Find k.',
+  help:'The bracket is (a + kx)^n. The coefficients of x^m and x^(m+1) are equal.',
+  fields:[intField('a','a (the number)','3'),intField('n','Power n','8'),intField('m','Coefficients of x^m and x^(m+1). m =','2')],
+  parse(v){const a=int(v.a,-20,20,'a');if(a.err)return a;if(a.v===0)return {err:'a cannot be 0.'};const n=int(v.n,2,20,'The power n');if(n.err)return n;const m=int(v.m,0,n.v-1,'m');if(m.err)return m;return {p:{t:'unkeq',a:a.v,n:n.v,m:m.v}}},
+  text:P=>`In the expansion of (${sg(P.a)} + <i>kx</i>)<sup>${P.n}</sup> the coefficients of ${xp(P.m)||'the constant term'} and ${xp(P.m+1)} are equal. Find the value of <i>k</i> (<i>k</i> ≠ 0).`,
+  expr:P=>`(${sg(P.a)} + <i>kx</i>)<sup>${P.n}</sup>`,
+  kval:P=>F(BigInt(P.a)*BigInt(P.m+1),BigInt(P.n-P.m)),
+  build(P){const {a,n,m}=P,A=BigInt(a),k=TYPES.unkeq.kval(P),{steps,S}=newSteps();const c1=C(n,m),c2=C(n,m+1);
+    S('Read the question','What is actually being asked?',[readLine(P,[`Two coefficients are "equal" means we can write one equal to the other, and that gives an equation in k.`]),L('Plan: write both coefficients using the general term, set them equal, solve for k.','Two terms, one equation.')]);
+    S('Both coefficients','Use r = m and r = m + 1 in the general term.',[
+      L(`T<sub>r+1</sub> = ${bn(n,'r')}(${sg(a)})<sup>${n}${MINUS}r</sup>(<i>kx</i>)<sup>r</sup>`,'General term. The power of x is r.'),
+      L(`${xp(m)||'constant'}: r = ${m} → ${bn(n,m)}(${sg(a)})<sup>${n-m}</sup><i>k</i><sup>${m}</sup>`,`Coefficient for r = ${m}.`),
+      L(`${xp(m+1)}: r = ${m+1} → ${bn(n,m+1)}(${sg(a)})<sup>${n-m-1}</sup><i>k</i><sup>${m+1}</sup>`,`Coefficient for r = ${m+1}.`)]);
+    S('Set them equal','Then simplify before you calculate.',[
+      L(`${c1}(${sg(a)})<sup>${n-m}</sup><i>k</i><sup>${m}</sup> = ${c2}(${sg(a)})<sup>${n-m-1}</sup><i>k</i><sup>${m+1}</sup>`,'The two coefficients are equal.'),
+      L(`Divide both sides by (${sg(a)})<sup>${n-m-1}</sup><i>k</i><sup>${m}</sup>:`,'This is allowed because a ≠ 0 and k ≠ 0.',null,[`The two sides share a lot. Dividing by the shared part leaves a short equation. We can only divide because we know it is not 0 (the question says k ≠ 0).`]),
+      L(`${c1} × ${sg(a)} = ${c2}<i>k</i>`,'What is left.',undefined,[`(${sg(a)})<sup>${n-m}</sup> ÷ (${sg(a)})<sup>${n-m-1}</sup> = ${sg(a)}, and <i>k</i><sup>${m+1}</sup> ÷ <i>k</i><sup>${m}</sup> = <i>k</i>.`])]);
+    S('Solve for k','Divide both sides by '+c2+'.',[
+      L(`<i>k</i> = ${sg(c1*A)} ÷ ${c2} = <span class="hl">${fh(k)}</span>`,'Cancel the fraction if you can.',Nm('What is k? (fraction like 3/4 is fine)',[{label:'k',answer:fstr(k)}],`${sg(c1*A)} ÷ ${c2} = ${fstr(k)}.`),[`A quick shortcut: ${bn(n,m)} ÷ ${bn(n,m+1)} = ${m+1}/${n-m}, so k = ${sg(a)} × ${m+1}/${n-m}.`])]);
+    S('Final answer','Check both coefficients are really equal.',[L(`<i>k</i> = <span class="answer">${fstr(k)}</span>`,`Check: ${c1} × ${sg(pw(A,n-m))} × k${m?'^'+m:''} and ${c2} × ${sg(pw(A,n-m-1))} × k^${m+1} both come to ${fstr(fmul(F(c1*pw(A,n-m)),fpow(k,m)))} ✓`)]);
+    return mk(P,steps)},
+  gen(){const a=ri(1,5),n=ri(4,10),m=ri(0,n-2);return {t:'unkeq',a,n,m}},
+  ans(P){const k=TYPES.unkeq.kval(P);return {kind:'num',val:k,disp:fstr(k)}},
+  hints:P=>[`Coefficient of ${xp(P.m)||'the constant'} uses r = ${P.m}. Coefficient of ${xp(P.m+1)} uses r = ${P.m+1}.`,'Set them equal, divide away the shared factors, and solve for k.'],
+  example:{t:'unkeq',a:3,n:8,m:2}});
+
+T('unkn',{name:'Find n from a coefficient',group:'unknown',
+  blurb:'(1 + bx)^n has a known coefficient. Work out the power n.',
+  help:'The bracket is (1 + bx)^n. Say which power of x has a known coefficient, and its value.',
+  fields:[intField('b','b (number with x)','2'),intField('m','Coefficient of x^m. m =','2'),intField('V','Its value','180')],
+  parse(v){const b=int(v.b,-10,10,'b');if(b.err)return b;if(b.v===0)return {err:'b cannot be 0.'};const m=int(v.m,1,3,'m');if(m.err)return m;const V=int(v.V,-1e12,1e12,'The value');if(V.err)return V;
+    const bm=pw(BigInt(b.v),m.v),Vb=BigInt(V.v);if(Vb%bm!==0n||Vb/bm<=0n)return {err:'That value does not give a whole number n. Check the numbers.'};
+    const R=Vb/bm;if(findN(m.v,R)===null)return {err:'No whole number n gives that coefficient. Check the numbers.'};return {p:{t:'unkn',b:b.v,m:m.v,V:Vb}}},
+  text:P=>`In the expansion of (1 + ${sg(P.b)}<i>x</i>)<sup><i>n</i></sup>, where <i>n</i> is a positive integer, the coefficient of ${xp(P.m)} is ${sg(P.V)}. Find <i>n</i>.`,
+  expr:P=>`(1 + ${sg(P.b)}<i>x</i>)<sup><i>n</i></sup>`,
+  build(P){const {b,m,V}=P,B=BigInt(b),bm=pw(B,m),R=V/bm,{steps,S}=newSteps();
+    S('Read the question','What is actually being asked?',[readLine(P,[`This time the unknown is the POWER n. We still use the general term, but nCr now has an n in it.`]),L('Plan: write the coefficient using nCr, make an equation, then solve for n.','n has to be a whole number.')]);
+    S(`The ${xp(m)} term`,'The first term is 1, so only the second term has x.',[
+      L(`T<sub>r+1</sub> = ${bn('n','r')}(1)<sup>n${MINUS}r</sup>(${sg(b)}<i>x</i>)<sup>r</sup>`,'(1) to any power is just 1.'),
+      L(`${xp(m)} → r = ${m}`,'The power of x equals r.'),
+      L(`coefficient = ${bn('n',m)} × (${sg(b)})<sup>${m}</sup> = ${bn('n',m)} × ${sg(bm)}`,'Work out the number part.',Nm(`What is (${sg(b)})<sup>${m}</sup>?`,[{label:'value',answer:bm.toString()}],`(${sg(b)})<sup>${m}</sup> = ${sg(bm)}.`))]);
+    S('Make an equation','The question gives the coefficient.',[
+      L(`${bn('n',m)} × ${sg(bm)} = ${sg(V)}`,'Coefficient = the given value.'),
+      L(`${bn('n',m)} = ${sg(V)} ÷ ${sg(bm)} = <span class="hl">${R}</span>`,'Divide both sides.')]);
+    const sn=solveNLines(m,R);S('Solve for n','Turn nCr into an ordinary expression in n.',sn.lines);
+    S('Final answer','Check it.',[L(`<i>n</i> = <span class="answer">${sn.n}</span>`,`Check: ${bn(sn.n,m)} × ${sg(bm)} = ${C(sn.n,m)} × ${sg(bm)} = ${sg(V)} ✓`)]);
+    return mk(P,steps)},
+  gen(){const b=rnz(-3,3),m=ri(1,3),n=ri(m+2,12);return {t:'unkn',b,m,V:C(n,m)*pw(BigInt(b),m)}},
+  ans(P){const n=findN(P.m,P.V/pw(BigInt(P.b),P.m));return {kind:'num',val:F(n),disp:String(n)}},
+  hints:P=>[`The ${xp(P.m)} term has coefficient nC${P.m} × b^${P.m}.`,'Divide by the b part, then solve nCr = number for n.'],
+  example:{t:'unkn',b:2,m:2,V:180n}});
+
+T('approx',{name:'Estimate a number',group:'unknown',
+  blurb:'Use the first few terms of an expansion to estimate something like 1.02^8.',
+  help:'Type a number close to a whole number, with a whole-number power, like 1.02^8 or 2.01^6.',
+  fields:[{id:'expr',kind:'text',label:'The number',def:'1.02^8'},intField('nt','How many terms to use','3')],
+  parse(v){const s=String(v.expr).replace(/\s/g,'').replace(/[()]/g,'').replace(/−/g,'-');const m=s.match(/^(\d+(?:\.\d+)?)\^(\d+)$/);if(!m)return {err:'Type it like 1.02^8 or 2.01^6.'};
+    const n=+m[2];if(n<2||n>30)return {err:'The power should be between 2 and 30.'};const val=+m[1];let a=Math.round(val);if(a<1)a=1;const dec=(m[1].split('.')[1]||'').length;const d=+(val-a).toFixed(dec);
+    if(d===0)return {err:'That is a whole number already. Try something like 1.02 or 2.01.'};if(Math.abs(d)>0.2)return {err:'The number must be close to a whole number, like 1.02 or 2.99.'};
+    const nt=int(v.nt,2,6,'The number of terms');if(nt.err)return nt;return {p:{t:'approx',val:m[1],a,d,n,nt:Math.min(nt.v,n+1)}}},
+  text:P=>`Use the first ${P.nt} terms of a binomial expansion to estimate ${P.val}<sup>${P.n}</sup>. Give your answer to 4 significant figures.`,
+  expr:P=>`${P.val}<sup>${P.n}</sup>`,
+  terms(P){const t=[];for(let r=0;r<P.nt;r++)t.push(Number(C(P.n,r))*Math.pow(P.a,P.n-r)*Math.pow(P.d,r));return t},
+  build(P){const {a,d,n,nt,val}=P,t=TYPES.approx.terms(P),sum=t.reduce((x,y)=>x+y,0),exact=Math.pow(+val,n),{steps,S}=newSteps();const dS=(d<0?MINUS:'')+Math.abs(d);
+    S('Read the question','What is actually being asked?',[readLine(P,[`A calculator would just give the answer. The question wants to practise the expansion: the first few terms are a very good estimate when the second number is tiny.`]),
+      L(`Idea: write ${val} as (${a} + ${dS}), then expand`,'The small number (called d here) makes later terms tiny.',null,[`${val} is close to ${a}. The gap is ${dS}. So ${val} = ${a} + (${dS}). That turns the number into a binomial (first term + second term), which we can expand.`])]);
+    S('Split the number',`${val} = ${a} + (${dS}).`,[
+      L(`${val} = <span class="hl">${a}</span> + (<span class="hl">${dS}</span>)`,'Pick the nearest whole number, then see what is left.',Nm('What is the small number d?',[{label:'d',answer:String(d)}],`${val} ${MINUS} ${a} = ${sg(d)}.`)),
+      L(`${val}<sup>${n}</sup> = (${a} + (${dS}))<sup>${n}</sup>`,`Now it is (first + second)<sup>${n}</sup>.`)]);
+    S('Write the first terms','Use the pattern with first = '+a+' and second = '+dS+'.',t.map((x,r)=>L(`${r?'+ ':''}${bn(n,r)}(${a})<sup>${n-r}</sup>(${dS})<sup>${r}</sup>`,r===0?'r = 0':`r = ${r}`,undefined,r===0?[`Only ${nt} terms are asked for, so r = 0 up to r = ${nt-1}.`]:undefined)));
+    S('Work out each term','Use a calculator for the powers.',t.map((x,r)=>L(`${C(n,r)} × ${ff(Math.pow(a,n-r),6)} × ${ff(Math.pow(d,r),6)} = <span class="hl">${ff(x,8)}</span>`,r>=2?`The terms are shrinking fast.`:'',r===1?Nm('What is this term?',[{label:'term',answer:ff(x,8)}],`${n} × ${a}^${n-1} × ${dS} = ${ff(x,8)}.`):undefined)));
+    S('Add and round','Add the terms, then round.',[
+      L(t.map((x,i)=>i===0?ff(x,8):(x<0?` ${MINUS} ${ff(-x,8)}`:` + ${ff(x,8)}`)).join(''),'The sum of the terms.'),
+      L(`≈ ${ff(sum,8)} = <span class="answer">${ff(sum,4)}</span> <span class="mu">(4 s.f.)</span>`,'Round to 4 significant figures.'),
+      L(`Check with a calculator: ${val}<sup>${n}</sup> = ${ff(exact,8)}`,`The estimate is within ${ff(Math.abs(exact-sum),2)} of the real value.`,null,[`If you took more terms, the estimate would get even closer. The terms after the ones we used are so small that they hardly change the answer.`])]);
+    return mk(P,steps)},
+  gen(){const a=ri(1,3),d=[0.01,0.02,0.03,-0.01,-0.02,0.005][ri(0,5)],n=ri(5,10),val=String(+(a+d).toFixed(3));return {t:'approx',val,a,d:+(+val-a).toFixed(3),n,nt:3}},
+  ans(P){const s=TYPES.approx.terms(P).reduce((x,y)=>x+y,0);return {kind:'approx',val:s,disp:ff(s,4)}},
+  hints:P=>[`Write ${P.val} as ${P.a} + (${sg(P.d)}).`,`Expand (${P.a} + (${sg(P.d)}))^${P.n} and keep the first ${P.nt} terms.`],
+  example:{t:'approx',val:'1.02',a:1,d:0.02,n:8,nt:3}});
+
+T('extended',{name:'Negative or fractional power',group:'unknown',
+  blurb:'Expand (1 + x)^−2 or (1 + x)^(1/2) and say when it is valid.',
+  help:'Type (a + bx) with a power that is negative or a fraction, like (1+2x)^-3 or (4+x)^(1/2).',
+  fields:[exprField('(1+2x)^(-3)'),intField('upto','Up to and including x^','3')],
+  parse(v){const r=parseExpr(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'Use a single bracket for this type.'};
+    if(r.pw.d===1&&r.pw.n>=0)return {err:'This power is a whole positive number. Use an ordinary expansion type instead.'};
+    let cfg=r.cfg;if(cfg.q===0&&cfg.p===1)cfg=swapTerms(cfg);if(cfg.p!==0||cfg.q!==1)return {err:'Write the bracket as (a + bx) with a plain number first, like (1+2x).'};
+    if(cfg.a<1)return {err:'The number a must be positive, like (1+2x) or (4−x).'};
+    const u=int(v.upto,1,5,'The highest power');if(u.err)return u;const m=F(r.pw.n,r.pw.d);
+    if(m.d>1n&&iroot(BigInt(cfg.a),Number(m.d))===null&&cfg.a!==1&&false)return {err:''};
+    return {p:{t:'extended',cfg,m,upto:u.v}}},
+  mHtml:m=>sg(m.n)+(m.d===1n?'':'/'+m.d),
+  qHtml:P=>`(${sg(P.cfg.a)} ${P.cfg.b<0?MINUS:'+'} ${Math.abs(P.cfg.b)===1?'':Math.abs(P.cfg.b)}<i>x</i>)<sup>${TYPES.extended.mHtml(P.m)}</sup>`,
+  text(P){const t=P.askj!==undefined?`In the expansion of ${TYPES.extended.qHtml(P)} in ascending powers of <i>x</i>, find the coefficient of ${xp(P.askj)}.`:
+    `Find the first ${P.upto+1} terms in the expansion of ${TYPES.extended.qHtml(P)} in ascending powers of <i>x</i>, up to and including ${xp(P.upto)}. State the values of <i>x</i> for which the expansion is valid.`;return t},
+  expr:P=>TYPES.extended.qHtml(P),
+  calc(P){const {a,b}=P.cfg,m=P.m,up=Math.max(P.upto,P.askj||0);const y=F(b,a);const c=[F(1)];for(let j=1;j<=up;j++)c.push(fdiv(fmul(c[j-1],fsub(m,F(j-1))),F(j)));
+    const t=c.map((cj,j)=>fmul(cj,fpow(y,j)));
+    let pref=null,symbolic=false;if(a===1)pref=F(1);else{const q=Number(m.d),pp=Number(m.n);const rt=iroot(BigInt(a),q);if(rt!==null)pref=fpow(F(rt),pp);else symbolic=true}
+    const fin=t.map(x=>pref?fmul(x,pref):x);return {y,c,t,pref,symbolic,fin}},
+  build(P){const {cfg,m,upto}=P,{a,b}=cfg,k=TYPES.extended.calc(P),{steps,S}=newSteps(),mH=TYPES.extended.mHtml(m),Q=TYPES.extended.qHtml(P);
+    const asUp=P.askj!==undefined?Math.max(upto,P.askj):upto;
+    S('Read the question','What is actually being asked?',[readLine(P,[`The ordinary pattern with nCr only works when the power is a positive whole number, because nCr counts things. For other powers (negative, or a fraction) there is a different formula.`]),
+      L(`The power ${fh(m)} is not a positive whole number`,'So we use the extended formula, not Pascal\'s triangle.',null,[`With a power like ${fh(m)} the expansion never ends. It keeps going forever, with smaller and smaller terms (as long as x is small enough).`,`That is why we only write the first few terms, and why we need to say when it is valid.`])]);
+    S('Get a 1 in front',a===1?'The first term is already 1, so nothing to do.':`The formula needs (1 + something). Take ${a} out of the bracket.`,a===1?[L(`${Q} is already (1 + ${b<0?MINUS:''}${Math.abs(b)===1?'':Math.abs(b)}<i>x</i>)<sup>${mH}</sup>`,'Good.')]:[
+      L(`${Q} = ${a}<sup>${mH}</sup> (1 + ${fh(k.y)}<i>x</i>)<sup>${mH}</sup>`,`Take ${a} out of the bracket. The power ${mH} goes on the ${a} too.`,undefined,[`${a} + ${sg(b)}x = ${a}(1 + ${fh(k.y)}x), because ${a} × ${fh(k.y)} = ${sg(b)}. The power then applies to both parts: ${a}<sup>${mH}</sup> and the bracket.`]),
+      L(k.pref?`${a}<sup>${mH}</sup> = <span class="hl">${fh(k.pref)}</span>`:`${a}<sup>${mH}</sup> stays as it is (it is not a nice number)`,k.pref?'Work out the number in front.':'Leave it in front as a factor.',undefined,[`${a}<sup>${m.n<0n?MINUS+(-m.n):m.n}${m.d>1n?'/'+m.d:''}</sup> ${m.d>1n?`means the ${m.d===2n?'square':m.d===3n?'cube':ord(Number(m.d))} root of ${a}${m.n!==1n?', then the power '+sg(m.n):''}`:`is ${a} to the power ${sg(m.n)}${m.n<0n?` = 1 ÷ ${a}<sup>${-m.n}</sup>`:''}`}.`])]);
+    S('The extended formula','For any power m:',[
+      L(`(1 + <i>y</i>)<sup>m</sup> = 1 + m<i>y</i> + <span class="fr"><span>m(m${MINUS}1)</span><span>2!</span></span><i>y</i>² + <span class="fr"><span>m(m${MINUS}1)(m${MINUS}2)</span><span>3!</span></span><i>y</i>³ + …`,'Memorise this. It is in the formula booklet.',
+        P.upto>=2||asUp>=2?Nm(`With m = ${fstr(m)}, work out m(m − 1) ÷ 2.`,[{label:'answer',answer:fstr(k.c[2])}],`${fstr(m)} × ${fstr(fsub(m,F(1)))} ÷ 2 = ${fstr(k.c[2])}.`):undefined,
+        [`m is the power. y is whatever comes after the 1 in the bracket. Each new term multiplies by one smaller number on top (m, m−1, m−2 …) and one bigger number on the bottom (1, 2, 3 …).`,`!, called "factorial", means multiply all whole numbers down to 1: 3! = 3×2×1 = 6.`]),
+      L(`Here m = ${fh(m)} and <i>y</i> = ${fh(k.y)}<i>x</i>`,'Put these in.')]);
+    const cl=[];for(let j=1;j<=asUp;j++){const num=[];for(let i=0;i<j;i++)num.push(`(${fh(fsub(m,F(i)))})`);
+      cl.push(L(`coefficient ${j}: ${num.join(' × ')} ÷ ${j}! = <span class="hl">${fh(k.c[j])}</span>`,`This is the number that goes with <i>y</i>${j>1?'<sup>'+j+'</sup>':''}.`,undefined,j===1?[`For j = 1 it is just m itself.`]:[`Build it up: the top is m(m−1)… with ${j} factors. The bottom is ${j}! = ${[...Array(j)].map((_,i)=>i+1).reverse().join('×')} = ${[...Array(j)].reduce((s,_,i)=>s*(i+1),1)}.`]))}
+    S('The coefficients',`Work out the number for each power of y, up to y${asUp>1?'<sup>'+asUp+'</sup>':''}.`,cl);
+    const tl=[];for(let j=1;j<=asUp;j++)tl.push(L(`${fh(k.c[j])} × (${fh(k.y)}<i>x</i>)${j>1?'<sup>'+j+'</sup>':''} = <span class="hl">${fmono(k.t[j],j,true)}</span>`,`Replace y with ${fh(k.y)}<i>x</i> and raise to the power ${j}.`,j===2?Nm('What is the number in front of x²?',[{label:'coefficient',answer:fstr(k.t[2])}],`${fstr(k.c[2])} × (${fstr(k.y)})² = ${fstr(k.t[2])}.`):undefined,[`The number AND the x are both raised to the power ${j}: (${fh(k.y)}<i>x</i>)² = (${fh(k.y)})² <i>x</i>².`]));
+    S('Put y back in','Substitute y = '+fh(k.y)+'x into each term.',[L(`(1 + ${fh(k.y)}<i>x</i>)<sup>${mH}</sup> = 1${k.t.slice(1).map((x,i)=>fmono(x,i+1,false)).join('')} + …`,'Each term in order of the power of x.'),...tl]);
+    const mp=new Map();k.fin.slice(0,asUp+1).forEach((x,j)=>mp.set(j,x));
+    S('Multiply by the front number',k.pref&&k.pref.n===1n&&k.pref.d===1n?'The front number is 1, so nothing changes.':k.symbolic?'Leave the front number as a factor.':`Multiply every term by ${fh(k.pref)}.`,[
+      k.symbolic?L(`${Q} = ${a}<sup>${mH}</sup> (1${k.t.slice(1,asUp+1).map((x,i)=>fmono(x,i+1,false)).join('')} + …)`,'The final answer, with the factor outside.'):
+      L(`${Q} = <span class="answer">${fseries(mp)} + …</span>`,P.askj!==undefined?`The coefficient of ${xp(P.askj)} is ${fh(k.fin[P.askj])}.`:'Terms in ascending order of the power of x.')]);
+    const bound=F(BigInt(a),BigInt(Math.abs(b)));
+    S('When is it valid?','The extended expansion only works if y is small enough.',[
+      L(`valid when |${fh(k.y)}<i>x</i>| &lt; 1`,'The part after the 1 must be between −1 and 1.',undefined,[`If |y| is 1 or more, the terms stop getting smaller and the series does not add up to anything sensible. So the formula only holds for small y.`,`|…| means "ignore the sign". |y| &lt; 1 is the same as −1 < y < 1.`]),
+      L(`|<i>x</i>| &lt; ${fh(bound)}`,`Divide by ${fh(fabs(k.y))}.`),
+      L(`${MINUS}${fh(bound)} &lt; <i>x</i> &lt; ${fh(bound)}`,'Written as a range.',undefined,[`Whole-number powers never need this condition (they are always valid). Negative and fractional powers always do.`])]);
+    return mk(P,steps)},
+  gen(){const opts=[{a:1,m:F(-1)},{a:1,m:F(-2)},{a:1,m:F(-3)},{a:1,m:F(1,2)},{a:1,m:F(-1,2)},{a:4,m:F(1,2)},{a:4,m:F(-1,2)},{a:9,m:F(-1,2)},{a:8,m:F(1,3)},{a:2,m:F(-2)}];
+    const o=opts[ri(0,opts.length-1)];return {t:'extended',cfg:{a:o.a,p:0,b:rnz(-3,3),q:1,n:0},m:o.m,upto:3,askj:ri(1,3)}},
+  ans(P){const k=TYPES.extended.calc(P);const v=k.fin[P.askj];return {kind:'num',val:v,disp:fstr(v)}},
+  hints:P=>['(1+y)^m = 1 + my + m(m−1)/2! y² + m(m−1)(m−2)/3! y³ + …','If the first term is not 1, take it out of the bracket first, then multiply back at the end.'],
+  example:{t:'extended',cfg:{a:1,p:0,b:2,q:1,n:0},m:F(-3),upto:3}});
+
+T('sumcoef',{name:'Sum of the coefficients',group:'find',
+  blurb:'Add up every coefficient at once, using the x = 1 trick.',
+  help:'Type the expression and choose all, even-power or odd-power coefficients.',
+  fields:[exprField('(2x+3)^5'),{id:'which',kind:'sel',label:'Which coefficients?',def:'all',opts:[['all','All of them'],['even','Even powers of x'],['odd','Odd powers of x']]}],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;return {p:{t:'sumcoef',cfg:r.cfg,which:v.which||'all'}}},
+  evalAt(cfg,xv){const par=e=>xv===1?1n:(Math.abs(e)%2?-1n:1n);const L1=cfg.c!==undefined?BigInt(cfg.c)*BigInt(xv)+BigInt(cfg.d):1n;
+    const A=BigInt(cfg.a)*par(cfg.p),B=BigInt(cfg.b)*par(cfg.q);return {A,B,L1,val:L1*pw(A+B,cfg.n)}},
+  text(P){const w={all:'the sum of all the coefficients',even:'the sum of the coefficients of the even powers of <i>x</i>',odd:'the sum of the coefficients of the odd powers of <i>x</i>'}[P.which];return `Find ${w} in the expansion of ${question(P.cfg).html}.`},
+  expr:P=>question(P.cfg).html,
+  value(P){const f1=TYPES.sumcoef.evalAt(P.cfg,1).val,f2=TYPES.sumcoef.evalAt(P.cfg,-1).val;return P.which==='all'?f1:P.which==='even'?(f1+f2)/2n:(f1-f2)/2n},
+  build(P){const {cfg,which}=P,Q=question(cfg),{steps,S}=newSteps(),e1=TYPES.sumcoef.evalAt(cfg,1),e2=TYPES.sumcoef.evalAt(cfg,-1),hasM=cfg.c!==undefined;
+    const sub=(xv)=>{const sx=xv===1?'1':`(${MINUS}1)`;const A=raw(BigInt(cfg.a),0),b=BigInt(cfg.b);
+      const part=(co,e)=>e===0?sg(co):`${sg(co)}${e<0?'/':'×'}${sx}${Math.abs(e)===1?'':'<sup>'+Math.abs(e)+'</sup>'}`.replace('×',' × ').replace('/',' ÷ ');return `${hasM?`(${sg(cfg.c)}×${sx} ${cfg.d<0?MINUS:'+'} ${Math.abs(cfg.d)})`:''}(${part(cfg.a,cfg.p)} + ${part(cfg.b,cfg.q)})<sup>${cfg.n}</sup>`};
+    S('Read the question','What is actually being asked?',[readLine(P,[`The expansion is a long line of terms like 5x³ + 2x − 7. The coefficients are the numbers in front: 5, 2 and ${MINUS}7. We want to add some or all of them.`]),
+      L('Idea: put x = 1. Every power of x becomes 1, so only the coefficients are left.','This avoids expanding anything.',null,[`If the expansion is 5x³ + 2x − 7 and you put x = 1, you get 5×1 + 2×1 − 7. That is just 5 + 2 − 7, the sum of the coefficients.`])]);
+    S('Put x = 1','Replace every x with 1.',[
+      L(`f(1) = ${sub(1)}`,'f(x) means the whole expression.',undefined,[`Because 1 to any power is 1, every x part disappears. Be careful with a 1/x term: 1 ÷ 1 = 1 too.`]),
+      L(`= ${sg(e1.L1)}${hasM?' × ':''}(${sg(e1.A)} + ${sg(e1.B)})<sup>${cfg.n}</sup> = <span class="hl">${sg(e1.val)}</span>`.replace(`${sg(e1.L1)} × `,hasM?`${sg(e1.L1)} × `:'').replace(/^= 1\(/,'= ('),'Work it out.',Nm('What is f(1)?',[{label:'f(1)',answer:e1.val.toString()}],`${hasM?sg(e1.L1)+' × ':''}(${sg(e1.A)} + ${sg(e1.B)})^${cfg.n} = ${sg(e1.val)}.`))]);
+    if(which==='all')S('Final answer','That is the sum of all the coefficients.',[L(`sum of all coefficients = <span class="answer">${sg(e1.val)}</span>`,'Done.')]);
+    else{S('Put x = −1 as well',`x = 1 gives (even + odd). x = ${MINUS}1 gives (even ${MINUS} odd).`,[
+      L(`f(${MINUS}1) = ${sub(-1)}`,'Odd powers of x flip sign when x = −1. Even powers stay positive.',undefined,[`(${MINUS}1)² = 1 but (${MINUS}1)³ = ${MINUS}1. So odd powers change sign and even powers do not.`]),
+      L(`= ${hasM?sg(e2.L1)+' × ':''}(${sg(e2.A)} + ${sg(e2.B)})<sup>${cfg.n}</sup> = <span class="hl">${sg(e2.val)}</span>`,'Work it out.')]);
+      const v=TYPES.sumcoef.value(P);
+      S('Combine them',which==='even'?'Adding the two cancels the odd terms.':'Subtracting the two cancels the even terms.',[
+        L(`f(1) = E + O &nbsp;&nbsp; f(${MINUS}1) = E ${MINUS} O`,'E = sum of even-power coefficients, O = sum of odd-power coefficients.'),
+        L(which==='even'?`E = (${sg(e1.val)} + ${sg(e2.val)}) ÷ 2`:`O = (${sg(e1.val)} ${MINUS} ${e2.val<0n?'('+sg(e2.val)+')':sg(e2.val)}) ÷ 2`,which==='even'?'Add the two equations and halve.':'Subtract the two equations and halve.',undefined,[`Adding f(1) + f(−1) = 2E, because the O's cancel. Subtracting f(1) − f(−1) = 2O, because the E's cancel.`]),
+        L(`= <span class="answer">${sg(v)}</span>`,'Done.',Nm('What is the answer?',[{label:'answer',answer:v.toString()}],`${which==='even'?`(${sg(e1.val)} + ${sg(e2.val)})`:`(${sg(e1.val)} − ${sg(e2.val)})`} ÷ 2 = ${sg(v)}.`))])}
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,4),p:1,b:rnz(-4,4),q:0,n:ri(3,7)};if(Math.random()<.4){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'sumcoef',cfg,which:['all','all','even','odd'][ri(0,3)]}},
+  ans(P){const v=TYPES.sumcoef.value(P);return {kind:'num',val:F(v),disp:sg(v)}},
+  hints:P=>['Put x = 1 to get the sum of all the coefficients.',P.which==='all'?'Work out the bracket with x = 1.':'Also put x = −1, then add or subtract the two answers and halve.'],
+  example:{t:'sumcoef',cfg:{a:2,p:1,b:3,q:0,n:5},which:'all'}});
+
+T('greatest',{name:'Greatest coefficient',group:'find',
+  blurb:'Find which term has the biggest coefficient, by comparing neighbouring terms.',
+  help:'Type a bracket with positive numbers, like (2x+3)^10.',
+  fields:[exprField('(2x+3)^10')],
+  parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {err:'Use a single bracket for this type.'};if(r.cfg.a<=0||r.cfg.b<=0)return {err:'Both numbers must be positive for this method.'};return {p:{t:'greatest',cfg:r.cfg}}},
+  text:P=>P.valueOnly?`Find the value of the greatest coefficient in the expansion of ${question(P.cfg).html}.`:`Find the term with the greatest coefficient in the expansion of ${question(P.cfg).html}.`,
+  expr:P=>question(P.cfg).html,
+  best(P){const {terms}=expand(P.cfg);let mx=0;terms.forEach((t,i)=>{if(t.val>terms[mx].val)mx=i});const ties=terms.map((t,i)=>i).filter(i=>terms[i].val===terms[mx].val);return {mx,ties,terms}},
+  build(P){const {cfg}=P,Q=question(cfg),n=cfg.n,a=cfg.a,b=cfg.b,{mx,ties,terms}=TYPES.greatest.best(P),{steps,S}=newSteps();
+    const rho=F(n*b-a,a+b);
+    S('Read the question','What is actually being asked?',[readLine(P,[`The coefficients of the terms go up, reach a peak, then come back down. We want the term at the peak.`]),
+      L('Plan: compare each term with the next one. The coefficients rise while the next one is bigger.','No need to work out all terms.',null,[`Imagine the numbers 3, 8, 20, 25, 15, 4. They rise until 25 and then fall. The peak is where "next one ≥ this one" stops being true.`])]);
+    S('Compare neighbouring terms','Divide one coefficient by the one before it.',[
+      L(`t<sub>r</sub> = ${bn(n,'r')} × ${a}<sup>${n}${MINUS}r</sup> × ${b}<sup>r</sup>`,'The coefficient of the term with r (just the number).'),
+      L(`t<sub>r+1</sub> ÷ t<sub>r</sub> = <span class="fr"><span>${n} ${MINUS} r</span><span>r + 1</span></span> × <span class="fr"><span>${b}</span><span>${a}</span></span>`,'Most things cancel when you divide.',undefined,[`${bn(n,'r+1')} ÷ ${bn(n,'r')} = (n−r)/(r+1). The a-power drops by 1 (so we lose one a) and the b-power goes up by 1 (so we gain one b), giving b/a.`]),
+      L(`The next term is bigger when this ratio is more than 1`,'Ratio ≥ 1 means "not smaller".')]);
+    S('Solve the inequality','Find which r still gives a bigger next term.',[
+      L(`(${n} ${MINUS} r)${b} ≥ (r + 1)${a}`,'Multiply both sides by (r+1) and by a.'),
+      L(`${n*b} ${MINUS} ${b}r ≥ ${a}r + ${a}`,'Multiply out the brackets.'),
+      L(`${n*b-a} ≥ ${a+b}r`,'Collect r on one side.'),
+      L(`r ≤ ${fh(rho)}${rho.d===1n?'':' ≈ '+ff(Number(rho.n)/Number(rho.d),4)}`,'Divide by '+(a+b)+'.',Nm('What is the largest whole number r that satisfies this?',[{label:'r',answer:String(Math.max(-1,Math.floor(Number(rho.n)/Number(rho.d))))}],`r ≤ ${ff(Number(rho.n)/Number(rho.d),4)}, so the largest whole r is ${Math.floor(Number(rho.n)/Number(rho.d))}.`))]);
+    const rS=ties.length>1?`${ties[0]} and ${ties[1]}`:String(mx);
+    S('Find the peak',`The coefficients grow up to r = ${Math.max(0,Math.floor(Number(rho.n)/Number(rho.d)))+(Number(rho.n)<0?0:1)}, then stop growing.`,[
+      L(Number(rho.n)<0?`r ≤ ${ff(Number(rho.n)/Number(rho.d),3)} never happens for r ≥ 0, so the coefficients only go down. The greatest is the first.`:`The ratio is ≥ 1 up to r = ${Math.floor(Number(rho.n)/Number(rho.d))}, so t<sub>${Math.floor(Number(rho.n)/Number(rho.d))+1}</sub> is the last that is still ≥ the one before.`,'So the peak is the next one along.'),
+      L(`peak at r = <span class="hl">${rS}</span>${ties.length>1?' <span class="mu">(two equal terms)</span>':''}`,ties.length>1?'The ratio is exactly 1 there, so two neighbouring coefficients are equal.':'Single peak.'),
+      L(`Check: ${terms.slice(Math.max(0,mx-2),mx+3).map((t,i)=>`t<sub>${Math.max(0,mx-2)+i}</sub> = ${t.val}`).join(', ')}`,'The biggest number in the list.')]);
+    const t=terms[mx],t2=ties.length>1?terms[ties[1]]:null;
+    S('Final answer',P.valueOnly?'The question asks for the value.':'Write the term.',[L(P.valueOnly?`greatest coefficient = <span class="answer">${t.val}</span>`:`${ties.length>1?'T<sub>'+(ties[0]+1)+'</sub> and T<sub>'+(ties[1]+1)+'</sub> are':'T<sub>'+(mx+1)+'</sub> is'} <span class="answer">${mono(t.val,t.e,true)}${t2?' and '+mono(t2.val,t2.e,true):''}</span>`,`The greatest coefficient is ${t.val}.`)]);
+    return mk(P,steps)},
+  gen(){const cfg={a:ri(1,4),p:1,b:ri(1,4),q:0,n:ri(5,12)};return {t:'greatest',cfg,valueOnly:true}},
+  ans(P){const {terms,mx}=TYPES.greatest.best(P);return {kind:'num',val:F(terms[mx].val),disp:terms[mx].val.toString()}},
+  hints:P=>['Compare t(r+1) with t(r): the ratio is (n−r)/(r+1) × b/a.','Solve ratio ≥ 1 for r, then take the next whole number along.'],
+  example:{t:'greatest',cfg:{a:2,p:1,b:3,q:0,n:10}}});
+
+T('ncr',{name:'Evaluate nCr',group:'other',
+  blurb:'Work out nCr by hand or on a calculator, and use the factorial rules.',
+  help:'Type n and r to work out nCr.',
+  fields:[intField('n','n','12'),intField('r','r','4')],
+  parse(v){const n=int(v.n,1,40,'n');if(n.err)return n;const r=int(v.r,0,n.v,'r');if(r.err)return r;return {p:{t:'ncr',n:n.v,r:r.v}}},
+  text:P=>`Evaluate ${bn(P.n,P.r)}.`,expr:P=>bn(P.n,P.r),
+  build(P){const {n,r}=P,rr=Math.min(r,n-r),{steps,S}=newSteps();const num=[...Array(rr)].map((_,i)=>n-i),den=[...Array(rr)].map((_,i)=>rr-i);
+    S('Read the question','What does nCr mean?',[readLine(P,[`${bn(n,r)} is "n choose r": the number of ways to choose ${r} things from ${n}. It is also the number in Pascal's triangle at row ${n}, position ${r}.`]),
+      L(`${bn('n','r')} = <span class="fr"><span>n!</span><span>r!(n${MINUS}r)!</span></span>`,'The formula.',null,[`n! means n × (n−1) × … × 2 × 1. For example 5! = 5×4×3×2×1 = 120.`])]);
+    S('Put the numbers in','Replace n and r.',[L(`${bn(n,r)} = <span class="fr"><span>${n}!</span><span>${r}! × ${n-r}!</span></span>`,`n − r = ${n} ${MINUS} ${r} = ${n-r}.`),
+      rr!==r?L(`Same as ${bn(n,rr)}`,`nCr = nC(n−r), so use the smaller one to save work: ${n}C${r} = ${n}C${n-r}.`,undefined,[`Choosing ${r} things to take is the same as choosing ${n-r} to leave behind, so both give the same number.`]):L('No shortcut needed here.','')]);
+    S('Cancel and calculate','Write only the top and bottom that are needed.',[
+      L(`${bn(n,rr)} = <span class="fr"><span>${num.join(' × ')}</span><span>${den.join(' × ')}</span></span>`,`${rr} numbers on top counting down from ${n}, and ${rr}! on the bottom.`,undefined,[`${n}! ÷ ${n-rr}! leaves just the first ${rr} numbers of ${n}!, which is ${num.join(' × ')}. That is why we only need these.`]),
+      L(`= ${num.reduce((x,y)=>x*y,1)} ÷ ${den.reduce((x,y)=>x*y,1)} = <span class="answer">${C(n,r)}</span>`,'Work it out.',Nm('What is the answer?',[{label:'answer',answer:C(n,r).toString()}],`${num.reduce((x,y)=>x*y,1)} ÷ ${den.reduce((x,y)=>x*y,1)} = ${C(n,r)}.`)),
+      L(`Calculator: type ${n}, press nCr, type ${r}, press =`,'The same answer.')]);
+    return mk(P,steps)},
+  gen(){const n=ri(5,14);return {t:'ncr',n,r:ri(2,n-2)}},
+  ans(P){const v=C(P.n,P.r);return {kind:'num',val:F(v),disp:v.toString()}},
+  hints:P=>['nCr = n! ÷ (r! (n−r)!). Cancel the big factorials.','Or use your calculator.'],
+  example:{t:'ncr',n:10,r:3}});
+
+T('ncrn',{name:'Solve nCr = number for n',group:'other',
+  blurb:'Given nC2 = 45 (or nC1, nC3), find n.',
+  help:'Choose r (1, 2 or 3) and the value of nCr.',
+  fields:[intField('r','r (1, 2 or 3)','2'),intField('V','nCr =','45')],
+  parse(v){const r=int(v.r,1,3,'r');if(r.err)return r;const V=int(v.V,1,1e12,'The value');if(V.err)return V;if(findN(r.v,BigInt(V.v))===null)return {err:'No whole number n gives that value.'};return {p:{t:'ncrn',r:r.v,V:BigInt(V.v)}}},
+  text:P=>`Given that ${bn('n',P.r)} = ${P.V}, find <i>n</i>.`,expr:P=>`${bn('n',P.r)} = ${P.V}`,
+  build(P){const {r,V}=P,{steps,S}=newSteps(),sn=solveNLines(r,V);
+    S('Read the question','What is actually being asked?',[readLine(P,[`nCr usually gives a number from n. Here it is the other way: we know the number and want n.`]),L('Plan: write nCr out in terms of n, then solve.','Algebra, not a calculator.')]);
+    S('Solve for n',`Turn ${bn('n',r)} into an expression in n.`,sn.lines);
+    S('Final answer','Check it.',[L(`<i>n</i> = <span class="answer">${sn.n}</span>`,`Check: ${bn(sn.n,r)} = ${C(sn.n,r)} ✓`)]);
+    return mk(P,steps)},
+  gen(){const r=ri(2,3),n=ri(r+2,12);return {t:'ncrn',r,V:C(n,r)}},
+  ans(P){const n=findN(P.r,P.V);return {kind:'num',val:F(n),disp:String(n)}},
+  hints:P=>[P.r===2?'nC2 = n(n−1)/2. Multiply by 2 and solve the quadratic.':'nC3 = n(n−1)(n−2)/6. Multiply by 6 and try values.'],
+  example:{t:'ncrn',r:2,V:45n}});
+
+const ltr=(u,e)=>e===0?'':e===1?u:`${u}<sup>${e}</sup>`;
+T('letters',{name:'Expand (a + b)^n with letters',group:'other',
+  blurb:'Expand with letters instead of numbers, such as (x + y)^5.',
+  help:'Type two single letters, like (x+y)^5 or (p−q)^6.',
+  fields:[{id:'expr',kind:'text',label:'The expression',def:'(x+y)^5'}],
+  parse(v){const s=String(v.expr).replace(/\s/g,'').replace(/−/g,'-');const m=s.match(/^\(?([a-zA-Z])([+-])([a-zA-Z])\)?\^(\d+)$/);if(!m)return {err:'Type it like (x+y)^5 or (a-b)^4.'};if(m[1]===m[3])return {err:'Use two different letters.'};
+    const n=+m[4];if(n<1||n>12)return {err:'Use a power from 1 to 12.'};return {p:{t:'letters',u:m[1],v:m[3],neg:m[2]==='-',n}}},
+  text:P=>P.askr!==undefined?`In the expansion of (${P.u} ${P.neg?MINUS:'+'} ${P.v})<sup>${P.n}</sup>, find the coefficient of ${ltr(P.u,P.n-P.askr)}${ltr(P.v,P.askr)}.`:`Expand (${P.u} ${P.neg?MINUS:'+'} ${P.v})<sup>${P.n}</sup>.`,
+  expr:P=>`(${P.u} ${P.neg?MINUS:'+'} ${P.v})<sup>${P.n}</sup>`,
+  build(P){const {u,v,neg,n}=P,{steps,S}=newSteps(),big=n>8;const cf=r=>C(n,r)*(neg&&r%2?-1n:1n);
+    const term=(r,first)=>{const c=cf(r),a=c<0n?-c:c;const body=(a===1n&&(n-r>0||r>0)?'':a)+ltr(u,n-r)+ltr(v,r);return first?(c<0n?MINUS:'')+body:(c<0n?' '+MINUS+' ':' + ')+body};
+    const un=r=>`${bn(n,r)}${ltr(u,n-r)||''}${neg?`(${MINUS}${v})<sup>${r}</sup>`:ltr(v,r)}`;
+    S('Read the question','What is actually being asked?',[readLine(P,[`Letters work exactly like numbers. The pattern is the same: nCr × (first)<sup>n−r</sup> × (second)<sup>r</sup>.`]),
+      L(`${n+1} terms in total`,'One more than the power.'),
+      neg?L(`The second term is (${MINUS}${v}), so signs alternate: + − + − …`,'Odd powers of a negative are negative.',null,[`(${MINUS}${v})² = +${v}², (${MINUS}${v})³ = ${MINUS}${v}³. So r odd gives a minus, r even gives a plus.`]):L('Every term is positive.','Both terms are added.')]);
+    const rows=[];for(let r=0;r<=n;r++)if(!big||r<3||r>=n-1)rows.push(r);
+    const cl=[];if(n<=8){for(let i=0;i<=n;i++)cl.push(L(`<span class="${i===n?'hl':'mu'}">row ${i}: &nbsp; ${[...Array(i+1)].map((_,r)=>C(i,r)).join(' &nbsp; ')}</span>`,i===n?'These are the nCr numbers.':i===0?'Start with 1.':'Add the two above.'))}
+    else rows.forEach(r=>cl.push(L(`${bn(n,r)} = <span class="hl">${C(n,r)}</span>`,'Calculator.')));
+    S('The nCr numbers',n<=8?'Read them from Pascal\'s triangle.':'Use the calculator.',cl);
+    S('Write the terms','Put each r into the pattern.',rows.map((r,i)=>(big&&r===n-1&&rows[i-1]===2?[L('+ …','Skipping the middle.')]:[]).concat([L(`${i?'+ ':''}${un(r)}`,`r = ${r}`)])).flat());
+    S('Simplify','Work out signs and numbers.',[L(`<span class="answer">${rows.map((r,i)=>term(r,i===0)+(big&&r===2?' + … ':'')).join('')}${big?'':''}</span>`,big?'First three and last two terms. The middle is not written.':'The full expansion.')]);
+    return mk(P,steps)},
+  gen(){const u=['x','a','p','m'][ri(0,3)],v=['y','b','q','n'][ri(0,3)];const n=ri(4,9),r=ri(1,n-1);return {t:'letters',u,v,neg:Math.random()<.5,n,askr:r}},
+  ans(P){const c=C(P.n,P.askr)*(P.neg&&P.askr%2?-1n:1n);return {kind:'num',val:F(c),disp:sg(c)}},
+  hints:P=>['Coefficient = nCr × (±1)^r. A minus sign only matters when r is odd.'],
+  example:{t:'letters',u:'x',v:'y',neg:true,n:5}});
+
+/* fracRoot lives down here because unkv uses it */
+function fracRoot(f,m){const n=iroot(f.n<0n?-f.n:f.n,m),d=iroot(f.d,m);return n!==null&&d!==null?F(n,d):null}
+
+/* ============ handwriting player ============ */
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let lesson=null,si=0,li=0,run=0,busy=false,guided=false,waiting=null,writingChars=null;
+const spd=()=>[0,70,38,16][+$('speed').value];
+function prep(el){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);const chars=[];
+  nodes.forEach(t=>{const f=document.createDocumentFragment();for(const ch of t.data){const s=document.createElement('span');s.className='ch';s.textContent=ch;f.appendChild(s);if(ch.trim())chars.push(s);else s.classList.add('on')}t.parentNode.replaceChild(f,t)});return chars}
+let skipWrite=false;
+async function write(el,myRun){const chars=prep(el);writingChars=chars;let last=null;
+  for(const c of chars){if(run!==myRun)return;c.classList.add('on');if(!skipWrite){c.classList.add('pen');if(last)last.classList.remove('pen');last=c;await sleep(spd())}}
+  if(last)last.classList.remove('pen');writingChars=null}
+function finishWriting(){skipWrite=true}
+
+function openBook(les,isGuided){lesson=les;guided=isGuided;si=0;$('book').hidden=false;$('bkTitle').innerHTML=les.title;
+  document.documentElement.requestFullscreen?.().catch(()=>{});showStep(0)}
+function closeBook(){run++;waiting=null;$('book').hidden=true;$('auto').checked=false;if(document.fullscreenElement)document.exitFullscreen?.().catch(()=>{})}
+
+async function showStep(i){run++;const my=run;skipWrite=false;si=i;li=0;waiting=null;busy=true;
+  const st=lesson.steps[i],sheet=$('sheet');sheet.innerHTML='';sheet.parentElement.scrollTop=0;
+  $('prog').innerHTML=lesson.steps.map((_,k)=>`<span class="${k<=i?'on':''}"></span>`).join('');
+  $('bPrev').disabled=i===0;$('tapHint').hidden=false;$('tapHint').textContent='tap to write the next line ✍';
+  const h=document.createElement('h2');h.className='sh';h.innerHTML=st.h;sheet.appendChild(h);
+  const p=document.createElement('p');p.className='intro';p.innerHTML=st.intro;sheet.appendChild(p);
+  await write(h,my);if(run!==my)return;await write(p,my);if(run!==my)return;
+  busy=false;autoNext();
+}
+function autoNext(){if($('auto').checked){const my=run;setTimeout(()=>{if(run===my&&!busy&&!waiting)advance()},1800)}}
+
+async function advance(){
+  if(busy){finishWriting();return}
+  if(waiting)return;
+  const st=lesson.steps[si];
+  if(li>=st.lines.length){if(si<lesson.steps.length-1)showStep(si+1);else{$('tapHint').hidden=true;$('bNext').textContent='Finished ✓';setTimeout(()=>$('bNext').textContent='Next line ▶',1500)}return}
+  const line=st.lines[li++];busy=true;const my=run;skipWrite=false;
+  if(guided&&line.ask){busy=false;await askPanel(line.ask);if(run!==my)return;busy=true}
+  const row=document.createElement('div');row.className='row';
+  const m=document.createElement('div');m.className='m';m.innerHTML=line.m;
+  const side=document.createElement('div');side.className='side';
+  const note=document.createElement('p');note.className='note';note.innerHTML=line.note;side.appendChild(note);
+  if(line.more&&line.more.length){const b=document.createElement('button');b.className='btn small moreBtn';b.textContent="I don't get this";let k=0;
+    b.addEventListener('click',e=>{e.stopPropagation();if(k<line.more.length){const d=document.createElement('div');d.className='more';d.innerHTML=line.more[k++];side.insertBefore(d,b);d.scrollIntoView({block:'nearest',behavior:'smooth'});
+      b.textContent=k<line.more.length?'Still confused, explain again':'Got it';if(k>=line.more.length){b.onclick=null;b.addEventListener('click',()=>{b.remove()},{once:true})}}});
+    side.appendChild(b)}
+  row.append(m,side);$('sheet').appendChild(row);row.scrollIntoView({block:'end',behavior:'smooth'});
+  await write(m,my);if(run!==my)return;
+  await sleep(150);note.classList.add('on');side.querySelector('.moreBtn')?.classList.add('on');busy=false;
+  $('tapHint').textContent=li>=st.lines.length?(si<lesson.steps.length-1?'tap for the next step ▶':'end of the working ✓'):'tap to write the next line ✍';
+  autoNext();
+}
+
+function askPanel(ask){return new Promise(res=>{
+  const box=document.createElement('div');box.className='ask';box.addEventListener('click',e=>e.stopPropagation());
+  box.innerHTML=`<p class="q">✎ Your turn: ${ask.q}</p>`;
+  const fb=document.createElement('p');fb.className='fb';let tries=0;
+  const done=()=>{waiting=null;box.classList.remove('shake');fb.classList.add('good');setTimeout(()=>{box.remove();res(true)},900)};
+  const wrong=msg=>{tries++;box.classList.remove('shake');void box.offsetWidth;box.classList.add('shake');fb.className='fb bad';fb.innerHTML=msg+(tries>=2?' &nbsp;<button class="btn small" id="showme">Show me</button>':'');
+    const b=fb.querySelector('#showme');if(b)b.onclick=()=>{fb.className='fb';fb.innerHTML='Answer: '+ask.why;done()}};
+  if(ask.type==='mc'){const o=document.createElement('div');o.className='opts';
+    ask.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=t;b.onclick=()=>{if(i===ask.ans){b.classList.add('good');fb.innerHTML='Yes! '+ask.why;done()}else{b.classList.add('bad');wrong('Not that one. Try again.')}};o.appendChild(b)});
+    box.appendChild(o)}
+  else{const f=document.createElement('div');f.className='fields';const ins=[];
+    ask.fields.forEach((fl,i)=>{const lab=document.createElement('label');lab.innerHTML=fl.label;const inp=document.createElement('input');inp.id='ask_'+si+'_'+li+'_'+i;inp.inputMode=/[\/.]/.test(fl.answer)?'text':'numeric';inp.autocomplete='off';lab.appendChild(inp);f.appendChild(lab);ins.push(inp)});
+    const go=document.createElement('button');go.className='btn primary small';go.textContent='Check';f.appendChild(go);box.appendChild(f);
+    const check=()=>{const ok=ins.every((inp,i)=>sameNum(inp.value,ask.fields[i].answer));
+      if(ok){fb.innerHTML='Correct! '+ask.why;done()}else wrong(tries===0?'Not quite. Check the signs and the power.':'Still not it. Hint: '+strip(ask.why).split('.')[0]+'.')};
+    go.onclick=check;ins.forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')check()}));
+    setTimeout(()=>ins[0].focus(),50)}
+  box.appendChild(fb);$('sheet').appendChild(box);box.scrollIntoView({block:'end',behavior:'smooth'});
+  waiting=box;$('tapHint').textContent='answer the question to carry on';
+})}
+
+$('sheet').parentElement.addEventListener('click',()=>advance());
+$('bNext').onclick=advance;
+$('bPrev').onclick=()=>showStep(Math.max(0,si-1));
+$('bSkip').onclick=()=>{if(waiting){waiting.remove();waiting=null}if(si<lesson.steps.length-1)showStep(si+1)};
+$('close').onclick=closeBook;
+$('auto').onchange=()=>{if($('auto').checked&&!busy&&!waiting)advance()};
+document.addEventListener('keydown',e=>{if($('book').hidden||e.target.matches('input'))return;if(e.key===' '||e.key==='ArrowRight'){e.preventDefault();advance()}if(e.key==='Escape')closeBook()});
+
+
+/* ============ hub: search + folders ============ */
+function showHub(){$('folderView').hidden=true;$('hub').hidden=false;window.scrollTo(0,0);$('search').focus()}
+function openFolder(){$('hub').hidden=true;$('folderView').hidden=false;window.scrollTo(0,0)}
+$('f-binomial').onclick=openFolder;
+$('backHub').onclick=showHub;
+$('search').addEventListener('input',()=>{const q=$('search').value.trim().toLowerCase();let shown=0;
+  document.querySelectorAll('.folder').forEach(f=>{const hay=(f.dataset.keys+' '+f.textContent).toLowerCase();
+    const ok=!q||q.split(/\s+/).every(w=>hay.includes(w));f.hidden=!ok;if(ok)shown++});
+  $('noresult').hidden=shown>0});
+$('search').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=[...document.querySelectorAll('.folder')].find(f=>!f.hidden);if(v)v.click()}});
+const TABS=['learn','guided','practice','revise','cheat'];
+document.querySelector('.tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+  TABS.forEach(k=>$('p-'+k).hidden=k!==t.dataset.t)});
+
+/* ============ question builder (used on two tabs) ============ */
+function makeBuilder(cid,pre,defG){
+  const root=$(cid);
+  const opts=GROUPS.map(([g,label])=>`<optgroup label="${label}">${Object.values(TYPES).filter(t=>t.group===g&&t.parse).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('');
+  root.innerHTML=`<span class="tag">Your own question</span>
+    <label class="blab">What does the question ask?<select id="${pre}type">${opts}</select></label>
+    <p class="hint" id="${pre}help"></p>
+    <div class="bfields" id="${pre}fields"></div>
+    <div class="preview" id="${pre}prev"></div>
+    <p class="err" id="${pre}err" hidden></p>
+    <div class="rowb">${defG?'':`<button class="btn primary" id="${pre}watch">Watch it solved</button>`}<button class="btn ${defG?'primary':''}" id="${pre}guided">Do it with me</button></div>`;
+  const sel=$(pre+'type');
+  const read=()=>{const t=TYPES[sel.value],v={};t.fields.forEach(f=>v[f.id]=$(pre+'f_'+f.id).value);return v};
+  const parse=()=>{const t=TYPES[sel.value];return t.parse(read())};
+  const preview=()=>{const r=parse(),err=$(pre+'err');
+    if(r.err!==undefined){$(pre+'prev').innerHTML='';err.hidden=!r.err;err.textContent=r.err;return null}
+    err.hidden=true;$(pre+'prev').innerHTML=TYPES[r.p.t].text(r.p);return r.p};
+  const renderFields=()=>{const t=TYPES[sel.value];$(pre+'help').textContent=t.help;
+    $(pre+'fields').innerHTML=t.fields.map(f=>f.kind==='sel'
+      ?`<label>${f.label}<select id="${pre}f_${f.id}">${f.opts.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></label>`
+      :`<label class="${f.kind==='expr'||f.kind==='text'?'wide':''}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" ${f.kind==='int'?'inputmode="numeric"':''} autocomplete="off"></label>`).join('');
+    t.fields.forEach(f=>{const el=$(pre+'f_'+f.id);if(f.kind==='sel')el.value=f.def;el.addEventListener('input',preview);el.addEventListener('change',preview);
+      el.addEventListener('keydown',e=>{if(e.key==='Enter')start(defG)})});preview()};
+  const start=g=>{const P=preview();if(!P)return;openBook(TYPES[P.t].build(P),g)};
+  sel.addEventListener('change',renderFields);
+  if(!defG)$(pre+'watch').onclick=()=>start(false);
+  $(pre+'guided').onclick=()=>start(true);
+  renderFields();
+}
+makeBuilder('bLearn','L_',false);
+makeBuilder('bGuided','G_',true);
+
+/* ============ question-type cards ============ */
+function typeCards(elId,isGuided){
+  $(elId).innerHTML=Object.values(TYPES).filter(t=>t.example).map(t=>{const ex=t.example,T2=TYPES[ex.t];
+    return `<div class="qcard"><span class="tag">${(GROUPS.find(g=>g[0]===t.group)||[0,''])[1]}</span><h4 class="cname">${t.name}</h4><p class="what">${t.blurb}</p><div class="m">${T2.text(ex)}</div><button class="btn primary" data-t="${t.id}">${isGuided?'Do the example with me':'Watch the example'}</button></div>`}).join('');
+  $(elId).addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const ex=TYPES[b.dataset.t].example;openBook(TYPES[ex.t].build(ex),isGuided)})}
+typeCards('typeListLearn',false);typeCards('typeListGuided',true);
+
+/* ============ practice ============ */
+let score={ok:0,n:0};const upScore=()=>$('score').textContent=`Correct: ${score.ok} / ${score.n}`;
+function parsePoly(s){s=s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,ch=>'^'+'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(ch)).replace(/−/g,'-').replace(/[\s*·]/g,'').replace(/X/g,'x');
+  if(!s)return null;const parts=s.match(/[+-]?[^+-]+/g);if(!parts||parts.join('')!==s)return null;const m=new Map();
+  for(const p of parts){const r=p.match(/^([+-]?)(\d*)(x)?(?:\^(\d+))?$/);if(!r)return null;const[,sgn,dg,hx,ex]=r;if(!hx&&!dg)return null;if(!hx&&ex)return null;
+    const coef=BigInt((sgn==='-'?-1:1)*(dg===''?1:+dg)),e=hx?(ex?+ex:1):0;add(m,e,coef)}return m}
+const same=(m1,m2)=>{const ks=new Set([...m1.keys(),...m2.keys()]);for(const k of ks)if((m1.get(k)||0n)!==(m2.get(k)||0n))return false;return true};
+function checkAnswer(a,raw){
+  if(a.kind==='poly'){const m=parsePoly(raw);if(!m)return {bad:'I could not read that. Write it like 2x^3 + 5x^2 - x + 4.'};return {ok:same(m,a.map)}}
+  if(a.kind==='num'){const f=parseNum(raw);if(!f)return {bad:'Type a number, or a fraction like 3/4.'};return {ok:feq(f,a.val)}}
+  const v=parseFloat(String(raw).replace(/−/g,'-'));if(isNaN(v))return {bad:'Type a number.'};return {ok:Math.abs(v-a.val)<=Math.abs(a.val)*6e-4}}
+let pr=null;
+(function(){const pool=Object.values(TYPES).filter(t=>t.gen);$('pType').innerHTML='<option value="any">Any type (mixed)</option>'+GROUPS.map(([g,l])=>`<optgroup label="${l}">${pool.filter(t=>t.group===g).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('')})();
+function newPractice(){const sel=$('pType').value;const pool=Object.keys(TYPES).filter(id=>TYPES[id].gen);const id=sel==='any'?pool[ri(0,pool.length-1)]:sel;
+  const P=TYPES[id].gen();pr={P,done:false,hint:0};const T2=TYPES[P.t],a=T2.ans(P);pr.a=a;
+  const ph=a.kind==='poly'?'e.g. 2x^5 + 11x^4 − 3x':a.kind==='num'?'a number, or a fraction like 3/4':'a number';
+  $('pq').innerHTML=`<span class="tag">${T2.name}</span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off">
+    <div class="rowb"><button class="btn primary" id="pChk">Check</button><button class="btn" id="pHint">Hint</button><button class="btn" id="pShow">Show me the working</button></div>
+    <p class="hint" id="pHintOut"></p><p class="fb" id="pFb"></p>`;
+  $('pChk').onclick=()=>{const raw=$('pIn').value;if(!raw.trim())return;const r=checkAnswer(a,raw),fb=$('pFb');
+    if(r.bad){fb.className='fb bad';fb.textContent=r.bad;return}
+    if(!pr.done){score.n++;pr.done=true;if(r.ok)score.ok++;upScore()}
+    if(r.ok){fb.className='fb good';fb.textContent='Correct! Nicely done.'}else{fb.className='fb bad';fb.innerHTML=`Not quite. The answer is <span class="m" style="font-size:1.2rem">${a.disp}</span>. Press "Show me the working" to see why.`}};
+  $('pIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('pChk').click()});
+  $('pHint').onclick=()=>{const hs=T2.hints?T2.hints(P):[];if(!hs.length)return;$('pHintOut').textContent='Hint '+(pr.hint+1)+': '+hs[Math.min(pr.hint,hs.length-1)];pr.hint++};
+  $('pShow').onclick=()=>openBook(T2.build(P),false)}
+$('pNew').onclick=newPractice;$('pType').addEventListener('change',newPractice);newPractice();
+
+/* ============ revision games ============ */
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const mcq=(q,correct,wrongs,why)=>{const opts=shuffle([correct,...[...new Set(wrongs)].filter(w=>w!==correct).slice(0,3)]);return {q,type:'mc',opts,ans:opts.indexOf(correct),why}};
+const GAMES=[
+ {id:'pascal',name:'Pascal race',how:'Fill the missing number in a row of Pascal\'s triangle.',
+  next(){const n=ri(3,9),r=ri(1,n-1);const row=[];for(let k=0;k<=n;k++)row.push(k===r?'<span class="hl">?</span>':C(n,k).toString());
+    return {q:`Row ${n}: &nbsp; ${row.join(' &nbsp; ')}`,type:'num',answer:C(n,r).toString(),why:`${C(n-1,r-1)} + ${C(n-1,r)} = ${C(n,r)} (add the two above).`}}},
+ {id:'powers',name:'Power pairs',how:'Which powers go on the two terms for a given r?',
+  next(){const n=ri(4,12),r=ri(0,n);const ok=`(first)<sup>${n-r}</sup>(second)<sup>${r}</sup>`;
+    return mcq(`In (first + second)<sup>${n}</sup>, the term with r = ${r} is nCr × …`,ok,[`(first)<sup>${r}</sup>(second)<sup>${n-r}</sup>`,`(first)<sup>${n}</sup>(second)<sup>${r}</sup>`,`(first)<sup>${n-r}</sup>(second)<sup>${r+1}</sup>`,`(first)<sup>${n-r-1}</sup>(second)<sup>${r}</sup>`],`Second term gets r = ${r}, first gets n − r = ${n-r}. They add to ${n}.`)}},
+ {id:'signs',name:'Sign spotter',how:'Is the term plus or minus? Only the second term\'s sign and its power matter.',
+  next(){const b=rnz(-5,5),n=ri(3,9),r=ri(0,n);const a=ri(1,3);const neg=b<0&&r%2===1;
+    return mcq(`In (${a===1?'':a}x ${b<0?MINUS:'+'} ${Math.abs(b)})<sup>${n}</sup>, the term with r = ${r} is …`,neg?'negative':'positive',['negative','positive'],b<0?`(${sg(b)})<sup>${r}</sup>: a minus to an ${r%2?'odd':'even'} power is ${r%2?'negative':'positive'}.`:'The second term is positive, so every term is positive.')}},
+ {id:'bump',name:'Times x',how:'Multiply a term by something with an x in it. Number × number, powers add.',
+  next(){const c=rnz(-3,3),v=rnz(-9,9),e=ri(1,6);const res=mono(BigInt(c*v),e+1,true);
+    const wrongs=[mono(BigInt(c*v),e,true),mono(BigInt(c+v),e+1,true),mono(BigInt(-c*v),e+1,true),mono(BigInt(c*v),e*2,true)];
+    return mcq(`${mono(BigInt(c),1,true)} × ${mono(BigInt(v),e,true)} = ?`,res,wrongs,`Numbers: ${sg(c)} × ${sg(v)} = ${sg(c*v)}. Powers: 1 + ${e} = ${e+1}.`)}},
+ {id:'like',name:'Like-term sums',how:'Add two like terms. Type just the number.',
+  next(){const e=ri(0,6),p=rnz(-20,20),q=rnz(-20,20);
+    return {q:`${mono(BigInt(p),e,true)} + ${q<0?'('+mono(BigInt(q),e,true)+')':mono(BigInt(q),e,true)} = ? <span class="mu" style="font-size:.7em">(just the number)</span>`,type:'num',answer:String(p+q),why:`${sg(p)} + ${sg(q)} = ${sg(p+q)}, and the ${xp(e)||'(no x)'} stays.`}}},
+ {id:'ncr',name:'nCr sprint',how:'Work out nCr fast. nC0 = 1, nC1 = n, nC2 = n(n−1)/2, and the row is symmetrical.',
+  next(){const n=ri(4,15),rs=[0,1,2,n-2,n-1,n],r=rs[ri(0,5)];return {q:`${n} nCr ${r} = ?`,type:'num',answer:C(n,r).toString(),why:r===0||r===n?'nC0 and nCn are always 1.':r===1||r===n-1?'nC1 and nC(n−1) are always n.':`${n} × ${n-1} ÷ 2 = ${C(n,2)}.`}}},
+ {id:'findr',name:'Find r',how:'Which r gives the power of x you want?',
+  next(){if(Math.random()<.5){const n=2*ri(2,6),r=ri(0,n),k=n-2*r;return {q:`In (<i>x</i> + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k)||'no x'}? <span class="mu" style="font-size:.7em">(power of x = ${n} − 2r)</span>`,type:'num',answer:String(r),why:`${n} − 2r = ${k}, so r = ${r}.`}}
+    const n=ri(3,9),r=ri(0,n),k=2*n-3*r;return {q:`In (<i>x</i>² + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k)||'no x'}? <span class="mu" style="font-size:.7em">(power of x = ${2*n} − 3r)</span>`,type:'num',answer:String(r),why:`${2*n} − 3r = ${k}, so r = ${r}.`}}},
+ {id:'termname',name:'Term numbers',how:'Link term numbers, r and the number of terms.',
+  next(){const n=ri(4,14),v=ri(0,3);
+    if(v===0){const t=ri(2,n);return mcq(`The ${ord(t)} term of an expansion uses r = ?`,String(t-1),[String(t),String(t+1),String(t-2)],`The (r+1)th term uses r, so r = ${t} − 1 = ${t-1}.`)}
+    if(v===1){const r=ri(1,n);return mcq(`The term with r = ${r} is the …`,ord(r+1)+' term',[ord(r)+' term',ord(r+2)+' term',ord(r-1<1?r+3:r-1)+' term'],`r + 1 = ${r+1}, so it is the ${ord(r+1)} term.`)}
+    if(v===2)return mcq(`How many terms does (a + b)<sup>${n}</sup> have?`,String(n+1),[String(n),String(n+2),String(2*n)],`Always one more than the power: ${n} + 1 = ${n+1}.`);
+    const m=2*ri(2,7);return mcq(`The middle term of (a + b)<sup>${m}</sup> is the …`,ord(m/2+1)+' term',[ord(m/2)+' term',ord(m/2+2)+' term',ord(m)+' term'],`${m+1} terms, so the middle is number ${m/2+1} (r = ${m/2}).`)}},
+ {id:'sumx1',name:'Put x = 1',how:'Sum of the coefficients: replace x with 1.',
+  next(){const a=ri(1,4),b=rnz(-4,4),n=ri(2,6);const v=(BigInt(a)+BigInt(b))**BigInt(n);return {q:`Sum of the coefficients of (${a===1?'':a}<i>x</i> ${b<0?MINUS:'+'} ${Math.abs(b)})<sup>${n}</sup> = ?`,type:'num',answer:v.toString(),why:`Put x = 1: (${a} ${b<0?'−':'+'} ${Math.abs(b)})<sup>${n}</sup> = ${sg(a+b)}<sup>${n}</sup> = ${sg(v)}.`}}},
+ {id:'extcoef',name:'Negative powers',how:'Work out m(m−1)/2 for the x² coefficient of (1 + x)^m.',
+  next(){const ms=[F(-1),F(-2),F(-3),F(-4),F(1,2),F(-1,2),F(3),F(1,3)];const m=ms[ri(0,ms.length-1)];const c2=fdiv(fmul(m,fsub(m,F(1))),F(2));
+    return {q:`The coefficient of <i>x</i>² in (1 + <i>x</i>)<sup>${fstr(m)}</sup> is m(m−1)/2 = ? <span class="mu" style="font-size:.7em">(fractions like 3/8 are fine)</span>`,type:'num',answer:fstr(c2),why:`${fstr(m)} × ${fstr(fsub(m,F(1)))} ÷ 2 = ${fstr(c2)}.`}}},
+];
+const bestKey=id=>'bin_best_'+id;const getBest=id=>{try{return +localStorage.getItem(bestKey(id))||0}catch(e){return 0}};const setBest=(id,v)=>{try{localStorage.setItem(bestKey(id),v)}catch(e){}};
+function renderGames(){$('games').innerHTML=GAMES.map(g=>`<div class="gcard"><h4>${g.name}</h4><p class="what">${g.how}</p><span class="best">Best: ${getBest(g.id)}</span><button class="btn primary small" data-g="${g.id}">Play 45s</button></div>`).join('')}
+renderGames();
+let gTimer=null,gRun=null;
+$('games').addEventListener('click',e=>{const b=e.target.closest('button[data-g]');if(b)startGame(GAMES.find(g=>g.id===b.dataset.g))});
+function startGame(g){clearInterval(gTimer);const st={g,score:0,t:45,cur:null,locked:false};gRun=st;
+  $('arena').hidden=false;$('gname').textContent=g.name;$('gscore').textContent='0';$('gtime').textContent='45';$('gbar').style.width='100%';$('gfb').textContent='';
+  $('arena').scrollIntoView({block:'start',behavior:'smooth'});
+  gTimer=setInterval(()=>{st.t--;$('gtime').textContent=st.t;$('gbar').style.width=(st.t/45*100)+'%';if(st.t<=0)endGame(st)},1000);
+  nextQ(st)}
+function nextQ(st){st.cur=st.g.next();st.locked=false;$('gq').innerHTML=st.cur.q;$('gfb').textContent='';$('gfb').className='fb';const ui=$('gui');ui.innerHTML='';
+  const answer=ok=>{if(st.locked)return;st.locked=true;if(ok){st.score++;$('gscore').textContent=st.score;$('gfb').className='fb good';$('gfb').textContent='✓';setTimeout(()=>{if(gRun===st&&st.t>0)nextQ(st)},350)}
+    else{$('gfb').className='fb bad';$('gfb').innerHTML='✗ '+st.cur.why;setTimeout(()=>{if(gRun===st&&st.t>0)nextQ(st)},2200)}};
+  if(st.cur.type==='mc'){const o=document.createElement('div');o.className='opts';st.cur.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=t;b.onclick=()=>{b.classList.add(i===st.cur.ans?'good':'bad');answer(i===st.cur.ans)};o.appendChild(b)});ui.appendChild(o)}
+  else{const f=document.createElement('div');f.className='fields';const inp=document.createElement('input');inp.id='ginp';inp.inputMode='numeric';inp.autocomplete='off';inp.placeholder='answer';
+    const go=document.createElement('button');go.className='btn primary small';go.textContent='Go';const chk=()=>{const v=inp.value;if(v.trim()==='')return;answer(sameNum(v,st.cur.answer))};
+    go.onclick=chk;inp.addEventListener('keydown',e=>{if(e.key==='Enter')chk()});f.append(inp,go);ui.appendChild(f);setTimeout(()=>inp.focus(),30)}}
+function endGame(st){clearInterval(gTimer);gRun=null;const best=getBest(st.g.id);const isBest=st.score>best;if(isBest)setBest(st.g.id,st.score);
+  $('gq').innerHTML=`Time! You scored <span class="hl">${st.score}</span>${isBest?' — new best!':` (best ${best})`}`;$('gui').innerHTML='';$('gfb').textContent='';
+  const b=document.createElement('button');b.className='btn primary';b.textContent='Play again';b.onclick=()=>startGame(st.g);$('gui').appendChild(b);renderGames()}
+$('gquit').onclick=()=>{clearInterval(gTimer);gRun=null;$('arena').hidden=true};
+
+</script>
+
+</body></html>
