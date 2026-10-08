@@ -1,6 +1,5 @@
-/* App-wide settings: question groups, difficulty levels, tabs, timings and storage keys. */
+/* App-wide settings: difficulty levels, tabs, courses, timings and storage keys. Each topic's own folders are in its topic file. */
 
-const GROUPS=[['expand','Expanding brackets'],['find','Finding terms and coefficients'],['unknown','Unknowns and estimates'],['other','Other skills']];
 const LEVELS=[[1,'Easy'],[2,'Medium'],[3,'Hard']];
 const TABS=['learn','practice','exam','revise','cheat'];
 /* milliseconds per handwritten character, indexed by the Speed slider (1 = slow … 3 = fast) */
@@ -36,8 +35,5 @@ const CALC_HISTORY_SIZE=8;
 /* localStorage key prefix for best game scores, and the key for the sound on/off switch */
 const BEST_SCORE_KEY='bin_best_';
 const SOUND_KEY='infinity_sound';
-/* one-line descriptions under each Learn folder */
-const GROUP_DESCRIPTIONS={expand:'Multiplying out brackets with a power',find:'Coefficients, the constant term, a particular term and more',
-  unknown:'Finding k or n, estimates, negative and fractional powers',other:'nCr, and expanding with letters'};
-export {GROUPS,LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,ASK_COURSE_EVERY_TIME,WRITE_SPEED_MS,GROUP_DESCRIPTIONS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
+export {LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,ASK_COURSE_EVERY_TIME,WRITE_SPEED_MS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
   GAME_SECONDS,GAME_LIVES,GAME_POINTS,GAME_COMBO_EVERY,GAME_MAX_COMBO,GAME_COMBO_BONUS_SECONDS,GAME_BOARD_BONUS_SECONDS,GAME_LEVEL_UP_EVERY,GAME_STARS};

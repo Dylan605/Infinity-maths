@@ -1,0 +1,8 @@
+/* Answer boxes in Practice and Exam practice: one box, or a labelled box for each part of an answer. */
+.ans-box{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1;max-width:560px}
+.ans-multi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.ans-part{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700;color:var(--pencil)}
+.ans-part .ans-label{white-space:nowrap}
+.ans-in{width:100%;box-sizing:border-box}
+.ans-in.right{border-color:var(--green)!important}
+.ans-in.wrong{border-color:var(--red)!important}

@@ -1,7 +1,7 @@
 /* Revision game: Like-term sums. Add two like terms. */
 import {mono,sg,xp} from '../../../helpers/maths-display.js';
 import {ri,rnz} from '../../../helpers/random-numbers.js';
-import {byLevel,typed} from './game-helpers.js';
+import {byLevel,typed} from '../../game-helpers.js';
 
 export const game={id:'like',syllabus:'SL 1.9',name:'Like-term sums',icon:'➕',skill:'Collecting like terms',
   how:'Add the two terms. Type just the number in front.',

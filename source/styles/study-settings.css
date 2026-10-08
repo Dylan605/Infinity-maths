@@ -16,5 +16,9 @@
 
 /* what each choice hides */
 .course-sl .hl-only{display:none!important}
+.course-aa .ai-only,.course-ai .aa-only{display:none!important}
+/* data-only="aa-sl aa-hl ai-hl": shown only for the courses listed */
+.course-ai-sl [data-only]:not([data-only~="ai-sl"]),.course-ai-hl [data-only]:not([data-only~="ai-hl"]),
+.course-aa-sl [data-only]:not([data-only~="aa-sl"]),.course-aa-hl [data-only]:not([data-only~="aa-hl"]){display:none!important}
 .paper-1 .paper-2-only{display:none!important}
 .paper-2 .paper-1-only{display:none!important}

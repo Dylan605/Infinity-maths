@@ -1,7 +1,7 @@
 /* Revision game: nCr sprint. Work out nCr fast. */
 import {C} from '../../../helpers/whole-numbers.js';
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel,typed} from './game-helpers.js';
+import {byLevel,typed} from '../../game-helpers.js';
 
 export const game={id:'ncr',syllabus:'SL 1.9',name:'nCr sprint',icon:'🎯',skill:'Working out nCr',
   how:'nC0 = 1, nC1 = n, nC2 = n(n−1)/2, and the row is symmetrical.',

@@ -1,5 +1,5 @@
-/* Shared helpers for building revision-game questions. */
-import {shuffle} from '../../../helpers/random-numbers.js';
+/* Shared helpers for building revision-game questions, for every topic's games. */
+import {shuffle} from '../helpers/random-numbers.js';
 
 /* a multiple-choice question: the right answer plus up to three different wrong ones, shuffled */
 export const mcq=(q,correct,wrongs,why)=>{const opts=shuffle([correct,...[...new Set(wrongs)].filter(w=>w!==correct).slice(0,3)]);return {q,type:'mc',opts,ans:opts.indexOf(correct),why}};

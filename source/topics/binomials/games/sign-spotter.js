@@ -1,7 +1,7 @@
 /* Revision game: Sign spotter. Is the term positive or negative? */
 import {MINUS,sg} from '../../../helpers/maths-display.js';
 import {ri,rnz} from '../../../helpers/random-numbers.js';
-import {byLevel} from './game-helpers.js';
+import {byLevel} from '../../game-helpers.js';
 
 export const game={id:'signs',syllabus:'SL 1.9',name:'Sign spotter',icon:'🚦',skill:'Signs of terms',
   how:'Plus or minus? Swipe with ← and →. A minus to an odd power stays minus.',

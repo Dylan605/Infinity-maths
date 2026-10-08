@@ -1,7 +1,7 @@
 /* Revision game: Negative powers. The x² coefficient of (1 + x)^m. */
 import {F,fdiv,fmul,fstr,fsub} from '../../../helpers/fractions.js';
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel,typed} from './game-helpers.js';
+import {byLevel,typed} from '../../game-helpers.js';
 
 export const game={id:'extcoef',syllabus:'AHL 1.10',name:'Negative powers',icon:'🌀',skill:'Negative and fractional powers',
   how:'The x² coefficient of (1 + x)^m is m(m − 1)/2. Fractions like 3/8 are fine.',

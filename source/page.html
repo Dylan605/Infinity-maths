@@ -20,22 +20,16 @@
   <div id="hub" class="hub">
     <div class="searchbar">
       <label for="search" class="tag">Search for a topic</label>
-      <input type="search" id="search" placeholder="Try: binomial, pascal, nCr, expand…" autocomplete="off">
+      <input type="search" id="search" placeholder="Try: quadratic, inverse, asymptote, nCr…" autocomplete="off">
     </div>
     <div class="folders" id="folders">
-      <button class="folder" id="f-binomial" data-courses="aa-sl aa-hl" data-keys="binomial binomials binomial expansion expand expansion pascal pascals triangle ncr combinations choose algebra powers brackets series coefficient constant term independent of x middle term ascending powers approximation estimate negative fractional power sum of coefficients greatest coefficient unknown k find n factorial theorem">
-        <span class="fico" aria-hidden="true"></span>
-        <span class="fname">Binomials</span>
-        <span class="fdesc">AA SL 1.9 and HL 1.10: expansion, Pascal's triangle, nCr, coefficients, terms, unknowns, estimates, and negative or fractional powers (HL)</span>
-        <span class="fcount">18 question types · learn, practise, exam questions, games, cheat sheet</span>
-      </button>
     </div>
     <p class="hint empty" id="noresult" hidden>Nothing matches that yet.</p>
     <div class="no-topics" id="noTopics" hidden></div>
   </div>
 
   <div id="folderView" hidden>
-  <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname">Binomials</span></div>
+  <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname" id="topicName"></span></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-t="learn">Learn</button>
     <button class="tab" role="tab" aria-selected="false" data-t="practice">Practice</button>
@@ -73,7 +67,7 @@
   </section>
 
   <section class="panel" id="p-revise" hidden>
-    <div class="explain"><p><b>Quick-fire games</b> that train the small skills every binomial question needs. You get 45 seconds and 3 lives. Answer correctly several times in a row for a combo multiplier and bonus time, and the questions get harder as you level up. Your best scores and stars are saved on this device.</p></div>
+    <div class="explain"><p><b>Quick-fire games</b> that train the small skills this topic needs. You get 45 seconds and 3 lives. Answer correctly several times in a row for a combo multiplier and bonus time, and the questions get harder as you level up. Your best scores and stars are saved on this device.</p></div>
     <div class="games" id="games"></div>
   </section>
 

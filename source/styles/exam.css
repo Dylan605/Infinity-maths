@@ -22,7 +22,7 @@
 .exam-letter{font-weight:800}
 .exam-marks{font-weight:800;color:var(--pencil);white-space:nowrap}
 .exam-answer{display:flex;gap:8px;padding-left:28px;flex-wrap:wrap}
-.exam-answer input{font:inherit;font-family:var(--f-math);font-size:1.1rem;flex:1;min-width:0;max-width:420px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--glass2);color:var(--ink)}
+.exam-answer input{font:inherit;font-family:var(--f-math);font-size:1.1rem;min-width:0;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--glass2);color:var(--ink)}
 .exam-part.right .exam-answer input{border-color:var(--green)}
 .exam-part.wrong .exam-answer input{border-color:var(--red)}
 .exam-part .fb{padding-left:28px}

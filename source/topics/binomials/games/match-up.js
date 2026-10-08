@@ -2,7 +2,7 @@
 import {C} from '../../../helpers/whole-numbers.js';
 import {bn,mono,ord} from '../../../helpers/maths-display.js';
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel} from './game-helpers.js';
+import {byLevel} from '../../game-helpers.js';
 
 /* each kind makes one pair: a and b are the two cards, why explains the link */
 const KINDS={

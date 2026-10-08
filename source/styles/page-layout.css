@@ -29,6 +29,7 @@
 .fico{display:none}
 .fname{font-family:var(--f-hand);font-size:1.45rem;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .fdesc{font-size:.93rem;color:var(--pencil)}
+.fsyl{align-self:flex-start;font:700 .68rem var(--f-ui);letter-spacing:.04em;padding:3px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);color:var(--accent)}
 .fcount{font-size:.8rem;font-weight:700;color:var(--accent);margin-top:auto;padding-top:6px}
 .subfolder.own{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 22%,transparent),color-mix(in srgb,var(--accent2) 18%,transparent)),var(--glass)}
 .subfolder.own::before{height:100%;opacity:0}

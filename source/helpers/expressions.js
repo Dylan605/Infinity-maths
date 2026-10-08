@@ -1,4 +1,5 @@
-/* Reads and works out a typed expression like 10C3 × 2^4, √(9/4) or (1/2)³, exactly where it can. Used by the calculator and to read typed answers. */
+/* Reads and works out a typed expression like 10C3 × 2^4, √(9/4), (1/2)³ or 2e^(3x) − ln(x + 1), exactly where it can.
+   Used by the calculator and to read typed answers. */
 import {F,fadd,fdiv,fmul,fpow,fracRoot,fsub} from './fractions.js';
 import {C} from './whole-numbers.js';
 
@@ -28,26 +29,32 @@ function pow(b,e){
 function factorial(v){if(!isWhole(v)||v.n<0n||v.n>1000n)fail('! needs a whole number from 0 to 1000.');let r=1n;for(let i=2n;i<=v.n;i++)r*=i;return F(r)}
 function choose(n,r){if(!isWhole(n)||!isWhole(r)||r.n<0n||r.n>n.n||n.n>5000n)fail('nCr needs whole numbers with 0 ≤ r ≤ n.');return F(C(Number(n.n),Number(r.n)))}
 
-/* the pieces of an expression: numbers, Ans, and the symbols + - * / ^ ! C ( ) √ */
-function tokenize(text,shortcuts){
-  const s=text.replace(/\s+/g,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\*\*/g,'^').replace(/ncr/gi,'C')
+function logOf(v,base10){const x=asDecimal(v);if(!(x>0))fail(`${base10?'log':'ln'} needs a number bigger than 0.`);return checked(base10?Math.log10(x):Math.log(x))}
+
+/* the pieces of an expression: numbers, Ans, letters given in vars, e, π, ln, log, and the symbols + - * / ^ ! C ( ) √ */
+function tokenize(text,shortcuts,vars){
+  const s=text.replace(/\s+/g,'').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\*\*/g,'^').replace(/ncr/gi,'C').replace(/sqrt/gi,'√').replace(/pi/gi,'π')
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,sup=>'^'+[...sup].map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''));  // x² → x^2
   if(!shortcuts&&/[Cc!]/.test(s))fail('Work out nCr and ! yourself here.');
   const out=[];let i=0;
   while(i<s.length){const rest=s.slice(i),num=rest.match(/^(\d+\.?\d*|\.\d+)/);
     if(num){out.push({num:num[0]});i+=num[0].length;continue}
     if(/^ans/i.test(rest)){out.push('ans');i+=3;continue}
+    const fn=rest.match(/^(ln|log)/i);if(fn){out.push(fn[0].toLowerCase());i+=fn[0].length;continue}
+    if(vars&&Object.hasOwn(vars,s[i])){out.push({v:s[i]});i++;continue}
+    if(s[i]==='e'||s[i]==='π'){out.push({k:s[i]});i++;continue}
     if('+-*/^!()√'.includes(s[i])||s[i]==='C'||s[i]==='c'){out.push(s[i]==='c'?'C':s[i]);i++;continue}
     fail(`I don't understand "${s[i]}".`)}
   return out}
 const decimal=str=>{const [w,f='']=str.split('.');return F(BigInt((w||'0')+f),10n**BigInt(f.length))};
 
 /* Works out an expression. Returns {value} or {error}. ans is the previous answer, used by "Ans".
-   With shortcuts:false, nCr and ! are not allowed (for answers, so they still have to be worked out). */
-export function calculate(text,ans,{shortcuts=true}={}){
-  try{const t=tokenize(text,shortcuts);if(!t.length)return {error:''};let i=0;
+   With shortcuts:false, nCr and ! are not allowed (for answers, so they still have to be worked out).
+   vars gives letters a value, e.g. {x:F(3,2)}, to work out an expression in x. */
+export function calculate(text,ans,{shortcuts=true,vars}={}){
+  try{const t=tokenize(text,shortcuts,vars);if(!t.length)return {error:''};let i=0;
     const peek=()=>t[i],take=()=>t[i++];
-    const startsValue=x=>x!==undefined&&(x.num!==undefined||x==='ans'||x==='('||x==='√');
+    const startsValue=x=>x!==undefined&&(x.num!==undefined||x.v!==undefined||x.k!==undefined||x==='ans'||x==='('||x==='√'||x==='ln'||x==='log');
     // lowest priority first: + and −, then × and ÷ (a number next to a bracket multiplies), then a minus sign, nCr, powers, !
     const expr=()=>{let v=term();while(peek()==='+'||peek()==='-'){const op=take(),r=term();v=op==='+'?add(v,r):sub(v,r)}return v};
     const term=()=>{let v=signed();for(;;){const x=peek();
@@ -62,6 +69,9 @@ export function calculate(text,ans,{shortcuts=true}={}){
       if(x==='ans'){if(ans===undefined)fail('There is no answer yet for Ans.');return ans}
       if(x==='('){const v=expr();if(peek()===')')take();else if(peek()!==undefined)fail('A bracket is not closed.');return v}  // a missing ) at the very end is fine
       if(x==='√')return pow(postfix(),F(1,2));
+      if(x==='ln'||x==='log')return logOf(postfix(),x==='log');
+      if(x.v!==undefined)return vars[x.v];
+      if(x.k!==undefined)return x.k==='e'?Math.E:Math.PI;
       fail(`"${x==='*'?'×':x==='/'?'÷':x}" needs a number before it.`)};
     const v=expr();if(i<t.length)fail(t[i]===')'?'There is a ) without a matching (.':'Something is missing between the numbers.');
     return {value:v}}

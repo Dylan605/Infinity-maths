@@ -1,6 +1,6 @@
 /* Revision game: Power pairs. Which powers go on the two terms for a given r? */
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel,mcq} from './game-helpers.js';
+import {byLevel,mcq} from '../../game-helpers.js';
 
 export const game={id:'powers',syllabus:'SL 1.9',name:'Power pairs',icon:'⚡',skill:'The powers in each term',
   how:'Pick the powers for the term with this r. The second term gets r, the first gets n − r.',

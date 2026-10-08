@@ -5,6 +5,7 @@ import {ff,fh,sg} from '../helpers/maths-display.js';
 
 /* [label, what it types (or an action), extra class, screen-reader name] */
 const KEYS=[['x!','!','fn','factorial'],['xʸ','^','fn','to the power'],['x²','^2','fn','squared'],['√','√(','fn','square root'],['AC','@clear','fn','clear'],
+  ['ln','ln(','fn','natural log'],['log','log(','fn','log base 10'],['eˣ','e^(','fn','e to the power'],['π','π','fn','pi'],['x⁻¹','^(−1)','fn','reciprocal'],
   ['7','7'],['8','8'],['9','9'],['(','('],[')',')'],
   ['4','4'],['5','5'],['6','6'],['×','×','op','times'],['÷','÷','op','divide'],
   ['1','1'],['2','2'],['3','3'],['+','+','op','plus'],['−','−','op','minus'],

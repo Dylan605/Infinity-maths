@@ -8,8 +8,12 @@ const SYMBOLS={
   poly:[['x','x'],['x²','x²','x squared'],['x³','x³','x cubed'],['xⁿ','^','to the power'],['+','+','plus'],['−','−','minus']],
   expr:[['x','x'],['(','('],[')',')'],['^','^','to the power'],['<span class="mkb-box">□</span>²','²','squared'],['/','/','over'],['+','+','plus'],['−','−','minus']],
   letters:[['x','x'],['y','y'],['a','a'],['b','b'],['(','('],[')',')'],['^','^','to the power'],['+','+','plus'],['−','−','minus']],
+  func:[['x','x'],['(','('],[')',')'],['/','/','over'],['^','^','to the power'],['<span class="mkb-box">□</span>²','²','squared'],['√','√','square root'],['e','e'],['ln','ln(','natural log'],['+','+','plus'],['−','−','minus']],
+  line:[['y','y'],['x','x'],['=','=','equals'],['(','('],[')',')'],['/','/','over'],['+','+','plus'],['−','−','minus']],
+  ineq:[['x','x'],['&lt;',' < ','less than'],['&gt;',' > ','greater than'],['≤',' ≤ ','less than or equal to'],['≥',' ≥ ','greater than or equal to'],['≠',' ≠ ','not equal to'],['or',' or '],['/','/','over'],['√','√','square root'],['−','−','minus']],
+  list:[[',',', ','comma'],['(','('],[')',')'],['/','/','over'],['√','√','square root'],['^','^','to the power'],['e','e'],['ln','ln(','natural log'],['−','−','minus']],
 };
-const HAS_POINT={number:true,expr:true,letters:false,poly:false,integer:false};
+const HAS_POINT={number:true,expr:true,func:true,line:true,ineq:true,list:true,letters:false,poly:false,integer:false};
 const touch=()=>matchMedia('(pointer: coarse)').matches;
 
 export function initMathsKeyboard(){

@@ -1,7 +1,7 @@
 /* Revision game: Times x. Multiply a term by something with an x in it. */
 import {mono,sg} from '../../../helpers/maths-display.js';
 import {ri,rnz} from '../../../helpers/random-numbers.js';
-import {byLevel,mcq} from './game-helpers.js';
+import {byLevel,mcq} from '../../game-helpers.js';
 
 export const game={id:'bump',syllabus:'SL 1.9',name:'Times x',icon:'✖️',skill:'Multiplying terms',
   how:'Multiply the numbers and add the powers of x.',

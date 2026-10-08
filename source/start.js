@@ -1,5 +1,5 @@
-/* Entry point: register the topic's question types, then set up each part of the page. */
-import './topics/binomials/binomials.js';
+/* Entry point: load every topic (which registers its question types), then set up each part of the page. */
+import './topics/topic-list.js';
 import {initStudySettings} from './screens/study-settings.js';
 import {initWelcome} from './screens/welcome-screen.js';
 import {initNotebook} from './notebook/notebook.js';

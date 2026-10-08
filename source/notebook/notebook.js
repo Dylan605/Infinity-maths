@@ -7,8 +7,10 @@ import {sameNum} from '../helpers/reading-input.js';
 
 let lesson=null,si=0,li=0,run=0,busy=false,guided=false,waiting=null,writingChars=null;
 const spd=()=>WRITE_SPEED_MS[+$('speed').value];
-/* split text into one span per character; with nums, each whole number is a single span so it can move as one */
-function prep(el,nums){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];while(w.nextNode())nodes.push(w.currentNode);const chars=[];
+/* split text into one span per character; with nums, each whole number is a single span so it can move as one.
+   Text inside a picture (an svg graph) is left alone: it appears with the picture */
+const inPicture={acceptNode:n=>n.parentElement.closest('svg')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT};
+function prep(el,nums){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,inPicture),nodes=[];while(w.nextNode())nodes.push(w.currentNode);const chars=[];
   const mk=(txt,cls)=>{const s=document.createElement('span');s.className=cls;s.textContent=txt;return s};
   nodes.forEach(t=>{const f=document.createDocumentFragment();
     for(const part of nums?t.data.split(/(\d+(?:\.\d+)?)/):[t.data]){if(!part)continue;
@@ -22,8 +24,10 @@ async function write(el,myRun,maths){const html=el.innerHTML,chars=prep(el,maths
     c.classList.add('on');if(!skipWrite){c.classList.add('pen');if(last)last.classList.remove('pen');last=c;await sleep(spd()*(c.classList.contains('num')?c.textContent.length:1))}
     if(plan&&i===plan.at&&!skipWrite){if(last)last.classList.remove('pen');last=null;await combine(plan,{live:()=>run===myRun,skipping:()=>skipWrite,speed:spd()})}}
   if(last)last.classList.remove('pen');writingChars=null;
-  /* once its animations are over, swap the per-character spans back for the plain markup so the page stays light */
-  setTimeout(()=>{if(el.isConnected&&run===myRun)el.innerHTML=html},700)}
+  /* once its animations are over, swap the per-character spans back for the plain markup so the page stays light;
+     a graph is kept as it is, so it doesn't draw itself in again */
+  setTimeout(()=>{if(!el.isConnected||run!==myRun)return;const pics=[...el.querySelectorAll('svg')];el.innerHTML=html;
+    el.querySelectorAll('svg').forEach((s,i)=>pics[i]&&s.replaceWith(pics[i]))},700)}
 function finishWriting(){skipWrite=true;finishFlights()}
 
 export function openBook(les,isGuided){lesson=les;guided=isGuided;si=0;$('book').hidden=false;document.body.classList.add('reading');$('bkTitle').innerHTML=les.title;

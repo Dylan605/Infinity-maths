@@ -442,6 +442,15 @@ body {
   font-size: .93rem;
   color: var(--pencil);
 }
+.fsyl {
+  align-self: flex-start;
+  font: 700 .68rem var(--f-ui);
+  letter-spacing: .04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent);
+}
 .fcount {
   font-size: .8rem;
   font-weight: 700;
@@ -1446,6 +1455,174 @@ input[type=checkbox] {
   box-shadow: none;
 }
 
+/* source/styles/answer-boxes.css */
+.ans-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+  max-width: 560px;
+}
+.ans-multi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+}
+.ans-part {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--pencil);
+}
+.ans-part .ans-label {
+  white-space: nowrap;
+}
+.ans-in {
+  width: 100%;
+  box-sizing: border-box;
+}
+.ans-in.right {
+  border-color: var(--green) !important;
+}
+.ans-in.wrong {
+  border-color: var(--red) !important;
+}
+
+/* source/styles/graphs.css */
+.graph {
+  margin: 6px 0;
+  max-width: 360px;
+  width: 100%;
+}
+.graph svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--solid) 55%, transparent);
+}
+.g-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  fill: none;
+}
+.g-axis {
+  stroke: var(--pencil);
+  stroke-width: 1.4;
+  fill: none;
+}
+.g-num text {
+  font: 500 10px var(--f-math);
+  fill: var(--pencil);
+}
+.g-axname {
+  font: italic 600 12px var(--f-math);
+  fill: var(--pencil);
+}
+.g-curve {
+  fill: none;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: g-draw 1.1s var(--ease) .1s forwards;
+}
+.g-curve.dashed {
+  stroke-dasharray: 6 5;
+  stroke-dashoffset: 0;
+  animation: g-fade .6s both;
+}
+.g-line {
+  fill: none;
+  stroke-width: 1.8;
+  animation: g-fade .6s both;
+}
+.g-line.dashed {
+  stroke-dasharray: 6 5;
+}
+.c1 {
+  stroke: var(--accent);
+}
+.c2 {
+  stroke: var(--accent2);
+}
+.c3 {
+  stroke: var(--amber);
+}
+.c4 {
+  stroke: var(--red);
+}
+.g-label {
+  font: 600 11.5px var(--f-math);
+  fill: var(--ink);
+  stroke: none;
+  paint-order: stroke;
+  animation: g-fade .6s .5s both;
+}
+.g-label.c1 {
+  fill: var(--accent);
+}
+.g-label.c2 {
+  fill: var(--accent2);
+}
+.g-label.c3 {
+  fill: var(--amber);
+}
+.g-label.c4 {
+  fill: var(--red);
+}
+.g-point {
+  fill: var(--ink);
+  stroke: var(--solid);
+  stroke-width: 1.5;
+  animation: g-pop .4s var(--ease) .6s both;
+}
+.g-point.open {
+  fill: var(--solid);
+  stroke: var(--ink);
+}
+@keyframes g-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes g-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes g-pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+.g-point {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.qcard .graph {
+  max-width: 240px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-curve,
+  .g-line,
+  .g-label,
+  .g-point {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+.row .m .graph {
+  max-width: 420px;
+  width: min(420px, 78vw);
+}
+
 /* source/styles/exam.css */
 .exam-list {
   display: grid;
@@ -1573,9 +1750,7 @@ input[type=checkbox] {
   font: inherit;
   font-family: var(--f-math);
   font-size: 1.1rem;
-  flex: 1;
   min-width: 0;
-  max-width: 420px;
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 8px 12px;
@@ -2940,6 +3115,16 @@ input[type=checkbox] {
 .course-sl .hl-only {
   display: none !important;
 }
+.course-aa .ai-only,
+.course-ai .aa-only {
+  display: none !important;
+}
+.course-ai-sl [data-only]:not([data-only~=ai-sl]),
+.course-ai-hl [data-only]:not([data-only~=ai-hl]),
+.course-aa-sl [data-only]:not([data-only~=aa-sl]),
+.course-aa-hl [data-only]:not([data-only~=aa-hl]) {
+  display: none !important;
+}
 .paper-1 .paper-2-only {
   display: none !important;
 }
@@ -3150,22 +3335,16 @@ input[type=checkbox] {
   <div id="hub" class="hub">
     <div class="searchbar">
       <label for="search" class="tag">Search for a topic</label>
-      <input type="search" id="search" placeholder="Try: binomial, pascal, nCr, expand…" autocomplete="off">
+      <input type="search" id="search" placeholder="Try: quadratic, inverse, asymptote, nCr…" autocomplete="off">
     </div>
     <div class="folders" id="folders">
-      <button class="folder" id="f-binomial" data-courses="aa-sl aa-hl" data-keys="binomial binomials binomial expansion expand expansion pascal pascals triangle ncr combinations choose algebra powers brackets series coefficient constant term independent of x middle term ascending powers approximation estimate negative fractional power sum of coefficients greatest coefficient unknown k find n factorial theorem">
-        <span class="fico" aria-hidden="true"></span>
-        <span class="fname">Binomials</span>
-        <span class="fdesc">AA SL 1.9 and HL 1.10: expansion, Pascal's triangle, nCr, coefficients, terms, unknowns, estimates, and negative or fractional powers (HL)</span>
-        <span class="fcount">18 question types · learn, practise, exam questions, games, cheat sheet</span>
-      </button>
     </div>
     <p class="hint empty" id="noresult" hidden>Nothing matches that yet.</p>
     <div class="no-topics" id="noTopics" hidden></div>
   </div>
 
   <div id="folderView" hidden>
-  <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname">Binomials</span></div>
+  <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname" id="topicName"></span></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-t="learn">Learn</button>
     <button class="tab" role="tab" aria-selected="false" data-t="practice">Practice</button>
@@ -3203,7 +3382,7 @@ input[type=checkbox] {
   </section>
 
   <section class="panel" id="p-revise" hidden>
-    <div class="explain"><p><b>Quick-fire games</b> that train the small skills every binomial question needs. You get 45 seconds and 3 lives. Answer correctly several times in a row for a combo multiplier and bonus time, and the questions get harder as you level up. Your best scores and stars are saved on this device.</p></div>
+    <div class="explain"><p><b>Quick-fire games</b> that train the small skills this topic needs. You get 45 seconds and 3 lives. Answer correctly several times in a row for a combo multiplier and bonus time, and the questions get harder as you level up. Your best scores and stars are saved on this device.</p></div>
     <div class="games" id="games"></div>
   </section>
 
@@ -3297,6 +3476,7 @@ input[type=checkbox] {
   };
   var feq = (x, y) => x.n === y.n && x.d === y.d;
   var fabs = (x) => F(x.n < 0n ? -x.n : x.n, x.d);
+  var fnum = (f) => Number(f.n) / Number(f.d);
   var fstr = (f) => f.d === 1n ? String(f.n) : f.n + "/" + f.d;
   function fracRoot(f, m) {
     const n = iroot(f.n < 0n ? -f.n : f.n, m), d = iroot(f.d, m);
@@ -3309,14 +3489,14 @@ input[type=checkbox] {
   var xp = (e) => e === 0 ? "" : e === 1 ? "<i>x</i>" : "<i>x</i><sup>" + sg(e) + "</sup>";
   function mono(c, e, first) {
     if (c === 0n) return "";
-    const neg = c < 0n, a = neg ? -c : c;
+    const neg2 = c < 0n, a = neg2 ? -c : c;
     const body = (a === 1n && e !== 0 ? "" : a.toString()) + xp(e);
-    return first ? (neg ? MINUS : "") + body : (neg ? " " + MINUS + " " : " + ") + body;
+    return first ? (neg2 ? MINUS : "") + body : (neg2 ? " " + MINUS + " " : " + ") + body;
   }
   function raw(c, e) {
     if (e < 0) {
-      const neg = c < 0n, a = neg ? -c : c;
-      return (neg ? MINUS : "") + a + "/" + xp(-e);
+      const neg2 = c < 0n, a = neg2 ? -c : c;
+      return (neg2 ? MINUS : "") + a + "/" + xp(-e);
     }
     return mono(c, e, true);
   }
@@ -3330,10 +3510,10 @@ input[type=checkbox] {
   var fh = (f) => f.d === 1n ? sg(f.n) : `${f.n < 0n ? MINUS : ""}<span class="fr"><span>${f.n < 0n ? -f.n : f.n}</span><span>${f.d}</span></span>`;
   function fmono(f, e, first) {
     if (f.n === 0n) return "";
-    const neg = f.n < 0n, a = fabs(f);
+    const neg2 = f.n < 0n, a = fabs(f);
     const unit = a.n === 1n && a.d === 1n;
     const body = (unit && e !== 0 ? "" : fh(a)) + xp(e);
-    return first ? (neg ? MINUS : "") + body : (neg ? " " + MINUS + " " : " + ") + body;
+    return first ? (neg2 ? MINUS : "") + body : (neg2 ? " " + MINUS + " " : " + ") + body;
   }
   function fseries(map) {
     const es = [...map.keys()].filter((e) => map.get(e).n !== 0n).sort((x, y) => x - y);
@@ -3394,7 +3574,7 @@ input[type=checkbox] {
   var readLine = (P, more) => L(qs(TYPES[P.t].text(P)), "This is the question.", null, more);
   var mk = (P, steps) => ({ title: TYPES[P.t].name + " \xB7 " + (TYPES[P.t].expr ? TYPES[P.t].expr(P) : ""), steps });
   function genQ(id, lv, forLearn) {
-    const T2 = TYPES[id], f = forLearn && T2.learn || T2.gen;
+    const T3 = TYPES[id], f = forLearn && T3.learn || T3.gen;
     let P;
     for (let i = 0; i < 20; i++) {
       P = f(lv);
@@ -3405,6 +3585,555 @@ input[type=checkbox] {
     }
     return P;
   }
+
+  // source/helpers/random-numbers.js
+  var ri = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+  var rnz = (lo, hi) => {
+    let v = 0;
+    while (v === 0) v = ri(lo, hi);
+    return v;
+  };
+  var shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  // source/topics/game-helpers.js
+  var mcq = (q, correct, wrongs, why) => {
+    const opts = shuffle([correct, ...[...new Set(wrongs)].filter((w) => w !== correct).slice(0, 3)]);
+    return { q, type: "mc", opts, ans: opts.indexOf(correct), why };
+  };
+  var typed = (q, answer, why) => ({ q, type: "num", answer: String(answer), why });
+  var byLevel = (level2, easy, medium, hard) => level2 <= 1 ? easy : level2 === 2 ? medium : hard;
+
+  // source/topics/binomials/games/match-up.js
+  var KINDS = {
+    ncr: () => {
+      const n = ri(4, 10), r = ri(0, n);
+      return { a: bn(n, r), b: String(C(n, r)), why: `${n}C${r} = ${C(n, r)}` };
+    },
+    term: () => {
+      const t = ri(1, 12);
+      return { a: `${ord(t)} term`, b: `r = ${t - 1}`, why: `the ${ord(t)} term uses r = ${t - 1}` };
+    },
+    power: () => {
+      const k = ri(2, 5), e = ri(2, 4);
+      return { a: `(${k}<i>x</i>)<sup>${e}</sup>`, b: mono(BigInt(k) ** BigInt(e), e, true), why: `(${k}x)^${e} = ${k}^${e} x^${e} = ${BigInt(k) ** BigInt(e)}x^${e}` };
+    },
+    count: () => {
+      const n = ri(3, 15);
+      return { a: `(a + b)<sup>${n}</sup>`, b: `${n + 1} terms`, why: `(a + b)^${n} has ${n} + 1 = ${n + 1} terms` };
+    }
+  };
+  var game = {
+    id: "match",
+    syllabus: "SL 1.9",
+    name: "Match up",
+    icon: "\u{1F0CF}",
+    skill: "Mixed skills",
+    type: "match",
+    how: "Tap two cards that belong together. Clear the board for bonus time.",
+    next(level2) {
+      const kinds = byLevel(level2, ["ncr", "term"], ["ncr", "term", "power"], ["ncr", "term", "power", "count"]), count2 = byLevel(level2, 4, 5, 6);
+      const pairs = [], seen = /* @__PURE__ */ new Set();
+      for (let tries = 0; pairs.length < count2 && tries < 200; tries++) {
+        const p = KINDS[kinds[pairs.length % kinds.length]]();
+        if (seen.has(p.a) || seen.has(p.b)) continue;
+        seen.add(p.a);
+        seen.add(p.b);
+        pairs.push(p);
+      }
+      return { type: "match", pairs };
+    }
+  };
+
+  // source/topics/binomials/games/pascal-race.js
+  var game2 = {
+    id: "pascal",
+    syllabus: "SL 1.9",
+    name: "Pascal race",
+    icon: "\u{1F53A}",
+    skill: "Pascal's triangle",
+    how: "Fill the gap. Every number is the two above it added together.",
+    next(level2) {
+      const n = ri(...byLevel(level2, [3, 5], [4, 7], [6, 10])), r = ri(1, n - 1);
+      const row = (k, gap) => `<div class="tri-row">${[...Array(k + 1)].map((_, i) => i === gap ? '<span class="gap">?</span>' : `<span>${C(k, i)}</span>`).join("")}</div>`;
+      const shown = level2 < 3 ? row(n - 1, -1) + row(n, r) : `<div class="tri-label">row ${n}</div>` + row(n, r);
+      return typed(`<div class="tri">${shown}</div>`, C(n, r), `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)}: add the two numbers above the gap.`);
+    }
+  };
+
+  // source/topics/binomials/games/power-pairs.js
+  var game3 = {
+    id: "powers",
+    syllabus: "SL 1.9",
+    name: "Power pairs",
+    icon: "\u26A1",
+    skill: "The powers in each term",
+    how: "Pick the powers for the term with this r. The second term gets r, the first gets n \u2212 r.",
+    next(level2) {
+      const n = ri(...byLevel(level2, [3, 6], [4, 10], [6, 14])), r = ri(0, n);
+      const ok = `(first)<sup>${n - r}</sup>(second)<sup>${r}</sup>`;
+      return mcq(`In (first + second)<sup>${n}</sup>, the term with r = ${r} is nCr \xD7 \u2026`, ok, [`(first)<sup>${r}</sup>(second)<sup>${n - r}</sup>`, `(first)<sup>${n}</sup>(second)<sup>${r}</sup>`, `(first)<sup>${n - r}</sup>(second)<sup>${r + 1}</sup>`, `(first)<sup>${n - r - 1}</sup>(second)<sup>${r}</sup>`], `Second term gets r = ${r}, first gets n \u2212 r = ${n - r}. They add to ${n}.`);
+    }
+  };
+
+  // source/topics/binomials/games/sign-spotter.js
+  var game4 = {
+    id: "signs",
+    syllabus: "SL 1.9",
+    name: "Sign spotter",
+    icon: "\u{1F6A6}",
+    skill: "Signs of terms",
+    how: "Plus or minus? Swipe with \u2190 and \u2192. A minus to an odd power stays minus.",
+    next(level2) {
+      const n = ri(...byLevel(level2, [2, 5], [3, 9], [6, 12])), r = ri(0, n);
+      const b = rnz(-5, 5), a = level2 < 3 ? ri(1, 3) : rnz(-3, 3);
+      const negA = a < 0 && (n - r) % 2 === 1, negB = b < 0 && r % 2 === 1, neg2 = negA !== negB;
+      const first = `${a < 0 ? MINUS : ""}${Math.abs(a) === 1 ? "" : Math.abs(a)}x`;
+      const why = a < 0 || b < 0 ? `(${a < 0 ? first : "first"})<sup>${n - r}</sup> is ${negA ? "negative" : "positive"} and (${sg(b)})<sup>${r}</sup> is ${negB ? "negative" : "positive"}, so the term is ${neg2 ? "negative" : "positive"}.` : "Both terms are positive, so every term is positive.";
+      return { q: `In (${first} ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup>, the term with r = ${r} is \u2026`, type: "mc", opts: ["+ positive", `${MINUS} negative`], ans: neg2 ? 1 : 0, why };
+    }
+  };
+
+  // source/topics/binomials/games/times-x.js
+  var game5 = {
+    id: "bump",
+    syllabus: "SL 1.9",
+    name: "Times x",
+    icon: "\u2716\uFE0F",
+    skill: "Multiplying terms",
+    how: "Multiply the numbers and add the powers of x.",
+    next(level2) {
+      const c = level2 < 2 ? ri(1, 3) : rnz(...byLevel(level2, 0, [-3, 3], [-5, 5])), v = level2 < 2 ? ri(1, 9) : rnz(...byLevel(level2, 0, [-9, 9], [-12, 12])), e = ri(1, byLevel(level2, 4, 6, 9));
+      const res = mono(BigInt(c * v), e + 1, true);
+      const wrongs = [mono(BigInt(c * v), e, true), mono(BigInt(c + v), e + 1, true), mono(BigInt(-c * v), e + 1, true), mono(BigInt(c * v), e * 2, true)];
+      return mcq(`${mono(BigInt(c), 1, true)} \xD7 ${mono(BigInt(v), e, true)} = ?`, res, wrongs, `Numbers: ${sg(c)} \xD7 ${sg(v)} = ${sg(c * v)}. Powers: 1 + ${e} = ${e + 1}.`);
+    }
+  };
+
+  // source/topics/binomials/games/like-terms.js
+  var game6 = {
+    id: "like",
+    syllabus: "SL 1.9",
+    name: "Like-term sums",
+    icon: "\u2795",
+    skill: "Collecting like terms",
+    how: "Add the two terms. Type just the number in front.",
+    next(level2) {
+      const e = ri(0, 6), lim = byLevel(level2, 9, 20, 50);
+      const p = level2 < 2 ? ri(1, lim) : rnz(-lim, lim), q = level2 < 2 ? ri(1, lim) : rnz(-lim, lim);
+      const show = (v) => v < 0 ? "(" + mono(BigInt(v), e, true) + ")" : mono(BigInt(v), e, true);
+      return typed(`${mono(BigInt(p), e, true)} + ${show(q)} = ? <span class="mu g-small">(just the number)</span>`, p + q, `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.`);
+    }
+  };
+
+  // source/topics/binomials/games/ncr-sprint.js
+  var game7 = {
+    id: "ncr",
+    syllabus: "SL 1.9",
+    name: "nCr sprint",
+    icon: "\u{1F3AF}",
+    skill: "Working out nCr",
+    how: "nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical.",
+    next(level2) {
+      const n = ri(...byLevel(level2, [4, 10], [4, 15], [5, 12]));
+      const rs = byLevel(level2, [0, 1, n - 1, n], [0, 1, 2, n - 2, n - 1, n], [2, 3, n - 3, n - 2]), r = rs[ri(0, rs.length - 1)];
+      const why = r === 0 || r === n ? "nC0 and nCn are always 1." : r === 1 || r === n - 1 ? "nC1 and nC(n\u22121) are always n." : r === 2 || r === n - 2 ? `${n} \xD7 ${n - 1} \xF7 2 = ${C(n, 2)}.` : `${n} \xD7 ${n - 1} \xD7 ${n - 2} \xF7 6 = ${C(n, 3)}.`;
+      return typed(`${n} nCr ${r} = ?`, C(n, r), why);
+    }
+  };
+
+  // source/topics/binomials/games/find-r.js
+  var game8 = {
+    id: "findr",
+    syllabus: "SL 1.9",
+    name: "Find r",
+    icon: "\u{1F50D}",
+    skill: "Finding the right term",
+    how: "Set the power of x equal to the one you want, and solve for r.",
+    next(level2) {
+      const hint = (t) => level2 < 3 ? ` <span class="mu g-small">(power of x = ${t})</span>` : "";
+      if (level2 === 1 || level2 === 2 && Math.random() < 0.5) {
+        const n2 = 2 * ri(2, level2 === 1 ? 4 : 6), r2 = ri(0, n2), k2 = n2 - 2 * r2;
+        return typed(`In (<i>x</i> + 1/<i>x</i>)<sup>${n2}</sup>, which r gives ${xp(k2) || "no x"}?${hint(`${n2} \u2212 2r`)}`, r2, `${n2} \u2212 2r = ${k2}, so r = ${r2}.`);
+      }
+      const n = ri(3, 9), r = ri(0, n), k = 2 * n - 3 * r;
+      return typed(`In (<i>x</i>\xB2 + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k) || "no x"}?${hint(`${2 * n} \u2212 3r`)}`, r, `${2 * n} \u2212 3r = ${k}, so r = ${r}.`);
+    }
+  };
+
+  // source/topics/binomials/games/term-numbers.js
+  var game9 = {
+    id: "termname",
+    syllabus: "SL 1.9",
+    name: "Term numbers",
+    icon: "\u{1F522}",
+    skill: "Which term is which",
+    how: "The (r+1)th term uses r, and there is always one more term than the power.",
+    next(level2) {
+      const n = ri(...byLevel(level2, [4, 8], [4, 14], [8, 20])), v = level2 === 1 ? [0, 2][ri(0, 1)] : ri(0, 3);
+      if (v === 0) {
+        const t = ri(2, n);
+        return mcq(`The ${ord(t)} term of an expansion uses r = ?`, String(t - 1), [String(t), String(t + 1), String(t - 2)], `The (r+1)th term uses r, so r = ${t} \u2212 1 = ${t - 1}.`);
+      }
+      if (v === 1) {
+        const r = ri(1, n);
+        return mcq(`The term with r = ${r} is the \u2026`, ord(r + 1) + " term", [ord(r) + " term", ord(r + 2) + " term", ord(r - 1 < 1 ? r + 3 : r - 1) + " term"], `r + 1 = ${r + 1}, so it is the ${ord(r + 1)} term.`);
+      }
+      if (v === 2) return mcq(`How many terms does (a + b)<sup>${n}</sup> have?`, String(n + 1), [String(n), String(n + 2), String(2 * n)], `Always one more than the power: ${n} + 1 = ${n + 1}.`);
+      const m = 2 * ri(2, byLevel(level2, 5, 7, 10));
+      return mcq(`The middle term of (a + b)<sup>${m}</sup> is the \u2026`, ord(m / 2 + 1) + " term", [ord(m / 2) + " term", ord(m / 2 + 2) + " term", ord(m) + " term"], `${m + 1} terms, so the middle is number ${m / 2 + 1} (r = ${m / 2}).`);
+    }
+  };
+
+  // source/topics/binomials/games/put-x-equals-1.js
+  var game10 = {
+    id: "sumx1",
+    syllabus: "SL 1.9",
+    name: "Put x = 1",
+    icon: "1\uFE0F\u20E3",
+    skill: "Sum of the coefficients",
+    how: "Replace x with 1, then work out the bracket.",
+    next(level2) {
+      const a = ri(1, byLevel(level2, 2, 4, 5)), b = level2 < 2 ? ri(1, 3) : rnz(-4, 4), n = ri(...byLevel(level2, [2, 3], [2, 6], [4, 7]));
+      const v = (BigInt(a) + BigInt(b)) ** BigInt(n);
+      return typed(`Sum of the coefficients of (${a === 1 ? "" : a}<i>x</i> ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup> = ?`, v, `Put x = 1: (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b)})<sup>${n}</sup> = ${sg(a + b)}<sup>${n}</sup> = ${sg(v)}.`);
+    }
+  };
+
+  // source/topics/binomials/games/negative-powers.js
+  var game11 = {
+    id: "extcoef",
+    syllabus: "AHL 1.10",
+    name: "Negative powers",
+    icon: "\u{1F300}",
+    skill: "Negative and fractional powers",
+    how: "The x\xB2 coefficient of (1 + x)^m is m(m \u2212 1)/2. Fractions like 3/8 are fine.",
+    next(level2) {
+      const ms = byLevel(level2, [F(-1), F(-2), F(2), F(3)], [F(-1), F(-2), F(-3), F(-4), F(1, 2), F(-1, 2), F(3), F(1, 3)], [F(1, 2), F(-1, 2), F(1, 3), F(-1, 3), F(3, 2), F(-3, 2), F(2, 3)]);
+      const m = ms[ri(0, ms.length - 1)], c2 = fdiv(fmul(m, fsub(m, F(1))), F(2));
+      return typed(`The coefficient of <i>x</i>\xB2 in (1 + <i>x</i>)<sup>${fstr(m)}</sup> is m(m\u22121)/2 = ?`, fstr(c2), `${fstr(m)} \xD7 ${fstr(fsub(m, F(1)))} \xF7 2 = ${fstr(c2)}.`);
+    }
+  };
+
+  // source/topics/binomials/games/game-list.js
+  var GAMES = [game, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11];
+
+  // source/maths/binomial-expansion.js
+  function question(cfg) {
+    const a = BigInt(cfg.a), b = BigInt(cfg.b);
+    const A = raw(a, cfg.p), Bp = raw(b < 0n ? -b : b, cfg.q), sign = b < 0n ? ` ${MINUS} ` : " + ";
+    let left = "";
+    if (cfg.c !== void 0) {
+      const m = /* @__PURE__ */ new Map();
+      add(m, 1, BigInt(cfg.c));
+      add(m, 0, BigInt(cfg.d));
+      left = "(" + poly(m) + ")";
+    }
+    return { left, A, Bp, sign, B: raw(b, cfg.q), n: cfg.n, html: `${left}(${A}${sign}${Bp})<sup>${cfg.n}</sup>` };
+  }
+  function expand(cfg) {
+    const a = BigInt(cfg.a), b = BigInt(cfg.b), n = cfg.n, terms2 = [], map = /* @__PURE__ */ new Map();
+    for (let r = 0; r <= n; r++) {
+      const coef = C(n, r), ap = pw(a, n - r), bp = pw(b, r), ea = cfg.p * (n - r), eb = cfg.q * r;
+      const t = { r, coef, ap, bp, ea, eb, val: coef * ap * bp, e: ea + eb };
+      terms2.push(t);
+      add(map, t.e, t.val);
+    }
+    return { terms: terms2, map };
+  }
+  var swapTerms = (c) => ({ ...c, a: c.b, p: c.q, b: c.a, q: c.p });
+  function productMap(cfg) {
+    const R = expand(cfg).map;
+    if (cfg.c === void 0) return R;
+    const c = BigInt(cfg.c), d = BigInt(cfg.d), t = /* @__PURE__ */ new Map();
+    R.forEach((v, e) => {
+      if (c !== 0n) add(t, e + 1, v * c);
+      if (d !== 0n) add(t, e, v * d);
+    });
+    return t;
+  }
+
+  // source/topics/binomials/exam-questions/exam-helpers.js
+  var part = ({ text, marks, answer, scheme, lesson: lesson2 }) => ({ text, marks, scheme, lesson: lesson2, answer: answer || TYPES[lesson2.t].ans(lesson2) });
+  var num = (v) => {
+    const f = typeof v === "object" ? v : F(v);
+    return { kind: "num", val: f, disp: fstr(f).replace("-", "\u2212") };
+  };
+  var par = (v) => String(v).startsWith("-") ? `(${String(v).replace("-", "\u2212")})` : String(v);
+
+  // source/topics/binomials/exam-questions/terms-coefficient-hence.js
+  var exam = {
+    id: "terms-hence",
+    title: "Terms, a coefficient, then hence",
+    syllabus: "SL 1.9",
+    paper: 1,
+    marks: 7,
+    make() {
+      for (; ; ) {
+        const a = ri(1, 3), b = rnz(-3, 3), n = ri(4, 6), k = ri(2, n - 1), c = ri(1, 3), d = rnz(-3, 3);
+        const cfg = { a, p: 1, b, q: 0, n }, Q = question(cfg).html, pc = { ...cfg, c, d }, r = n - k;
+        const vK = C(n, r) * pw(BigInt(a), k) * pw(BigInt(b), r), vNext = C(n, r - 1) * pw(BigInt(a), k + 1) * pw(BigInt(b), r - 1), vProd = productMap(pc).get(k + 1) || 0n;
+        if (vK === 0n || vProd === 0n) continue;
+        const first = `(${a === 1 ? "" : a}<i>x</i>)`;
+        return { stem: `Consider the expansion of ${Q}.`, parts: [
+          part({ text: "Write down the number of terms in this expansion.", marks: 1, answer: num(n + 1), scheme: [["A1", `${n + 1} terms (one more than the power, ${n})`]] }),
+          part({
+            text: `Find the coefficient of ${xp(k)}.`,
+            marks: 3,
+            lesson: { t: "coef", cfg, k },
+            scheme: [
+              ["M1", `attempt to use the general term, e.g. ${bn(n, "r")}${first}<sup>${n}\u2212r</sup>(${sg(b)})<sup>r</sup>`],
+              ["A1", `the correct term, r = ${r}: ${bn(n, r)}${first}<sup>${k}</sup>(${sg(b)})<sup>${r}</sup>`],
+              ["A1", sg(vK)]
+            ]
+          }),
+          part({
+            text: `Hence find the coefficient of ${xp(k + 1)} in the expansion of ${question(pc).left}${Q}.`,
+            marks: 3,
+            lesson: { t: "pcoef", cfg: pc, k: k + 1 },
+            scheme: [
+              ["M1", `two products give ${xp(k + 1)}: ${mono(BigInt(c), 1, true)} \xD7 (the ${xp(k)} term) and ${sg(d)} \xD7 (the ${xp(k + 1)} term)`],
+              ["A1", `the coefficient of ${xp(k + 1)} in ${Q} is ${sg(vNext)}`],
+              ["A1", `${par(c)} \xD7 ${par(vK)} + ${par(d)} \xD7 ${par(vNext)} = ${sg(vProd)}`]
+            ]
+          })
+        ] };
+      }
+    }
+  };
+
+  // source/topics/binomials/exam-questions/term-independent-of-x.js
+  var exam2 = {
+    id: "independent",
+    title: "The term independent of x",
+    syllabus: "SL 1.9",
+    paper: 1,
+    marks: 5,
+    make() {
+      const square = Math.random() < 0.5, p = square ? 2 : 1, n = square ? 3 * ri(1, 2) : 2 * ri(2, 4), a = ri(1, 3), b = rnz(-3, 3);
+      const cfg = { a, p, b, q: -1, n }, R = p * n / (p + 1), lesson2 = { t: "coef", cfg, k: 0 }, v = TYPES.coef.ans(lesson2);
+      const power = `${p === 1 ? "" : p}(${n} \u2212 r) \u2212 r`;
+      return { stem: `Consider the expansion of ${question(cfg).html}.`, parts: [
+        part({
+          text: `The general term is ${bn(n, "r")}(first)<sup>${n}\u2212r</sup>(second)<sup>r</sup>. Find the value of r that gives the term independent of <i>x</i>.`,
+          marks: 2,
+          answer: num(R),
+          lesson: lesson2,
+          scheme: [["M1", `setting the power of x to zero: ${power} = 0`], ["A1", `r = ${R}`]]
+        }),
+        part({
+          text: "Hence find the term independent of <i>x</i>.",
+          marks: 3,
+          lesson: lesson2,
+          scheme: [["M1", `substituting r = ${R} into the general term`], ["A1", `${bn(n, R)}(${a})<sup>${n - R}</sup>(${sg(b)})<sup>${R}</sup> (the x parts cancel)`], ["A1", v.disp]]
+        })
+      ] };
+    }
+  };
+
+  // source/topics/binomials/exam-questions/find-k-then-hence.js
+  var exam3 = {
+    id: "find-k",
+    title: "Find k, then hence",
+    syllabus: "SL 1.9",
+    paper: 1,
+    marks: 6,
+    make() {
+      const a = ri(1, 3), n = ri(4, 7), m = ri(2, 3), k = ri(1, 4), A = BigInt(a), co = C(n, m) * pw(A, n - m), V = co * pw(BigInt(k), m);
+      const bracket = `(${a} + <i>kx</i>)<sup>${n}</sup>`;
+      return { stem: `In the expansion of ${bracket}, where <i>k</i> &gt; 0, the coefficient of ${xp(m)} is ${sg(V)}.`, parts: [
+        part({
+          text: "Find the value of <i>k</i>.",
+          marks: 4,
+          lesson: { t: "unkv", a, n, m, V, pos: true },
+          scheme: [
+            ["M1", `the ${xp(m)} term uses r = ${m}: ${bn(n, m)}(${a})<sup>${n - m}</sup>(<i>kx</i>)<sup>${m}</sup>`],
+            ["A1", `${co}<i>k</i><sup>${m}</sup> = ${sg(V)}`],
+            ["M1", `solving: <i>k</i><sup>${m}</sup> = ${pw(BigInt(k), m)}`],
+            ["A1", `<i>k</i> = ${k}`]
+          ]
+        }),
+        part({
+          text: `Hence find the coefficient of ${xp(m + 1)}.`,
+          marks: 2,
+          lesson: { t: "coef", cfg: { a, p: 0, b: k, q: 1, n }, k: m + 1 },
+          scheme: [["M1", `${bn(n, m + 1)}(${a})<sup>${n - m - 1}</sup>(${k})<sup>${m + 1}</sup>`], ["A1", sg(C(n, m + 1) * pw(A, n - m - 1) * pw(BigInt(k), m + 1))]]
+        })
+      ] };
+    }
+  };
+
+  // source/topics/binomials/exam-questions/estimate-with-expansion.js
+  var exam4 = {
+    id: "estimate",
+    title: "Estimate with an expansion",
+    syllabus: "SL 1.9",
+    paper: 2,
+    marks: 5,
+    make() {
+      const a = ri(1, 3), b = rnz(-3, 3), n = ri(5, 9), cfg = { a, p: 0, b, q: 1, n }, lesson2 = { t: "ascend", cfg, upto: 2 };
+      const t = [0, 1, 2].map((r) => C(n, r) * pw(BigInt(a), n - r) * pw(BigInt(b), r)), x = 0.01, est = t.reduce((s, v, r) => s + Number(v) * x ** r, 0), base = +(a + b * x).toFixed(2);
+      return { stem: `Consider the expansion of (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b) === 1 ? "" : Math.abs(b)}<i>x</i>)<sup>${n}</sup>.`, parts: [
+        part({
+          text: "Find the first three terms, in ascending powers of <i>x</i>.",
+          marks: 3,
+          lesson: lesson2,
+          scheme: [
+            ["M1", `using the binomial theorem: ${bn(n, 0)}(${a})<sup>${n}</sup> + ${bn(n, 1)}(${a})<sup>${n - 1}</sup>(${sg(b)}x) + ${bn(n, 2)}(${a})<sup>${n - 2}</sup>(${sg(b)}x)<sup>2</sup>`],
+            ["A2", `${TYPES.ascend.ans(lesson2).disp} (A1 for two correct terms)`]
+          ]
+        }),
+        part({
+          text: `Use your answer to part (a) with <i>x</i> = ${x} to estimate ${base}<sup>${n}</sup>. Give your answer to 4 significant figures.`,
+          marks: 2,
+          answer: { kind: "approx", val: est, disp: ff(est, 4) },
+          scheme: [["M1", `substituting x = ${x} into the three terms`], ["A1", ff(est, 4)]]
+        })
+      ] };
+    }
+  };
+
+  // source/topics/binomials/exam-questions/negative-power-hl.js
+  var exam5 = {
+    id: "negative-power",
+    title: "A negative or fractional power",
+    syllabus: "AHL 1.10",
+    paper: 1,
+    marks: 5,
+    make() {
+      const ms = [F(-1), F(-2), F(-3), F(1, 2), F(-1, 2)], bs = [2, 3, 4, -2, -3, -4], m = ms[ri(0, ms.length - 1)], b = bs[ri(0, bs.length - 1)];
+      const P = { t: "extended", cfg: { a: 1, p: 0, b, q: 1, n: 0 }, m, upto: 3 }, one = { ...P, askj: 1 }, two = { ...P, askj: 2 }, mm = fstr(m);
+      return { stem: `Consider the expansion of ${TYPES.extended.qHtml(P)} in ascending powers of <i>x</i>.`, parts: [
+        part({ text: "Write down the coefficient of <i>x</i>.", marks: 1, lesson: one, answer: num(TYPES.extended.ans(one).val), scheme: [["A1", `${par(mm)} \xD7 ${par(b)} = ${num(TYPES.extended.ans(one).val).disp}`]] }),
+        part({
+          text: "Find the coefficient of <i>x</i><sup>2</sup>.",
+          marks: 3,
+          lesson: two,
+          answer: num(TYPES.extended.ans(two).val),
+          scheme: [["M1", "use of the extended binomial theorem from the formula booklet"], ["A1", `<span class="fr"><span>(${mm})(${mm} \u2212 1)</span><span>2!</span></span>(${sg(b)}<i>x</i>)<sup>2</sup>`], ["A1", num(TYPES.extended.ans(two).val).disp]]
+        }),
+        part({
+          text: "The expansion is valid for |<i>x</i>| &lt; <i>c</i>. Write down the value of <i>c</i>.",
+          marks: 1,
+          answer: num(F(1, Math.abs(b))),
+          scheme: [["A1", `|${sg(b)}x| &lt; 1, so |x| &lt; ${fstr(F(1, Math.abs(b)))}`]]
+        })
+      ] };
+    }
+  };
+
+  // source/topics/binomials/exam-questions/exam-list.js
+  var EXAMS = [exam, exam2, exam3, exam4, exam5];
+
+  // source/topics/binomials/cheat-sheet.js
+  var CHEAT_SHEET = `
+<div class="explain"><p>Everything you need in one place. Read it before a test, then try the exam practice and revision games.</p></div>
+
+<h3>In your formula booklet</h3>
+<div class="booklet">
+  <p class="booklet-ref">SL 1.9 \xB7 Binomial theorem, n \u2208 \u2115</p>
+  <div class="formula">(a + b)<sup>n</sup> = a<sup>n</sup> + ${bn("n", 1)}a<sup>n\u22121</sup>b + \u2026 + ${bn("n", "r")}a<sup>n\u2212r</sup>b<sup>r</sup> + \u2026 + b<sup>n</sup></div>
+  <div class="formula">${bn("n", "r")} = <span class="fr"><span>n!</span><span>r!(n \u2212 r)!</span></span></div>
+</div>
+<div class="booklet hl-only">
+  <p class="booklet-ref">HL only \xB7 AHL 1.10 \xB7 Extension of the binomial theorem, n \u2208 \u211A</p>
+  <div class="formula">(a + b)<sup>n</sup> = a<sup>n</sup>(1 + n(<span class="fr"><span>b</span><span>a</span></span>) + <span class="fr"><span>n(n \u2212 1)</span><span>2!</span></span>(<span class="fr"><span>b</span><span>a</span></span>)<sup>2</sup> + \u2026)</div>
+</div>
+<p class="hint">As printed in the IB Mathematics: analysis and approaches formula booklet for the current syllabus. Check it against the copy you will have in the exam.</p>
+
+<h3>Not in the booklet: remember these</h3>
+<div class="formula">T<sub>r+1</sub> = ${bn("n", "r")}(first)<sup>n\u2212r</sup>(second)<sup>r</sup> &nbsp;&nbsp; r = 0, 1, 2 \u2026 n</div>
+<ul>
+  <li>There are <b>n + 1 terms</b>, and the two powers in every term add up to n.</li>
+  <li>The (r+1)th term uses r, so the 4th term uses r = 3.</li>
+  <li>nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical: nCr = nC(n\u2212r).</li>
+  <li>The sum of all the coefficients is what you get when you put x = 1.</li>
+  <li class="hl-only"><b>HL:</b> take a<sup>n</sup> out first so the bracket starts with 1. The expansion is only valid when |b/a| &lt; 1, and you should state this in your answer.</li>
+</ul>
+
+<h3>Key words</h3>
+<ul>
+  <li>A <b>binomial</b> is a bracket with two terms in it, like (2x + 3).</li>
+  <li>The <b>power</b> on the bracket says how many times it is multiplied by itself.</li>
+  <li><b>Expand</b> means multiply it all out. <b>Simplify</b> means add terms with the same power of x.</li>
+  <li>The <b>coefficient</b> of x<sup>3</sup> is the number in front of x<sup>3</sup>. The <b>constant term</b> (the term independent of x) has no x.</li>
+</ul>
+
+<h3>Read the wording, pick the method</h3>
+<div class="scroll"><table>
+  <thead><tr><th>The question says\u2026</th><th>What to do</th></tr></thead>
+  <tbody>
+    <tr><td>"Expand and simplify"</td><td>Use the pattern for every r, add the terms. If there is another bracket, multiply, then collect like terms.</td></tr>
+    <tr><td>"First three and last two terms, do not simplify"</td><td>Write nCr \xD7 (first)<sup>n\u2212r</sup> \xD7 (second)<sup>r</sup> for r = 0, 1, 2, n\u22121, n. Do not calculate.</td></tr>
+    <tr><td>"Coefficient of x<sup>k</sup>"</td><td>Find the power of x in terms of r, set it equal to k, solve for r, then work out that one term.</td></tr>
+    <tr><td>"Constant term" or "independent of x"</td><td>Same as above with k = 0.</td></tr>
+    <tr><td>"Coefficient of x<sup>k</sup> in (\u2026)(\u2026)<sup>n</sup>"</td><td>Find two coefficients from the long bracket (x<sup>k\u22121</sup> and x<sup>k</sup>), multiply each by its partner, add.</td></tr>
+    <tr><td>"The 4th term" / "the term in position\u2026"</td><td>Use r = (term number) \u2212 1.</td></tr>
+    <tr><td>"Middle term"</td><td>n even: one middle term, r = n/2. n odd: two middle terms.</td></tr>
+    <tr><td>"Ascending powers of x"</td><td>Start with r = 0 (the number term) and go up. Stop at the power you are asked for.</td></tr>
+    <tr><td>"Find k" or "find n"</td><td>Write the coefficient using k (or n), set it equal to the given number, solve.</td></tr>
+    <tr><td>"Estimate 1.02<sup>8</sup>"</td><td>Write it as (1 + 0.02)<sup>8</sup>, expand the first few terms, add.</td></tr>
+    <tr class="hl-only"><td>Negative or fractional power <span class="syl hl">HL only</span></td><td>(1 + y)<sup>m</sup> = 1 + my + m(m\u22121)/2! y\xB2 + m(m\u22121)(m\u22122)/3! y\xB3 + \u2026 Take out the first term if it is not 1. Valid only for |y| &lt; 1.</td></tr>
+    <tr><td>"Sum of the coefficients"</td><td>Put x = 1. For even or odd powers also put x = \u22121 and use (f(1) \xB1 f(\u22121)) \xF7 2.</td></tr>
+    <tr><td>"Greatest coefficient"</td><td>Compare neighbours: t(r+1) \xF7 t(r) = (n\u2212r)/(r+1) \xD7 b/a. Find where it drops below 1.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>IB command terms</h3>
+<div class="scroll"><table>
+  <thead><tr><th>Term</th><th>What it asks you to do</th></tr></thead>
+  <tbody>
+    <tr><td><b>Write down</b></td><td>Get the answer, usually by reading it off. Little or no working is needed.</td></tr>
+    <tr><td><b>State</b></td><td>Give a short answer, such as a name or a value, with no explanation.</td></tr>
+    <tr><td><b>Find</b></td><td>Get the answer and show the stages of your working.</td></tr>
+    <tr><td><b>Calculate</b></td><td>Get a number, showing the stages of your working.</td></tr>
+    <tr><td><b>Show that</b></td><td>Reach the result you are given, showing every step. Do not start from the answer.</td></tr>
+    <tr><td><b>Hence</b></td><td>Use your answer to the part before.</td></tr>
+    <tr><td><b>Hence or otherwise</b></td><td>Using the part before is the easiest way, but another method can also get the marks.</td></tr>
+    <tr><td><b>Estimate</b></td><td>Find an approximate value.</td></tr>
+  </tbody>
+</table></div>
+
+<div class="paper-1-only">
+  <h3>Paper 1: no calculator</h3>
+  <ul>
+    <li>Get nCr from Pascal's triangle for small n, or from nC2 = n(n\u22121)/2 and the symmetry nCr = nC(n\u2212r).</li>
+    <li>Keep powers of numbers as powers until the end, e.g. ${bn(6, 2)} \xD7 2<sup>4</sup> \xD7 3<sup>2</sup> = 15 \xD7 16 \xD7 9.</li>
+    <li>Paper 1 questions are designed so the numbers stay manageable. If they get huge, check your r.</li>
+  </ul>
+</div>
+<div class="paper-2-only">
+  <h3>Paper 2: using your GDC</h3>
+  <ul>
+    <li><b>TI-84 Plus CE:</b> type n, press <kbd>math</kbd>, go to <b>PROB</b>, choose <b>nCr</b>, type r, press <kbd>enter</kbd>.</li>
+    <li><b>TI-Nspire CX:</b> <kbd>menu</kbd> \u25B8 Probability \u25B8 Combinations, then type nCr(n, r).</li>
+    <li><b>Casio fx-CG50:</b> in Run-Matrix, type n, then <kbd>OPTN</kbd> \u25B8 \u25B7 \u25B8 PROB \u25B8 nCr, type r, press <kbd>EXE</kbd>.</li>
+    <li>Check an expansion: graph (or tabulate) the original bracket and your answer. They should match for every x.</li>
+    <li>Still write the set-up, e.g. ${bn(10, 3)}(2x)<sup>7</sup>(3)<sup>3</sup>, before the answer from your GDC: the method marks are for the working.</li>
+  </ul>
+  <p class="hint">Menu names can differ slightly between calculator software versions.</p>
+</div>
+
+<h3>Quick checks</h3>
+<ul>
+  <li>Powers of the two brackets add to n in every term.</li>
+  <li>Put x = 1 into the question and the answer: they should give the same number.</li>
+  <li>The coefficients are symmetrical: nCr = nC(n\u2212r).</li>
+</ul>
+<h3>Common mistakes</h3>
+<ul>
+  <li>Forgetting to raise the number as well as the x: (2x)\xB3 = 8x\xB3, not 2x\xB3.</li>
+  <li>Losing the minus sign: (\u22123)\xB2 = 9 but (\u22123)\xB3 = \u221227. Keep the sign with the second term.</li>
+  <li>Using r = 4 for the 4th term. It is r = 3.</li>
+  <li>Forgetting that multiplying by x raises every power by 1.</li>
+  <li class="hl-only">Using the nCr pattern with a negative or fractional power. That needs the extended formula, and the bracket must start with 1.</li>
+</ul>
+`;
 
   // source/helpers/expressions.js
   var isExact = (v) => typeof v === "object";
@@ -3453,8 +4182,13 @@ input[type=checkbox] {
     if (!isWhole(n) || !isWhole(r) || r.n < 0n || r.n > n.n || n.n > 5000n) fail("nCr needs whole numbers with 0 \u2264 r \u2264 n.");
     return F(C(Number(n.n), Number(r.n)));
   }
-  function tokenize(text, shortcuts) {
-    const s = text.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/").replace(/[−–]/g, "-").replace(/\*\*/g, "^").replace(/ncr/gi, "C").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (sup) => "^" + [...sup].map((c) => "\u2070\xB9\xB2\xB3\u2074\u2075\u2076\u2077\u2078\u2079".indexOf(c)).join(""));
+  function logOf(v, base10) {
+    const x = asDecimal(v);
+    if (!(x > 0)) fail(`${base10 ? "log" : "ln"} needs a number bigger than 0.`);
+    return checked(base10 ? Math.log10(x) : Math.log(x));
+  }
+  function tokenize(text, shortcuts, vars) {
+    const s = text.replace(/\s+/g, "").replace(/[×·]/g, "*").replace(/÷/g, "/").replace(/[−–]/g, "-").replace(/\*\*/g, "^").replace(/ncr/gi, "C").replace(/sqrt/gi, "\u221A").replace(/pi/gi, "\u03C0").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (sup) => "^" + [...sup].map((c) => "\u2070\xB9\xB2\xB3\u2074\u2075\u2076\u2077\u2078\u2079".indexOf(c)).join(""));
     if (!shortcuts && /[Cc!]/.test(s)) fail("Work out nCr and ! yourself here.");
     const out = [];
     let i = 0;
@@ -3470,6 +4204,22 @@ input[type=checkbox] {
         i += 3;
         continue;
       }
+      const fn = rest.match(/^(ln|log)/i);
+      if (fn) {
+        out.push(fn[0].toLowerCase());
+        i += fn[0].length;
+        continue;
+      }
+      if (vars && Object.hasOwn(vars, s[i])) {
+        out.push({ v: s[i] });
+        i++;
+        continue;
+      }
+      if (s[i] === "e" || s[i] === "\u03C0") {
+        out.push({ k: s[i] });
+        i++;
+        continue;
+      }
       if ("+-*/^!()\u221A".includes(s[i]) || s[i] === "C" || s[i] === "c") {
         out.push(s[i] === "c" ? "C" : s[i]);
         i++;
@@ -3483,13 +4233,13 @@ input[type=checkbox] {
     const [w, f = ""] = str.split(".");
     return F(BigInt((w || "0") + f), 10n ** BigInt(f.length));
   };
-  function calculate(text, ans, { shortcuts = true } = {}) {
+  function calculate(text, ans, { shortcuts = true, vars } = {}) {
     try {
-      const t = tokenize(text, shortcuts);
+      const t = tokenize(text, shortcuts, vars);
       if (!t.length) return { error: "" };
       let i = 0;
       const peek = () => t[i], take = () => t[i++];
-      const startsValue = (x) => x !== void 0 && (x.num !== void 0 || x === "ans" || x === "(" || x === "\u221A");
+      const startsValue = (x) => x !== void 0 && (x.num !== void 0 || x.v !== void 0 || x.k !== void 0 || x === "ans" || x === "(" || x === "\u221A" || x === "ln" || x === "log");
       const expr = () => {
         let v2 = term();
         while (peek() === "+" || peek() === "-") {
@@ -3548,6 +4298,9 @@ input[type=checkbox] {
           return v2;
         }
         if (x === "\u221A") return pow(postfix(), F(1, 2));
+        if (x === "ln" || x === "log") return logOf(postfix(), x === "log");
+        if (x.v !== void 0) return vars[x.v];
+        if (x.k !== void 0) return x.k === "e" ? Math.E : Math.PI;
         fail(`"${x === "*" ? "\xD7" : x === "/" ? "\xF7" : x}" needs a number before it.`);
       };
       const v = expr();
@@ -3617,10 +4370,10 @@ input[type=checkbox] {
       if (!ts || ts.join("") !== left || ts.length > 2) return { err: "The other bracket should look like (2x+3) or x." };
       let c = 0, d = 0;
       for (const t of ts) {
-        const T2 = parseTerm(t);
-        if (!T2 || T2.p < 0 || T2.p > 1) return { err: "The other bracket can only have an x term and a number, like (2x \u2212 1)." };
-        if (T2.p === 1) c += T2.coef;
-        else d += T2.coef;
+        const T3 = parseTerm(t);
+        if (!T3 || T3.p < 0 || T3.p > 1) return { err: "The other bracket can only have an x term and a number, like (2x \u2212 1)." };
+        if (T3.p === 1) c += T3.coef;
+        else d += T3.coef;
       }
       if (c === 0 && d === 0) return { err: "The other bracket cannot be 0." };
       cfg.c = c;
@@ -3643,44 +4396,9 @@ input[type=checkbox] {
     return { v };
   };
 
-  // source/maths/binomial-expansion.js
-  function question(cfg) {
-    const a = BigInt(cfg.a), b = BigInt(cfg.b);
-    const A = raw(a, cfg.p), Bp = raw(b < 0n ? -b : b, cfg.q), sign = b < 0n ? ` ${MINUS} ` : " + ";
-    let left = "";
-    if (cfg.c !== void 0) {
-      const m = /* @__PURE__ */ new Map();
-      add(m, 1, BigInt(cfg.c));
-      add(m, 0, BigInt(cfg.d));
-      left = "(" + poly(m) + ")";
-    }
-    return { left, A, Bp, sign, B: raw(b, cfg.q), n: cfg.n, html: `${left}(${A}${sign}${Bp})<sup>${cfg.n}</sup>` };
-  }
-  function expand(cfg) {
-    const a = BigInt(cfg.a), b = BigInt(cfg.b), n = cfg.n, terms = [], map = /* @__PURE__ */ new Map();
-    for (let r = 0; r <= n; r++) {
-      const coef = C(n, r), ap = pw(a, n - r), bp = pw(b, r), ea = cfg.p * (n - r), eb = cfg.q * r;
-      const t = { r, coef, ap, bp, ea, eb, val: coef * ap * bp, e: ea + eb };
-      terms.push(t);
-      add(map, t.e, t.val);
-    }
-    return { terms, map };
-  }
-  var swapTerms = (c) => ({ ...c, a: c.b, p: c.q, b: c.a, q: c.p });
-  function productMap(cfg) {
-    const R = expand(cfg).map;
-    if (cfg.c === void 0) return R;
-    const c = BigInt(cfg.c), d = BigInt(cfg.d), t = /* @__PURE__ */ new Map();
-    R.forEach((v, e) => {
-      if (c !== 0n) add(t, e + 1, v * c);
-      if (d !== 0n) add(t, e, v * d);
-    });
-    return t;
-  }
-
   // source/worked-solutions/expanding-lesson.js
   function buildExpand(cfg, mode) {
-    const Q = question(cfg), { terms, map } = expand(cfg), n = cfg.n, hasM = cfg.c !== void 0;
+    const Q = question(cfg), { terms: terms2, map } = expand(cfg), n = cfg.n, hasM = cfg.c !== void 0;
     const full = mode === "full" || mode !== "terms" && (hasM || n <= 6);
     const a = BigInt(cfg.a), b = BigInt(cfg.b);
     const steps = [];
@@ -3763,19 +4481,19 @@ input[type=checkbox] {
       const rows = [0, 1, 2, null, n - 1, n];
       const l42 = rows.map((r, i) => {
         if (r === null) return L(`+ \u2026 `, "The middle terms are not needed.");
-        const t = terms[r];
+        const t = terms2[r];
         const note = r === 0 ? `r = 0. First term has power ${n}, second has power 0.` : r === n ? `r = ${n}. Now the first term has power 0 and the second has all ${n}.` : `r = ${r}. First power ${n - r}, second power ${r}.`;
         const ask = r === 2 ? num2(`r = 2. What power goes on (${Q.A}) and what power on (${Q.B})?`, [{ label: `power on (${Q.A})`, answer: String(n - 2) }, { label: `power on (${Q.B})`, answer: "2" }], `The second term gets r = 2, the first gets what's left: ${n} ${MINUS} 2 = ${n - 2}.`) : void 0;
         return L(`${i === 0 ? "" : "+ "}${un(t)}`, note, ask, [`Put r = ${r} into the pattern: ${bn("n", "r")} becomes ${bn(n, r)}, (first)<sup>n\u2212r</sup> becomes ${pwr(Ab, n - r)}, (second)<sup>r</sup> becomes ${pwr(Bb, r)}. Write them next to each other, nothing else.`]);
       });
       S("Step 4 \xB7 Write the terms", "Fill in the pattern for r = 0, 1, 2 and for the last two.", l42);
       S("Step 5 \xB7 Done", "That is the full answer for this type of question.", [
-        L(`<span class="answer">${un(terms[0])} + ${un(terms[1])} + ${un(terms[2])} + \u2026 + ${un(terms[n - 1])} + ${un(terms[n])}</span>`, "Leave it exactly like this. The question said do not simplify.", null, [`If you simplified, you would work out each piece, e.g. ${bn(n, 1)} = ${n} and ${pwr(Bb, 1)} = ${Q.B}. The question says not to, so stop here.`]),
+        L(`<span class="answer">${un(terms2[0])} + ${un(terms2[1])} + ${un(terms2[2])} + \u2026 + ${un(terms2[n - 1])} + ${un(terms2[n])}</span>`, "Leave it exactly like this. The question said do not simplify.", null, [`If you simplified, you would work out each piece, e.g. ${bn(n, 1)} = ${n} and ${pwr(Bb, 1)} = ${Q.B}. The question says not to, so stop here.`]),
         L("Check: nCr numbers go 0, 1, 2 \u2026 n. Powers add to n. Sign kept with the second term.", "Three things to check before moving on.")
       ]);
       return { title: `Q: ${Q.html}`, steps };
     }
-    const l4 = terms.map((t) => {
+    const l4 = terms2.map((t) => {
       const first = mono(t.ap, t.ea, true) || "1", second = mono(t.bp, t.eb, true) || "1";
       const note = t.r === 0 ? `${Bb}<sup>0</sup> = 1, so this is just ${pwr(Ab, n)}.` : `${bn(n, t.r)} = ${t.coef}, ${pwr(Ab, n - t.r)} = ${first}, ${pwr(Bb, t.r)} = ${second}. Multiply them.`;
       let ask;
@@ -3849,21 +4567,6 @@ input[type=checkbox] {
     ]);
     return { title: `Q: ${Q.html}`, steps };
   }
-
-  // source/helpers/random-numbers.js
-  var ri = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
-  var rnz = (lo, hi) => {
-    let v = 0;
-    while (v === 0) v = ri(lo, hi);
-    return v;
-  };
-  var shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  };
 
   // source/topics/binomials/question-types/expanding-brackets/expand-and-simplify.js
   T("expand", {
@@ -3979,22 +4682,22 @@ input[type=checkbox] {
     ));
     l.push(L(valid ? `r = ${rr} is a whole number from 0 to ${n} \u2713` : `r = ${fh(fr)} is not a whole number from 0 to ${n}`, valid ? "So this term exists." : `So no term has ${tag}. The coefficient is 0.`));
     const steps = [{ h: `Find r for ${tag}`, intro: `Which term has ${k === 0 ? "no x" : xp(k)}?`, lines: l }];
-    let val = 0n;
+    let val2 = 0n;
     if (valid) {
       const Cn = C(n, rr), ap = pw(A, n - rr), bp = pw(B, rr);
-      val = Cn * ap * bp;
+      val2 = Cn * ap * bp;
       steps.push({ h: `The coefficient at r = ${rr}`, intro: `Put r = ${rr} into the general term.`, lines: [
         L(`T<sub>${rr + 1}</sub> = ${bn(n, rr)}(${Q.A})<sup>${n - rr}</sup>(${Q.B})<sup>${rr}</sup>`, `This is the term we want.`),
         L(`coefficient = ${Cn} \xD7 (${sg(a)})<sup>${n - rr}</sup> \xD7 (${sg(b)})<sup>${rr}</sup>`, "Only the numbers matter for the coefficient. The x parts already give the right power.", void 0, [`(${Q.A})<sup>${n - rr}</sup> has a number part ${sg(a)}<sup>${n - rr}</sup> and an x part. We only keep the number part, because the question asks for the number in front.`]),
         L(
-          `= ${Cn} \xD7 ${sg(ap)} \xD7 ${sg(bp)} = <span class="hl">${sg(val)}</span>`,
+          `= ${Cn} \xD7 ${sg(ap)} \xD7 ${sg(bp)} = <span class="hl">${sg(val2)}</span>`,
           `${bp < 0n ? "A minus to an odd power stays minus. " : ""}Multiply the three numbers.`,
-          Nm("Work out the coefficient.", [{ label: "coefficient", answer: val.toString() }], `${Cn} \xD7 ${sg(ap)} \xD7 ${sg(bp)} = ${sg(val)}.`),
-          [`Do it in two parts: first ${Cn} \xD7 ${sg(ap)} = ${sg(Cn * ap)}, then \xD7 ${sg(bp)} = ${sg(val)}.`]
+          Nm("Work out the coefficient.", [{ label: "coefficient", answer: val2.toString() }], `${Cn} \xD7 ${sg(ap)} \xD7 ${sg(bp)} = ${sg(val2)}.`),
+          [`Do it in two parts: first ${Cn} \xD7 ${sg(ap)} = ${sg(Cn * ap)}, then \xD7 ${sg(bp)} = ${sg(val2)}.`]
         )
       ] });
     }
-    return { steps, val, valid, r: rr };
+    return { steps, val: val2, valid, r: rr };
   }
   function termLines(cfg, Q, r, t) {
     const n = cfg.n;
@@ -4253,7 +4956,7 @@ input[type=checkbox] {
     text: (P) => `Find the middle term${P.cfg.n % 2 ? "s" : ""} in the expansion of ${question(P.cfg).html}.`,
     expr: (P) => question(P.cfg).html,
     build(P) {
-      const { cfg } = P, Q = question(cfg), n = cfg.n, terms = expand(cfg).terms, odd = n % 2 === 1, rs = odd ? [(n - 1) / 2, (n + 1) / 2] : [n / 2], { steps, S } = newSteps();
+      const { cfg } = P, Q = question(cfg), n = cfg.n, terms2 = expand(cfg).terms, odd = n % 2 === 1, rs = odd ? [(n - 1) / 2, (n + 1) / 2] : [n / 2], { steps, S } = newSteps();
       S("Read the question", "What is actually being asked?", [
         readLine(P, [`The middle of a list is the term with the same number of terms on each side of it.`]),
         L(`number of terms = n + 1 = ${n + 1}`, "Count the terms.", Nm("How many terms are there?", [{ label: "terms", answer: String(n + 1) }], `The power is ${n}, so there are ${n}+1 = ${n + 1} terms.`), [`The terms use r = 0, 1, 2 \u2026 ${n}. That is ${n + 1} values.`])
@@ -4266,7 +4969,7 @@ input[type=checkbox] {
         L(`r = ${(n + 2) / 2} ${MINUS} 1 = <span class="hl">${rs[0]}</span>`, "Term number is r + 1, so subtract 1.", Nm("Which r gives the middle term?", [{ label: "r", answer: String(rs[0]) }], `The ${(n + 2) / 2}th term uses r = ${rs[0]}.`))
       ]);
       rs.forEach((r) => {
-        const t = terms[r];
+        const t = terms2[r];
         S(`Work out T<sub>${r + 1}</sub>`, `Use r = ${r} in the general term.`, [
           L(`T<sub>${r + 1}</sub> = ${bn(n, r)}(${Q.A})<sup>${n - r}</sup>(${Q.B})<sup>${r}</sup>`, "The general term with r put in."),
           ...termLines(cfg, Q, r, t),
@@ -4313,7 +5016,7 @@ input[type=checkbox] {
     },
     expr: (P) => question(P.cfg).html,
     build(P) {
-      const { cfg, upto } = P, Q = question(cfg), n = cfg.n, q = cfg.q, rm = TYPES.ascend.rmax(P), terms = expand(cfg).terms, { steps, S } = newSteps();
+      const { cfg, upto } = P, Q = question(cfg), n = cfg.n, q = cfg.q, rm = TYPES.ascend.rmax(P), terms2 = expand(cfg).terms, { steps, S } = newSteps();
       S("Read the question", "What is actually being asked?", [
         readLine(P, [`<b>Ascending powers</b> means the powers of x go UP: x\u2070 (the number), then x, then x\xB2, and so on. It is the opposite of the usual way of writing a polynomial.`, `"Up to and including ${xp(upto)}" means stop after the ${xp(upto)} term. Ignore everything with a bigger power.`]),
         L(`Start with the number term (${Q.A}), because it has no x.`, "The power of x goes up by " + q + " each time.", null, [`The first bracket term has no x, so its power is 0. The second term brings in ${xp(q)}. Each time r goes up by 1 the power of x goes up by ${q}.`])
@@ -4328,16 +5031,16 @@ input[type=checkbox] {
         )
       ]);
       const cl = [];
-      for (let r = 0; r <= rm; r++) cl.push(L(`${bn(n, r)} = <span class="hl">${terms[r].coef}</span>`, r === 0 ? "nC0 is always 1." : r === 1 ? "nC1 is always n." : "Pascal's triangle or the nCr button."));
+      for (let r = 0; r <= rm; r++) cl.push(L(`${bn(n, r)} = <span class="hl">${terms2[r].coef}</span>`, r === 0 ? "nC0 is always 1." : r === 1 ? "nC1 is always n." : "Pascal's triangle or the nCr button."));
       S("The nCr numbers", `For n = ${n}.`, cl);
-      S("Write the terms", "Put each r into the pattern, without simplifying yet.", terms.slice(0, rm + 1).map((t, r) => L(`${r ? "+ " : ""}${bn(n, r)}(${Q.A})<sup>${n - r}</sup>(${Q.B})<sup>${r}</sup>`, `r = ${r}.`, void 0, r === 0 ? [`For r = 0 the second bracket is raised to 0, so it disappears and only (${Q.A})<sup>${n}</sup> is left.`] : void 0)));
-      S("Simplify each term", "Work out the numbers and the power of x.", terms.slice(0, rm + 1).map((t, r) => L(
+      S("Write the terms", "Put each r into the pattern, without simplifying yet.", terms2.slice(0, rm + 1).map((t, r) => L(`${r ? "+ " : ""}${bn(n, r)}(${Q.A})<sup>${n - r}</sup>(${Q.B})<sup>${r}</sup>`, `r = ${r}.`, void 0, r === 0 ? [`For r = 0 the second bracket is raised to 0, so it disappears and only (${Q.A})<sup>${n}</sup> is left.`] : void 0)));
+      S("Simplify each term", "Work out the numbers and the power of x.", terms2.slice(0, rm + 1).map((t, r) => L(
         `T<sub>${r + 1}</sub> = ${t.coef} \xD7 ${sg(t.ap)} \xD7 ${t.bp < 0n ? "(" + sg(t.bp) + (t.eb ? xp(t.eb) : "") + ")" : sg(t.bp) + (t.eb ? xp(t.eb) : "")} = <span class="hl">${mono(t.val, t.e, true)}</span>`,
         r === 0 ? `(${sg(cfg.a)})<sup>${n}</sup> = ${sg(t.ap)}.` : `(${sg(cfg.a)})<sup>${n - r}</sup> = ${sg(t.ap)}, (${sg(cfg.b)})<sup>${r}</sup> = ${sg(t.bp)}.`,
         r === 1 ? Nm(`What is the coefficient of ${xp(q)}?`, [{ label: "coefficient", answer: t.val.toString() }], `${t.coef} \xD7 ${sg(t.ap)} \xD7 ${sg(t.bp)} = ${sg(t.val)}.`) : void 0
       )));
       const mp = /* @__PURE__ */ new Map();
-      terms.slice(0, rm + 1).forEach((t) => add(mp, t.e, t.val));
+      terms2.slice(0, rm + 1).forEach((t) => add(mp, t.e, t.val));
       S("Final answer", "Add them in order, smallest power first.", [L(`${Q.html} = <span class="answer">${[...mp.keys()].sort((x, y) => x - y).map((e, i) => mono(mp.get(e), e, i === 0)).join("")} + \u2026</span>`, `The "+ \u2026" shows that there are more terms, with powers bigger than ${xp(upto)}.`)]);
       return mk(P, steps);
     },
@@ -4368,9 +5071,9 @@ input[type=checkbox] {
       return { p: { t: "sumcoef", cfg: r.cfg, which: v.which || "all" } };
     },
     evalAt(cfg, xv) {
-      const par2 = (e) => xv === 1 ? 1n : Math.abs(e) % 2 ? -1n : 1n;
+      const par3 = (e) => xv === 1 ? 1n : Math.abs(e) % 2 ? -1n : 1n;
       const L1 = cfg.c !== void 0 ? BigInt(cfg.c) * BigInt(xv) + BigInt(cfg.d) : 1n;
-      const A = BigInt(cfg.a) * par2(cfg.p), B = BigInt(cfg.b) * par2(cfg.q);
+      const A = BigInt(cfg.a) * par3(cfg.p), B = BigInt(cfg.b) * par3(cfg.q);
       return { A, B, L1, val: L1 * pw(A + B, cfg.n) };
     },
     text(P) {
@@ -4448,16 +5151,16 @@ input[type=checkbox] {
     text: (P) => P.valueOnly ? `Find the value of the greatest coefficient in the expansion of ${question(P.cfg).html}.` : `Find the term with the greatest coefficient in the expansion of ${question(P.cfg).html}.`,
     expr: (P) => question(P.cfg).html,
     best(P) {
-      const { terms } = expand(P.cfg);
+      const { terms: terms2 } = expand(P.cfg);
       let mx = 0;
-      terms.forEach((t, i) => {
-        if (t.val > terms[mx].val) mx = i;
+      terms2.forEach((t, i) => {
+        if (t.val > terms2[mx].val) mx = i;
       });
-      const ties = terms.map((t, i) => i).filter((i) => terms[i].val === terms[mx].val);
-      return { mx, ties, terms };
+      const ties = terms2.map((t, i) => i).filter((i) => terms2[i].val === terms2[mx].val);
+      return { mx, ties, terms: terms2 };
     },
     build(P) {
-      const { cfg } = P, Q = question(cfg), n = cfg.n, a = cfg.a, b = cfg.b, { mx, ties, terms } = TYPES.greatest.best(P), { steps, S } = newSteps();
+      const { cfg } = P, Q = question(cfg), n = cfg.n, a = cfg.a, b = cfg.b, { mx, ties, terms: terms2 } = TYPES.greatest.best(P), { steps, S } = newSteps();
       const rho = F(n * b - a, a + b);
       S("Read the question", "What is actually being asked?", [
         readLine(P, [`The coefficients of the terms go up, reach a peak, then come back down. We want the term at the peak.`]),
@@ -4478,9 +5181,9 @@ input[type=checkbox] {
       S("Find the peak", `The coefficients grow up to r = ${Math.max(0, Math.floor(Number(rho.n) / Number(rho.d))) + (Number(rho.n) < 0 ? 0 : 1)}, then stop growing.`, [
         L(Number(rho.n) < 0 ? `r \u2264 ${ff(Number(rho.n) / Number(rho.d), 3)} never happens for r \u2265 0, so the coefficients only go down. The greatest is the first.` : `The ratio is \u2265 1 up to r = ${Math.floor(Number(rho.n) / Number(rho.d))}, so t<sub>${Math.floor(Number(rho.n) / Number(rho.d)) + 1}</sub> is the last that is still \u2265 the one before.`, "So the peak is the next one along."),
         L(`peak at r = <span class="hl">${rS}</span>${ties.length > 1 ? ' <span class="mu">(two equal terms)</span>' : ""}`, ties.length > 1 ? "The ratio is exactly 1 there, so two neighbouring coefficients are equal." : "Single peak."),
-        L(`Check: ${terms.slice(Math.max(0, mx - 2), mx + 3).map((t3, i) => `t<sub>${Math.max(0, mx - 2) + i}</sub> = ${t3.val}`).join(", ")}`, "The biggest number in the list.")
+        L(`Check: ${terms2.slice(Math.max(0, mx - 2), mx + 3).map((t3, i) => `t<sub>${Math.max(0, mx - 2) + i}</sub> = ${t3.val}`).join(", ")}`, "The biggest number in the list.")
       ]);
-      const t = terms[mx], t2 = ties.length > 1 ? terms[ties[1]] : null;
+      const t = terms2[mx], t2 = ties.length > 1 ? terms2[ties[1]] : null;
       S("Final answer", P.valueOnly ? "The question asks for the value." : "Write the term.", [L(P.valueOnly ? `greatest coefficient = <span class="answer">${t.val}</span>` : `${ties.length > 1 ? "T<sub>" + (ties[0] + 1) + "</sub> and T<sub>" + (ties[1] + 1) + "</sub> are" : "T<sub>" + (mx + 1) + "</sub> is"} <span class="answer">${mono(t.val, t.e, true)}${t2 ? " and " + mono(t2.val, t2.e, true) : ""}</span>`, `The greatest coefficient is ${t.val}.`)]);
       return mk(P, steps);
     },
@@ -4489,8 +5192,8 @@ input[type=checkbox] {
       return { t: "greatest", cfg, valueOnly: true };
     },
     ans(P) {
-      const { terms, mx } = TYPES.greatest.best(P);
-      return { kind: "num", val: F(terms[mx].val), disp: terms[mx].val.toString() };
+      const { terms: terms2, mx } = TYPES.greatest.best(P);
+      return { kind: "num", val: F(terms2[mx].val), disp: terms2[mx].val.toString() };
     },
     hints: (P) => ["Compare t(r+1) with t(r): the ratio is (n\u2212r)/(r+1) \xD7 b/a.", "Solve ratio \u2265 1 for r, then take the next whole number along."],
     example: { t: "greatest", cfg: { a: 2, p: 1, b: 3, q: 0, n: 10 } }
@@ -4521,22 +5224,22 @@ input[type=checkbox] {
     expr: (P) => `(${sg(P.a)} + <i>kx</i>)<sup>${P.n}</sup>`,
     solve(P) {
       const co = C(P.n, P.m) * pw(BigInt(P.a), P.n - P.m);
-      const R = F(P.V, co), neg = R.n < 0n;
-      let roots = [], exact = false, disp;
+      const R = F(P.V, co), neg2 = R.n < 0n;
+      let roots = [], exact2 = false, disp;
       if (P.m % 2 === 0) {
-        if (neg) return { co, R, none: true };
+        if (neg2) return { co, R, none: true };
         const f2 = fracRoot(fabs(R), P.m);
-        exact = !!f2;
+        exact2 = !!f2;
         roots = f2 ? P.pos ? [f2] : [f2, F(-f2.n, f2.d)] : [];
         const approx2 = Math.pow(Number(R.n) / Number(R.d), 1 / P.m);
-        disp = exact ? P.pos ? fstr(f2) : "\xB1" + fstr(f2) : P.pos ? ff(approx2, 5) : "\xB1" + ff(approx2, 5);
-        return { co, R, exact, roots, disp, approx: approx2, val: exact ? f2 : null };
+        disp = exact2 ? P.pos ? fstr(f2) : "\xB1" + fstr(f2) : P.pos ? ff(approx2, 5) : "\xB1" + ff(approx2, 5);
+        return { co, R, exact: exact2, roots, disp, approx: approx2, val: exact2 ? f2 : null };
       }
       const f = fracRoot(fabs(R), P.m);
-      exact = !!f;
+      exact2 = !!f;
       const approx = Math.sign(Number(R.n)) * Math.pow(Math.abs(Number(R.n) / Number(R.d)), 1 / P.m);
-      const val = exact ? F(neg ? -f.n : f.n, f.d) : null;
-      return { co, R, exact, roots: val ? [val] : [], disp: exact ? fstr(val) : ff(approx, 5), approx, val };
+      const val2 = exact2 ? F(neg2 ? -f.n : f.n, f.d) : null;
+      return { co, R, exact: exact2, roots: val2 ? [val2] : [], disp: exact2 ? fstr(val2) : ff(approx, 5), approx, val: val2 };
     },
     build(P) {
       const { a, n, m, V } = P, s = TYPES.unkv.solve(P), { steps, S } = newSteps();
@@ -4710,11 +5413,11 @@ input[type=checkbox] {
       if (!m) return { err: "Type it like 1.02^8 or 2.01^6." };
       const n = +m[2];
       if (n < 2 || n > 30) return { err: "The power should be between 2 and 30." };
-      const val = +m[1];
-      let a = Math.round(val);
+      const val2 = +m[1];
+      let a = Math.round(val2);
       if (a < 1) a = 1;
-      const dec = (m[1].split(".")[1] || "").length;
-      const d = +(val - a).toFixed(dec);
+      const dec2 = (m[1].split(".")[1] || "").length;
+      const d = +(val2 - a).toFixed(dec2);
       if (d === 0) return { err: "That is a whole number already. Try something like 1.02 or 2.01." };
       if (Math.abs(d) > 0.2) return { err: "The number must be close to a whole number, like 1.02 or 2.99." };
       const nt = int(v.nt, 2, 6, "The number of terms");
@@ -4729,29 +5432,29 @@ input[type=checkbox] {
       return t;
     },
     build(P) {
-      const { a, d, n, nt, val } = P, t = TYPES.approx.terms(P), sum = t.reduce((x, y) => x + y, 0), exact = Math.pow(+val, n), { steps, S } = newSteps();
+      const { a, d, n, nt, val: val2 } = P, t = TYPES.approx.terms(P), sum = t.reduce((x, y) => x + y, 0), exact2 = Math.pow(+val2, n), { steps, S } = newSteps();
       const dS = (d < 0 ? MINUS : "") + Math.abs(d);
       S("Read the question", "What is actually being asked?", [
         readLine(P, [`A calculator would just give the answer. The question wants to practise the expansion: the first few terms are a very good estimate when the second number is tiny.`]),
-        L(`Idea: write ${val} as (${a} + ${dS}), then expand`, "The small number (called d here) makes later terms tiny.", null, [`${val} is close to ${a}. The gap is ${dS}. So ${val} = ${a} + (${dS}). That turns the number into a binomial (first term + second term), which we can expand.`])
+        L(`Idea: write ${val2} as (${a} + ${dS}), then expand`, "The small number (called d here) makes later terms tiny.", null, [`${val2} is close to ${a}. The gap is ${dS}. So ${val2} = ${a} + (${dS}). That turns the number into a binomial (first term + second term), which we can expand.`])
       ]);
-      S("Split the number", `${val} = ${a} + (${dS}).`, [
-        L(`${val} = <span class="hl">${a}</span> + (<span class="hl">${dS}</span>)`, "Pick the nearest whole number, then see what is left.", Nm("What is the small number d?", [{ label: "d", answer: String(d) }], `${val} ${MINUS} ${a} = ${sg(d)}.`)),
-        L(`${val}<sup>${n}</sup> = (${a} + (${dS}))<sup>${n}</sup>`, `Now it is (first + second)<sup>${n}</sup>.`)
+      S("Split the number", `${val2} = ${a} + (${dS}).`, [
+        L(`${val2} = <span class="hl">${a}</span> + (<span class="hl">${dS}</span>)`, "Pick the nearest whole number, then see what is left.", Nm("What is the small number d?", [{ label: "d", answer: String(d) }], `${val2} ${MINUS} ${a} = ${sg(d)}.`)),
+        L(`${val2}<sup>${n}</sup> = (${a} + (${dS}))<sup>${n}</sup>`, `Now it is (first + second)<sup>${n}</sup>.`)
       ]);
       S("Write the first terms", "Use the pattern with first = " + a + " and second = " + dS + ".", t.map((x, r) => L(`${r ? "+ " : ""}${bn(n, r)}(${a})<sup>${n - r}</sup>(${dS})<sup>${r}</sup>`, r === 0 ? "r = 0" : `r = ${r}`, void 0, r === 0 ? [`Only ${nt} terms are asked for, so r = 0 up to r = ${nt - 1}.`] : void 0)));
       S("Work out each term", "Use a calculator for the powers.", t.map((x, r) => L(`${C(n, r)} \xD7 ${ff(Math.pow(a, n - r), 6)} \xD7 ${ff(Math.pow(d, r), 6)} = <span class="hl">${ff(x, 8)}</span>`, r >= 2 ? `The terms are shrinking fast.` : "", r === 1 ? Nm("What is this term?", [{ label: "term", answer: ff(x, 8) }], `${n} \xD7 ${a}^${n - 1} \xD7 ${dS} = ${ff(x, 8)}.`) : void 0)));
       S("Add and round", "Add the terms, then round.", [
         L(t.map((x, i) => i === 0 ? ff(x, 8) : x < 0 ? ` ${MINUS} ${ff(-x, 8)}` : ` + ${ff(x, 8)}`).join(""), "The sum of the terms."),
         L(`\u2248 ${ff(sum, 8)} = <span class="answer">${ff(sum, 4)}</span> <span class="mu">(4 s.f.)</span>`, "Round to 4 significant figures."),
-        L(`Check with a calculator: ${val}<sup>${n}</sup> = ${ff(exact, 8)}`, `The estimate is within ${ff(Math.abs(exact - sum), 2)} of the real value.`, null, [`If you took more terms, the estimate would get even closer. The terms after the ones we used are so small that they hardly change the answer.`])
+        L(`Check with a calculator: ${val2}<sup>${n}</sup> = ${ff(exact2, 8)}`, `The estimate is within ${ff(Math.abs(exact2 - sum), 2)} of the real value.`, null, [`If you took more terms, the estimate would get even closer. The terms after the ones we used are so small that they hardly change the answer.`])
       ]);
       return mk(P, steps);
     },
     gen(lv = 2) {
       const ds = lv === 1 ? [0.01, 0.02] : lv === 2 ? [0.01, 0.02, 0.03, -0.01, -0.02, 5e-3] : [3e-3, -2e-3, 5e-3, -5e-3, -0.03];
-      const a = lv === 1 ? 1 : lv === 2 ? ri(1, 3) : ri(2, 3), d = ds[ri(0, ds.length - 1)], n = lv === 1 ? ri(4, 6) : lv === 2 ? ri(5, 10) : ri(8, 12), val = String(+(a + d).toFixed(3));
-      return { t: "approx", val, a, d: +(+val - a).toFixed(3), n, nt: 3 };
+      const a = lv === 1 ? 1 : lv === 2 ? ri(1, 3) : ri(2, 3), d = ds[ri(0, ds.length - 1)], n = lv === 1 ? ri(4, 6) : lv === 2 ? ri(5, 10) : ri(8, 12), val2 = String(+(a + d).toFixed(3));
+      return { t: "approx", val: val2, a, d: +(+val2 - a).toFixed(3), n, nt: 3 };
     },
     ans(P) {
       const s = TYPES.approx.terms(P).reduce((x, y) => x + y, 0);
@@ -4970,18 +5673,18 @@ input[type=checkbox] {
     text: (P) => P.askr !== void 0 ? `In the expansion of (${P.u} ${P.neg ? MINUS : "+"} ${P.v})<sup>${P.n}</sup>, find the coefficient of ${ltr(P.u, P.n - P.askr)}${ltr(P.v, P.askr)}.` : `Expand (${P.u} ${P.neg ? MINUS : "+"} ${P.v})<sup>${P.n}</sup>.`,
     expr: (P) => `(${P.u} ${P.neg ? MINUS : "+"} ${P.v})<sup>${P.n}</sup>`,
     build(P) {
-      const { u, v, neg, n } = P, { steps, S } = newSteps(), big = n > 8;
-      const cf = (r) => C(n, r) * (neg && r % 2 ? -1n : 1n);
+      const { u, v, neg: neg2, n } = P, { steps, S } = newSteps(), big = n > 8;
+      const cf = (r) => C(n, r) * (neg2 && r % 2 ? -1n : 1n);
       const term = (r, first) => {
         const c = cf(r), a = c < 0n ? -c : c;
         const body = (a === 1n && (n - r > 0 || r > 0) ? "" : a) + ltr(u, n - r) + ltr(v, r);
         return first ? (c < 0n ? MINUS : "") + body : (c < 0n ? " " + MINUS + " " : " + ") + body;
       };
-      const un = (r) => `${bn(n, r)}${ltr(u, n - r) || ""}${neg ? `(${MINUS}${v})<sup>${r}</sup>` : ltr(v, r)}`;
+      const un = (r) => `${bn(n, r)}${ltr(u, n - r) || ""}${neg2 ? `(${MINUS}${v})<sup>${r}</sup>` : ltr(v, r)}`;
       S("Read the question", "What is actually being asked?", [
         readLine(P, [`Letters work exactly like numbers. The pattern is the same: nCr \xD7 (first)<sup>n\u2212r</sup> \xD7 (second)<sup>r</sup>.`]),
         L(`${n + 1} terms in total`, "One more than the power."),
-        neg ? L(`The second term is (${MINUS}${v}), so signs alternate: + \u2212 + \u2212 \u2026`, "Odd powers of a negative are negative.", null, [`(${MINUS}${v})\xB2 = +${v}\xB2, (${MINUS}${v})\xB3 = ${MINUS}${v}\xB3. So r odd gives a minus, r even gives a plus.`]) : L("Every term is positive.", "Both terms are added.")
+        neg2 ? L(`The second term is (${MINUS}${v}), so signs alternate: + \u2212 + \u2212 \u2026`, "Odd powers of a negative are negative.", null, [`(${MINUS}${v})\xB2 = +${v}\xB2, (${MINUS}${v})\xB3 = ${MINUS}${v}\xB3. So r odd gives a minus, r even gives a plus.`]) : L("Every term is positive.", "Both terms are added.")
       ]);
       const rows = [];
       for (let r = 0; r <= n; r++) if (!big || r < 3 || r >= n - 1) rows.push(r);
@@ -5007,230 +5710,388 @@ input[type=checkbox] {
     example: { t: "letters", u: "x", v: "y", neg: true, n: 5 }
   });
 
-  // source/topics/binomials/games/game-helpers.js
-  var mcq = (q, correct, wrongs, why) => {
-    const opts = shuffle([correct, ...[...new Set(wrongs)].filter((w) => w !== correct).slice(0, 3)]);
-    return { q, type: "mc", opts, ans: opts.indexOf(correct), why };
+  // source/topics/binomials/binomials.js
+  var topic = {
+    id: "binomial",
+    name: "Binomials",
+    courses: ["aa-sl", "aa-hl"],
+    sections: { aa: "SL 1.9 \xB7 AHL 1.10" },
+    desc: "Expansion, Pascal's triangle, nCr, coefficients, terms, unknowns, estimates, and negative or fractional powers (HL)",
+    keys: "binomial binomials binomial expansion expand expansion pascal pascals triangle ncr combinations choose algebra powers brackets series coefficient constant term independent of x middle term ascending powers approximation estimate negative fractional power sum of coefficients greatest coefficient unknown k find n factorial theorem",
+    groups: [
+      ["expand", "Expanding brackets", "Multiplying out brackets with a power"],
+      ["find", "Finding terms and coefficients", "Coefficients, the constant term, a particular term and more"],
+      ["unknown", "Unknowns and estimates", "Finding k or n, estimates, negative and fractional powers"],
+      ["other", "Other skills", "nCr, and expanding with letters"]
+    ],
+    types: TYPES,
+    genQ,
+    games: GAMES,
+    exams: EXAMS,
+    cheatSheet: CHEAT_SHEET
   };
-  var typed = (q, answer, why) => ({ q, type: "num", answer: String(answer), why });
-  var byLevel = (level2, easy, medium, hard) => level2 <= 1 ? easy : level2 === 2 ? medium : hard;
 
-  // source/topics/binomials/games/match-up.js
-  var KINDS = {
-    ncr: () => {
-      const n = ri(4, 10), r = ri(0, n);
-      return { a: bn(n, r), b: String(C(n, r)), why: `${n}C${r} = ${C(n, r)}` };
+  // source/topics/functions/question-list.js
+  var TYPES2 = {};
+  function T2(id, def) {
+    def.id = id;
+    TYPES2[id] = def;
+  }
+  var intField2 = (id, label, def) => ({ id, kind: "int", label, def });
+  var readLine2 = (P, more) => L(qs(TYPES2[P.t].text(P)), "This is the question.", null, more);
+  var mk2 = (P, steps) => ({ title: TYPES2[P.t].name + (TYPES2[P.t].expr ? " \xB7 " + TYPES2[P.t].expr(P) : ""), steps });
+  function viewFor(xs, ys, pad = 0.18) {
+    const r = (v) => {
+      let lo = Math.min(0, ...v), hi = Math.max(0, ...v);
+      if (hi - lo < 6) {
+        const m = (6 - (hi - lo)) / 2;
+        lo -= m;
+        hi += m;
+      }
+      const p = (hi - lo) * pad;
+      return [lo - p, hi + p];
+    };
+    return { x: r(xs), y: r(ys) };
+  }
+  function genQ2(id, lv, forLearn) {
+    const t = TYPES2[id];
+    return (forLearn && t.learn || t.gen)(lv);
+  }
+
+  // source/topics/functions/games/game-list.js
+  var GAMES2 = [];
+
+  // source/topics/functions/exam-questions/exam-list.js
+  var EXAMS2 = [];
+
+  // source/topics/functions/cheat-sheet.js
+  var CHEAT_SHEET2 = `<div class="explain"><p>Coming soon.</p></div>`;
+
+  // source/helpers/function-display.js
+  var isF = (v) => typeof v === "object";
+  var dec = (v) => isF(v) ? Number(v.n) / Number(v.d) : v;
+  var neg = (v) => dec(v) < 0;
+  var abs = (v) => isF(v) ? { n: v.n < 0n ? -v.n : v.n, d: v.d } : Math.abs(v);
+  var isOne = (v) => dec(v) === 1;
+  var val = (v) => isF(v) ? fh(v) : Number.isInteger(v) ? sg(v) : sg(ff(v, 3));
+  var par2 = (v) => neg(v) ? `(${val(v)})` : val(v);
+  function terms(list) {
+    let s = "";
+    for (const [c, body] of list) {
+      if (dec(c) === 0) continue;
+      const a = abs(c), num2 = body && isOne(a) ? "" : val(a);
+      s += s === "" ? (neg(c) ? MINUS : "") + num2 + body : (neg(c) ? ` ${MINUS} ` : " + ") + num2 + body;
+    }
+    return s || "0";
+  }
+  var lin = (m, c, v = "<i>x</i>") => terms([[m, v], [c, ""]]);
+  var shift = (h, v = "<i>x</i>") => dec(h) === 0 ? v : `${v} ${neg(h) ? "+" : MINUS} ${val(abs(h))}`;
+  var pt = (x, y) => `(${val(x)}, ${val(y)})`;
+
+  // source/helpers/graph-drawing.js
+  var made = 0;
+  var fmt = (v) => String(+v.toFixed(6)).replace("-", "\u2212");
+  function niceStep(range) {
+    const raw2 = range / 9, p = 10 ** Math.floor(Math.log10(raw2)), m = raw2 / p;
+    return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p;
+  }
+  var esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function graph({ x: [x0, x1], y: [y0, y1], curves = [], lines = [], points = [], width = 320, height = 240, description = "A graph", numbers = true }) {
+    const W = width, H = height, id = "gclip" + ++made;
+    const px = (x) => (x - x0) / (x1 - x0) * W, py = (y) => H - (y - y0) / (y1 - y0) * H;
+    const out = [];
+    const sx = niceStep(x1 - x0), sy = niceStep(y1 - y0);
+    let grid = "", nums = "";
+    for (let v = Math.ceil(x0 / sx) * sx; v <= x1 + 1e-9; v += sx) {
+      const X2 = px(v).toFixed(1);
+      grid += `M${X2} 0V${H}`;
+      if (numbers && Math.abs(v) > 1e-9 && px(v) > 8 && px(v) < W - 8) nums += `<text x="${X2}" y="${Math.min(H - 3, Math.max(11, py(0) + 12)).toFixed(1)}" text-anchor="middle">${fmt(v)}</text>`;
+    }
+    for (let v = Math.ceil(y0 / sy) * sy; v <= y1 + 1e-9; v += sy) {
+      const Y2 = py(v).toFixed(1);
+      grid += `M0 ${Y2}H${W}`;
+      if (numbers && Math.abs(v) > 1e-9 && py(v) > 8 && py(v) < H - 6) nums += `<text x="${Math.min(W - 3, Math.max(3, px(0) - 4)).toFixed(1)}" y="${(+Y2 + 4).toFixed(1)}" text-anchor="${px(0) - 4 < 14 ? "start" : "end"}">${fmt(v)}</text>`;
+    }
+    out.push(`<path class="g-grid" d="${grid}"/>`);
+    const ax = Math.min(W, Math.max(0, px(0))), ay = Math.min(H, Math.max(0, py(0)));
+    out.push(
+      `<path class="g-axis" d="M0 ${ay.toFixed(1)}H${W}M${ax.toFixed(1)} 0V${H}"/>`,
+      `<g class="g-num">${nums}</g>`,
+      `<text class="g-axname" x="${W - 4}" y="${(ay - 6).toFixed(1)}" text-anchor="end">x</text><text class="g-axname" x="${(ax + 6).toFixed(1)}" y="12">y</text>`
+    );
+    for (const l of lines) {
+      let d, lx, ly;
+      if (l.x !== void 0) {
+        const X2 = px(l.x).toFixed(1);
+        d = `M${X2} 0V${H}`;
+        lx = +X2 + 4;
+        ly = 14;
+      } else if (l.y !== void 0) {
+        const Y2 = py(l.y).toFixed(1);
+        d = `M0 ${Y2}H${W}`;
+        lx = W - 4;
+        ly = +Y2 - 5;
+      } else {
+        d = `M0 ${py(l.m * x0 + l.c).toFixed(1)}L${W} ${py(l.m * x1 + l.c).toFixed(1)}`;
+        lx = W - 4;
+        ly = py(l.m * x1 + l.c) + (l.m > 0 ? 14 : -6);
+      }
+      out.push(`<path class="g-line c${l.colour || 3}${l.dashed === false ? "" : " dashed"}" d="${d}" clip-path="url(#${id})"/>`);
+      if (l.label) out.push(`<text class="g-label c${l.colour || 3}" x="${lx.toFixed(1)}" y="${Math.min(H - 4, Math.max(12, ly)).toFixed(1)}" text-anchor="${l.x !== void 0 ? "start" : "end"}">${esc(l.label)}</text>`);
+    }
+    for (const c of curves) {
+      const a = c.from ?? x0, b = c.to ?? x1, n = 360;
+      let d = "", pen = false, prev = null, last = null;
+      for (let i = 0; i <= n; i++) {
+        const x = a + (b - a) * i / n, y = c.f(x), Y2 = py(y);
+        if (!Number.isFinite(y) || Math.abs(Y2) > H * 20) {
+          pen = false;
+          prev = null;
+          continue;
+        }
+        if (prev !== null && Math.abs(Y2 - prev) > H * 1.5) pen = false;
+        d += (pen ? "L" : "M") + px(x).toFixed(1) + " " + Y2.toFixed(1);
+        pen = true;
+        prev = Y2;
+        if (Y2 >= 0 && Y2 <= H) last = { X: px(x), Y: Y2 };
+      }
+      out.push(`<path class="g-curve c${c.colour || 1}${c.dashed ? " dashed" : ""}" d="${d}" pathLength="1" clip-path="url(#${id})"/>`);
+      if (c.label && last) out.push(`<text class="g-label c${c.colour || 1}" x="${Math.min(W - 4, last.X).toFixed(1)}" y="${Math.min(H - 6, Math.max(14, last.Y - 8)).toFixed(1)}" text-anchor="end">${esc(c.label)}</text>`);
+    }
+    const OFF = { n: [0, -10, "middle"], s: [0, 18, "middle"], e: [9, 4, "start"], w: [-9, 4, "end"], ne: [7, -8, "start"], nw: [-7, -8, "end"], se: [7, 16, "start"], sw: [-7, 16, "end"] };
+    for (const p of points) {
+      const X2 = px(p.x), Y2 = py(p.y);
+      if (X2 < -1 || X2 > W + 1 || Y2 < -1 || Y2 > H + 1) continue;
+      out.push(`<circle class="g-point${p.open ? " open" : ""}" cx="${X2.toFixed(1)}" cy="${Y2.toFixed(1)}" r="4"/>`);
+      if (p.label) {
+        const [dx, dy, anchor] = OFF[p.at || "ne"];
+        out.push(`<text class="g-label" x="${Math.min(W - 2, Math.max(2, X2 + dx)).toFixed(1)}" y="${Math.min(H - 3, Math.max(11, Y2 + dy)).toFixed(1)}" text-anchor="${X2 + dx > W - 60 && anchor === "start" ? "end" : anchor}">${esc(p.label)}</text>`);
+      }
+    }
+    return `<figure class="graph"><svg viewBox="-1 -1 ${W + 2} ${H + 2}" role="img" aria-label="${esc(description)}"><defs><clipPath id="${id}"><rect x="0" y="0" width="${W}" height="${H}"/></clipPath></defs>${out.join("")}</svg></figure>`;
+  }
+
+  // source/maths/making-answers.js
+  var SF = 3;
+  var exactly = (v) => typeof v === "object" ? v : Number.isInteger(v) ? F(v) : v;
+  var showValue = (v, sf = SF) => typeof v === "object" ? fh(v) : Number.isInteger(v) ? sg(v) : sg(ff(v, sf));
+  var exactAns = (v) => {
+    const f = exactly(v);
+    return { kind: "num", val: f, disp: showValue(f) };
+  };
+  var lineAns = (a, b, c, disp) => ({ kind: "line", a: +a, b: +b, c: +c, disp });
+
+  // source/topics/functions/question-types/straight-lines/gradient-between-two-points.js
+  var FORMULA = `<i>m</i> = <span class="fr"><span><i>y</i>\u2082 ${MINUS} <i>y</i>\u2081</span><span><i>x</i>\u2082 ${MINUS} <i>x</i>\u2081</span></span>`;
+  T2("gradient", {
+    name: "Gradient between two points",
+    group: "lines",
+    syllabus: { aa: "SL 2.1", ai: "SL 2.1" },
+    blurb: "How steep a line is: the change in y divided by the change in x.",
+    help: "Type the coordinates of the two points.",
+    fields: [intField2("x1", "x\u2081", "1"), intField2("y1", "y\u2081", "2"), intField2("x2", "x\u2082", "4"), intField2("y2", "y\u2082", "11")],
+    parse(v) {
+      const n = {};
+      for (const k of ["x1", "y1", "x2", "y2"]) {
+        const r = int(v[k], -99, 99, k.replace("1", "\u2081").replace("2", "\u2082"));
+        if (r.err) return r;
+        n[k] = r.v;
+      }
+      if (n.x1 === n.x2 && n.y1 === n.y2) return { err: "Those are the same point. A line needs two different points." };
+      if (n.x1 === n.x2) return { err: "Both points have the same x, so the line is vertical and its gradient is undefined." };
+      return { p: { t: "gradient", ...n } };
     },
-    term: () => {
-      const t = ri(1, 12);
-      return { a: `${ord(t)} term`, b: `r = ${t - 1}`, why: `the ${ord(t)} term uses r = ${t - 1}` };
+    text: (P) => `Find the gradient of the line through A${pt(P.x1, P.y1)} and B${pt(P.x2, P.y2)}.`,
+    expr: (P) => `A${pt(P.x1, P.y1)}, B${pt(P.x2, P.y2)}`,
+    build(P) {
+      const { x1, y1, x2, y2 } = P, dy = y2 - y1, dx = x2 - x1, m = F(dy, dx), { steps, S } = newSteps();
+      const up = dy * dx > 0, flat = dy === 0, v = viewFor([x1, x2], [y1, y2]);
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`The <b>gradient</b> says how steep a line is: how far it goes up for every 1 it goes across. A negative gradient means the line goes down from left to right, and 0 means it is flat.`]),
+        L("Plan: gradient = change in <i>y</i> \xF7 change in <i>x</i>", '"Rise over run": how far up, divided by how far across.', null, [`Going from A to B, <i>y</i> changes by ${dy} and <i>x</i> changes by ${dx}. The gradient compares the two.`])
+      ]);
+      S("Sketch it", "A quick sketch tells you what sign to expect.", [
+        L(
+          graph({ ...v, lines: [{ m: fnum(m), c: y1 - fnum(m) * x1, colour: 1, dashed: false }], points: [{ x: x1, y: y1, label: "A" + pt(x1, y1).replace(/<[^>]+>/g, ""), at: "nw" }, { x: x2, y: y2, label: "B" + pt(x2, y2).replace(/<[^>]+>/g, ""), at: "se" }], description: `The line through A and B` }),
+          flat ? "The line is flat, so expect a gradient of 0." : `The line goes ${up ? "up" : "down"} from left to right, so expect a ${up ? "positive" : "negative"} gradient.`,
+          flat ? void 0 : MC("From the sketch, is the gradient positive or negative?", up ? "positive" : "negative", [up ? "negative" : "positive", "zero"], `The line goes ${up ? "up" : "down"} as x increases, so the gradient is ${up ? "positive" : "negative"}.`)
+        )
+      ]);
+      const lines = [
+        L(FORMULA, "The gradient formula. It is in the formula booklet.", void 0, [`(<i>x</i>\u2081, <i>y</i>\u2081) is one point and (<i>x</i>\u2082, <i>y</i>\u2082) the other. It doesn't matter which you call which, as long as you subtract in the same order on the top and the bottom.`]),
+        L(`<i>m</i> = <span class="fr"><span>${val(y2)} ${MINUS} ${par2(y1)}</span><span>${val(x2)} ${MINUS} ${par2(x1)}</span></span>`, "Put the numbers in: B first, then A, on the top and on the bottom.", void 0, [`Take away a negative number by adding: ${val(y2)} ${MINUS} (${MINUS}3) = ${val(y2)} + 3.`]),
+        L(
+          `<i>m</i> = <span class="fr"><span>${val(dy)}</span><span>${val(dx)}</span></span>`,
+          "Work out the top and the bottom.",
+          Nm("Work out the change in y (the top).", [{ label: "change in y", answer: String(dy) }], `${val(y2)} ${MINUS} ${par2(y1)} = ${val(dy)}.`)
+        )
+      ];
+      if (m.d !== BigInt(Math.abs(dx)) || dx < 0) lines.push(L(
+        `<i>m</i> = ${fh(m)}`,
+        dx < 0 && m.d === BigInt(Math.abs(dx)) ? "Move the minus sign to the front." : "Simplify the fraction.",
+        Nm("Simplify. What is the gradient?", [{ label: "m", answer: m.d === 1n ? String(m.n) : `${m.n}/${m.d}` }], `${val(dy)} \xF7 ${val(dx)} = ${fh(m).replace(/<[^>]+>/g, "")}.`)
+      ));
+      S("Use the formula", "Subtract the y-coordinates, then the x-coordinates.", lines);
+      S("Final answer", "Check it against the sketch.", [L(`gradient = <span class="answer">${val(m)}</span>`, flat ? "A flat line has gradient 0 \u2713" : `${up ? "Positive" : "Negative"}, as the sketch showed \u2713`)]);
+      return mk2(P, steps);
     },
-    power: () => {
-      const k = ri(2, 5), e = ri(2, 4);
-      return { a: `(${k}<i>x</i>)<sup>${e}</sup>`, b: mono(BigInt(k) ** BigInt(e), e, true), why: `(${k}x)^${e} = ${k}^${e} x^${e} = ${BigInt(k) ** BigInt(e)}x^${e}` };
+    gen(lv = 2) {
+      if (lv === 1) {
+        const x12 = ri(0, 4), y12 = ri(0, 5), dx = ri(1, 4), m = ri(1, 3);
+        return { t: "gradient", x1: x12, y1: y12, x2: x12 + dx, y2: y12 + m * dx };
+      }
+      if (lv === 2) {
+        const x12 = ri(-5, 3), y12 = ri(-5, 5), dx = rnz(-5, 5), m = rnz(-4, 4);
+        return { t: "gradient", x1: x12, y1: y12, x2: x12 + dx, y2: y12 + m * dx };
+      }
+      let x1, x2, y1, y2;
+      do {
+        x1 = ri(-8, 6);
+        y1 = ri(-8, 8);
+        x2 = ri(-8, 8);
+        y2 = ri(-8, 8);
+      } while (x1 === x2 || (y2 - y1) % (x2 - x1) === 0);
+      return { t: "gradient", x1, y1, x2, y2 };
     },
-    count: () => {
-      const n = ri(3, 15);
-      return { a: `(a + b)<sup>${n}</sup>`, b: `${n + 1} terms`, why: `(a + b)^${n} has ${n} + 1 = ${n + 1} terms` };
+    ans: (P) => exactAns(F(P.y2 - P.y1, P.x2 - P.x1)),
+    hints: (P) => ["Gradient = (y\u2082 \u2212 y\u2081) \xF7 (x\u2082 \u2212 x\u2081).", `Change in y: ${val(P.y2)} \u2212 ${par2(P.y1)}. Change in x: ${val(P.x2)} \u2212 ${par2(P.x1)}.`, "Simplify the fraction, and keep the sign."],
+    example: { t: "gradient", x1: 1, y1: 2, x2: 4, y2: 11 }
+  });
+
+  // source/topics/functions/question-types/straight-lines/line-through-two-points.js
+  var X = "<i>x</i>";
+  var Y = "<i>y</i>";
+  function lineThrough({ x1, y1, x2, y2 }) {
+    const m = F(y2 - y1, x2 - x1), c = fsub(F(y1), fmul(m, F(x1)));
+    let a = m.n * c.d, b = -m.d * c.d, d = c.n * m.d;
+    const g = gcdB(gcdB(a, b), d) || 1n;
+    a /= g;
+    b /= g;
+    d /= g;
+    if (a < 0n || a === 0n && b < 0n) {
+      a = -a;
+      b = -b;
+      d = -d;
     }
-  };
-  var game = {
-    id: "match",
-    syllabus: "SL 1.9",
-    name: "Match up",
-    icon: "\u{1F0CF}",
-    skill: "Mixed skills",
-    type: "match",
-    how: "Tap two cards that belong together. Clear the board for bonus time.",
-    next(level2) {
-      const kinds = byLevel(level2, ["ncr", "term"], ["ncr", "term", "power"], ["ncr", "term", "power", "count"]), count = byLevel(level2, 4, 5, 6);
-      const pairs = [], seen = /* @__PURE__ */ new Set();
-      for (let tries = 0; pairs.length < count && tries < 200; tries++) {
-        const p = KINDS[kinds[pairs.length % kinds.length]]();
-        if (seen.has(p.a) || seen.has(p.b)) continue;
-        seen.add(p.a);
-        seen.add(p.b);
-        pairs.push(p);
+    return { m, c, a: Number(a), b: Number(b), d: Number(d) };
+  }
+  var general = ({ a, b, d }) => `${terms([[a, X], [b, Y], [d, ""]])} = 0`;
+  T2("lineeq", {
+    name: "Equation of a line through two points",
+    group: "lines",
+    syllabus: { aa: "SL 2.1", ai: "SL 2.1" },
+    blurb: "Find the gradient, then write the line as y = mx + c, y \u2212 y\u2081 = m(x \u2212 x\u2081) or ax + by + d = 0.",
+    help: "Type the coordinates of the two points.",
+    fields: [intField2("x1", "x\u2081", "1"), intField2("y1", "y\u2081", "3"), intField2("x2", "x\u2082", "4"), intField2("y2", "y\u2082", "9")],
+    parse(v) {
+      const n = {};
+      for (const k of ["x1", "y1", "x2", "y2"]) {
+        const r = int(v[k], -99, 99, k.replace("1", "\u2081").replace("2", "\u2082"));
+        if (r.err) return r;
+        n[k] = r.v;
       }
-      return { type: "match", pairs };
-    }
-  };
-
-  // source/topics/binomials/games/pascal-race.js
-  var game2 = {
-    id: "pascal",
-    syllabus: "SL 1.9",
-    name: "Pascal race",
-    icon: "\u{1F53A}",
-    skill: "Pascal's triangle",
-    how: "Fill the gap. Every number is the two above it added together.",
-    next(level2) {
-      const n = ri(...byLevel(level2, [3, 5], [4, 7], [6, 10])), r = ri(1, n - 1);
-      const row = (k, gap) => `<div class="tri-row">${[...Array(k + 1)].map((_, i) => i === gap ? '<span class="gap">?</span>' : `<span>${C(k, i)}</span>`).join("")}</div>`;
-      const shown = level2 < 3 ? row(n - 1, -1) + row(n, r) : `<div class="tri-label">row ${n}</div>` + row(n, r);
-      return typed(`<div class="tri">${shown}</div>`, C(n, r), `${C(n - 1, r - 1)} + ${C(n - 1, r)} = ${C(n, r)}: add the two numbers above the gap.`);
-    }
-  };
-
-  // source/topics/binomials/games/power-pairs.js
-  var game3 = {
-    id: "powers",
-    syllabus: "SL 1.9",
-    name: "Power pairs",
-    icon: "\u26A1",
-    skill: "The powers in each term",
-    how: "Pick the powers for the term with this r. The second term gets r, the first gets n \u2212 r.",
-    next(level2) {
-      const n = ri(...byLevel(level2, [3, 6], [4, 10], [6, 14])), r = ri(0, n);
-      const ok = `(first)<sup>${n - r}</sup>(second)<sup>${r}</sup>`;
-      return mcq(`In (first + second)<sup>${n}</sup>, the term with r = ${r} is nCr \xD7 \u2026`, ok, [`(first)<sup>${r}</sup>(second)<sup>${n - r}</sup>`, `(first)<sup>${n}</sup>(second)<sup>${r}</sup>`, `(first)<sup>${n - r}</sup>(second)<sup>${r + 1}</sup>`, `(first)<sup>${n - r - 1}</sup>(second)<sup>${r}</sup>`], `Second term gets r = ${r}, first gets n \u2212 r = ${n - r}. They add to ${n}.`);
-    }
-  };
-
-  // source/topics/binomials/games/sign-spotter.js
-  var game4 = {
-    id: "signs",
-    syllabus: "SL 1.9",
-    name: "Sign spotter",
-    icon: "\u{1F6A6}",
-    skill: "Signs of terms",
-    how: "Plus or minus? Swipe with \u2190 and \u2192. A minus to an odd power stays minus.",
-    next(level2) {
-      const n = ri(...byLevel(level2, [2, 5], [3, 9], [6, 12])), r = ri(0, n);
-      const b = rnz(-5, 5), a = level2 < 3 ? ri(1, 3) : rnz(-3, 3);
-      const negA = a < 0 && (n - r) % 2 === 1, negB = b < 0 && r % 2 === 1, neg = negA !== negB;
-      const first = `${a < 0 ? MINUS : ""}${Math.abs(a) === 1 ? "" : Math.abs(a)}x`;
-      const why = a < 0 || b < 0 ? `(${a < 0 ? first : "first"})<sup>${n - r}</sup> is ${negA ? "negative" : "positive"} and (${sg(b)})<sup>${r}</sup> is ${negB ? "negative" : "positive"}, so the term is ${neg ? "negative" : "positive"}.` : "Both terms are positive, so every term is positive.";
-      return { q: `In (${first} ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup>, the term with r = ${r} is \u2026`, type: "mc", opts: ["+ positive", `${MINUS} negative`], ans: neg ? 1 : 0, why };
-    }
-  };
-
-  // source/topics/binomials/games/times-x.js
-  var game5 = {
-    id: "bump",
-    syllabus: "SL 1.9",
-    name: "Times x",
-    icon: "\u2716\uFE0F",
-    skill: "Multiplying terms",
-    how: "Multiply the numbers and add the powers of x.",
-    next(level2) {
-      const c = level2 < 2 ? ri(1, 3) : rnz(...byLevel(level2, 0, [-3, 3], [-5, 5])), v = level2 < 2 ? ri(1, 9) : rnz(...byLevel(level2, 0, [-9, 9], [-12, 12])), e = ri(1, byLevel(level2, 4, 6, 9));
-      const res = mono(BigInt(c * v), e + 1, true);
-      const wrongs = [mono(BigInt(c * v), e, true), mono(BigInt(c + v), e + 1, true), mono(BigInt(-c * v), e + 1, true), mono(BigInt(c * v), e * 2, true)];
-      return mcq(`${mono(BigInt(c), 1, true)} \xD7 ${mono(BigInt(v), e, true)} = ?`, res, wrongs, `Numbers: ${sg(c)} \xD7 ${sg(v)} = ${sg(c * v)}. Powers: 1 + ${e} = ${e + 1}.`);
-    }
-  };
-
-  // source/topics/binomials/games/like-terms.js
-  var game6 = {
-    id: "like",
-    syllabus: "SL 1.9",
-    name: "Like-term sums",
-    icon: "\u2795",
-    skill: "Collecting like terms",
-    how: "Add the two terms. Type just the number in front.",
-    next(level2) {
-      const e = ri(0, 6), lim = byLevel(level2, 9, 20, 50);
-      const p = level2 < 2 ? ri(1, lim) : rnz(-lim, lim), q = level2 < 2 ? ri(1, lim) : rnz(-lim, lim);
-      const show = (v) => v < 0 ? "(" + mono(BigInt(v), e, true) + ")" : mono(BigInt(v), e, true);
-      return typed(`${mono(BigInt(p), e, true)} + ${show(q)} = ? <span class="mu g-small">(just the number)</span>`, p + q, `${sg(p)} + ${sg(q)} = ${sg(p + q)}, and the ${xp(e) || "(no x)"} stays.`);
-    }
-  };
-
-  // source/topics/binomials/games/ncr-sprint.js
-  var game7 = {
-    id: "ncr",
-    syllabus: "SL 1.9",
-    name: "nCr sprint",
-    icon: "\u{1F3AF}",
-    skill: "Working out nCr",
-    how: "nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical.",
-    next(level2) {
-      const n = ri(...byLevel(level2, [4, 10], [4, 15], [5, 12]));
-      const rs = byLevel(level2, [0, 1, n - 1, n], [0, 1, 2, n - 2, n - 1, n], [2, 3, n - 3, n - 2]), r = rs[ri(0, rs.length - 1)];
-      const why = r === 0 || r === n ? "nC0 and nCn are always 1." : r === 1 || r === n - 1 ? "nC1 and nC(n\u22121) are always n." : r === 2 || r === n - 2 ? `${n} \xD7 ${n - 1} \xF7 2 = ${C(n, 2)}.` : `${n} \xD7 ${n - 1} \xD7 ${n - 2} \xF7 6 = ${C(n, 3)}.`;
-      return typed(`${n} nCr ${r} = ?`, C(n, r), why);
-    }
-  };
-
-  // source/topics/binomials/games/find-r.js
-  var game8 = {
-    id: "findr",
-    syllabus: "SL 1.9",
-    name: "Find r",
-    icon: "\u{1F50D}",
-    skill: "Finding the right term",
-    how: "Set the power of x equal to the one you want, and solve for r.",
-    next(level2) {
-      const hint = (t) => level2 < 3 ? ` <span class="mu g-small">(power of x = ${t})</span>` : "";
-      if (level2 === 1 || level2 === 2 && Math.random() < 0.5) {
-        const n2 = 2 * ri(2, level2 === 1 ? 4 : 6), r2 = ri(0, n2), k2 = n2 - 2 * r2;
-        return typed(`In (<i>x</i> + 1/<i>x</i>)<sup>${n2}</sup>, which r gives ${xp(k2) || "no x"}?${hint(`${n2} \u2212 2r`)}`, r2, `${n2} \u2212 2r = ${k2}, so r = ${r2}.`);
+      if (n.x1 === n.x2 && n.y1 === n.y2) return { err: "Those are the same point. A line needs two different points." };
+      if (n.x1 === n.x2) return { err: `Both points have x = ${n.x1}, so the line is vertical: its equation is x = ${n.x1}.` };
+      return { p: { t: "lineeq", ...n } };
+    },
+    text: (P) => `Find the equation of the line through A${pt(P.x1, P.y1)} and B${pt(P.x2, P.y2)}. Give your answer in the form ${Y} = <i>mx</i> + <i>c</i>.`,
+    expr: (P) => `A${pt(P.x1, P.y1)}, B${pt(P.x2, P.y2)}`,
+    build(P) {
+      const { x1, y1, x2, y2 } = P, dy = y2 - y1, dx = x2 - x1, ln = lineThrough(P), { m, c } = ln, { steps, S } = newSteps(), v = viewFor([x1, x2, 0], [y1, y2, fnum(c)]);
+      S("Read the question", "What is being asked?", [
+        readLine2(P, [`The <b>equation</b> of a line is a rule that every point on the line obeys. In ${Y} = <i>mx</i> + <i>c</i>, <i>m</i> is the gradient and <i>c</i> is where the line crosses the ${Y}-axis.`]),
+        L("Plan: find the gradient <i>m</i>, then use one point to find <i>c</i>.", "Two unknowns, two steps.", null, [`Every straight line (except a vertical one) can be written as ${Y} = <i>mx</i> + <i>c</i>. Once we know <i>m</i> and <i>c</i>, we know the line.`])
+      ]);
+      S("The gradient", "Change in y \xF7 change in x.", [
+        L(
+          `<i>m</i> = <span class="fr"><span>${val(y2)} ${MINUS} ${par2(y1)}</span><span>${val(x2)} ${MINUS} ${par2(x1)}</span></span> = <span class="fr"><span>${val(dy)}</span><span>${val(dx)}</span></span>${m.d === BigInt(dx) ? "" : " = " + fh(m)}`,
+          "Subtract in the same order on the top and the bottom.",
+          Nm("What is the gradient m?", [{ label: "m", answer: m.d === 1n ? String(m.n) : `${m.n}/${m.d}` }], `(${val(y2)} ${MINUS} ${par2(y1)}) \xF7 (${val(x2)} ${MINUS} ${par2(x1)}) = ${fh(m).replace(/<[^>]+>/g, "")}.`)
+        )
+      ]);
+      S("Point and gradient", "Use the gradient and the point A.", [
+        L(`${Y} ${MINUS} ${Y}\u2081 = <i>m</i>(${X} ${MINUS} ${X}\u2081)`, "The point-gradient form of a line, from the formula booklet.", void 0, [`It says: from the point (${X}\u2081, ${Y}\u2081), every step of 1 across goes <i>m</i> up. Any point (${X}, ${Y}) on the line obeys it.`]),
+        L(`${shift(y1, Y)} = ${val(m)}(${shift(x1)})`, `Put in <i>m</i> = ${val(m)} and A${pt(x1, y1)}.`, void 0, [`${Y} ${MINUS} (${MINUS}2) becomes ${Y} + 2: taking away a negative is adding.`]),
+        L(
+          `${Y} = ${lin(m, c)}`,
+          `Expand the bracket and ${y1 >= 0 ? "add" : "take away"} ${Math.abs(y1)} on both sides.`,
+          Nm("What is c, where the line crosses the y-axis?", [{ label: "c", answer: c.d === 1n ? String(c.n) : `${c.n}/${c.d}` }], `${val(m)} \xD7 ${par2(-x1)} + ${par2(y1)} = ${fh(c).replace(/<[^>]+>/g, "")}.`),
+          [`${val(m)}(${shift(x1)}) = ${lin(m, fmul(m, F(-x1)))}. Then ${Y} = ${lin(m, fmul(m, F(-x1)))} ${y1 < 0 ? MINUS : "+"} ${Math.abs(y1)} = ${lin(m, c)}.`]
+        )
+      ]);
+      S("Check with B", "B must fit the equation too.", [
+        L(`${X} = ${val(x2)}: ${Y} = ${val(m)} \xD7 ${par2(x2)}${c.n === 0n ? "" : (fnum(c) < 0 ? ` ${MINUS} ` : " + ") + fh(c.n < 0n ? F(-c.n, c.d) : c)} = ${val(fadd(fmul(m, F(x2)), c))}`, `That is the ${Y}-coordinate of B \u2713`),
+        L(
+          graph({ ...v, lines: [{ m: fnum(m), c: fnum(c), colour: 1, dashed: false, label: `y = ${lin(m, c).replace(/<[^>]+>/g, "")}` }], points: [{ x: x1, y: y1, label: "A", at: "nw" }, { x: x2, y: y2, label: "B", at: "se" }, { x: 0, y: fnum(c), label: `(0, ${val(c).replace(/<[^>]+>/g, "")})`, at: "e" }], description: "The line through A and B" }),
+          `The line crosses the ${Y}-axis at ${val(c)}, which is <i>c</i>.`,
+          MC(`Where does the line cross the y-axis?`, `(0, ${fh(c).replace(/<[^>]+>/g, "")})`, [`(0, ${fh(m).replace(/<[^>]+>/g, "")})`, `(${fh(c).replace(/<[^>]+>/g, "")}, 0)`, `(0, ${y1})`], `At the y-axis x = 0, so y = c = ${fh(c).replace(/<[^>]+>/g, "")}.`)
+        )
+      ]);
+      S("Final answer", "The question asks for y = mx + c. Here are all three forms of the same line.", [
+        L(`<span class="answer">${Y} = ${lin(m, c)}</span>`, "Gradient-intercept form."),
+        L(`${shift(y1, Y)} = ${val(m)}(${shift(x1)})`, "Point-gradient form."),
+        L(general(ln), "General form: whole numbers, everything on one side.", void 0, [`Start from ${Y} = ${lin(m, c)}${m.d * c.d > 1n ? `, multiply by ${m.d * c.d / gcdB(m.d, c.d)} to clear the fractions,` : ""} and move everything to one side.`])
+      ]);
+      return mk2(P, steps);
+    },
+    gen(lv = 2) {
+      if (lv === 1) {
+        const x12 = ri(0, 3), dx = ri(1, 4), m = ri(1, 3), c = ri(-3, 5);
+        return { t: "lineeq", x1: x12, y1: m * x12 + c, x2: x12 + dx, y2: m * (x12 + dx) + c };
       }
-      const n = ri(3, 9), r = ri(0, n), k = 2 * n - 3 * r;
-      return typed(`In (<i>x</i>\xB2 + 1/<i>x</i>)<sup>${n}</sup>, which r gives ${xp(k) || "no x"}?${hint(`${2 * n} \u2212 3r`)}`, r, `${2 * n} \u2212 3r = ${k}, so r = ${r}.`);
-    }
-  };
-
-  // source/topics/binomials/games/term-numbers.js
-  var game9 = {
-    id: "termname",
-    syllabus: "SL 1.9",
-    name: "Term numbers",
-    icon: "\u{1F522}",
-    skill: "Which term is which",
-    how: "The (r+1)th term uses r, and there is always one more term than the power.",
-    next(level2) {
-      const n = ri(...byLevel(level2, [4, 8], [4, 14], [8, 20])), v = level2 === 1 ? [0, 2][ri(0, 1)] : ri(0, 3);
-      if (v === 0) {
-        const t = ri(2, n);
-        return mcq(`The ${ord(t)} term of an expansion uses r = ?`, String(t - 1), [String(t), String(t + 1), String(t - 2)], `The (r+1)th term uses r, so r = ${t} \u2212 1 = ${t - 1}.`);
+      if (lv === 2) {
+        const x12 = ri(-4, 4), m = rnz(-4, 4), c = ri(-6, 6);
+        let dx = rnz(-4, 4);
+        if (x12 + dx === x12) dx = 1;
+        return { t: "lineeq", x1: x12, y1: m * x12 + c, x2: x12 + dx, y2: m * (x12 + dx) + c };
       }
-      if (v === 1) {
-        const r = ri(1, n);
-        return mcq(`The term with r = ${r} is the \u2026`, ord(r + 1) + " term", [ord(r) + " term", ord(r + 2) + " term", ord(r - 1 < 1 ? r + 3 : r - 1) + " term"], `r + 1 = ${r + 1}, so it is the ${ord(r + 1)} term.`);
-      }
-      if (v === 2) return mcq(`How many terms does (a + b)<sup>${n}</sup> have?`, String(n + 1), [String(n), String(n + 2), String(2 * n)], `Always one more than the power: ${n} + 1 = ${n + 1}.`);
-      const m = 2 * ri(2, byLevel(level2, 5, 7, 10));
-      return mcq(`The middle term of (a + b)<sup>${m}</sup> is the \u2026`, ord(m / 2 + 1) + " term", [ord(m / 2) + " term", ord(m / 2 + 2) + " term", ord(m) + " term"], `${m + 1} terms, so the middle is number ${m / 2 + 1} (r = ${m / 2}).`);
-    }
+      let x1, x2, y1, y2;
+      do {
+        x1 = ri(-6, 6);
+        y1 = ri(-6, 6);
+        x2 = ri(-6, 6);
+        y2 = ri(-6, 6);
+      } while (x1 === x2 || (y2 - y1) % (x2 - x1) === 0);
+      return { t: "lineeq", x1, y1, x2, y2 };
+    },
+    ans(P) {
+      const l = lineThrough(P);
+      return lineAns(fnum(l.m), -1, fnum(l.c), `${Y} = ${lin(l.m, l.c)}`);
+    },
+    hints: (P) => ["First the gradient: m = (y\u2082 \u2212 y\u2081) \xF7 (x\u2082 \u2212 x\u2081).", "Then y \u2212 y\u2081 = m(x \u2212 x\u2081) with one of the points.", "Rearrange to y = mx + c."],
+    example: { t: "lineeq", x1: 1, y1: 3, x2: 4, y2: 9 }
+  });
+
+  // source/topics/functions/functions.js
+  var topic2 = {
+    id: "functions",
+    name: "Functions",
+    courses: ["ai-sl", "ai-hl", "aa-sl", "aa-hl"],
+    sections: { aa: "SL 2.1\u20132.11", ai: "SL 2.1\u20132.6 \xB7 AHL 2.7\u20132.9" },
+    desc: "Straight lines, domain and range, graph features, composite and inverse functions, quadratics, rational, exponential and log functions, solving equations, transformations",
+    keys: "functions function straight line lines gradient slope parallel perpendicular domain range graph graphs intercept intercepts vertex zeros roots asymptote asymptotes maximum minimum symmetry composite inverse quadratic quadratics completing the square discriminant inequality inequalities rational reciprocal exponential exponentials logarithm logarithms log ln e solve solving equations gdc calculator transformation transformations translation stretch reflection",
+    groups: [
+      ["lines", "Straight lines", "Gradient, the three forms of a line, parallel and perpendicular lines"],
+      ["concepts", "Function concepts", "Function notation, domain, range and graphs"],
+      ["features", "Key features of graphs", "Intercepts, zeros, vertex, maximum and minimum, symmetry, asymptotes"],
+      ["composite", "Composite and inverse functions", "f(g(x)), and undoing a function with f\u207B\xB9(x)"],
+      ["quadratics", "Quadratics", "The three forms, solving, the discriminant and inequalities"],
+      ["rational", "Rational functions", "1/x and (ax + b)/(cx + d), with their asymptotes"],
+      ["explog", "Exponentials and logarithms", "Exponential and log functions and their graphs"],
+      ["solving", "Solving equations", "Analytically, and with your GDC"],
+      ["transform", "Transformations of graphs", "Translations, stretches and reflections"]
+    ],
+    types: TYPES2,
+    genQ: genQ2,
+    games: GAMES2,
+    exams: EXAMS2,
+    cheatSheet: CHEAT_SHEET2
   };
 
-  // source/topics/binomials/games/put-x-equals-1.js
-  var game10 = {
-    id: "sumx1",
-    syllabus: "SL 1.9",
-    name: "Put x = 1",
-    icon: "1\uFE0F\u20E3",
-    skill: "Sum of the coefficients",
-    how: "Replace x with 1, then work out the bracket.",
-    next(level2) {
-      const a = ri(1, byLevel(level2, 2, 4, 5)), b = level2 < 2 ? ri(1, 3) : rnz(-4, 4), n = ri(...byLevel(level2, [2, 3], [2, 6], [4, 7]));
-      const v = (BigInt(a) + BigInt(b)) ** BigInt(n);
-      return typed(`Sum of the coefficients of (${a === 1 ? "" : a}<i>x</i> ${b < 0 ? MINUS : "+"} ${Math.abs(b)})<sup>${n}</sup> = ?`, v, `Put x = 1: (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b)})<sup>${n}</sup> = ${sg(a + b)}<sup>${n}</sup> = ${sg(v)}.`);
-    }
-  };
-
-  // source/topics/binomials/games/negative-powers.js
-  var game11 = {
-    id: "extcoef",
-    syllabus: "AHL 1.10",
-    name: "Negative powers",
-    icon: "\u{1F300}",
-    skill: "Negative and fractional powers",
-    how: "The x\xB2 coefficient of (1 + x)^m is m(m \u2212 1)/2. Fractions like 3/8 are fine.",
-    next(level2) {
-      const ms = byLevel(level2, [F(-1), F(-2), F(2), F(3)], [F(-1), F(-2), F(-3), F(-4), F(1, 2), F(-1, 2), F(3), F(1, 3)], [F(1, 2), F(-1, 2), F(1, 3), F(-1, 3), F(3, 2), F(-3, 2), F(2, 3)]);
-      const m = ms[ri(0, ms.length - 1)], c2 = fdiv(fmul(m, fsub(m, F(1))), F(2));
-      return typed(`The coefficient of <i>x</i>\xB2 in (1 + <i>x</i>)<sup>${fstr(m)}</sup> is m(m\u22121)/2 = ?`, fstr(c2), `${fstr(m)} \xD7 ${fstr(fsub(m, F(1)))} \xF7 2 = ${fstr(c2)}.`);
-    }
-  };
-
-  // source/topics/binomials/games/game-list.js
-  var GAMES = [game, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11];
+  // source/topics/topic-list.js
+  var TOPICS = [topic, topic2];
 
   // source/settings.js
-  var GROUPS = [["expand", "Expanding brackets"], ["find", "Finding terms and coefficients"], ["unknown", "Unknowns and estimates"], ["other", "Other skills"]];
   var LEVELS = [[1, "Easy"], [2, "Medium"], [3, "Hard"]];
   var TABS = ["learn", "practice", "exam", "revise", "cheat"];
   var WRITE_SPEED_MS = [0, 70, 38, 16];
@@ -5257,12 +6118,6 @@ input[type=checkbox] {
   var CALC_HISTORY_SIZE = 8;
   var BEST_SCORE_KEY = "bin_best_";
   var SOUND_KEY = "infinity_sound";
-  var GROUP_DESCRIPTIONS = {
-    expand: "Multiplying out brackets with a power",
-    find: "Coefficients, the constant term, a particular term and more",
-    unknown: "Finding k or n, estimates, negative and fractional powers",
-    other: "nCr, and expanding with letters"
-  };
 
   // source/helpers/page-helpers.js
   var $ = (id) => document.getElementById(id);
@@ -5300,14 +6155,27 @@ input[type=checkbox] {
   var hasChosenCourse = () => course !== null;
   var courseShort = () => COURSES.find((x) => x[0] === getCourse())[1];
   var level = () => getCourse().endsWith("hl") ? "hl" : "sl";
-  var isHlOnly = (item) => String(item.syllabus || "").startsWith("AHL");
-  var inCourse = (item) => level() === "hl" || !isHlOnly(item);
-  var topicInCourse = (courses) => String(courses || "").split(/\s+/).includes(getCourse());
-  var syllabusBadge = (item) => item.syllabus ? `<span class="syl${isHlOnly(item) ? " hl" : ""}" title="IB Mathematics: analysis and approaches, syllabus section ${item.syllabus}">${isHlOnly(item) ? "HL only \xB7 " + item.syllabus.replace("AHL ", "") : item.syllabus}</span>` : "";
+  var family = () => getCourse().slice(0, 2);
+  var courseFamily = family;
+  var syllabusFor = (item) => {
+    const s = item.syllabus;
+    return s == null ? null : typeof s === "string" ? s : s[family()] ?? null;
+  };
+  var isHlOnly = (item) => String(syllabusFor(item) || "").startsWith("AHL");
+  var inCourse = (item) => (item.syllabus == null || syllabusFor(item) !== null) && (level() === "hl" || !isHlOnly(item));
+  var syllabusBadge = (item) => {
+    const s = syllabusFor(item);
+    if (!s) return "";
+    const c = COURSES.find((x) => x[0] === getCourse());
+    return `<span class="syl${isHlOnly(item) ? " hl" : ""}" title="IB Mathematics: ${c[2].toLowerCase()}, syllabus section ${s}">${isHlOnly(item) ? "HL only \xB7 " + s.replace("AHL ", "") : s}</span>`;
+  };
   function apply(announce) {
     $("studyBar").querySelectorAll("[data-course]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.course === getCourse()));
     $("studyBar").querySelectorAll("[data-paper]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.paper === paper));
     const cl = document.body.classList;
+    COURSES.forEach(([c]) => cl.toggle("course-" + c, c === getCourse()));
+    cl.toggle("course-aa", family() === "aa");
+    cl.toggle("course-ai", family() === "ai");
     cl.toggle("course-sl", level() === "sl");
     cl.toggle("course-hl", level() === "hl");
     cl.toggle("paper-1", paper === "1");
@@ -5379,25 +6247,25 @@ input[type=checkbox] {
   function planCalc(chars) {
     const eqs = chars.map((c, i) => c.textContent === "=" ? i : -1).filter((i) => i >= 0);
     if (!eqs.length) return null;
-    const at = eqs[eqs.length - 1];
-    let from = at - 1;
+    const at2 = eqs[eqs.length - 1];
+    let from = at2 - 1;
     while (from >= 0 && !/^[=:]$/.test(chars[from].textContent)) from--;
-    const rhs = chars.slice(at + 1);
+    const rhs = chars.slice(at2 + 1);
     if (!/^[−-]?\d+(\.\d+)?([a-z]\d*)*\.?$/.test(rhs.map((c) => c.textContent).join(""))) return null;
     const target = rhs.find((c) => c.classList.contains("num"));
     if (!target) return null;
     const ops = [];
-    for (let i = from + 1; i < at; i++) {
+    for (let i = from + 1; i < at2; i++) {
       const c = chars[i];
       if (c.classList.contains("num") && !c.closest("sub") && !isVarPow(c) && !isOrdinal(chars, i)) ops.push(c);
     }
-    const lhs = chars.slice(from + 1, at).map((c) => c.textContent).join("");
+    const lhs = chars.slice(from + 1, at2).map((c) => c.textContent).join("");
     const letters = (t) => [...new Set(t.match(/[a-z]/g) || [])].sort().join("");
     if (letters(lhs) !== letters(rhs.map((c) => c.textContent).join(""))) return null;
     const acts = /[×÷+−\-]/.test(lhs) || ops.some((c) => c.closest("sup") || c.closest(".bn"));
     if (!acts || ops.length < 1 || ops.length === 1 && !ops[0].closest("sup,.bn")) return null;
     if (ops.length === 1 && ops[0].textContent === target.textContent) return null;
-    return { at, ops, target };
+    return { at: at2, ops, target };
   }
   async function combine(plan, ctx) {
     const sheet = $("sheet"), sr = sheet.getBoundingClientRect(), { ops, target } = plan;
@@ -5458,11 +6326,12 @@ input[type=checkbox] {
   var waiting = null;
   var writingChars = null;
   var spd = () => WRITE_SPEED_MS[+$("speed").value];
+  var inPicture = { acceptNode: (n) => n.parentElement.closest("svg") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT };
   function prep(el, nums) {
-    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, inPicture), nodes = [];
     while (w.nextNode()) nodes.push(w.currentNode);
     const chars = [];
-    const mk2 = (txt, cls) => {
+    const mk3 = (txt, cls) => {
       const s = document.createElement("span");
       s.className = cls;
       s.textContent = txt;
@@ -5473,13 +6342,13 @@ input[type=checkbox] {
       for (const part2 of nums ? t.data.split(/(\d+(?:\.\d+)?)/) : [t.data]) {
         if (!part2) continue;
         if (nums && /^\d/.test(part2)) {
-          const s = mk2(part2, "ch num");
+          const s = mk3(part2, "ch num");
           f.appendChild(s);
           chars.push(s);
           continue;
         }
         for (const ch of part2) {
-          const s = mk2(ch, "ch");
+          const s = mk3(ch, "ch");
           f.appendChild(s);
           if (ch.trim()) chars.push(s);
           else s.classList.add("on");
@@ -5514,7 +6383,10 @@ input[type=checkbox] {
     if (last) last.classList.remove("pen");
     writingChars = null;
     setTimeout(() => {
-      if (el.isConnected && run === myRun) el.innerHTML = html;
+      if (!el.isConnected || run !== myRun) return;
+      const pics = [...el.querySelectorAll("svg")];
+      el.innerHTML = html;
+      el.querySelectorAll("svg").forEach((s, i) => pics[i] && s.replaceWith(pics[i]));
     }, 700);
   }
   function finishWriting() {
@@ -5654,27 +6526,27 @@ input[type=checkbox] {
   }
   function askPanel(ask) {
     return new Promise((res) => {
-      const box = document.createElement("div");
-      box.className = "ask";
-      box.addEventListener("click", (e) => e.stopPropagation());
-      box.innerHTML = `<p class="q">\u270E Your turn: ${ask.q}</p>`;
+      const box2 = document.createElement("div");
+      box2.className = "ask";
+      box2.addEventListener("click", (e) => e.stopPropagation());
+      box2.innerHTML = `<p class="q">\u270E Your turn: ${ask.q}</p>`;
       const fb = document.createElement("p");
       fb.className = "fb";
       let tries = 0;
       const done = () => {
         waiting = null;
-        box.classList.remove("shake");
+        box2.classList.remove("shake");
         fb.classList.add("good");
         setTimeout(() => {
-          box.remove();
+          box2.remove();
           res(true);
         }, 900);
       };
       const wrong = (msg) => {
         tries++;
-        box.classList.remove("shake");
-        void box.offsetWidth;
-        box.classList.add("shake");
+        box2.classList.remove("shake");
+        void box2.offsetWidth;
+        box2.classList.add("shake");
         fb.className = "fb bad";
         fb.innerHTML = msg + (tries >= 2 ? ' &nbsp;<button class="btn small" id="showme">Show me</button>' : "");
         const b = fb.querySelector("#showme");
@@ -5703,7 +6575,7 @@ input[type=checkbox] {
           };
           o.appendChild(b);
         });
-        box.appendChild(o);
+        box2.appendChild(o);
       } else {
         const f = document.createElement("div");
         f.className = "fields";
@@ -5724,7 +6596,7 @@ input[type=checkbox] {
         go.className = "btn primary small";
         go.textContent = "Check";
         f.appendChild(go);
-        box.appendChild(f);
+        box2.appendChild(f);
         const check = () => {
           const ok = ins.every((inp, i) => sameNum(inp.value, ask.fields[i].answer));
           if (ok) {
@@ -5738,10 +6610,10 @@ input[type=checkbox] {
         }));
         setTimeout(() => ins[0].focus(), 50);
       }
-      box.appendChild(fb);
-      $("sheet").appendChild(box);
-      box.scrollIntoView({ block: "end", behavior: "smooth" });
-      waiting = box;
+      box2.appendChild(fb);
+      $("sheet").appendChild(box2);
+      box2.scrollIntoView({ block: "end", behavior: "smooth" });
+      waiting = box2;
       $("tapHint").textContent = "answer the question to carry on";
     });
   }
@@ -5770,6 +6642,15 @@ input[type=checkbox] {
     });
   }
 
+  // source/screens/current-topic.js
+  var current = TOPICS[0];
+  var getTopic = () => current;
+  function setTopic(id) {
+    if (current.id === id) return;
+    current = TOPICS.find((t) => t.id === id);
+    document.dispatchEvent(new CustomEvent("topicchange", { detail: { topic: current } }));
+  }
+
   // source/screens/difficulty-buttons.js
   var lvSwitch = (cur, extra = "") => `<div class="lvls" role="group" aria-label="Difficulty" ${extra}>${LEVELS.map(([v, l]) => `<button class="lv" data-lv="${v}" aria-pressed="${v === cur}">${l}</button>`).join("")}</div>`;
 
@@ -5778,9 +6659,10 @@ input[type=checkbox] {
     const cur = {};
     let groups = [];
     const drawFolders = () => {
-      const types = Object.values(TYPES).filter((t) => t.example && inCourse(t));
-      groups = GROUPS.map(([g, label]) => ({ g, label, list: types.filter((t) => t.group === g) })).filter((x) => x.list.length);
-      $("subfolders").innerHTML = `<button class="subfolder own" data-f="own"><span class="fname">Your own question</span><span class="fdesc">Type in a question from your homework</span></button>` + groups.map((x) => `<button class="subfolder" data-f="${x.g}"><span class="fname">${x.label}</span><span class="fdesc">${GROUP_DESCRIPTIONS[x.g] || ""}</span><span class="fcount">${x.list.length} question type${x.list.length > 1 ? "s" : ""}</span></button>`).join("");
+      const types = Object.values(getTopic().types).filter((t) => t.example && inCourse(t));
+      groups = getTopic().groups.map(([g, label, desc]) => ({ g, label, desc, list: types.filter((t) => t.group === g) })).filter((x) => x.list.length);
+      const own = types.some((t) => t.parse);
+      $("subfolders").innerHTML = (own ? `<button class="subfolder own" data-f="own"><span class="fname">Your own question</span><span class="fdesc">Type in a question from your homework</span></button>` : "") + groups.map((x) => `<button class="subfolder" data-f="${x.g}"><span class="fname">${x.label}</span><span class="fdesc">${x.desc}</span><span class="fcount">${x.list.length} question type${x.list.length > 1 ? "s" : ""}</span></button>`).join("");
     };
     const show = (f) => {
       $("learnHome").hidden = true;
@@ -5792,7 +6674,7 @@ input[type=checkbox] {
       $("learnCards").innerHTML = own ? "" : grp.list.map((t) => {
         cur[t.id] = t.example;
         return `<div class="qcard" data-id="${t.id}"><div class="qcard-top"><h4 class="cname">${t.name}</h4>${syllabusBadge(t)}</div><p class="what">${t.blurb}</p>
-      ${t.gen ? lvSwitch(0, 'title="Pick a level for a new question. Press it again for another."') : ""}<div class="m qtext">${TYPES[t.example.t].text(t.example)}</div>
+      ${t.gen ? lvSwitch(0, 'title="Pick a level for a new question. Press it again for another."') : ""}<div class="m qtext">${getTopic().types[t.example.t].text(t.example)}</div>
       <div class="cbtns"><button class="btn primary small" data-t="${t.id}">Watch</button><button class="btn small" data-t="${t.id}" data-g="1">Try it</button></div></div>`;
       }).join("");
       $("learnOpen").scrollIntoView({ block: "nearest" });
@@ -5806,6 +6688,10 @@ input[type=checkbox] {
       drawFolders();
       home();
     });
+    document.addEventListener("topicchange", () => {
+      drawFolders();
+      home();
+    });
     $("subfolders").addEventListener("click", (e) => {
       const b = e.target.closest(".subfolder");
       if (b) show(b.dataset.f);
@@ -5813,12 +6699,13 @@ input[type=checkbox] {
     $("learnBack").onclick = home;
     $("learnCards").addEventListener("click", (e) => {
       const lv = e.target.closest(".lv");
+      const { types: TYPES3, genQ: genQ3 } = getTopic();
       if (lv) {
-        const card = lv.closest(".qcard"), id = card.dataset.id, P2 = genQ(id, +lv.dataset.lv, true);
+        const card = lv.closest(".qcard"), id = card.dataset.id, P2 = genQ3(id, +lv.dataset.lv, true);
         cur[id] = P2;
         card.querySelectorAll(".lv").forEach((x) => x.setAttribute("aria-pressed", x === lv));
         const q = card.querySelector(".qtext");
-        q.innerHTML = TYPES[P2.t].text(P2);
+        q.innerHTML = TYPES3[P2.t].text(P2);
         q.classList.remove("swap");
         void q.offsetWidth;
         q.classList.add("swap");
@@ -5827,14 +6714,25 @@ input[type=checkbox] {
       const b = e.target.closest("button[data-t]");
       if (!b) return;
       const P = cur[b.dataset.t];
-      openBook(TYPES[P.t].build(P), !!b.dataset.g);
+      openBook(TYPES3[P.t].build(P), !!b.dataset.g);
     });
     return { home };
   }
 
   // source/screens/home-screen.js
+  var onCourse = (t) => t.courses.includes(getCourse());
+  var count = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
   function initHub({ onOpenTopic }) {
     let open = null;
+    const drawFolders = () => {
+      $("folders").innerHTML = TOPICS.map((t) => {
+        const n = Object.values(t.types).filter((x) => x.example && inCourse(x)).length, sec = t.sections[courseFamily()];
+        return `<button class="folder" id="f-${t.id}" data-topic="${t.id}" data-courses="${t.courses.join(" ")}" data-keys="${t.keys}">
+      <span class="fname">${t.name}</span>${sec ? `<span class="fsyl">${courseShort().slice(0, 2)} ${sec}</span>` : ""}
+      <span class="fdesc">${t.desc}</span>
+      <span class="fcount">${count(n, "question type")} \xB7 learn, practise, exam questions, games, cheat sheet</span></button>`;
+      }).join("");
+    };
     function showHub() {
       open = null;
       $("folderView").hidden = true;
@@ -5843,8 +6741,10 @@ input[type=checkbox] {
       window.scrollTo(0, 0);
       $("search").focus();
     }
-    function openFolder(f) {
-      open = f;
+    function openFolder(t) {
+      open = t;
+      setTopic(t.id);
+      $("topicName").textContent = t.name;
       $("hub").hidden = true;
       $("folderView").hidden = false;
       document.body.classList.add("topic-open");
@@ -5855,17 +6755,20 @@ input[type=checkbox] {
       const q = $("search").value.trim().toLowerCase();
       let mine = 0, shown = 0;
       document.querySelectorAll(".folder").forEach((f) => {
-        const onCourse = topicInCourse(f.dataset.courses);
-        if (onCourse) mine++;
-        const hay = (f.dataset.keys + " " + f.textContent).toLowerCase(), ok = onCourse && (!q || q.split(/\s+/).every((w) => hay.includes(w)));
+        const t = TOPICS.find((x) => x.id === f.dataset.topic), ok0 = onCourse(t);
+        if (ok0) mine++;
+        const hay = (f.dataset.keys + " " + f.textContent).toLowerCase(), ok = ok0 && (!q || q.split(/\s+/).every((w) => hay.includes(w)));
         f.hidden = !ok;
         if (ok) shown++;
       });
       $("noTopics").hidden = mine > 0;
-      $("noTopics").innerHTML = `<p><b>No topics for ${courseShort()} yet.</b></p><p>The topics so far, starting with Binomials, are part of Analysis and approaches. Applications and interpretation topics are on the way. If you take a different course, pick it in the bar above.</p>`;
+      $("noTopics").innerHTML = `<p><b>No topics for ${courseShort()} yet.</b></p><p>More topics are on the way. If you take a different course, pick it in the bar above.</p>`;
       $("noresult").hidden = shown > 0 || mine === 0;
     }
-    document.querySelectorAll(".folder").forEach((f) => f.onclick = () => openFolder(f));
+    $("folders").addEventListener("click", (e) => {
+      const f = e.target.closest(".folder");
+      if (f) openFolder(TOPICS.find((t) => t.id === f.dataset.topic));
+    });
     $("backHub").onclick = showHub;
     $("search").addEventListener("input", filter);
     $("search").addEventListener("keydown", (e) => {
@@ -5875,9 +6778,11 @@ input[type=checkbox] {
       }
     });
     document.addEventListener("studychange", () => {
-      if (open && !topicInCourse(open.dataset.courses)) showHub();
+      if (open && !onCourse(open)) showHub();
+      drawFolders();
       filter();
     });
+    drawFolders();
     filter();
   }
 
@@ -5895,7 +6800,7 @@ input[type=checkbox] {
   // source/screens/your-own-question.js
   function makeBuilder(cid, pre, defG) {
     const root = $(cid);
-    const optsHtml = () => GROUPS.map(([g, label]) => `<optgroup label="${label}">${Object.values(TYPES).filter((t) => t.group === g && t.parse && inCourse(t)).map((t) => `<option value="${t.id}">${t.name}</option>`).join("")}</optgroup>`).join("");
+    const optsHtml = () => getTopic().groups.map(([g, label]) => `<optgroup label="${label}">${Object.values(getTopic().types).filter((t) => t.group === g && t.parse && inCourse(t)).map((t) => `<option value="${t.id}">${t.name}</option>`).join("")}</optgroup>`).join("");
     root.innerHTML = `<label class="blab">What does the question ask?<select id="${pre}type">${optsHtml()}</select></label>
     <p class="hint" id="${pre}help"></p>
     <div class="bfields" id="${pre}fields"></div>
@@ -5903,14 +6808,14 @@ input[type=checkbox] {
     <p class="err" id="${pre}err" hidden></p>
     <div class="rowb">${defG ? "" : `<button class="btn primary" id="${pre}watch">Watch it solved</button>`}<button class="btn ${defG ? "primary" : ""}" id="${pre}guided">Try it myself</button></div>`;
     const sel = $(pre + "type");
-    const read = () => {
-      const t = TYPES[sel.value], v = {};
+    const read2 = () => {
+      const t = getTopic().types[sel.value], v = {};
       t.fields.forEach((f) => v[f.id] = $(pre + "f_" + f.id).value);
       return v;
     };
     const parse = () => {
-      const t = TYPES[sel.value];
-      return t.parse(read());
+      const t = getTopic().types[sel.value];
+      return t.parse(read2());
     };
     const preview = () => {
       const r = parse(), err = $(pre + "err");
@@ -5921,11 +6826,11 @@ input[type=checkbox] {
         return null;
       }
       err.hidden = true;
-      $(pre + "prev").innerHTML = TYPES[r.p.t].text(r.p);
+      $(pre + "prev").innerHTML = getTopic().types[r.p.t].text(r.p);
       return r.p;
     };
     const renderFields = () => {
-      const t = TYPES[sel.value];
+      const t = getTopic().types[sel.value];
       $(pre + "help").textContent = t.help;
       $(pre + "fields").innerHTML = t.fields.map((f) => f.kind === "sel" ? `<label>${f.label}<select id="${pre}f_${f.id}">${f.opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></label>` : `<label class="${f.kind === "expr" || f.kind === "text" ? "wide" : ""}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" data-maths="${f.keys || { int: "integer", expr: "expr", text: "expr" }[f.kind]}" ${f.kind === "int" ? 'inputmode="numeric"' : ""} autocomplete="off"></label>`).join("");
       t.fields.forEach((f) => {
@@ -5942,18 +6847,170 @@ input[type=checkbox] {
     const start = (g) => {
       const P = preview();
       if (!P) return;
-      openBook(TYPES[P.t].build(P), g);
+      openBook(getTopic().types[P.t].build(P), g);
     };
     sel.addEventListener("change", renderFields);
     if (!defG) $(pre + "watch").onclick = () => start(false);
     $(pre + "guided").onclick = () => start(true);
     renderFields();
-    document.addEventListener("studychange", () => {
+    const refill = () => {
       const keep = sel.value;
       sel.innerHTML = optsHtml();
       if ([...sel.options].some((o) => o.value === keep)) sel.value = keep;
-      renderFields();
+      if (sel.value) renderFields();
+    };
+    document.addEventListener("studychange", refill);
+    document.addEventListener("topicchange", refill);
+  }
+
+  // source/maths/reading-values.js
+  function readValue(text) {
+    const r = calculate(String(text), void 0, { shortcuts: false });
+    if (r.value === void 0) return null;
+    const v = asDecimal(r.value);
+    return Number.isFinite(v) ? v : null;
+  }
+  function closeTo(v, want, sf) {
+    if (typeof want === "object") {
+      const w = Number(want.n) / Number(want.d);
+      return Math.abs(v - w) <= 1e-9 * Math.max(1, Math.abs(w));
+    }
+    if (want === 0) return Math.abs(v) < 1e-9;
+    const unit = 10 ** (Math.floor(Math.log10(Math.abs(want))) - sf + 1);
+    return Math.abs(v - want) <= unit / 2 * (1 + 1e-9);
+  }
+
+  // source/maths/checking-lists-and-points.js
+  var balanced = (s) => {
+    let d = 0;
+    for (const c of s) {
+      d += c === "(" ? 1 : c === ")" ? -1 : 0;
+      if (d < 0) return false;
+    }
+    return d === 0;
+  };
+  var unwrap = (s) => {
+    s = s.trim();
+    return s.startsWith("(") && s.endsWith(")") && balanced(s.slice(1, -1)) ? s.slice(1, -1) : s;
+  };
+  var pieces = (raw2) => unwrap(String(raw2)).split(/\s*(?:,|;|\bor\b|\band\b)\s*/i).map((p) => p.replace(/^[a-z]\s*=\s*/i, "").trim()).filter(Boolean);
+  function checkList(a, raw2) {
+    const got = pieces(raw2).map(readValue);
+    if (!got.length || got.some((v) => v === null)) return { bad: "Type the values separated by commas, like 2, \u22123." };
+    if (got.length !== a.vals.length) return { ok: false };
+    const left = [...a.vals];
+    for (const v of got) {
+      const i = left.findIndex((w) => closeTo(v, w, a.sf));
+      if (i < 0) return { ok: false };
+      left.splice(i, 1);
+    }
+    return { ok: true };
+  }
+  function checkPoint(a, raw2) {
+    const got = pieces(raw2).map(readValue);
+    if (got.length !== 2 || got.some((v) => v === null)) return { bad: "Type the coordinates like (2, \u22123)." };
+    return { ok: got.every((v, i) => closeTo(v, a.vals[i], a.sf)) };
+  }
+
+  // source/maths/checking-expressions.js
+  var XS = [-2.71, -1.37, -0.53, 0.61, 1.73, 2.89, 3.47, 4.13, 5.29, 7.57];
+  var exact = (x) => F(Math.round(x * 100), 100);
+  var SYNTAX = /understand|needs a number|ends too soon|not closed|missing|without a matching|nCr/;
+  var unreadable = (msg) => ({ bad: `${msg} Write it like (x \u2212 3)/2 or 2e^(3x).` });
+  var at = (text, vars) => calculate(text, void 0, { shortcuts: false, vars });
+  var rightSide = (raw2) => {
+    const s = String(raw2), i = s.lastIndexOf("=");
+    return i < 0 ? s : s.slice(i + 1);
+  };
+  function checkExpr(a, raw2) {
+    const text = rightSide(raw2);
+    if (!text.trim()) return { bad: "Type an expression in x." };
+    let compared = 0;
+    for (const x of a.xs || XS) {
+      const want = a.f(x);
+      if (!Number.isFinite(want)) continue;
+      const r = at(text, { x: exact(x) });
+      if (r.error !== void 0) {
+        if (SYNTAX.test(r.error)) return unreadable(r.error);
+        return { ok: false };
+      }
+      const got = asDecimal(r.value);
+      if (Math.abs(got - want) > 1e-6 * Math.max(1, Math.abs(want))) return { ok: false };
+      compared++;
+    }
+    return { ok: compared >= 3 };
+  }
+  function checkLine(a, raw2) {
+    const s = String(raw2).replace(/[−–]/g, "-");
+    const sides = s.split("=");
+    if (sides.length > 2) return { bad: "Type one equation, like y = 2x \u2212 5." };
+    const [left, right] = sides.length === 2 ? sides : ["y", sides[0]];
+    if (!left.trim() || !right.trim()) return { bad: "Type an equation, like y = 2x \u2212 5." };
+    const g = (x, y) => {
+      const vars = { x: F(x), y: F(y) }, l = at(left, vars), r = at(right, vars);
+      const e = l.error ?? r.error;
+      if (e !== void 0) throw e;
+      return asDecimal(l.value) - asDecimal(r.value);
+    };
+    try {
+      const c = g(0, 0), A = g(1, 0) - c, B = g(0, 1) - c;
+      for (const [x, y] of [[3, -2], [-5, 7], [11, 4]]) if (Math.abs(g(x, y) - (A * x + B * y + c)) > 1e-9 * (1 + Math.abs(A * x) + Math.abs(B * y) + Math.abs(c))) return { ok: false };
+      if (A === 0 && B === 0) return { ok: false };
+      const big = Math.max(Math.abs(A), Math.abs(B), Math.abs(c), Math.abs(a.a), Math.abs(a.b), Math.abs(a.c)), tol = 1e-9 * big * big;
+      return { ok: Math.abs(A * a.b - B * a.a) <= tol && Math.abs(A * a.c - c * a.a) <= tol && Math.abs(B * a.c - c * a.b) <= tol };
+    } catch (e) {
+      return typeof e === "string" && SYNTAX.test(e) ? { bad: `${e} Write it like y = 2x \u2212 5.` } : { ok: false };
+    }
+  }
+
+  // source/maths/checking-inequalities.js
+  var OPS = /(≤|≥|<|>|≠)/;
+  var holds = (a, op, b) => op === "<" ? a < b : op === ">" ? a > b : op === "\u2264" ? a <= b : op === "\u2265" ? a >= b : a !== b;
+  function read(raw2) {
+    let s = String(raw2).replace(/<=|=</g, "\u2264").replace(/>=|=>/g, "\u2265").replace(/!=|=\/=/g, "\u2260").replace(/[−–]/g, "-").replace(/[fgh](⁻¹|\^-1)?\(x\)/g, "v").replace(/\b[xyktn]\b|(?<![a-z])[xyktn](?![a-z])/g, "v");
+    if (/all\s*real|ℝ|any\s*real|every\s*real/i.test(s)) return { test: () => true, values: [] };
+    const pieces2 = s.split(/\s*(?:\bor\b|,|;|∪)\s*/i).filter((p) => p.trim());
+    if (!pieces2.length) return null;
+    const values = [], tests = [];
+    for (const piece of pieces2) {
+      const conds = [];
+      for (const part2 of piece.split(/\s*\band\b\s*/i)) {
+        const bits = part2.split(OPS).map((b) => b.trim());
+        if (bits.length < 3 || !bits.includes("v")) return null;
+        const terms2 = [];
+        for (let i = 0; i < bits.length; i += 2) {
+          if (bits[i] === "v") {
+            terms2.push(null);
+            continue;
+          }
+          const v = readValue(bits[i]);
+          if (v === null) return null;
+          terms2.push(v);
+          values.push(v);
+        }
+        for (let i = 0; i + 1 < terms2.length; i++) {
+          const op = bits[2 * i + 1], l = terms2[i], r = terms2[i + 1];
+          if (l !== null && r !== null) return null;
+          conds.push((x) => holds(l ?? x, op, r ?? x));
+        }
+      }
+      tests.push((x) => conds.every((c) => c(x)));
+    }
+    return { test: (x) => tests.some((t) => t(x)), values };
+  }
+  var inPart = (p, x) => (x > p.lo || p.loIn && x === p.lo) && (x < p.hi || p.hiIn && x === p.hi);
+  function checkIneq(a, raw2) {
+    const r = read(raw2);
+    if (!r) return { bad: "Write it like x < \u22121 or x > 3, or \u22122 \u2264 x \u2264 5." };
+    const want = (x) => a.parts.some((p) => inPart(p, x));
+    const edges = [.../* @__PURE__ */ new Set([...a.parts.flatMap((p) => [p.lo, p.hi]).filter(Number.isFinite), ...r.values])].sort((p, q) => p - q);
+    const xs = [-1e9, 1e9, ...edges];
+    edges.forEach((e, i) => {
+      const d = 1e-7 * Math.max(1, Math.abs(e));
+      xs.push(e - d, e + d);
+      if (i + 1 < edges.length) xs.push((e + edges[i + 1]) / 2);
     });
+    return { ok: xs.every((x) => want(x) === r.test(x)) };
   }
 
   // source/maths/checking-answers.js
@@ -5980,6 +7037,22 @@ input[type=checkbox] {
     return true;
   };
   function checkAnswer(a, raw2) {
+    if (a.kind === "multi") {
+      const each = a.parts.map((p, i) => String(raw2[i] ?? "").trim() ? checkAnswer(p, raw2[i]) : { bad: "Fill in every box." });
+      const bad = each.findIndex((r2) => r2.bad);
+      if (bad >= 0) return { bad: (each[bad].bad === "Fill in every box." ? "" : `${a.parts[bad].label} `) + each[bad].bad, each };
+      return { ok: each.every((r2) => r2.ok), each };
+    }
+    if (a.kind === "list") return checkList(a, raw2);
+    if (a.kind === "point") return checkPoint(a, raw2);
+    if (a.kind === "expr") return checkExpr(a, raw2);
+    if (a.kind === "line") return checkLine(a, raw2);
+    if (a.kind === "ineq") return checkIneq(a, raw2);
+    if (a.kind === "approx" && a.sf) {
+      const v2 = readValue(raw2);
+      if (v2 === null) return { bad: "Type a number." };
+      return { ok: closeTo(v2, a.val, a.sf) };
+    }
     if (a.kind === "poly") {
       const m = parsePoly(raw2);
       if (!m) return { bad: "I could not read that. Write it like 2x^3 + 5x^2 - x + 4." };
@@ -5995,6 +7068,44 @@ input[type=checkbox] {
     return { ok: Math.abs(v - a.val) <= Math.abs(a.val) * 6e-4 };
   }
 
+  // source/screens/answer-boxes.js
+  var KEYS = { poly: "poly", expr: "func", line: "line", ineq: "ineq", list: "list", point: "list" };
+  var EXAMPLE = {
+    poly: "e.g. 2x^5 + 11x^4 \u2212 3x",
+    num: "a number, or a fraction like 3/4",
+    list: "e.g. \u22122, 3",
+    point: "e.g. (2, \u22123)",
+    expr: "e.g. (x \u2212 3)/2",
+    line: "e.g. y = 2x \u2212 5",
+    ineq: "e.g. x < \u22121 or x > 3"
+  };
+  var example = (a) => a.kind === "approx" ? a.sf ? `a number, to ${a.sf} significant figures` : "a number" : EXAMPLE[a.kind] || "a number";
+  var box = (a, id, label) => `<input class="ans-in" id="${id}" placeholder="${example(a)}" autocomplete="off" data-maths="${KEYS[a.kind] || "number"}"${label ? ` aria-label="${label}"` : ""}>`;
+  var answerBoxes = (a, id, label) => a.kind !== "multi" ? box(a, id, label) : `<div class="ans-multi">${a.parts.map((p, i) => `<label class="ans-part"><span class="ans-label">${p.label}</span>${box(p, `${id}-${i}`)}</label>`).join("")}</div>`;
+  var readBoxes = (root, a) => {
+    const ins = [...root.querySelectorAll(".ans-in")];
+    return a.kind === "multi" ? ins.map((i) => i.value) : ins[0].value;
+  };
+  var isBlank = (raw2) => Array.isArray(raw2) ? raw2.every((r) => !r.trim()) : !raw2.trim();
+  var answerHtml = (a) => a.kind === "multi" ? a.parts.map((p) => `${p.label} <span class="m">${p.disp}</span>`).join("&nbsp; \xB7 &nbsp;") : `<span class="m">${a.disp}</span>`;
+  function markBoxes(root, r) {
+    const ins = [...root.querySelectorAll(".ans-in")];
+    ins.forEach((inp, i) => {
+      const ok = r.each ? r.each[i]?.ok : r.ok;
+      inp.classList.toggle("right", !!ok);
+      inp.classList.toggle("wrong", !ok);
+    });
+  }
+  function onEnter(root, check) {
+    const ins = [...root.querySelectorAll(".ans-in")];
+    ins.forEach((inp, i) => inp.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const next = ins.slice(i + 1).find((x) => !x.value.trim());
+      if (next) next.focus();
+      else check();
+    }));
+  }
+
   // source/screens/practice-tab.js
   function initPractice() {
     let score = { ok: 0, n: 0 };
@@ -6002,8 +7113,8 @@ input[type=checkbox] {
     let pr = null;
     const fillTypes = () => {
       const keep = $("pType").value;
-      const pool = Object.values(TYPES).filter((t) => t.gen && inCourse(t));
-      $("pType").innerHTML = '<option value="any">Any type (mixed)</option>' + GROUPS.map(([g, l]) => `<optgroup label="${l}">${pool.filter((t) => t.group === g).map((t) => `<option value="${t.id}">${t.name}</option>`).join("")}</optgroup>`).join("");
+      const pool = Object.values(getTopic().types).filter((t) => t.gen && inCourse(t));
+      $("pType").innerHTML = '<option value="any">Any type (mixed)</option>' + getTopic().groups.map(([g, l]) => `<optgroup label="${l}">${pool.filter((t) => t.group === g).map((t) => `<option value="${t.id}">${t.name}</option>`).join("")}</optgroup>`).join("");
       if ([...$("pType").options].some((o) => o.value === keep)) $("pType").value = keep;
     };
     let pLv = 2;
@@ -6016,26 +7127,26 @@ input[type=checkbox] {
       newPractice();
     });
     function newPractice() {
-      const sel = $("pType").value;
-      const pool = Object.keys(TYPES).filter((id2) => TYPES[id2].gen && inCourse(TYPES[id2]));
+      const { types: TYPES3, genQ: genQ3 } = getTopic(), sel = $("pType").value;
+      const pool = Object.keys(TYPES3).filter((id2) => TYPES3[id2].gen && inCourse(TYPES3[id2]));
       const id = sel === "any" ? pool[ri(0, pool.length - 1)] : sel;
-      const P = genQ(id, pLv);
+      const P = genQ3(id, pLv);
       pr = { P, done: false, hint: 0 };
-      const T2 = TYPES[P.t], a = T2.ans(P);
+      const T22 = TYPES3[P.t], a = T22.ans(P);
       pr.a = a;
-      const ph = a.kind === "poly" ? "e.g. 2x^5 + 11x^4 \u2212 3x" : a.kind === "num" ? "a number, or a fraction like 3/4" : "a number";
-      $("pq").innerHTML = `<span class="tag">${T2.name} \xB7 <span class="lvtag l${pLv}">${LEVELS[pLv - 1][1]}</span></span>${syllabusBadge(T2)}<div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off" data-maths="${a.kind === "poly" ? "poly" : "number"}">
+      $("pq").innerHTML = `<span class="tag">${T22.name} \xB7 <span class="lvtag l${pLv}">${LEVELS[pLv - 1][1]}</span></span>${syllabusBadge(T22)}<div class="m">${T22.text(P)}</div><div class="ans-box" id="pAns">${answerBoxes(a, "pIn", "Your answer")}</div>
     <div class="rowb"><button class="btn primary" id="pChk">Check</button><button class="btn" id="pHint">Hint</button><button class="btn" id="pShow">Show me the working</button></div>
     <p class="hint" id="pHintOut"></p><p class="fb" id="pFb"></p>`;
       $("pChk").onclick = () => {
-        const raw2 = $("pIn").value;
-        if (!raw2.trim()) return;
+        const raw2 = readBoxes($("pAns"), a);
+        if (isBlank(raw2)) return;
         const r = checkAnswer(a, raw2), fb = $("pFb");
         if (r.bad) {
           fb.className = "fb bad";
           fb.textContent = r.bad;
           return;
         }
+        if (a.kind === "multi") markBoxes($("pAns"), r);
         if (!pr.done) {
           score.n++;
           pr.done = true;
@@ -6047,22 +7158,26 @@ input[type=checkbox] {
           fb.textContent = "Correct! Nicely done.";
         } else {
           fb.className = "fb bad";
-          fb.innerHTML = `Not quite. The answer is <span class="m" style="font-size:1.2rem">${a.disp}</span>. Press "Show me the working" to see why.`;
+          fb.innerHTML = `Not quite. The answer is ${answerHtml(a)}. Press "Show me the working" to see why.`;
         }
       };
-      $("pIn").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") $("pChk").click();
-      });
+      onEnter($("pAns"), () => $("pChk").click());
       $("pHint").onclick = () => {
-        const hs = T2.hints ? T2.hints(P) : [];
+        const hs = T22.hints ? T22.hints(P) : [];
         if (!hs.length) return;
         $("pHintOut").textContent = "Hint " + (pr.hint + 1) + ": " + hs[Math.min(pr.hint, hs.length - 1)];
         pr.hint++;
       };
-      $("pShow").onclick = () => openBook(T2.build(P), false);
+      $("pShow").onclick = () => openBook(T22.build(P), false);
     }
     fillTypes();
     document.addEventListener("studychange", () => {
+      fillTypes();
+      newPractice();
+    });
+    document.addEventListener("topicchange", () => {
+      score = { ok: 0, n: 0 };
+      upScore();
       fillTypes();
       newPractice();
     });
@@ -6083,12 +7198,12 @@ input[type=checkbox] {
     card.appendChild(p);
     setTimeout(() => p.remove(), 1100);
   }
-  function confetti(from, count = 24) {
+  function confetti(from, count2 = 24) {
     if (calm()) return;
     const card = document.getElementById("stageCard");
     if (!card || !from) return;
     const a = from.getBoundingClientRect(), c = card.getBoundingClientRect(), colours = ["var(--accent)", "var(--accent2)", "var(--b3)", "var(--green)", "#facc15"];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < count2; i++) {
       const s = document.createElement("i");
       s.className = "g-confetti";
       const ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 120;
@@ -6165,10 +7280,10 @@ input[type=checkbox] {
   }
 
   // source/screens/games/answer-input.js
-  function choiceTiles(box, opts, onPick) {
-    box.innerHTML = `<div class="g-choices${opts.length === 2 ? " two" : ""}">${opts.map((o, i) => `<button class="g-choice" data-i="${i}"><kbd>${opts.length === 2 ? i ? "\u2192" : "\u2190" : i + 1}</kbd><span>${o}</span></button>`).join("")}</div>`;
+  function choiceTiles(box2, opts, onPick) {
+    box2.innerHTML = `<div class="g-choices${opts.length === 2 ? " two" : ""}">${opts.map((o, i) => `<button class="g-choice" data-i="${i}"><kbd>${opts.length === 2 ? i ? "\u2192" : "\u2190" : i + 1}</kbd><span>${o}</span></button>`).join("")}</div>`;
     let done = false;
-    const tiles = [...box.querySelectorAll(".g-choice")];
+    const tiles = [...box2.querySelectorAll(".g-choice")];
     const pick = (i) => {
       if (done || !tiles[i]) return;
       done = true;
@@ -6184,19 +7299,19 @@ input[type=checkbox] {
       return true;
     };
   }
-  function markChoices(box, ans, picked) {
-    const tiles = box.querySelectorAll(".g-choice");
+  function markChoices(box2, ans, picked) {
+    const tiles = box2.querySelectorAll(".g-choice");
     tiles[ans]?.classList.add("good");
     if (picked !== ans) {
       tiles[picked]?.classList.add("bad");
       replay(tiles[picked], "g-shake");
     }
   }
-  var KEYS = ["7", "8", "9", "\u232B", "4", "5", "6", "\u2212", "1", "2", "3", "/", "0", ".", "\u2713"];
-  function numberPad(box, onSubmit) {
-    box.innerHTML = `<div class="g-pad"><div class="g-display" id="gDisplay" aria-live="polite"><span class="g-typed"></span><span class="g-caret"></span></div>
-    <div class="g-keys">${KEYS.map((k) => `<button class="g-key${k === "\u2713" ? " go" : ""}" data-k="${k}" aria-label="${{ "\u232B": "delete", "\u2713": "check", "\u2212": "minus", "/": "fraction", ".": "decimal point" }[k] || k}">${k}</button>`).join("")}</div></div>`;
-    const display = box.querySelector(".g-display"), typed2 = box.querySelector(".g-typed");
+  var KEYS2 = ["7", "8", "9", "\u232B", "4", "5", "6", "\u2212", "1", "2", "3", "/", "0", ".", "\u2713"];
+  function numberPad(box2, onSubmit) {
+    box2.innerHTML = `<div class="g-pad"><div class="g-display" id="gDisplay" aria-live="polite"><span class="g-typed"></span><span class="g-caret"></span></div>
+    <div class="g-keys">${KEYS2.map((k) => `<button class="g-key${k === "\u2713" ? " go" : ""}" data-k="${k}" aria-label="${{ "\u232B": "delete", "\u2713": "check", "\u2212": "minus", "/": "fraction", ".": "decimal point" }[k] || k}">${k}</button>`).join("")}</div></div>`;
+    const display = box2.querySelector(".g-display"), typed2 = box2.querySelector(".g-typed");
     let text = "", done = false;
     const paint = () => {
       typed2.textContent = text;
@@ -6213,15 +7328,15 @@ input[type=checkbox] {
       else if (k === "\u2212") {
         if (!text) text = "\u2212";
       } else if (text.length < 9) text += k;
-      const b = box.querySelector(`[data-k="${k}"]`);
+      const b = box2.querySelector(`[data-k="${k}"]`);
       if (b) replay(b, "pressed");
       paint();
     };
-    box.querySelectorAll(".g-key").forEach((b) => b.onclick = () => press(b.dataset.k));
+    box2.querySelectorAll(".g-key").forEach((b) => b.onclick = () => press(b.dataset.k));
     paint();
     return (e) => {
       const k = e.key === "Enter" ? "\u2713" : e.key === "Backspace" ? "\u232B" : e.key === "-" ? "\u2212" : e.key;
-      if (!KEYS.includes(k)) return false;
+      if (!KEYS2.includes(k)) return false;
       press(k);
       return true;
     };
@@ -6371,10 +7486,10 @@ input[type=checkbox] {
   var flashStage = (kind) => replay($("stageCard"), kind);
 
   // source/screens/games/match-board.js
-  function matchBoard(box, pairs, { onMatch, onMiss, onCleared }) {
+  function matchBoard(box2, pairs, { onMatch, onMiss, onCleared }) {
     const cards = shuffle(pairs.flatMap((p, i) => [{ i, html: p.a }, { i, html: p.b }]));
-    box.innerHTML = `<div class="g-board" style="--cols:${cards.length === 10 ? 5 : 4}">${cards.map((c, k) => `<button class="g-card" data-k="${k}" style="--d:${k * 40}ms"><span>${c.html}</span></button>`).join("")}</div>`;
-    const els = [...box.querySelectorAll(".g-card")];
+    box2.innerHTML = `<div class="g-board" style="--cols:${cards.length === 10 ? 5 : 4}">${cards.map((c, k) => `<button class="g-card" data-k="${k}" style="--d:${k * 40}ms"><span>${c.html}</span></button>`).join("")}</div>`;
+    const els = [...box2.querySelectorAll(".g-card")];
     let first = null, busy2 = false, left = pairs.length;
     els.forEach((el, k) => el.onclick = () => {
       if (busy2 || el.classList.contains("matched")) return;
@@ -6416,9 +7531,9 @@ input[type=checkbox] {
   }
 
   // source/screens/games/game-round.js
-  var current = null;
+  var current2 = null;
   function playRound(game12, { onExit }) {
-    current?.stop();
+    current2?.stop();
     const total = GAME_SECONDS * 1e3;
     const st = { score: 0, lives: GAME_LIVES, streak: 0, bestStreak: 0, correct: 0, answered: 0, level: 1, left: total, paused: true, over: false, keys: null };
     let frame = 0, last = 0, lastSecond = GAME_SECONDS, timers = [], detachResults = null;
@@ -6432,11 +7547,11 @@ input[type=checkbox] {
     };
     const quit = () => {
       stop();
-      current = null;
+      current2 = null;
       closeStage();
       onExit();
     };
-    current = { stop };
+    current2 = { stop };
     openStage(game12, { onQuit: quit });
     showScore(0);
     showCombo(1);
@@ -6579,7 +7694,7 @@ input[type=checkbox] {
         return;
       }
       body.innerHTML = `<div class="g-question">${q.q}</div><div class="g-answers"></div>`;
-      const box = body.querySelector(".g-answers");
+      const box2 = body.querySelector(".g-answers");
       const done = (ok, from) => {
         if (ok) {
           right(from);
@@ -6589,11 +7704,11 @@ input[type=checkbox] {
           later(() => explain(q.why, out ? () => finish("lives") : ask), 450);
         }
       };
-      if (q.type === "mc") st.keys = choiceTiles(box, q.opts, (i, tile) => {
-        markChoices(box, q.ans, i);
+      if (q.type === "mc") st.keys = choiceTiles(box2, q.opts, (i, tile) => {
+        markChoices(box2, q.ans, i);
         done(i === q.ans, tile);
       });
-      else st.keys = numberPad(box, (text, display) => {
+      else st.keys = numberPad(box2, (text, display) => {
         const ok = sameNum(text, q.answer);
         display.classList.add(ok ? "good" : "bad");
         if (!ok) display.insertAdjacentHTML("beforeend", `<span class="g-correct">${q.answer}</span>`);
@@ -6603,7 +7718,7 @@ input[type=checkbox] {
     function finish(reason) {
       if (st.over) return;
       stop();
-      current = { stop };
+      current2 = { stop };
       sound("end");
       showTime(Math.max(0, st.left), total);
       detachResults = showResults(body, game12, st, reason, { onAgain: () => playRound(game12, { onExit }), onBack: quit });
@@ -6614,7 +7729,7 @@ input[type=checkbox] {
   // source/screens/games/games-tab.js
   function initGames() {
     const render = () => {
-      $("games").innerHTML = GAMES.filter(inCourse).map((g) => {
+      $("games").innerHTML = getTopic().games.filter(inCourse).map((g) => {
         const best = getBest(g.id);
         return `<div class="gcard" data-g="${g.id}">
       <div class="gcard-top"><span class="gcard-icon" aria-hidden="true">${g.icon}</span>${g.type === "match" ? '<span class="gcard-new">New</span>' : ""}${starRow(starsFor(best))}</div>
@@ -6625,19 +7740,25 @@ input[type=checkbox] {
     };
     render();
     document.addEventListener("studychange", render);
+    document.addEventListener("topicchange", render);
     $("games").addEventListener("click", (e) => {
       const c = e.target.closest("[data-g]");
-      if (c) playRound(GAMES.find((g) => g.id === c.dataset.g), { onExit: render });
+      if (c) playRound(getTopic().games.find((g) => g.id === c.dataset.g), { onExit: render });
     });
   }
 
   // source/screens/calculator-drawer.js
-  var KEYS2 = [
+  var KEYS3 = [
     ["x!", "!", "fn", "factorial"],
     ["x\u02B8", "^", "fn", "to the power"],
     ["x\xB2", "^2", "fn", "squared"],
     ["\u221A", "\u221A(", "fn", "square root"],
     ["AC", "@clear", "fn", "clear"],
+    ["ln", "ln(", "fn", "natural log"],
+    ["log", "log(", "fn", "log base 10"],
+    ["e\u02E3", "e^(", "fn", "e to the power"],
+    ["\u03C0", "\u03C0", "fn", "pi"],
+    ["x\u207B\xB9", "^(\u22121)", "fn", "reciprocal"],
     ["7", "7"],
     ["8", "8"],
     ["9", "9"],
@@ -6670,14 +7791,14 @@ input[type=checkbox] {
         <input class="calc-input" id="calcIn" inputmode="none" autocomplete="off" spellcheck="false" placeholder="e.g. (2/3)^4 \xD7 15" aria-label="Calculation">
         <div class="calc-out" id="calcOut" aria-live="polite"></div>
       </div>
-      <div class="calc-keys">${KEYS2.map(([label, does, cls = "", name]) => `<button class="calc-key ${cls}" data-k="${does}"${name ? ` aria-label="${name}"` : ""}>${label}</button>`).join("")}</div>
+      <div class="calc-keys">${KEYS3.map(([label, does, cls = "", name]) => `<button class="calc-key ${cls}" data-k="${does}"${name ? ` aria-label="${name}"` : ""}>${label}</button>`).join("")}</div>
       <div class="calc-history"><h3>History</h3><ol id="calcHist"><li class="calc-empty">Your calculations will appear here. Tap one to use it again.</li></ol></div>
     </aside>`;
     document.body.appendChild(wrap);
     const $2 = (id) => wrap.querySelector("#" + id), input = $2("calcIn"), out = $2("calcOut"), hist = $2("calcHist");
     let ans, result = null, asDec = false, justDone = false;
     const history = [];
-    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const esc2 = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
     const show = (v) => isExact(v) && !asDec ? v.d === 1n ? group(sg(v.n)) : fh(v) : sg(ff(asDecimal(v), 10));
     const group = (t) => t.replace(/\B(?=(\d{3})+(?!\d))/g, "\u2009");
     const fit = () => out.classList.toggle("long", out.textContent.length > 16);
@@ -6710,7 +7831,7 @@ input[type=checkbox] {
       fit();
       history.unshift({ text, value: r.value });
       history.length = Math.min(history.length, CALC_HISTORY_SIZE);
-      hist.innerHTML = history.map((h, i) => `<li><button data-h="${i}"><span class="calc-h-q">${esc(h.text)}</span><span class="calc-h-a">= ${show(h.value)}</span></button></li>`).join("");
+      hist.innerHTML = history.map((h, i) => `<li><button data-h="${i}"><span class="calc-h-q">${esc2(h.text)}</span><span class="calc-h-a">= ${show(h.value)}</span></button></li>`).join("");
     }
     function type(t) {
       if (justDone) {
@@ -6792,9 +7913,13 @@ input[type=checkbox] {
     number: [["\u221A", "\u221A", "square root"], ["(", "("], [")", ")"], ["/", "/", "fraction bar"], ["^", "^", "to the power"], ['<span class="mkb-box">\u25A1</span>\xB2', "\xB2", "squared"], ["\u2212", "\u2212", "minus"]],
     poly: [["x", "x"], ["x\xB2", "x\xB2", "x squared"], ["x\xB3", "x\xB3", "x cubed"], ["x\u207F", "^", "to the power"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
     expr: [["x", "x"], ["(", "("], [")", ")"], ["^", "^", "to the power"], ['<span class="mkb-box">\u25A1</span>\xB2', "\xB2", "squared"], ["/", "/", "over"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
-    letters: [["x", "x"], ["y", "y"], ["a", "a"], ["b", "b"], ["(", "("], [")", ")"], ["^", "^", "to the power"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]]
+    letters: [["x", "x"], ["y", "y"], ["a", "a"], ["b", "b"], ["(", "("], [")", ")"], ["^", "^", "to the power"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
+    func: [["x", "x"], ["(", "("], [")", ")"], ["/", "/", "over"], ["^", "^", "to the power"], ['<span class="mkb-box">\u25A1</span>\xB2', "\xB2", "squared"], ["\u221A", "\u221A", "square root"], ["e", "e"], ["ln", "ln(", "natural log"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
+    line: [["y", "y"], ["x", "x"], ["=", "=", "equals"], ["(", "("], [")", ")"], ["/", "/", "over"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
+    ineq: [["x", "x"], ["&lt;", " < ", "less than"], ["&gt;", " > ", "greater than"], ["\u2264", " \u2264 ", "less than or equal to"], ["\u2265", " \u2265 ", "greater than or equal to"], ["\u2260", " \u2260 ", "not equal to"], ["or", " or "], ["/", "/", "over"], ["\u221A", "\u221A", "square root"], ["\u2212", "\u2212", "minus"]],
+    list: [[",", ", ", "comma"], ["(", "("], [")", ")"], ["/", "/", "over"], ["\u221A", "\u221A", "square root"], ["^", "^", "to the power"], ["e", "e"], ["ln", "ln(", "natural log"], ["\u2212", "\u2212", "minus"]]
   };
-  var HAS_POINT = { number: true, expr: true, letters: false, poly: false, integer: false };
+  var HAS_POINT = { number: true, expr: true, func: true, line: true, ineq: true, list: true, letters: false, poly: false, integer: false };
   var touch = () => matchMedia("(pointer: coarse)").matches;
   function initMathsKeyboard() {
     const kb = document.createElement("div");
@@ -6885,302 +8010,26 @@ input[type=checkbox] {
     }, true);
   }
 
-  // source/topics/binomials/cheat-sheet.js
-  var CHEAT_SHEET = `
-<div class="explain"><p>Everything you need in one place. Read it before a test, then try the exam practice and revision games.</p></div>
-
-<h3>In your formula booklet</h3>
-<div class="booklet">
-  <p class="booklet-ref">SL 1.9 \xB7 Binomial theorem, n \u2208 \u2115</p>
-  <div class="formula">(a + b)<sup>n</sup> = a<sup>n</sup> + ${bn("n", 1)}a<sup>n\u22121</sup>b + \u2026 + ${bn("n", "r")}a<sup>n\u2212r</sup>b<sup>r</sup> + \u2026 + b<sup>n</sup></div>
-  <div class="formula">${bn("n", "r")} = <span class="fr"><span>n!</span><span>r!(n \u2212 r)!</span></span></div>
-</div>
-<div class="booklet hl-only">
-  <p class="booklet-ref">HL only \xB7 AHL 1.10 \xB7 Extension of the binomial theorem, n \u2208 \u211A</p>
-  <div class="formula">(a + b)<sup>n</sup> = a<sup>n</sup>(1 + n(<span class="fr"><span>b</span><span>a</span></span>) + <span class="fr"><span>n(n \u2212 1)</span><span>2!</span></span>(<span class="fr"><span>b</span><span>a</span></span>)<sup>2</sup> + \u2026)</div>
-</div>
-<p class="hint">As printed in the IB Mathematics: analysis and approaches formula booklet for the current syllabus. Check it against the copy you will have in the exam.</p>
-
-<h3>Not in the booklet: remember these</h3>
-<div class="formula">T<sub>r+1</sub> = ${bn("n", "r")}(first)<sup>n\u2212r</sup>(second)<sup>r</sup> &nbsp;&nbsp; r = 0, 1, 2 \u2026 n</div>
-<ul>
-  <li>There are <b>n + 1 terms</b>, and the two powers in every term add up to n.</li>
-  <li>The (r+1)th term uses r, so the 4th term uses r = 3.</li>
-  <li>nC0 = 1, nC1 = n, nC2 = n(n\u22121)/2, and the row is symmetrical: nCr = nC(n\u2212r).</li>
-  <li>The sum of all the coefficients is what you get when you put x = 1.</li>
-  <li class="hl-only"><b>HL:</b> take a<sup>n</sup> out first so the bracket starts with 1. The expansion is only valid when |b/a| &lt; 1, and you should state this in your answer.</li>
-</ul>
-
-<h3>Key words</h3>
-<ul>
-  <li>A <b>binomial</b> is a bracket with two terms in it, like (2x + 3).</li>
-  <li>The <b>power</b> on the bracket says how many times it is multiplied by itself.</li>
-  <li><b>Expand</b> means multiply it all out. <b>Simplify</b> means add terms with the same power of x.</li>
-  <li>The <b>coefficient</b> of x<sup>3</sup> is the number in front of x<sup>3</sup>. The <b>constant term</b> (the term independent of x) has no x.</li>
-</ul>
-
-<h3>Read the wording, pick the method</h3>
-<div class="scroll"><table>
-  <thead><tr><th>The question says\u2026</th><th>What to do</th></tr></thead>
-  <tbody>
-    <tr><td>"Expand and simplify"</td><td>Use the pattern for every r, add the terms. If there is another bracket, multiply, then collect like terms.</td></tr>
-    <tr><td>"First three and last two terms, do not simplify"</td><td>Write nCr \xD7 (first)<sup>n\u2212r</sup> \xD7 (second)<sup>r</sup> for r = 0, 1, 2, n\u22121, n. Do not calculate.</td></tr>
-    <tr><td>"Coefficient of x<sup>k</sup>"</td><td>Find the power of x in terms of r, set it equal to k, solve for r, then work out that one term.</td></tr>
-    <tr><td>"Constant term" or "independent of x"</td><td>Same as above with k = 0.</td></tr>
-    <tr><td>"Coefficient of x<sup>k</sup> in (\u2026)(\u2026)<sup>n</sup>"</td><td>Find two coefficients from the long bracket (x<sup>k\u22121</sup> and x<sup>k</sup>), multiply each by its partner, add.</td></tr>
-    <tr><td>"The 4th term" / "the term in position\u2026"</td><td>Use r = (term number) \u2212 1.</td></tr>
-    <tr><td>"Middle term"</td><td>n even: one middle term, r = n/2. n odd: two middle terms.</td></tr>
-    <tr><td>"Ascending powers of x"</td><td>Start with r = 0 (the number term) and go up. Stop at the power you are asked for.</td></tr>
-    <tr><td>"Find k" or "find n"</td><td>Write the coefficient using k (or n), set it equal to the given number, solve.</td></tr>
-    <tr><td>"Estimate 1.02<sup>8</sup>"</td><td>Write it as (1 + 0.02)<sup>8</sup>, expand the first few terms, add.</td></tr>
-    <tr class="hl-only"><td>Negative or fractional power <span class="syl hl">HL only</span></td><td>(1 + y)<sup>m</sup> = 1 + my + m(m\u22121)/2! y\xB2 + m(m\u22121)(m\u22122)/3! y\xB3 + \u2026 Take out the first term if it is not 1. Valid only for |y| &lt; 1.</td></tr>
-    <tr><td>"Sum of the coefficients"</td><td>Put x = 1. For even or odd powers also put x = \u22121 and use (f(1) \xB1 f(\u22121)) \xF7 2.</td></tr>
-    <tr><td>"Greatest coefficient"</td><td>Compare neighbours: t(r+1) \xF7 t(r) = (n\u2212r)/(r+1) \xD7 b/a. Find where it drops below 1.</td></tr>
-  </tbody>
-</table></div>
-
-<h3>IB command terms</h3>
-<div class="scroll"><table>
-  <thead><tr><th>Term</th><th>What it asks you to do</th></tr></thead>
-  <tbody>
-    <tr><td><b>Write down</b></td><td>Get the answer, usually by reading it off. Little or no working is needed.</td></tr>
-    <tr><td><b>State</b></td><td>Give a short answer, such as a name or a value, with no explanation.</td></tr>
-    <tr><td><b>Find</b></td><td>Get the answer and show the stages of your working.</td></tr>
-    <tr><td><b>Calculate</b></td><td>Get a number, showing the stages of your working.</td></tr>
-    <tr><td><b>Show that</b></td><td>Reach the result you are given, showing every step. Do not start from the answer.</td></tr>
-    <tr><td><b>Hence</b></td><td>Use your answer to the part before.</td></tr>
-    <tr><td><b>Hence or otherwise</b></td><td>Using the part before is the easiest way, but another method can also get the marks.</td></tr>
-    <tr><td><b>Estimate</b></td><td>Find an approximate value.</td></tr>
-  </tbody>
-</table></div>
-
-<div class="paper-1-only">
-  <h3>Paper 1: no calculator</h3>
-  <ul>
-    <li>Get nCr from Pascal's triangle for small n, or from nC2 = n(n\u22121)/2 and the symmetry nCr = nC(n\u2212r).</li>
-    <li>Keep powers of numbers as powers until the end, e.g. ${bn(6, 2)} \xD7 2<sup>4</sup> \xD7 3<sup>2</sup> = 15 \xD7 16 \xD7 9.</li>
-    <li>Paper 1 questions are designed so the numbers stay manageable. If they get huge, check your r.</li>
-  </ul>
-</div>
-<div class="paper-2-only">
-  <h3>Paper 2: using your GDC</h3>
-  <ul>
-    <li><b>TI-84 Plus CE:</b> type n, press <kbd>math</kbd>, go to <b>PROB</b>, choose <b>nCr</b>, type r, press <kbd>enter</kbd>.</li>
-    <li><b>TI-Nspire CX:</b> <kbd>menu</kbd> \u25B8 Probability \u25B8 Combinations, then type nCr(n, r).</li>
-    <li><b>Casio fx-CG50:</b> in Run-Matrix, type n, then <kbd>OPTN</kbd> \u25B8 \u25B7 \u25B8 PROB \u25B8 nCr, type r, press <kbd>EXE</kbd>.</li>
-    <li>Check an expansion: graph (or tabulate) the original bracket and your answer. They should match for every x.</li>
-    <li>Still write the set-up, e.g. ${bn(10, 3)}(2x)<sup>7</sup>(3)<sup>3</sup>, before the answer from your GDC: the method marks are for the working.</li>
-  </ul>
-  <p class="hint">Menu names can differ slightly between calculator software versions.</p>
-</div>
-
-<h3>Quick checks</h3>
-<ul>
-  <li>Powers of the two brackets add to n in every term.</li>
-  <li>Put x = 1 into the question and the answer: they should give the same number.</li>
-  <li>The coefficients are symmetrical: nCr = nC(n\u2212r).</li>
-</ul>
-<h3>Common mistakes</h3>
-<ul>
-  <li>Forgetting to raise the number as well as the x: (2x)\xB3 = 8x\xB3, not 2x\xB3.</li>
-  <li>Losing the minus sign: (\u22123)\xB2 = 9 but (\u22123)\xB3 = \u221227. Keep the sign with the second term.</li>
-  <li>Using r = 4 for the 4th term. It is r = 3.</li>
-  <li>Forgetting that multiplying by x raises every power by 1.</li>
-  <li class="hl-only">Using the nCr pattern with a negative or fractional power. That needs the extended formula, and the bracket must start with 1.</li>
-</ul>
-`;
-
   // source/screens/cheat-sheet-tab.js
   function initCheatSheet() {
-    $("p-cheat").innerHTML = CHEAT_SHEET;
+    const show = () => $("p-cheat").innerHTML = getTopic().cheatSheet;
+    show();
+    document.addEventListener("topicchange", show);
   }
-
-  // source/topics/binomials/exam-questions/exam-helpers.js
-  var part = ({ text, marks, answer, scheme, lesson: lesson2 }) => ({ text, marks, scheme, lesson: lesson2, answer: answer || TYPES[lesson2.t].ans(lesson2) });
-  var num = (v) => {
-    const f = typeof v === "object" ? v : F(v);
-    return { kind: "num", val: f, disp: fstr(f).replace("-", "\u2212") };
-  };
-  var par = (v) => String(v).startsWith("-") ? `(${String(v).replace("-", "\u2212")})` : String(v);
-
-  // source/topics/binomials/exam-questions/terms-coefficient-hence.js
-  var exam = {
-    id: "terms-hence",
-    title: "Terms, a coefficient, then hence",
-    syllabus: "SL 1.9",
-    paper: 1,
-    marks: 7,
-    make() {
-      for (; ; ) {
-        const a = ri(1, 3), b = rnz(-3, 3), n = ri(4, 6), k = ri(2, n - 1), c = ri(1, 3), d = rnz(-3, 3);
-        const cfg = { a, p: 1, b, q: 0, n }, Q = question(cfg).html, pc = { ...cfg, c, d }, r = n - k;
-        const vK = C(n, r) * pw(BigInt(a), k) * pw(BigInt(b), r), vNext = C(n, r - 1) * pw(BigInt(a), k + 1) * pw(BigInt(b), r - 1), vProd = productMap(pc).get(k + 1) || 0n;
-        if (vK === 0n || vProd === 0n) continue;
-        const first = `(${a === 1 ? "" : a}<i>x</i>)`;
-        return { stem: `Consider the expansion of ${Q}.`, parts: [
-          part({ text: "Write down the number of terms in this expansion.", marks: 1, answer: num(n + 1), scheme: [["A1", `${n + 1} terms (one more than the power, ${n})`]] }),
-          part({
-            text: `Find the coefficient of ${xp(k)}.`,
-            marks: 3,
-            lesson: { t: "coef", cfg, k },
-            scheme: [
-              ["M1", `attempt to use the general term, e.g. ${bn(n, "r")}${first}<sup>${n}\u2212r</sup>(${sg(b)})<sup>r</sup>`],
-              ["A1", `the correct term, r = ${r}: ${bn(n, r)}${first}<sup>${k}</sup>(${sg(b)})<sup>${r}</sup>`],
-              ["A1", sg(vK)]
-            ]
-          }),
-          part({
-            text: `Hence find the coefficient of ${xp(k + 1)} in the expansion of ${question(pc).left}${Q}.`,
-            marks: 3,
-            lesson: { t: "pcoef", cfg: pc, k: k + 1 },
-            scheme: [
-              ["M1", `two products give ${xp(k + 1)}: ${mono(BigInt(c), 1, true)} \xD7 (the ${xp(k)} term) and ${sg(d)} \xD7 (the ${xp(k + 1)} term)`],
-              ["A1", `the coefficient of ${xp(k + 1)} in ${Q} is ${sg(vNext)}`],
-              ["A1", `${par(c)} \xD7 ${par(vK)} + ${par(d)} \xD7 ${par(vNext)} = ${sg(vProd)}`]
-            ]
-          })
-        ] };
-      }
-    }
-  };
-
-  // source/topics/binomials/exam-questions/term-independent-of-x.js
-  var exam2 = {
-    id: "independent",
-    title: "The term independent of x",
-    syllabus: "SL 1.9",
-    paper: 1,
-    marks: 5,
-    make() {
-      const square = Math.random() < 0.5, p = square ? 2 : 1, n = square ? 3 * ri(1, 2) : 2 * ri(2, 4), a = ri(1, 3), b = rnz(-3, 3);
-      const cfg = { a, p, b, q: -1, n }, R = p * n / (p + 1), lesson2 = { t: "coef", cfg, k: 0 }, v = TYPES.coef.ans(lesson2);
-      const power = `${p === 1 ? "" : p}(${n} \u2212 r) \u2212 r`;
-      return { stem: `Consider the expansion of ${question(cfg).html}.`, parts: [
-        part({
-          text: `The general term is ${bn(n, "r")}(first)<sup>${n}\u2212r</sup>(second)<sup>r</sup>. Find the value of r that gives the term independent of <i>x</i>.`,
-          marks: 2,
-          answer: num(R),
-          lesson: lesson2,
-          scheme: [["M1", `setting the power of x to zero: ${power} = 0`], ["A1", `r = ${R}`]]
-        }),
-        part({
-          text: "Hence find the term independent of <i>x</i>.",
-          marks: 3,
-          lesson: lesson2,
-          scheme: [["M1", `substituting r = ${R} into the general term`], ["A1", `${bn(n, R)}(${a})<sup>${n - R}</sup>(${sg(b)})<sup>${R}</sup> (the x parts cancel)`], ["A1", v.disp]]
-        })
-      ] };
-    }
-  };
-
-  // source/topics/binomials/exam-questions/find-k-then-hence.js
-  var exam3 = {
-    id: "find-k",
-    title: "Find k, then hence",
-    syllabus: "SL 1.9",
-    paper: 1,
-    marks: 6,
-    make() {
-      const a = ri(1, 3), n = ri(4, 7), m = ri(2, 3), k = ri(1, 4), A = BigInt(a), co = C(n, m) * pw(A, n - m), V = co * pw(BigInt(k), m);
-      const bracket = `(${a} + <i>kx</i>)<sup>${n}</sup>`;
-      return { stem: `In the expansion of ${bracket}, where <i>k</i> &gt; 0, the coefficient of ${xp(m)} is ${sg(V)}.`, parts: [
-        part({
-          text: "Find the value of <i>k</i>.",
-          marks: 4,
-          lesson: { t: "unkv", a, n, m, V, pos: true },
-          scheme: [
-            ["M1", `the ${xp(m)} term uses r = ${m}: ${bn(n, m)}(${a})<sup>${n - m}</sup>(<i>kx</i>)<sup>${m}</sup>`],
-            ["A1", `${co}<i>k</i><sup>${m}</sup> = ${sg(V)}`],
-            ["M1", `solving: <i>k</i><sup>${m}</sup> = ${pw(BigInt(k), m)}`],
-            ["A1", `<i>k</i> = ${k}`]
-          ]
-        }),
-        part({
-          text: `Hence find the coefficient of ${xp(m + 1)}.`,
-          marks: 2,
-          lesson: { t: "coef", cfg: { a, p: 0, b: k, q: 1, n }, k: m + 1 },
-          scheme: [["M1", `${bn(n, m + 1)}(${a})<sup>${n - m - 1}</sup>(${k})<sup>${m + 1}</sup>`], ["A1", sg(C(n, m + 1) * pw(A, n - m - 1) * pw(BigInt(k), m + 1))]]
-        })
-      ] };
-    }
-  };
-
-  // source/topics/binomials/exam-questions/estimate-with-expansion.js
-  var exam4 = {
-    id: "estimate",
-    title: "Estimate with an expansion",
-    syllabus: "SL 1.9",
-    paper: 2,
-    marks: 5,
-    make() {
-      const a = ri(1, 3), b = rnz(-3, 3), n = ri(5, 9), cfg = { a, p: 0, b, q: 1, n }, lesson2 = { t: "ascend", cfg, upto: 2 };
-      const t = [0, 1, 2].map((r) => C(n, r) * pw(BigInt(a), n - r) * pw(BigInt(b), r)), x = 0.01, est = t.reduce((s, v, r) => s + Number(v) * x ** r, 0), base = +(a + b * x).toFixed(2);
-      return { stem: `Consider the expansion of (${a} ${b < 0 ? "\u2212" : "+"} ${Math.abs(b) === 1 ? "" : Math.abs(b)}<i>x</i>)<sup>${n}</sup>.`, parts: [
-        part({
-          text: "Find the first three terms, in ascending powers of <i>x</i>.",
-          marks: 3,
-          lesson: lesson2,
-          scheme: [
-            ["M1", `using the binomial theorem: ${bn(n, 0)}(${a})<sup>${n}</sup> + ${bn(n, 1)}(${a})<sup>${n - 1}</sup>(${sg(b)}x) + ${bn(n, 2)}(${a})<sup>${n - 2}</sup>(${sg(b)}x)<sup>2</sup>`],
-            ["A2", `${TYPES.ascend.ans(lesson2).disp} (A1 for two correct terms)`]
-          ]
-        }),
-        part({
-          text: `Use your answer to part (a) with <i>x</i> = ${x} to estimate ${base}<sup>${n}</sup>. Give your answer to 4 significant figures.`,
-          marks: 2,
-          answer: { kind: "approx", val: est, disp: ff(est, 4) },
-          scheme: [["M1", `substituting x = ${x} into the three terms`], ["A1", ff(est, 4)]]
-        })
-      ] };
-    }
-  };
-
-  // source/topics/binomials/exam-questions/negative-power-hl.js
-  var exam5 = {
-    id: "negative-power",
-    title: "A negative or fractional power",
-    syllabus: "AHL 1.10",
-    paper: 1,
-    marks: 5,
-    make() {
-      const ms = [F(-1), F(-2), F(-3), F(1, 2), F(-1, 2)], bs = [2, 3, 4, -2, -3, -4], m = ms[ri(0, ms.length - 1)], b = bs[ri(0, bs.length - 1)];
-      const P = { t: "extended", cfg: { a: 1, p: 0, b, q: 1, n: 0 }, m, upto: 3 }, one = { ...P, askj: 1 }, two = { ...P, askj: 2 }, mm = fstr(m);
-      return { stem: `Consider the expansion of ${TYPES.extended.qHtml(P)} in ascending powers of <i>x</i>.`, parts: [
-        part({ text: "Write down the coefficient of <i>x</i>.", marks: 1, lesson: one, answer: num(TYPES.extended.ans(one).val), scheme: [["A1", `${par(mm)} \xD7 ${par(b)} = ${num(TYPES.extended.ans(one).val).disp}`]] }),
-        part({
-          text: "Find the coefficient of <i>x</i><sup>2</sup>.",
-          marks: 3,
-          lesson: two,
-          answer: num(TYPES.extended.ans(two).val),
-          scheme: [["M1", "use of the extended binomial theorem from the formula booklet"], ["A1", `<span class="fr"><span>(${mm})(${mm} \u2212 1)</span><span>2!</span></span>(${sg(b)}<i>x</i>)<sup>2</sup>`], ["A1", num(TYPES.extended.ans(two).val).disp]]
-        }),
-        part({
-          text: "The expansion is valid for |<i>x</i>| &lt; <i>c</i>. Write down the value of <i>c</i>.",
-          marks: 1,
-          answer: num(F(1, Math.abs(b))),
-          scheme: [["A1", `|${sg(b)}x| &lt; 1, so |x| &lt; ${fstr(F(1, Math.abs(b)))}`]]
-        })
-      ] };
-    }
-  };
-
-  // source/topics/binomials/exam-questions/exam-list.js
-  var EXAMS = [exam, exam2, exam3, exam4, exam5];
 
   // source/screens/exam/exam-question.js
   var paperBadge = (paper2) => `<span class="paper-badge p${paper2}">Paper ${paper2} \xB7 ${paper2 === 1 ? "no calculator" : "calculator"}</span>`;
-  var placeholder = (kind) => kind === "poly" ? "e.g. 64 + 192x + 240x\xB2" : kind === "num" ? "a number, or a fraction like 3/4" : "a number";
-  function showExamQuestion(box, exam6, { onBack }) {
+  function showExamQuestion(box2, exam6, { onBack }) {
     const q = exam6.make(), total = q.parts.reduce((s, p) => s + p.marks, 0), got = q.parts.map(() => null);
-    box.hidden = false;
-    box.innerHTML = `<div class="exam-head"><button class="btn small" data-a="back">\u25C0 All questions</button>
+    box2.hidden = false;
+    box2.innerHTML = `<div class="exam-head"><button class="btn small" data-a="back">\u25C0 All questions</button>
       <div class="exam-badges">${syllabusBadge(exam6)}${paperBadge(exam6.paper)}</div><span class="exam-total">[${total} marks]</span></div>
     <div class="exam-paper">
       <h4 class="exam-title">${exam6.title}</h4>
       <p class="m exam-stem">${q.stem}</p>
       ${q.parts.map((p, i) => `<div class="exam-part" data-i="${i}">
         <div class="exam-q"><span class="exam-letter">(${"abcdefgh"[i]})</span><div class="m">${p.text}</div><span class="exam-marks">[${p.marks}]</span></div>
-        <div class="exam-answer"><input autocomplete="off" aria-label="Answer to part ${"abcdefgh"[i]}" placeholder="${placeholder(p.answer.kind)}" data-maths="${p.answer.kind === "poly" ? "poly" : "number"}"><button class="btn primary small" data-a="check">Check</button></div>
+        <div class="exam-answer"><div class="ans-box">${answerBoxes(p.answer, `ex${i}`, `Answer to part ${"abcdefgh"[i]}`)}</div><button class="btn primary small" data-a="check">Check</button></div>
         <p class="fb" aria-live="polite"></p>
         <details class="exam-scheme"><summary>Markscheme</summary>
           <ul>${p.scheme.map(([code, text]) => `<li><span class="ms-code">${code}</span><span class="m">${text}</span></li>`).join("")}</ul>
@@ -7189,23 +8038,27 @@ input[type=checkbox] {
     </div>
     <div class="exam-result" aria-live="polite"></div>
     <div class="rowb"><button class="btn primary" data-a="again">New question \u21BB</button><button class="btn" data-a="back">All questions</button></div>`;
-    box.scrollIntoView({ block: "start", behavior: "smooth" });
+    box2.scrollIntoView({ block: "start", behavior: "smooth" });
     function check(i) {
-      const p = q.parts[i], el = box.querySelector(`.exam-part[data-i="${i}"]`), input = el.querySelector("input"), fb = el.querySelector(".fb");
-      if (got[i] !== null || !input.value.trim()) return;
-      const r = checkAnswer(p.answer, input.value);
+      const p = q.parts[i], el = box2.querySelector(`.exam-part[data-i="${i}"]`), ans = el.querySelector(".ans-box"), fb = el.querySelector(".fb");
+      const raw2 = readBoxes(ans, p.answer);
+      if (got[i] !== null || isBlank(raw2)) return;
+      const r = checkAnswer(p.answer, raw2);
       if (r.bad) {
         fb.className = "fb bad";
         fb.textContent = r.bad;
         return;
       }
       got[i] = r.ok ? p.marks : 0;
-      input.readOnly = true;
+      ans.querySelectorAll("input").forEach((x) => {
+        x.readOnly = true;
+        x.blur();
+      });
+      if (p.answer.kind === "multi") markBoxes(ans, r);
       el.querySelector('[data-a="check"]').disabled = true;
       el.classList.add(r.ok ? "right" : "wrong");
       fb.className = "fb " + (r.ok ? "good" : "bad");
-      fb.innerHTML = r.ok ? `\u2713 Correct: ${p.marks} out of ${p.marks} mark${p.marks === 1 ? "" : "s"}.` : `\u2717 The answer is <span class="m">${p.answer.disp}</span>. In the exam, correct working can still earn the M marks, so compare yours with the markscheme.`;
-      input.blur();
+      fb.innerHTML = r.ok ? `\u2713 Correct: ${p.marks} out of ${p.marks} mark${p.marks === 1 ? "" : "s"}.` : `\u2717 The answer is ${answerHtml(p.answer)}. In the exam, correct working can still earn the M marks, so compare yours with the markscheme.`;
       if (!r.ok) {
         const d = el.querySelector("details");
         d.open = true;
@@ -7213,51 +8066,50 @@ input[type=checkbox] {
       }
       if (got.every((g) => g !== null)) {
         const sum = got.reduce((s, g) => s + g, 0);
-        box.querySelector(".exam-result").innerHTML = `<p class="exam-score"><b>${sum} / ${total}</b> marks${sum === total ? " \u{1F389} Full marks!" : ""}</p>`;
+        box2.querySelector(".exam-result").innerHTML = `<p class="exam-score"><b>${sum} / ${total}</b> marks${sum === total ? " \u{1F389} Full marks!" : ""}</p>`;
       }
     }
-    box.onclick = (e) => {
+    box2.onclick = (e) => {
       const b = e.target.closest("[data-a]");
       if (!b) return;
       const a = b.dataset.a;
       if (a === "back") {
-        box.hidden = true;
+        box2.hidden = true;
         onBack();
-      } else if (a === "again") showExamQuestion(box, exam6, { onBack });
+      } else if (a === "again") showExamQuestion(box2, exam6, { onBack });
       else {
         const i = +b.closest(".exam-part").dataset.i;
         if (a === "check") check(i);
         if (a === "lesson") {
           const L2 = q.parts[i].lesson;
-          openBook(TYPES[L2.t].build(L2), false);
+          openBook(getTopic().types[L2.t].build(L2), false);
         }
       }
     };
-    box.querySelectorAll(".exam-part input").forEach((input) => input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") check(+input.closest(".exam-part").dataset.i);
-    }));
+    box2.querySelectorAll(".exam-part").forEach((el) => onEnter(el.querySelector(".ans-box"), () => check(+el.dataset.i)));
   }
 
   // source/screens/exam/exam-tab.js
   function initExam() {
-    const list = () => EXAMS.filter((e) => inCourse(e) && (getPaper() === "2" || e.paper === 1));
+    const list = () => getTopic().exams.filter((e) => inCourse(e) && (getPaper() === "2" || e.paper === 1));
     const render = () => {
       $("examQ").hidden = true;
       $("examList").hidden = false;
       $("examList").innerHTML = list().map((e) => `<div class="exam-card" data-e="${e.id}">
       <div class="exam-badges">${syllabusBadge(e)}${paperBadge(e.paper)}</div>
       <h4>${e.title}</h4><p class="what">${e.marks} marks \xB7 about ${Math.round(e.marks * EXAM_MINUTES_PER_MARK)} minutes</p>
-      <button class="btn primary small" data-e="${e.id}">Start \u25B6</button></div>`).join("");
+      <button class="btn primary small" data-e="${e.id}">Start \u25B6</button></div>`).join("") || '<p class="hint">No exam-style questions for this course and paper yet. Try the other paper.</p>';
     };
     $("examList").addEventListener("click", (e) => {
       const c = e.target.closest("[data-e]");
       if (!c) return;
-      const exam6 = EXAMS.find((x) => x.id === c.dataset.e);
+      const exam6 = getTopic().exams.find((x) => x.id === c.dataset.e);
       $("examList").hidden = true;
       showExamQuestion($("examQ"), exam6, { onBack: render });
     });
     render();
     document.addEventListener("studychange", render);
+    document.addEventListener("topicchange", render);
   }
 
   // source/start.js

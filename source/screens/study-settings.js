@@ -15,18 +15,22 @@ export const getPaper=()=>paper;
 export const hasChosenCourse=()=>course!==null;
 export const courseShort=()=>COURSES.find(x=>x[0]===getCourse())[1];
 const level=()=>getCourse().endsWith('hl')?'hl':'sl';
-/* is this question type, game or exam question in the chosen course? HL has everything; SL leaves out the HL-only (AHL) sections */
-export const isHlOnly=item=>String(item.syllabus||'').startsWith('AHL');
-export const inCourse=item=>level()==='hl'||!isHlOnly(item);
-/* is a topic on the chosen course's syllabus? topics list their course codes, e.g. "aa-sl aa-hl" */
-export const topicInCourse=courses=>String(courses||'').split(/\s+/).includes(getCourse());
+const family=()=>getCourse().slice(0,2);  // 'aa' or 'ai'
+export const courseFamily=family;
+/* an item's syllabus section for the chosen course. syllabus is either one section for every course ('SL 1.9'),
+   or one per course family ({aa:'SL 2.5', ai:'AHL 2.7'}); a family left out does not have it */
+export const syllabusFor=item=>{const s=item.syllabus;return s==null?null:typeof s==='string'?s:s[family()]??null};
+/* is this question type, game or exam question in the chosen course? HL has everything in its family; SL leaves out the HL-only (AHL) sections */
+export const isHlOnly=item=>String(syllabusFor(item)||'').startsWith('AHL');
+export const inCourse=item=>(item.syllabus==null||syllabusFor(item)!==null)&&(level()==='hl'||!isHlOnly(item));
 /* a small label with the IB syllabus section, e.g. "SL 1.9" or "HL only · 1.10" */
-export const syllabusBadge=item=>item.syllabus?`<span class="syl${isHlOnly(item)?' hl':''}" title="IB Mathematics: analysis and approaches, syllabus section ${item.syllabus}">${isHlOnly(item)?'HL only · '+item.syllabus.replace('AHL ',''):item.syllabus}</span>`:'';
+export const syllabusBadge=item=>{const s=syllabusFor(item);if(!s)return '';const c=COURSES.find(x=>x[0]===getCourse());
+  return `<span class="syl${isHlOnly(item)?' hl':''}" title="IB Mathematics: ${c[2].toLowerCase()}, syllabus section ${s}">${isHlOnly(item)?'HL only · '+s.replace('AHL ',''):s}</span>`};
 
 function apply(announce){
   $('studyBar').querySelectorAll('[data-course]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.course===getCourse()));
   $('studyBar').querySelectorAll('[data-paper]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.paper===paper));
-  const cl=document.body.classList;cl.toggle('course-sl',level()==='sl');cl.toggle('course-hl',level()==='hl');cl.toggle('paper-1',paper==='1');cl.toggle('paper-2',paper==='2');
+  const cl=document.body.classList;COURSES.forEach(([c])=>cl.toggle('course-'+c,c===getCourse()));cl.toggle('course-aa',family()==='aa');cl.toggle('course-ai',family()==='ai');cl.toggle('course-sl',level()==='sl');cl.toggle('course-hl',level()==='hl');cl.toggle('paper-1',paper==='1');cl.toggle('paper-2',paper==='2');
   if(announce)document.dispatchEvent(new CustomEvent('studychange',{detail:{course:getCourse(),paper}}))}
 /* used by the first-open question */
 export function setCourse(v){course=v;save(COURSE_KEY,v);apply(true)}

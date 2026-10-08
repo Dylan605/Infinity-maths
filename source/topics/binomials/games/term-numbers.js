@@ -1,7 +1,7 @@
 /* Revision game: Term numbers. Link term numbers, r and the number of terms. */
 import {ord} from '../../../helpers/maths-display.js';
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel,mcq} from './game-helpers.js';
+import {byLevel,mcq} from '../../game-helpers.js';
 
 export const game={id:'termname',syllabus:'SL 1.9',name:'Term numbers',icon:'🔢',skill:'Which term is which',
   how:'The (r+1)th term uses r, and there is always one more term than the power.',

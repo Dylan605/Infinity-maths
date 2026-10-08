@@ -1,7 +1,7 @@
 /* Revision game: Pascal race. Fill the gap in a row of Pascal's triangle. */
 import {C} from '../../../helpers/whole-numbers.js';
 import {ri} from '../../../helpers/random-numbers.js';
-import {byLevel,typed} from './game-helpers.js';
+import {byLevel,typed} from '../../game-helpers.js';
 
 export const game={id:'pascal',syllabus:'SL 1.9',name:'Pascal race',icon:'🔺',skill:"Pascal's triangle",
   how:'Fill the gap. Every number is the two above it added together.',
