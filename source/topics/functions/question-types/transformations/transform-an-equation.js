@@ -2,7 +2,7 @@
 import {T,mk,readLine,viewFor} from '../../question-list.js';
 import {F,fadd,fdiv,fmul,fpow,fstr,fsub} from '../../../../helpers/fractions.js';
 import {MINUS,bn,xp} from '../../../../helpers/maths-display.js';
-import {dec,quad,shift,signed,terms,val} from '../../../../helpers/function-display.js';
+import {dec,par,quad,shift,signed,terms,val} from '../../../../helpers/function-display.js';
 import {graph} from '../../../../helpers/graph-drawing.js';
 import {L,MC,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {exprAns} from '../../../../maths/making-answers.js';
@@ -36,8 +36,10 @@ export function formula(p,{P,Q,C,K},raw=false){const u=inside(Q,C),b=p.base,bare
   if(b==='exp')return `${coef(P)}e<sup>${u}</sup>${plusK(K)}`;
   if(b==='sqrt')return `${coef(P)}√${bare?X:`(${u})`}${plusK(K)}`;
   if(b==='recip'){if(raw)return `${coef(P)}${fr(1,u)}${plusK(K)}`;
-    const m=fdiv(P,Q),h=fdiv(fneg(C),Q),top=m.n<0n?-m.n:m.n,bot=m.d===1n?shift(h):dec(h)===0?`${m.d}${X}`:`${m.d}(${shift(h)})`;
-    return `${m.n<0n?MINUS:''}${fr(top,bot)}${plusK(K)}`}
+    /* P/(Qx + C) with whole numbers: multiply top and bottom to clear the fractions, then cancel */
+    const ab=v=>v<0n?-v:v,gcd=(x,y)=>y?gcd(y,x%y):x,m=Q.d/gcd(Q.d,C.d)*C.d,N=fmul(P,F(m));
+    let top=N.n,a=Q.n*(m/Q.d)*N.d,c=C.n*(m/C.d)*N.d;const g=gcd(gcd(ab(top),ab(a)),ab(c));top/=g;a/=g;c/=g;if(a<0n){top=-top;a=-a;c=-c}
+    return `${top<0n?MINUS:''}${fr(ab(top),terms([[Number(a),X],[Number(c),'']]))}${plusK(K)}`}
   const {a,b:bb,c}=p;if(raw)return `${dec(P)===1?'':coef(P)+'['}${terms([[a,`(${u})<sup>2</sup>`],[bb,`(${u})`],[c,'']])}${dec(P)===1?'':']'}${plusK(K)}`;
   return quad(fmul(P,fmul(F(a),fmul(Q,Q))),fmul(P,fadd(fmul(F(2*a),fmul(Q,C)),fmul(F(bb),Q))),fadd(fmul(P,fadd(fmul(F(a),fmul(C,C)),fadd(fmul(F(bb),C),F(c)))),K))}
 export const gfun=(p,{P,Q,C,K})=>{const f=BASES[p.base].f(p);return x=>dec(P)*f(dec(Q)*x+dec(C))+dec(K)};
@@ -54,7 +56,7 @@ export const finalOf=p=>p.moves.reduce(applyMove,START);
 const listWords=ms=>ms.map(moveWords).join(', followed by ');
 /* one lesson step per transformation: what to change, and a multiple-choice check */
 function moveLine(m,t,n){const y=v=>`${Y} = ${fnot(v)}`;
-  if(m.k==='T'){const s=Math.sign(m.h),W=[{...t,C:fadd(t.C,fmul(t.Q,F(m.h)))},{...n,K:fsub(t.K,F(m.v))},{...t,C:fadd(t.C,fmul(t.Q,F(m.h))),K:fsub(t.K,F(m.v))},{...n,C:F(m.v),K:fadd(t.K,F(m.h))}];
+  if(m.k==='T'){const s=Math.sign(m.h),W=[{...t,C:fadd(t.C,fmul(t.Q,F(m.h)))},{...n,K:fsub(t.K,F(m.v))},{...t,C:fadd(t.C,fmul(t.Q,F(m.h))),K:fsub(t.K,F(m.v))},{...t,C:fsub(t.C,fmul(t.Q,F(m.v))),K:fadd(t.K,F(m.h))}];
     return L(`${y(t)} &nbsp;→&nbsp; ${y(n)}`,`${m.h?`Inside: replace ${X} with ${shift(m.h)} (${s>0?'right':'left'} ${Math.abs(m.h)} is the opposite sign).`:`No sideways move.`} ${m.v?`Outside: ${m.v>0?'add':'take away'} ${Math.abs(m.v)} (${m.v>0?'up':'down'} ${Math.abs(m.v)}).`:'No move up or down.'}`,
       MC('Which equation is the translated graph?',y(n),W.map(y),`Inside the bracket does the opposite (${X} → ${shift(m.h)}); outside does what it says (${signed(m.v)}).`),
       [`The vector ${vec(m.h,m.v)} means ${val(Math.abs(m.h))} ${m.h<0?'left':'right'} and ${val(Math.abs(m.v))} ${m.v<0?'down':'up'}. To move ${m.h<0?'left':'right'}, use ${shift(m.h)}: the new graph at ${X} = ${val(m.h)} must give what the old one gave at ${X} = 0, and ${shift(m.h)} is 0 there.`,
@@ -66,7 +68,7 @@ function moveLine(m,t,n){const y=v=>`${Y} = ${fnot(v)}`;
       MC('Which equation is the stretched graph?',y(n),[{...t,Q:fmul(t.Q,s)},{...t,P:fmul(t.P,s),K:fmul(t.K,s)},{...t,Q:fmul(t.Q,s),C:fmul(t.C,s)}].map(y),`Inside does the opposite: stretching by ${val(s)} sideways means ${X} ÷ ${val(s)} inside.`),
       [`The point at ${X} = 1 should move to ${X} = ${val(s)}. With ${coef(fdiv(F(1),s))}${X} inside, putting in ${X} = ${val(s)} gives ${val(fdiv(F(1),s))} × ${val(s)} = 1: the old value from ${X} = 1 ✓.`])}
   if(m.k==='RX')return L(`${y(t)} &nbsp;→&nbsp; ${y(n)}`,`Multiply the whole right-hand side by ${MINUS}1: every ${Y}-coordinate changes sign.`,
-      MC('Which equation is the reflected graph?',y(n),[{...t,P:fneg(t.P)},{...t,Q:fneg(t.Q)},{...t,Q:fneg(t.Q),C:fneg(t.C)}].map(y),`A reflection in the ${X}-axis turns every ${Y} into ${MINUS}${Y}, so the whole thing is multiplied by ${MINUS}1.`),
+      MC('Which equation is the reflected graph?',y(n),[{...t,P:fneg(t.P)},{...t,Q:fneg(t.Q)},{...n,Q:fneg(t.Q)}].map(y),`A reflection in the ${X}-axis turns every ${Y} into ${MINUS}${Y}, so the whole thing is multiplied by ${MINUS}1.`),
       [`Reflecting in the ${X}-axis flips the graph upside down: (${X}, ${Y}) goes to (${X}, ${MINUS}${Y}). Brackets help: ${MINUS}(${fnot(t)}) = ${fnot(n)}.`]);
   return L(`${y(t)} &nbsp;→&nbsp; ${y(n)}`,`Inside: replace ${X} with ${MINUS}${X}: every ${X}-coordinate changes sign.`,
       MC('Which equation is the reflected graph?',y(n),[{...n,Q:t.Q,C:fneg(t.C)},{...t,P:fneg(t.P),K:fneg(t.K)},{...n,C:fneg(t.C)}].map(y),`A reflection in the ${Y}-axis turns every ${X} into ${MINUS}${X}, inside the bracket.`),
@@ -86,14 +88,14 @@ T('transeq',{name:'Transform an equation',group:'transform',syllabus:{aa:'SL 2.1
     const raw=formula(P,fin,true),tidy=formula(P,fin);
     S('Put in the formula for f',`Replace f(…) with the formula, using what is inside the bracket in place of x.`,[
       L(`<i>g</i>(${X}) = ${fnot(fin)}`,'From the steps above.'),
-      L(`<i>g</i>(${X}) = ${raw}`,`<i>f</i>(${X}) = ${B.html(P)}, so <i>f</i>(${inside(fin.Q,fin.C)}) = ${formula(P,START.Q&&{...START,Q:fin.Q,C:fin.C},true)}.`),
+      L(`<i>g</i>(${X}) = ${raw}`,`<i>f</i>(${X}) = ${B.html(P)}, so <i>f</i>(${inside(fin.Q,fin.C)}) = ${formula(P,{...START,Q:fin.Q,C:fin.C},true)}.`),
       ...(raw!==tidy?[L(`<i>g</i>(${X}) = ${tidy}`,P.base==='quad'?'Expand the brackets and collect like terms.':'Tidy it up (this is the same function).')]:[])]);
     const k0=B.key(P),[kx,ky]=image(fin,k0),g=gfun(P,fin),v=viewFor([dec(kx)-4,dec(kx)+4,dec(k0[0])],[dec(ky)-4,dec(ky)+4,dec(k0[1])]);
     const lines=P.base==='recip'?[{x:dec(fdiv(fneg(fin.C),fin.Q)),colour:3},{y:dec(fin.K),colour:3}]:[];
     S('Sketch it','The dashed curve is f, the solid one is g.',[L(graph({...v,curves:[{f:B.f(P),colour:2,dashed:true,label:'y = f(x)'},{f:g,colour:1,label:'y = g(x)'}],lines,
       points:[{x:dec(k0[0]),y:dec(k0[1]),at:'nw'},{x:dec(kx),y:dec(ky),label:`(${fstr(kx)}, ${fstr(ky)})`.replace(/-/g,MINUS),at:'se'}],description:'The graph of f dashed and the transformed graph of g'}),
       `Follow one point: the ${B.word} (${val(k0[0])}, ${val(k0[1])}) of <i>f</i> has moved to (${val(kx)}, ${val(ky)}) on <i>g</i>.`,
-      Nm(`Where does the point (${val(k0[0])}, ${val(k0[1])}) of f end up on g?`,[{label:'x',answer:fstr(kx)},{label:'y',answer:fstr(ky)}],`For ${X}: solve ${inside(fin.Q,fin.C)} = ${val(k0[0])}. For ${Y}: ${coef(fin.P)||'1 × '}${par0(k0[1])}${plusK(fin.K)}.`),
+      Nm(`Where does the point (${val(k0[0])}, ${val(k0[1])}) of f end up on g?`,[{label:'x',answer:fstr(kx)},{label:'y',answer:fstr(ky)}],`For ${X}: solve ${inside(fin.Q,fin.C)} = ${val(k0[0])}. For ${Y}: ${val(fin.P)} × ${par(k0[1])}${plusK(fin.K)}.`),
       [`Check with the formula: <i>g</i>(${val(kx)}) should equal ${val(ky)}.`])]);
     S('Final answer','Any equivalent form is fine.',[L(`<span class="answer"><i>g</i>(${X}) = ${tidy}</span>`,`Check: it passes through (${val(kx)}, ${val(ky)}) ✓`)]);
     return mk(P,steps)},
@@ -104,9 +106,8 @@ T('transeq',{name:'Transform an equation',group:'transform',syllabus:{aa:'SL 2.1
     if(lv===1)kinds=[pick(['T','T',...others])];else{kinds=shuffle(others).slice(0,lv===2?1:ri(1,2));kinds.splice(ri(0,kinds.length),0,'T')}
     const p={t:'transeq',base,moves:kinds.map(mv)};if(base==='quad')Object.assign(p,{a:pick([1,1,-1,2]),b:rnz(-4,4),c:ri(-5,5)});return p},
   ans(P){const fin=finalOf(P),a=exprAns(gfun(P,fin),`<i>g</i>(${X}) = ${formula(P,fin)}`);
-    if(P.base==='sqrt'){const e=dec(fdiv(fneg(fin.C),fin.Q)),s=Math.sign(dec(fin.Q));a.xs=[0.37,1.29,2.61,3.83,5.17,6.71].map(d=>e+s*d)}return a},
+    if(P.base==='sqrt'){const e=dec(fdiv(fneg(fin.C),fin.Q)),s=Math.sign(dec(fin.Q));a.xs=[0.37,1.29,2.61,3.83,5.17,6.71].map(d=>Math.round((e+s*d)*100)/100)}return a},
   hints:P=>['Do one transformation at a time, in the order given, writing the new graph in terms of <i>f</i>.',
     `Inside the bracket does the opposite: right by <i>h</i> → <i>x</i> ${MINUS} <i>h</i>; horizontal stretch scale factor <i>s</i> → <i>x</i> ÷ <i>s</i>; reflection in the <i>y</i>-axis → ${MINUS}<i>x</i>.`,
     `Outside does what it says: up by <i>v</i> → + <i>v</i>; vertical stretch scale factor <i>s</i> → multiply everything by <i>s</i>; reflection in the <i>x</i>-axis → multiply everything by ${MINUS}1.`],
   example:{t:'transeq',base:'sq',moves:[{k:'T',h:3,v:-2},{k:'V',s:[2,1]}]}});
-const par0=v=>dec(v)<0?`(${val(v)})`:val(v);

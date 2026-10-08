@@ -25,7 +25,7 @@ function insideWords({Q,C}){const q=dec(Q),c=dec(C);
 function outsideWords({P,K}){const p=dec(P),k=dec(K),bits=[];
   if(p<0)bits.push(`a reflection in the ${X}-axis`);if(Math.abs(p)!==1)bits.push(`a vertical stretch with scale factor ${val(p<0?fmul(F(-1),P):P)}`);
   if(k)bits.push(`a move ${val(Math.abs(k))} ${k>0?'up':'down'}`);
-  return bits.length?`Outside the bracket: ${bits.join(', then ')}. Multiply ${Y} by ${val(P)} first, then add ${par(K)}.`:`Nothing outside the bracket, so ${Y} does not change.`}
+  return bits.length?`Outside the bracket: ${bits.join(', then ')}.${p!==1&&k?` Multiply ${Y} by ${val(P)} first, then ${k>0?'add':'take away'} ${val(Math.abs(k))}.`:''}`:`Nothing outside the bracket, so ${Y} does not change.`}
 
 T('transpoint',{name:'Transform a point',group:'transform',syllabus:{aa:'SL 2.11',ai:'AHL 2.8'},
   blurb:'Inside the bracket changes x and does the opposite; outside changes y and does what it says.',
@@ -52,7 +52,7 @@ T('transpoint',{name:'Transform a point',group:'transform',syllabus:{aa:'SL 2.11
     S(`The ${Y}-coordinate`,'Outside the bracket: it does what it says.',[
       L(`${Y} = ${val(t.P)} × ${par(F(P.y0))}${plusK(K)} = ${val(y1)}`,`<i>f</i>(…) is still ${val(P.y0)}; then ${dec(t.P)===1?'':`multiply by ${par(t.P)}`}${dec(t.P)!==1&&dec(K)?' and ':''}${dec(K)?`${dec(K)>0?'add':'take away'} ${val(Math.abs(dec(K)))}`:''}${dec(t.P)===1&&!dec(K)?'nothing changes':''}.`,
         Nm('What is the y-coordinate of the image?',[{label:'y',answer:fstr(y1)}],`${val(t.P)} × ${par(F(P.y0))}${plusK(K)} = ${val(y1)}.`),
-        [`The order matters: in ${fnot(t)} you work out <i>f</i> first, then multiply by ${par(t.P)}, then add ${par(K)}. So the stretch comes before the move.`]),
+        dec(t.P)!==1&&dec(K)?[`The order matters: in ${fnot(t)} you work out <i>f</i> first, then multiply by ${par(t.P)}, then ${dec(K)>0?'add':'take away'} ${val(Math.abs(dec(K)))}. So the stretch comes before the move up or down.`]:undefined),
       L(outsideWords(t),`So ${val(P.y0)} → ${val(y1)}.`)]);
     const f=sampleCurve(P.x0,P.y0),g=x=>dec(t.P)*f(qn*x+cn)+dec(K),xs=[P.x0,dec(x1)],ys=[P.y0,dec(y1)];
     const v=viewFor([Math.min(...xs)-3,Math.max(...xs)+3],[Math.min(...ys)-3,Math.max(...ys)+3]);
