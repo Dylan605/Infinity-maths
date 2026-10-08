@@ -9,16 +9,16 @@ const small=(caption,options,only='')=>`<div ${only}>${graph({width:220,height:1
 const GRID='style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"';
 
 const SHAPES=`<div ${GRID}>
-  ${small('A parabola: vertex (1, −4), axis of symmetry <i>x</i> = 1, zeros −1 and 3.',{x:[-3,5],y:[-5,6],description:'The parabola y = (x − 1)² − 4 with its vertex and zeros marked',
-    curves:[{f:x=>(x-1)**2-4,label:'y = (x − 1)² − 4'}],lines:[{x:1,label:'x = 1'}],points:[{x:1,y:-4,label:'(1, −4)',at:'e'},{x:-1,y:0},{x:3,y:0}]})}
+  ${small('<i>y</i> = (<i>x</i> − 1)<sup>2</sup> − 4: vertex (1, −4), axis of symmetry <i>x</i> = 1, zeros −1 and 3.',{x:[-3,5],y:[-5,6],description:'The parabola y = (x − 1)² − 4 with its vertex and zeros marked',
+    curves:[{f:x=>(x-1)**2-4}],lines:[{x:1,label:'x = 1'}],points:[{x:1,y:-4,label:'(1, −4)',at:'e'},{x:-1,y:0},{x:3,y:0}]})}
   ${small('<i>y</i> = 1/<i>x</i>: the axes are its asymptotes.',{x:[-5,5],y:[-5,5],description:'The graph of y = 1/x in two pieces, approaching both axes',
-    curves:[{f:x=>1/x,label:'y = 1/x'}],points:[{x:1,y:1,label:'(1, 1)'},{x:-1,y:-1,label:'(−1, −1)',at:'sw'}]})}
+    curves:[{f:x=>1/x}],points:[{x:1,y:1,label:'(1, 1)'},{x:-1,y:-1,label:'(−1, −1)',at:'sw'}]})}
   ${small('<i>y</i> = (2<i>x</i> + 1)/(<i>x</i> − 1): asymptotes <i>x</i> = 1 and <i>y</i> = 2.',{x:[-5,6],y:[-4,8],description:'A rational function with a vertical asymptote x = 1 and a horizontal asymptote y = 2',
     curves:[{f:x=>(2*x+1)/(x-1)}],lines:[{x:1,label:'x = 1'},{y:2,label:'y = 2'}]},AA)}
-  ${small('<i>y</i> = e<sup><i>x</i></sup>: through (0, 1), asymptote <i>y</i> = 0, always positive.',{x:[-4,3],y:[-1,7],description:'The graph of y = e to the x, through (0, 1), approaching the x-axis on the left',
-    curves:[{f:x=>Math.exp(x),label:'y = eˣ'},{f:x=>Math.exp(-x),colour:2,dashed:true,label:'y = e⁻ˣ'}],points:[{x:0,y:1,label:'(0, 1)',at:'se'}]})}
-  ${small('<i>y</i> = ln <i>x</i> is e<sup><i>x</i></sup> reflected in <i>y</i> = <i>x</i>: through (1, 0), asymptote <i>x</i> = 0, domain <i>x</i> &gt; 0.',{x:[-3,6],y:[-3,6],description:'y = e to the x and y = ln x, reflections of each other in the line y = x',
-    curves:[{f:x=>Math.exp(x),colour:2,label:'y = eˣ'},{f:x=>x>0?Math.log(x):NaN,label:'y = ln x'}],lines:[{m:1,c:0,label:'y = x'}],points:[{x:1,y:0,label:'(1, 0)',at:'se'},{x:0,y:1,label:'(0, 1)',at:'nw'}]},AA_AIHL)}
+  ${small('<i>y</i> = e<sup><i>x</i></sup>: through (0, 1), asymptote <i>y</i> = 0, always positive. The dashed curve is e<sup>−<i>x</i></sup>, its reflection in the <i>y</i>-axis.',{x:[-4,3],y:[-1,7],description:'The graph of y = e to the x, through (0, 1), approaching the x-axis on the left',
+    curves:[{f:x=>Math.exp(x)},{f:x=>Math.exp(-x),colour:2,dashed:true}],points:[{x:0,y:1,label:'(0, 1)',at:'se'}]})}
+  ${small('<i>y</i> = ln <i>x</i> is e<sup><i>x</i></sup> (dashed) reflected in <i>y</i> = <i>x</i>: through (1, 0), asymptote <i>x</i> = 0, domain <i>x</i> &gt; 0.',{x:[-3,6],y:[-3,6],description:'y = e to the x and y = ln x, reflections of each other in the line y = x',
+    curves:[{f:x=>Math.exp(x),colour:2,dashed:true},{f:x=>x>0?Math.log(x):NaN}],lines:[{m:1,c:0,label:'y = x'}],points:[{x:1,y:0,label:'(1, 0)',at:'se'},{x:0,y:1,label:'(0, 1)',at:'nw'}]},AA_AIHL)}
 </div>`;
 
 const GDC=`<ul>

@@ -7087,11 +7087,11 @@ input[type=checkbox] {
   var small = (caption, options, only = "") => `<div ${only}>${graph({ width: 220, height: 170, ...options })}<p class="hint">${caption}</p></div>`;
   var GRID = 'style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"';
   var SHAPES = `<div ${GRID}>
-  ${small("A parabola: vertex (1, \u22124), axis of symmetry <i>x</i> = 1, zeros \u22121 and 3.", {
+  ${small("<i>y</i> = (<i>x</i> \u2212 1)<sup>2</sup> \u2212 4: vertex (1, \u22124), axis of symmetry <i>x</i> = 1, zeros \u22121 and 3.", {
     x: [-3, 5],
     y: [-5, 6],
     description: "The parabola y = (x \u2212 1)\xB2 \u2212 4 with its vertex and zeros marked",
-    curves: [{ f: (x) => (x - 1) ** 2 - 4, label: "y = (x \u2212 1)\xB2 \u2212 4" }],
+    curves: [{ f: (x) => (x - 1) ** 2 - 4 }],
     lines: [{ x: 1, label: "x = 1" }],
     points: [{ x: 1, y: -4, label: "(1, \u22124)", at: "e" }, { x: -1, y: 0 }, { x: 3, y: 0 }]
   })}
@@ -7099,7 +7099,7 @@ input[type=checkbox] {
     x: [-5, 5],
     y: [-5, 5],
     description: "The graph of y = 1/x in two pieces, approaching both axes",
-    curves: [{ f: (x) => 1 / x, label: "y = 1/x" }],
+    curves: [{ f: (x) => 1 / x }],
     points: [{ x: 1, y: 1, label: "(1, 1)" }, { x: -1, y: -1, label: "(\u22121, \u22121)", at: "sw" }]
   })}
   ${small("<i>y</i> = (2<i>x</i> + 1)/(<i>x</i> \u2212 1): asymptotes <i>x</i> = 1 and <i>y</i> = 2.", {
@@ -7109,18 +7109,18 @@ input[type=checkbox] {
     curves: [{ f: (x) => (2 * x + 1) / (x - 1) }],
     lines: [{ x: 1, label: "x = 1" }, { y: 2, label: "y = 2" }]
   }, AA)}
-  ${small("<i>y</i> = e<sup><i>x</i></sup>: through (0, 1), asymptote <i>y</i> = 0, always positive.", {
+  ${small("<i>y</i> = e<sup><i>x</i></sup>: through (0, 1), asymptote <i>y</i> = 0, always positive. The dashed curve is e<sup>\u2212<i>x</i></sup>, its reflection in the <i>y</i>-axis.", {
     x: [-4, 3],
     y: [-1, 7],
     description: "The graph of y = e to the x, through (0, 1), approaching the x-axis on the left",
-    curves: [{ f: (x) => Math.exp(x), label: "y = e\u02E3" }, { f: (x) => Math.exp(-x), colour: 2, dashed: true, label: "y = e\u207B\u02E3" }],
+    curves: [{ f: (x) => Math.exp(x) }, { f: (x) => Math.exp(-x), colour: 2, dashed: true }],
     points: [{ x: 0, y: 1, label: "(0, 1)", at: "se" }]
   })}
-  ${small("<i>y</i> = ln <i>x</i> is e<sup><i>x</i></sup> reflected in <i>y</i> = <i>x</i>: through (1, 0), asymptote <i>x</i> = 0, domain <i>x</i> &gt; 0.", {
+  ${small("<i>y</i> = ln <i>x</i> is e<sup><i>x</i></sup> (dashed) reflected in <i>y</i> = <i>x</i>: through (1, 0), asymptote <i>x</i> = 0, domain <i>x</i> &gt; 0.", {
     x: [-3, 6],
     y: [-3, 6],
     description: "y = e to the x and y = ln x, reflections of each other in the line y = x",
-    curves: [{ f: (x) => Math.exp(x), colour: 2, label: "y = e\u02E3" }, { f: (x) => x > 0 ? Math.log(x) : NaN, label: "y = ln x" }],
+    curves: [{ f: (x) => Math.exp(x), colour: 2, dashed: true }, { f: (x) => x > 0 ? Math.log(x) : NaN }],
     lines: [{ m: 1, c: 0, label: "y = x" }],
     points: [{ x: 1, y: 0, label: "(1, 0)", at: "se" }, { x: 0, y: 1, label: "(0, 1)", at: "nw" }]
   }, AA_AIHL)}
@@ -8561,6 +8561,57 @@ ${SHAPES}
     example: { t: "compval", f: { kind: "lin", m: 3, c: -1 }, g: { kind: "quad", p: 1, q: 0, r: 2 }, order: "fg", style: "circ", a: -2 }
   });
 
+  // source/maths/checking-expressions.js
+  var XS = [-2.71, -1.37, -0.53, 0.61, 1.73, 2.89, 3.47, 4.13, 5.29, 7.57];
+  var exact2 = (x) => F(Math.round(x * 100), 100);
+  var SYNTAX = /understand|needs a number|ends too soon|not closed|missing|without a matching|nCr/;
+  var unreadable = (msg) => ({ bad: `${msg} Write it like (x \u2212 3)/2 or 2e^(3x).` });
+  var at = (text, vars) => calculate(text, void 0, { shortcuts: false, vars });
+  var rightSide = (raw2) => {
+    const s = String(raw2), i = s.lastIndexOf("=");
+    return i < 0 ? s : s.slice(i + 1);
+  };
+  function checkExpr(a, raw2) {
+    const text = rightSide(raw2);
+    if (!text.trim()) return { bad: "Type an expression in x." };
+    let compared = 0;
+    for (const x of a.xs || XS) {
+      const want = a.f(x);
+      if (!Number.isFinite(want)) continue;
+      const r2 = at(text, { x: exact2(x) });
+      if (r2.error !== void 0) {
+        if (SYNTAX.test(r2.error)) return unreadable(r2.error);
+        return { ok: false };
+      }
+      const got = asDecimal(r2.value);
+      if (Math.abs(got - want) > 1e-6 * Math.max(1, Math.abs(want))) return { ok: false };
+      compared++;
+    }
+    return { ok: compared >= 3 };
+  }
+  function checkLine(a, raw2) {
+    const s = String(raw2).replace(/[−–]/g, "-");
+    const sides = s.split("=");
+    if (sides.length > 2) return { bad: "Type one equation, like y = 2x \u2212 5." };
+    const [left, right] = sides.length === 2 ? sides : ["y", sides[0]];
+    if (!left.trim() || !right.trim()) return { bad: "Type an equation, like y = 2x \u2212 5." };
+    const g = (x, y) => {
+      const vars = { x: F(x), y: F(y) }, l = at(left, vars), r2 = at(right, vars);
+      const e = l.error ?? r2.error;
+      if (e !== void 0) throw e;
+      return asDecimal(l.value) - asDecimal(r2.value);
+    };
+    try {
+      const c = g(0, 0), A = g(1, 0) - c, B4 = g(0, 1) - c;
+      for (const [x, y] of [[3, -2], [-5, 7], [11, 4]]) if (Math.abs(g(x, y) - (A * x + B4 * y + c)) > 1e-9 * (1 + Math.abs(A * x) + Math.abs(B4 * y) + Math.abs(c))) return { ok: false };
+      if (A === 0 && B4 === 0) return { ok: false };
+      const big = Math.max(Math.abs(A), Math.abs(B4), Math.abs(c), Math.abs(a.a), Math.abs(a.b), Math.abs(a.c)), tol = 1e-9 * big * big;
+      return { ok: Math.abs(A * a.b - B4 * a.a) <= tol && Math.abs(A * a.c - c * a.a) <= tol && Math.abs(B4 * a.c - c * a.b) <= tol };
+    } catch (e) {
+      return typeof e === "string" && SYNTAX.test(e) ? { bad: `${e} Write it like y = 2x \u2212 5.` } : { ok: false };
+    }
+  }
+
   // source/topics/functions/question-types/composite-and-inverse/composite-function.js
   var X16 = "<i>x</i>";
   var polyOf = (fn) => fn.kind === "lin" ? [fn.c, fn.m] : [fn.r, fn.q, fn.p];
@@ -8672,9 +8723,11 @@ ${SHAPES}
         } else if (pick4 === 2) {
           out = { kind: "recip", a: rnz(-6, 6), c: rnz(-5, 5) };
           inn = ri(0, 1) ? L12() : { kind: "quad", p: 1, q: 0, r: rnz(-4, 4) };
-        } else {
+        } else for (; ; ) {
           out = { kind: "sqrt", c: ri(-5, 5) };
           inn = ri(0, 1) ? { kind: "lin", m: ri(2, 4), c: rnz(-5, 5) } : { kind: "quad", p: 1, q: ri(-3, 3), r: ri(0, 5) };
+          const fo = fnNum(out), fi = fnNum(inn);
+          if (XS.filter((x) => Number.isFinite(fo(fi(x)))).length >= 5) break;
         }
       }
       return order2 === "fg" ? { t: "compexpr", f: out, g: inn, order: order2 } : { t: "compexpr", f: inn, g: out, order: order2 };
@@ -8847,7 +8900,7 @@ ${SHAPES}
         } while (a * d === b * c);
         return { t: "inverse", kind: "rat", a, b, c, d };
       }
-      return { t: "inverse", kind: pick4 % 2 ? "exp" : "ln", h: ri(-4, 4), k: rnz(-4, 4) };
+      return { t: "inverse", kind: pick4 % 2 ? "exp" : "ln", h: ri(-4, 4), k: rnz(-4, 3) };
     },
     ans: (P) => exprAns(invNum(P), invH(P)),
     hints: (P) => ["Write y = f(x).", "Swap x and y.", P.kind === "rat" ? "Multiply by the bottom, collect the y terms, take y out as a factor, then divide." : P.kind === "exp" ? "Get the e part on its own, then take ln of both sides." : P.kind === "ln" ? "Get the ln part on its own, then raise e to the power of both sides." : "Make y the subject: undo the adding, then the multiplying."],
@@ -9663,7 +9716,7 @@ ${SHAPES}
     return out ? outside(r1, r2, strict) : between(r1, r2, strict);
   }
   var txt = (h) => h.replace(/<sup>2<\/sup>/g, "\xB2").replace(/<[^>]+>/g, "");
-  var at = (P, x) => fadd(fadd(fmul(F(P.a), fmul(x, x)), fmul(F(P.b), x)), F(P.c));
+  var at2 = (P, x) => fadd(fadd(fmul(F(P.a), fmul(x, x)), fmul(F(P.b), x)), F(P.c));
   T2("quadineq", {
     name: "Quadratic inequalities",
     group: "quadratics",
@@ -9737,7 +9790,7 @@ ${SHAPES}
         const n = Math.floor(x1) + 1;
         t = n < x2 ? F(n) : fmul(fadd(r1, r2), F(1, 2));
       }
-      const ft = at(P, t), tick = fnum(ft) > 0 === up;
+      const ft = at2(P, t), tick = fnum(ft) > 0 === up;
       S("Final answer", "Check with a value in the answer.", [L(
         `<span class="answer">${answer3(P).disp}</span>`,
         `Check: ${X24} = ${val(t)} is in the answer, and ${quad(a, b, c).replace(/<i>x<\/i>/g, `(${val(t)})`)} = ${val(ft)}, which is ${fnum(ft) > 0 ? "positive" : "negative"} ${tick ? "\u2713" : ""}. ${strict ? "Use &lt; and &gt;: the roots themselves give 0, so they are not included." : "Use \u2264 and \u2265: the roots give 0, which is allowed."}`
@@ -12362,57 +12415,6 @@ ${SHAPES}
     const got = pieces2(raw2).map(readValue);
     if (got.length !== 2 || got.some((v) => v === null)) return { bad: "Type the coordinates like (2, \u22123)." };
     return { ok: got.every((v, i) => closeTo(v, a.vals[i], a.sf)) };
-  }
-
-  // source/maths/checking-expressions.js
-  var XS = [-2.71, -1.37, -0.53, 0.61, 1.73, 2.89, 3.47, 4.13, 5.29, 7.57];
-  var exact2 = (x) => F(Math.round(x * 100), 100);
-  var SYNTAX = /understand|needs a number|ends too soon|not closed|missing|without a matching|nCr/;
-  var unreadable = (msg) => ({ bad: `${msg} Write it like (x \u2212 3)/2 or 2e^(3x).` });
-  var at2 = (text, vars) => calculate(text, void 0, { shortcuts: false, vars });
-  var rightSide = (raw2) => {
-    const s = String(raw2), i = s.lastIndexOf("=");
-    return i < 0 ? s : s.slice(i + 1);
-  };
-  function checkExpr(a, raw2) {
-    const text = rightSide(raw2);
-    if (!text.trim()) return { bad: "Type an expression in x." };
-    let compared = 0;
-    for (const x of a.xs || XS) {
-      const want = a.f(x);
-      if (!Number.isFinite(want)) continue;
-      const r2 = at2(text, { x: exact2(x) });
-      if (r2.error !== void 0) {
-        if (SYNTAX.test(r2.error)) return unreadable(r2.error);
-        return { ok: false };
-      }
-      const got = asDecimal(r2.value);
-      if (Math.abs(got - want) > 1e-6 * Math.max(1, Math.abs(want))) return { ok: false };
-      compared++;
-    }
-    return { ok: compared >= 3 };
-  }
-  function checkLine(a, raw2) {
-    const s = String(raw2).replace(/[−–]/g, "-");
-    const sides = s.split("=");
-    if (sides.length > 2) return { bad: "Type one equation, like y = 2x \u2212 5." };
-    const [left, right] = sides.length === 2 ? sides : ["y", sides[0]];
-    if (!left.trim() || !right.trim()) return { bad: "Type an equation, like y = 2x \u2212 5." };
-    const g = (x, y) => {
-      const vars = { x: F(x), y: F(y) }, l = at2(left, vars), r2 = at2(right, vars);
-      const e = l.error ?? r2.error;
-      if (e !== void 0) throw e;
-      return asDecimal(l.value) - asDecimal(r2.value);
-    };
-    try {
-      const c = g(0, 0), A = g(1, 0) - c, B4 = g(0, 1) - c;
-      for (const [x, y] of [[3, -2], [-5, 7], [11, 4]]) if (Math.abs(g(x, y) - (A * x + B4 * y + c)) > 1e-9 * (1 + Math.abs(A * x) + Math.abs(B4 * y) + Math.abs(c))) return { ok: false };
-      if (A === 0 && B4 === 0) return { ok: false };
-      const big = Math.max(Math.abs(A), Math.abs(B4), Math.abs(c), Math.abs(a.a), Math.abs(a.b), Math.abs(a.c)), tol = 1e-9 * big * big;
-      return { ok: Math.abs(A * a.b - B4 * a.a) <= tol && Math.abs(A * a.c - c * a.a) <= tol && Math.abs(B4 * a.c - c * a.b) <= tol };
-    } catch (e) {
-      return typeof e === "string" && SYNTAX.test(e) ? { bad: `${e} Write it like y = 2x \u2212 5.` } : { ok: false };
-    }
   }
 
   // source/maths/checking-inequalities.js

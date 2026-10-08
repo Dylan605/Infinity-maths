@@ -87,7 +87,7 @@ T('inverse',{name:'Inverse functions',group:'composite',syllabus:{aa:'SL 2.5',ai
     const pick=ri(0,3);
     if(lv===2&&pick===0)return {t:'inverse',kind:'lin',m:rnz(-6,-1),c:ri(-9,9)};
     if(lv===2||pick===0){let a,b,c,d;do{a=rnz(-5,5);b=rnz(-7,7);c=lv===2?1:ri(1,3);d=rnz(-6,6)}while(a*d===b*c);return {t:'inverse',kind:'rat',a,b,c,d}}
-    return {t:'inverse',kind:pick%2?'exp':'ln',h:ri(-4,4),k:rnz(-4,4)}},
+    return {t:'inverse',kind:pick%2?'exp':'ln',h:ri(-4,4),k:rnz(-4,3)}},
   ans:P=>exprAns(invNum(P),invH(P)),
   hints:P=>['Write y = f(x).','Swap x and y.',P.kind==='rat'?'Multiply by the bottom, collect the y terms, take y out as a factor, then divide.':P.kind==='exp'?'Get the e part on its own, then take ln of both sides.':P.kind==='ln'?'Get the ln part on its own, then raise e to the power of both sides.':'Make y the subject: undo the adding, then the multiplying.'],
   example:{t:'inverse',kind:'rat',a:2,b:1,c:1,d:-3}});

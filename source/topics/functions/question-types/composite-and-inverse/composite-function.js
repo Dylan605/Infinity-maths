@@ -9,6 +9,8 @@ import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {fnExact,fnHtml,fnNum,domainText,fr,parts} from './composite-value.js';
 
 const X='<i>x</i>';
+/* the x-values checking-expressions.js marks typed answers at */
+import {XS as CHECK_XS} from '../../../../maths/checking-expressions.js';
 /* polynomials as lists of whole-number coefficients, lowest power first */
 const polyOf=fn=>fn.kind==='lin'?[fn.c,fn.m]:[fn.r,fn.q,fn.p];
 const padd=(p,q)=>Array.from({length:Math.max(p.length,q.length)},(_,i)=>(p[i]||0)+(q[i]||0));
@@ -61,7 +63,8 @@ T('compexpr',{name:'Composite functions: an expression',group:'composite',syllab
     else{const pick=ri(0,3);
       if(pick<2){out={kind:'quad',p:[2,-1,3,-2][ri(0,3)],q:ri(-5,5),r:ri(-6,6)};inn={kind:'lin',m:[2,-2,3,-3][ri(0,3)],c:rnz(-4,4)}}
       else if(pick===2){out={kind:'recip',a:rnz(-6,6),c:rnz(-5,5)};inn=ri(0,1)?L1():{kind:'quad',p:1,q:0,r:rnz(-4,4)}}
-      else{out={kind:'sqrt',c:ri(-5,5)};inn=ri(0,1)?{kind:'lin',m:ri(2,4),c:rnz(-5,5)}:{kind:'quad',p:1,q:ri(-3,3),r:ri(0,5)}}}
+      else for(;;){out={kind:'sqrt',c:ri(-5,5)};inn=ri(0,1)?{kind:'lin',m:ri(2,4),c:rnz(-5,5)}:{kind:'quad',p:1,q:ri(-3,3),r:ri(0,5)};
+        const fo=fnNum(out),fi=fnNum(inn);if(CHECK_XS.filter(x=>Number.isFinite(fo(fi(x)))).length>=5)break}}  // defined at enough points for the answer to be marked
     return order==='fg'?{t:'compexpr',f:out,g:inn,order}:{t:'compexpr',f:inn,g:out,order}},
   ans(P){const {out,inn}=parts(P),fo=fnNum(out),fi=fnNum(inn);return exprAns(x=>fo(fi(x)),resultH(P))},
   hints:P=>{const {o,i}=parts(P);return [`(${o} ∘ ${i})(x) = ${o}(${i}(x)).`,`Write ${o}(x), but with (${fnHtml(parts(P).inn).replace(/<[^>]+>/g,'')}) in place of every x.`,'Expand the brackets and collect like terms.']},

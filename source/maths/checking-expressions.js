@@ -3,8 +3,8 @@
 import {asDecimal,calculate} from '../helpers/expressions.js';
 import {F} from '../helpers/fractions.js';
 
-/* awkward values of x, so a wrong answer can't match by luck */
-const XS=[-2.71,-1.37,-0.53,0.61,1.73,2.89,3.47,4.13,5.29,7.57];
+/* awkward values of x, so a wrong answer can't match by luck (question types use them to make sure an answer can be marked) */
+export const XS=[-2.71,-1.37,-0.53,0.61,1.73,2.89,3.47,4.13,5.29,7.57];
 const exact=x=>F(Math.round(x*100),100);
 /* mistakes in how the answer is written, rather than a wrong answer */
 const SYNTAX=/understand|needs a number|ends too soon|not closed|missing|without a matching|nCr/;
