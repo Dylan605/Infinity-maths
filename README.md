@@ -1,6 +1,6 @@
 # Infinity Maths
 
-For students of IB Diploma Programme mathematics. Each time it opens, the app asks which course you take (AI SL, AI HL, AA SL or AA HL) and shows only the topics in that course. Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
+For students of IB Diploma Programme mathematics. Each time it opens, the app asks which course you take (AI SL, AI HL, AA SL or AA HL) and which year you are in (Grade 11, Grade 12 or both), and shows only the topics for that. Each topic has step-by-step lessons (watch the working written out, with graphs, or try it yourself), practice at three difficulty levels, exam-style questions with markschemes, revision games and a cheat sheet. Topics so far: Binomials and Functions.
 
 ## Working on it
 
@@ -20,7 +20,7 @@ build.mjs                          packs source/ into index.html
 source/
   page.html                        the page itself: tabs, buttons, notebook
   start.js                         starts the app: loads the questions, then each screen
-  settings.js                      courses, group names, difficulty names, tabs, writing speeds, and game rules (time, lives, combos, stars)
+  settings.js                      courses, grades, papers, difficulty names, tabs, writing speeds, and game rules (time, lives, combos, stars)
   images/                          logo-light, logo-dark, tab-icon
   styles/
     all-styles.css                 loads the others in order (keep the order)
@@ -33,6 +33,8 @@ source/
     calculator.css                 the slide-out calculator
     study-settings.css             the course and paper bar, syllabus labels, and what each choice hides
     welcome.css                    the "Which course do you take?" question shown when the app opens
+    answer-boxes.css               the boxes answers are typed into, one or several
+    graphs.css                     graphs: grid, axes, curves drawing themselves in, points and labels
     exam.css                       exam practice: the question list and the exam-paper layout
     maths-keyboard.css             the maths keyboard
     small-screens.css              phones, and less motion for people who ask for it
@@ -43,16 +45,27 @@ source/
     fractions.js                   exact fractions
     maths-display.js               writing numbers, powers and brackets on the page
     reading-input.js               understanding what the learner types
-    expressions.js                 working out typed expressions (√, powers, nCr, fractions) for the calculator and answers
+    expressions.js                 working out typed expressions (√, powers, nCr, fractions, x, e, ln, log) for the calculator and answers
+    function-display.js            writing functions: values, terms with signs, mx + c, ax² + bx + c, (x − h), coordinates
+    graph-drawing.js               drawing graphs as SVG: curves, asymptotes, points, labels
   maths/
     binomial-expansion.js          the expansion itself: every term of (a + b)^n
-    checking-answers.js            marking a typed answer right or wrong
+    making-answers.js              the kinds of answer: exact, 3 s.f., lists, points, expressions, lines, inequalities, several boxes
+    checking-answers.js            marking a typed answer right or wrong (passes each kind to its checker)
+    checking-lists-and-points.js   solutions in any order, and coordinates
+    checking-expressions.js        expressions in x, and equations of lines in any form
+    checking-inequalities.js       inequalities like x < −1 or x > 3
+    reading-values.js              reading typed numbers that need not be exact, and "close enough" to 3 s.f.
+    solving-numerically.js         zeros, intersections and turning points, as a GDC finds them
   worked-solutions/
     building-blocks.js             one line of working, a question to the learner, numbered steps
     shared-steps.js                steps several question types use
     expanding-lesson.js            the full expand-and-simplify lesson
+  topics/
+    topic-list.js                  every topic, in syllabus order
+    game-helpers.js                multiple-choice and typed game questions, values per level (for every topic's games)
   topics/binomials/
-    binomials.js                   loads every question type for the topic
+    binomials.js                   the topic: its courses, grades, Learn folders, and every question type
     question-list.js               the list of question types (TYPES) and how to add one
     question-types/                one file per question type, in a folder per group
       expanding-brackets/          expand-and-simplify, first-three-and-last-two-terms
@@ -66,15 +79,24 @@ source/
     exam-questions/                one file per exam-style question, listed in exam-list.js
     games/                         one file per revision game
       game-list.js                 every game, in the order shown on the tab
-      game-helpers.js              multiple-choice, typed answers, values per level
       match-up.js  pascal-race.js  power-pairs.js  sign-spotter.js  times-x.js  like-terms.js
       ncr-sprint.js  find-r.js  term-numbers.js  put-x-equals-1.js  negative-powers.js
+  topics/functions/                laid out like binomials/
+    functions.js                   the topic, and every question type in order
+    question-list.js               TYPES, and helpers for question types (readLine, mk, viewFor)
+    question-types/                straight-lines, function-concepts, graph-features, composite-and-inverse, quadratics,
+                                   rational-functions, exponentials-and-logs, solving-equations, transformations
+    exam-questions/                one file per exam-style question, listed in exam-list.js; exam-helpers.js
+    games/                         one file per revision game, listed in game-list.js
+    cheat-sheet.js                 formula booklet, what to remember, graph shapes, transformations, GDC tips
   notebook/
     notebook.js                    writes the working line by line, asks Try-it questions
     number-animation.js            numbers merging into the answer
   screens/
-    home-screen.js                 search, and the topic folders for the chosen course
-    welcome-screen.js              asks which course you take when the app opens
+    home-screen.js                 search, and the topic folders for the chosen course and year
+    welcome-screen.js              asks which course you take and which year you are in when the app opens
+    current-topic.js               which topic is open; tabs redraw when it changes
+    answer-boxes.js                the answer boxes for Practice and Exam practice, with the right maths keys
     tabs.js                        switching tabs
     learn-tab.js                   Learn folders and question cards
     your-own-question.js           the type-your-own-question form
@@ -90,7 +112,7 @@ source/
       saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
     calculator-drawer.js           the calculator that slides out from the right-hand edge
-    study-settings.js              the course (AI SL / AI HL / AA SL / AA HL) and paper (1 / 2) bar under the logo
+    study-settings.js              the course (AI SL / AI HL / AA SL / AA HL), year (11 / 12 / both) and paper (1 / 2) bar under the logo
     cheat-sheet-tab.js             shows the topic's cheat sheet
     exam/
       exam-tab.js                  the list of exam-style questions for the chosen course and paper
@@ -103,10 +125,10 @@ source/
 Each file `import`s exactly what it uses from other files and `export`s what other files need. Imports only point one way, so files never depend on each other in a loop:
 
 ```
-start.js ─┬─► topics/binomials/binomials.js       (loads the question types)
+start.js ─┬─► topics/topic-list.js                (loads every topic and its question types)
           ├─► notebook/notebook.js
           └─► screens/* ─┬─► notebook/* ──────────────────────────────────────► helpers/*
-                         └─► topics/binomials/* ─► worked-solutions/* ─► maths/* ─► helpers/*
+                         └─► topics/<topic>/* ─► worked-solutions/* ─► maths/* ─► helpers/*
                                                                    settings.js is used where needed
 ```
 
@@ -118,7 +140,7 @@ start.js ─┬─► topics/binomials/binomials.js       (loads the question ty
 
 ## Adding a question type
 
-Make a new file in the right group folder under `topics/binomials/question-types/`, copying a neighbour, and add one import line for it to `topics/binomials/binomials.js`. The file holds one `T('myType', {...})` block. Give it `name`, `group` (one of the groups in `settings.js`), `blurb`, `text`, `build`, plus `gen(level)` for difficulty and `ans` for Practice. It appears in Learn, Practice and the question form automatically.
+Make a new file in the right group folder under `topics/<topic>/question-types/`, copying a neighbour, and add one import line for it to `topics/<topic>/<topic>.js`. The file holds one `T('myType', {...})` block. Give it `name`, `group` (one of the topic's `groups`), `syllabus`, `blurb`, `text`, `build`, plus `gen(level)` for difficulty and `ans` for Practice, made with `maths/making-answers.js`. Add `fields` and `parse` to let learners type in their own question. It appears in Learn, Practice and the question form automatically. Graphs come from `helpers/graph-drawing.js`.
 
 ## When to make a new file
 
@@ -126,16 +148,17 @@ Whenever the new code is a separate thing: a question type, a screen, a topic, o
 
 ## Adding an exam-style question
 
-Make a file in `topics/binomials/exam-questions/` that exports `exam = {id, title, syllabus, paper, marks, make()}`, copying a neighbour, and add it to `exam-list.js`. `make()` returns `{stem, parts}`, each part made with `part({text, marks, scheme, lesson})` from `exam-helpers.js`. `lesson` is a question of one of the topic's question types: its answer becomes the part's answer, and "Show me the working" opens its worked solution.
+Make a file in `topics/<topic>/exam-questions/` that exports `exam = {id, title, syllabus, paper, marks, make()}`, copying a neighbour, and add it to `exam-list.js`. `make()` returns `{stem, parts}`, each part made with `part({text, marks, scheme, lesson, answer})` from `exam-helpers.js`. `lesson` is a question of one of the topic's question types: unless `answer` is given its answer becomes the part's answer, and "Show me the working" opens its worked solution.
 
 ## Adding a revision game
 
-Make a file in `topics/binomials/games/` that exports `game = {id, name, icon, skill, how, next(level)}`, copying a neighbour, and add it to `game-list.js`. `next(level)` gets 1, 2 or 3 and returns a question from `mcq(...)` or `typed(...)` in `game-helpers.js`, or `{type:'match', pairs}`. The round, scoring, levels and effects come for free.
+Make a file in `topics/<topic>/games/` that exports `game = {id, syllabus, name, icon, skill, how, next(level)}`, copying a neighbour, and add it to `game-list.js`. Game ids must be unique across topics (Functions games start with `fn-`), as best scores are saved by id. `next(level)` gets 1, 2 or 3 and returns a question from `mcq(...)` or `typed(...)` in `topics/game-helpers.js`, or `{type:'match', pairs}`. The round, scoring, levels and effects come for free.
 
 ## Adding a topic
 
-Make a `topics/<topic>/` folder like `binomials/`, add a folder button to `page.html`, and load the topic in `start.js`. Give the folder button `data-courses` listing every course the topic is in, e.g. `data-courses="ai-sl ai-hl aa-sl aa-hl"`. The home screen shows it only to students who chose one of those courses.
+Make a `topics/<topic>/` folder like `functions/`, whose `<topic>.js` exports a `topic` object (name, `courses`, `grades`, syllabus `sections`, Learn folder `groups`, search `keys`, and its types, games, exams and cheat sheet), and add it to `topics/topic-list.js`. The home screen builds its folder, and shows it only to students whose course and year are in `courses` and `grades`.
 
-## Courses
+## Courses and years
 
-The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`. When the app opens, `welcome-screen.js` asks which one the student takes, with last time's choice highlighted (set `ASK_COURSE_EVERY_TIME` to `false` in `settings.js` to ask only the first time). The choice is saved and can also be changed in the bar under the logo. The level (SL or HL) decides whether `hl-only` content is shown; the course decides which topics appear.
+The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`; the years in `GRADES`: Grade 11, Grade 12 and both. A `syllabus` tag is one section for every course (`'SL 1.9'`, `'AHL 1.10'` for HL only) or one per course family (`{aa:'SL 2.5', ai:'AHL 2.7'}`, leaving out a family that doesn't have it). Which year a topic is taught in differs between schools: change a topic's `grades` to match yours.
+
