@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "esbuild --servedir=src --serve=localhost:8000",
+    "dev": "esbuild --servedir=source --serve=localhost:8000",
     "build": "node build.mjs"
   },
   "devDependencies": {
