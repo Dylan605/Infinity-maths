@@ -1,5 +1,6 @@
 /* Reading what the learner types: numbers, fractions and bracket expressions. */
 import {gcdB} from './whole-numbers.js';
+import {calculate,isExact} from './expressions.js';
 import {F,feq} from './fractions.js';
 
 export function parseNum(s){s=String(s).replace(/−/g,'-').replace(/\s/g,'');
@@ -7,7 +8,9 @@ export function parseNum(s){s=String(s).replace(/−/g,'-').replace(/\s/g,'');
   let num=BigInt(m[2]+(m[3]||'')),den=10n**BigInt((m[3]||'').length);
   if(m[4]!==undefined){if(BigInt(m[4])===0n)return null;den*=BigInt(m[4])}
   return F(m[1]==='-'?-num:num,den)}
-export const sameNum=(a,b)=>{const x=parseNum(a),y=parseNum(b);return !!x&&!!y&&feq(x,y)};
+/* a typed number: plain (3, −2.5, 3/4) or worked out from symbols (√9, 2³, 6/(1+3)); nCr and ! are not allowed */
+export function readNumber(s){const plain=parseNum(s);if(plain)return plain;const r=calculate(String(s),undefined,{shortcuts:false});return r.value!==undefined&&isExact(r.value)?r.value:null}
+export const sameNum=(a,b)=>{const x=readNumber(a),y=readNumber(b);return !!x&&!!y&&feq(x,y)};
 function parseTerm(s){const r=s.match(/^([+-]?)(\d*)(?:(x)(?:\^(\d))?|\/(x)(?:\^(\d))?)?$/);if(!r)return null;
   const[,sgn,dg,hx,px,dx,pdx]=r;if(!hx&&!dx&&dg==='')return null;
   const coef=(sgn==='-'?-1:1)*(dg===''?1:+dg);const p=hx?(px?+px:1):dx?-(pdx?+pdx:1):0;

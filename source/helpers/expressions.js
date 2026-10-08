@@ -1,6 +1,6 @@
-/* The calculator's maths: reads an expression like 10C3 × 2^4 or (1/2)^3 and works it out, exactly where it can. */
-import {F,fadd,fdiv,fmul,fpow,fracRoot,fsub} from '../helpers/fractions.js';
-import {C} from '../helpers/whole-numbers.js';
+/* Reads and works out a typed expression like 10C3 × 2^4, √(9/4) or (1/2)³, exactly where it can. Used by the calculator and to read typed answers. */
+import {F,fadd,fdiv,fmul,fpow,fracRoot,fsub} from './fractions.js';
+import {C} from './whole-numbers.js';
 
 /* A value is an exact fraction {n, d} (BigInt) when it can be, otherwise an ordinary decimal number. */
 export const isExact=v=>typeof v==='object';
@@ -29,8 +29,10 @@ function factorial(v){if(!isWhole(v)||v.n<0n||v.n>1000n)fail('! needs a whole nu
 function choose(n,r){if(!isWhole(n)||!isWhole(r)||r.n<0n||r.n>n.n||n.n>5000n)fail('nCr needs whole numbers with 0 ≤ r ≤ n.');return F(C(Number(n.n),Number(r.n)))}
 
 /* the pieces of an expression: numbers, Ans, and the symbols + - * / ^ ! C ( ) √ */
-function tokenize(text){
-  const s=text.replace(/\s+/g,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\*\*/g,'^').replace(/²/g,'^2').replace(/ncr/gi,'C');
+function tokenize(text,shortcuts){
+  const s=text.replace(/\s+/g,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\*\*/g,'^').replace(/ncr/gi,'C')
+    .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,sup=>'^'+[...sup].map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''));  // x² → x^2
+  if(!shortcuts&&/[Cc!]/.test(s))fail('Work out nCr and ! yourself here.');
   const out=[];let i=0;
   while(i<s.length){const rest=s.slice(i),num=rest.match(/^(\d+\.?\d*|\.\d+)/);
     if(num){out.push({num:num[0]});i+=num[0].length;continue}
@@ -40,9 +42,10 @@ function tokenize(text){
   return out}
 const decimal=str=>{const [w,f='']=str.split('.');return F(BigInt((w||'0')+f),10n**BigInt(f.length))};
 
-/* Works out an expression. Returns {value} or {error}. ans is the previous answer, used by "Ans". */
-export function calculate(text,ans){
-  try{const t=tokenize(text);if(!t.length)return {error:''};let i=0;
+/* Works out an expression. Returns {value} or {error}. ans is the previous answer, used by "Ans".
+   With shortcuts:false, nCr and ! are not allowed (for answers, so they still have to be worked out). */
+export function calculate(text,ans,{shortcuts=true}={}){
+  try{const t=tokenize(text,shortcuts);if(!t.length)return {error:''};let i=0;
     const peek=()=>t[i],take=()=>t[i++];
     const startsValue=x=>x!==undefined&&(x.num!==undefined||x==='ans'||x==='('||x==='√');
     // lowest priority first: + and −, then × and ÷ (a number next to a bracket multiplies), then a minus sign, nCr, powers, !

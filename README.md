@@ -31,6 +31,7 @@ source/
     practice-and-cheat-sheet.css   the Practice tab, the question form and the cheat sheet
     games.css                      the revision games: cards, game stage, number pad, effects, results
     calculator.css                 the slide-out calculator
+    maths-keyboard.css             the maths keyboard
     small-screens.css              phones, and less motion for people who ask for it
   helpers/                         small tools used everywhere
     page-helpers.js                find an element, wait, check reduced motion
@@ -39,10 +40,10 @@ source/
     fractions.js                   exact fractions
     maths-display.js               writing numbers, powers and brackets on the page
     reading-input.js               understanding what the learner types
+    expressions.js                 working out typed expressions (√, powers, nCr, fractions) for the calculator and answers
   maths/
     binomial-expansion.js          the expansion itself: every term of (a + b)^n
     checking-answers.js            marking a typed answer right or wrong
-    calculator-maths.js            the calculator's maths: nCr, !, powers, roots, exact fractions
   worked-solutions/
     building-blocks.js             one line of working, a question to the learner, numbered steps
     shared-steps.js                steps several question types use
@@ -83,6 +84,7 @@ source/
       saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
     calculator-drawer.js           the calculator that slides out from the right-hand edge
+    maths-keyboard.js              the maths keyboard that docks at the bottom while typing in a maths box
 ```
 
 ## How the files link

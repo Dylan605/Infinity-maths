@@ -1,6 +1,6 @@
 /* A calculator that slides out from the right-hand edge of every page (hidden during revision games). */
 import {CALC_HISTORY_SIZE} from '../settings.js';
-import {asDecimal,calculate,isExact} from '../maths/calculator-maths.js';
+import {asDecimal,calculate,isExact} from '../helpers/expressions.js';
 import {ff,fh,sg} from '../helpers/maths-display.js';
 
 /* [label, what it types (or an action), extra class, screen-reader name] */

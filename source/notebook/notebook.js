@@ -74,7 +74,7 @@ function askPanel(ask){return new Promise(res=>{
     ask.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=t;b.onclick=()=>{if(i===ask.ans){b.classList.add('good');fb.innerHTML='Yes! '+ask.why;done()}else{b.classList.add('bad');wrong('Not that one. Try again.')}};o.appendChild(b)});
     box.appendChild(o)}
   else{const f=document.createElement('div');f.className='fields';const ins=[];
-    ask.fields.forEach((fl,i)=>{const lab=document.createElement('label');lab.innerHTML=fl.label;const inp=document.createElement('input');inp.id='ask_'+si+'_'+li+'_'+i;inp.inputMode=/[\/.]/.test(fl.answer)?'text':'numeric';inp.autocomplete='off';lab.appendChild(inp);f.appendChild(lab);ins.push(inp)});
+    ask.fields.forEach((fl,i)=>{const lab=document.createElement('label');lab.innerHTML=fl.label;const inp=document.createElement('input');inp.id='ask_'+si+'_'+li+'_'+i;inp.inputMode=/[\/.]/.test(fl.answer)?'text':'numeric';inp.autocomplete='off';inp.dataset.maths='number';lab.appendChild(inp);f.appendChild(lab);ins.push(inp)});
     const go=document.createElement('button');go.className='btn primary small';go.textContent='Check';f.appendChild(go);box.appendChild(f);
     const check=()=>{const ok=ins.every((inp,i)=>sameNum(inp.value,ask.fields[i].answer));
       if(ok){fb.innerHTML='Correct! '+ask.why;done()}else wrong(tries===0?'Not quite. Check the signs and the power.':'Still not it. Hint: '+strip(ask.why).split('.')[0]+'.')};

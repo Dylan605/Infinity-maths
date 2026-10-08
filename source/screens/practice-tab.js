@@ -17,7 +17,7 @@ export function initPractice(){
   function newPractice(){const sel=$('pType').value;const pool=Object.keys(TYPES).filter(id=>TYPES[id].gen);const id=sel==='any'?pool[ri(0,pool.length-1)]:sel;
     const P=genQ(id,pLv);pr={P,done:false,hint:0};const T2=TYPES[P.t],a=T2.ans(P);pr.a=a;
     const ph=a.kind==='poly'?'e.g. 2x^5 + 11x^4 − 3x':a.kind==='num'?'a number, or a fraction like 3/4':'a number';
-    $('pq').innerHTML=`<span class="tag">${T2.name} · <span class="lvtag l${pLv}">${LEVELS[pLv-1][1]}</span></span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off">
+    $('pq').innerHTML=`<span class="tag">${T2.name} · <span class="lvtag l${pLv}">${LEVELS[pLv-1][1]}</span></span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off" data-maths="${a.kind==='poly'?'poly':'number'}">
     <div class="rowb"><button class="btn primary" id="pChk">Check</button><button class="btn" id="pHint">Hint</button><button class="btn" id="pShow">Show me the working</button></div>
     <p class="hint" id="pHintOut"></p><p class="fb" id="pFb"></p>`;
     $('pChk').onclick=()=>{const raw=$('pIn').value;if(!raw.trim())return;const r=checkAnswer(a,raw),fb=$('pFb');

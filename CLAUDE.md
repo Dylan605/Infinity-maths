@@ -21,3 +21,4 @@ Don't grow a file when the new code is a separate thing. Make a new file for it:
 - Imports only point one way: `screens/` → `notebook/` and `topics/` → `worked-solutions/` → `maths/` → `helpers/`. The notebook uses only `helpers/` and `settings.js`. Never make two files import each other.
 - Every file starts with a one-line comment saying what it is for.
 - When you add, split or rename a file, update the "What is where" map in `README.md`.
+- Every box the learner types maths into gets `data-maths="integer|number|poly|expr|letters"`, which brings up the maths keyboard with the right keys. Typed numbers are read with `readNumber`/`sameNum` from `helpers/reading-input.js`, which understand √, powers and fractions.

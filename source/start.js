@@ -8,6 +8,7 @@ import {makeBuilder} from './screens/your-own-question.js';
 import {initPractice} from './screens/practice-tab.js';
 import {initGames} from './screens/games/games-tab.js';
 import {initCalculator} from './screens/calculator-drawer.js';
+import {initMathsKeyboard} from './screens/maths-keyboard.js';
 
 initNotebook();
 const learn=initLearn();
@@ -17,3 +18,4 @@ makeBuilder('bLearn','L_',false);
 initPractice();
 initGames();
 initCalculator();
+initMathsKeyboard();

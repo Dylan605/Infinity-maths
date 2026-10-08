@@ -2500,6 +2500,110 @@ input[type=checkbox] {
   color: var(--pencil);
 }
 
+/* source/styles/maths-keyboard.css */
+.mkb {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 80;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  width: min(640px, 100%);
+  padding: 8px 12px max(12px, env(safe-area-inset-bottom));
+  background: var(--solid);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -14px 40px rgba(0, 0, 0, .18);
+  animation: mkbUp .3s var(--ease);
+}
+.mkb[hidden] {
+  display: none !important;
+}
+@keyframes mkbUp {
+  from {
+    transform: translate(-50%, 100%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.mkb-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px 6px;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+.mkb-hide {
+  font: inherit;
+  font-size: 1rem;
+  width: 40px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+}
+.mkb-grid {
+  display: grid;
+  grid-template-columns: 3fr 3fr 1fr;
+  gap: 8px;
+}
+.mkb-syms,
+.mkb-digits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  align-content: start;
+}
+.mkb-side {
+  display: grid;
+  grid-template-rows: 1fr 1fr 2fr;
+  gap: 6px;
+}
+.mkb-key {
+  font: 600 1.15rem var(--f-math);
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .1s var(--ease), background .2s;
+}
+.mkb-key:hover {
+  background: var(--shade);
+}
+.mkb-key:active {
+  transform: scale(.92);
+}
+.mkb-key.sym {
+  color: var(--accent);
+}
+.mkb-box {
+  color: var(--pencil);
+  font-size: .85em;
+  margin-right: 1px;
+}
+.mkb-key.done {
+  background: var(--grad);
+  color: var(--btnfg);
+  border-color: transparent;
+  font-size: 1.3rem;
+}
+.mkb-open .cover {
+  padding-bottom: calc(var(--mkb-h,260px) + 24px);
+}
+.mkb-open .sheet {
+  padding-bottom: calc(var(--mkb-h,260px) + 40px);
+}
+
 /* source/styles/small-screens.css */
 @media (max-width: 520px) {
   .topbar .title {
@@ -2578,7 +2682,7 @@ input[type=checkbox] {
 
   <section class="panel" id="p-practice" hidden>
     <div class="explain"><p>New questions every time, from every type. Type your answer and check it. Stuck? Press <b>Hint</b>, or <b>Show me the working</b> to open that exact question in the notebook.</p>
-      <p class="hint">Type powers with ^ like <b>2x^5 + 11x^4</b>. Fractions like <b>3/4</b> are fine. Spaces don't matter.</p></div>
+      <p class="hint">Use the maths keys that pop up, or type: powers with ^ like <b>2x^5 + 11x^4</b>, fractions like <b>3/4</b>, roots like <b>√9</b>. Spaces don't matter.</p></div>
     <div class="rowb"><label class="blab">Question type<select id="pType"></select></label><div class="blab" id="pLvWrap">Difficulty</div><button class="btn" id="pNew">New question</button></div>
     <div class="score" id="score">Correct: 0 / 0</div>
     <div class="pq" id="pq"></div>
@@ -2832,6 +2936,159 @@ input[type=checkbox] {
     return P;
   }
 
+  // source/helpers/expressions.js
+  var isExact = (v) => typeof v === "object";
+  var asDecimal = (v) => isExact(v) ? Number(v.n) / Number(v.d) : v;
+  var isWhole = (v) => isExact(v) && v.d === 1n;
+  var CalcError = class extends Error {
+  };
+  var fail = (msg) => {
+    throw new CalcError(msg);
+  };
+  var checked = (x) => Number.isFinite(x) ? x : fail("That number is too big or not defined.");
+  var add2 = (a, b) => isExact(a) && isExact(b) ? fadd(a, b) : checked(asDecimal(a) + asDecimal(b));
+  var sub = (a, b) => isExact(a) && isExact(b) ? fsub(a, b) : checked(asDecimal(a) - asDecimal(b));
+  var mul = (a, b) => isExact(a) && isExact(b) ? fmul(a, b) : checked(asDecimal(a) * asDecimal(b));
+  function div(a, b) {
+    if (asDecimal(b) === 0) fail("You can't divide by 0.");
+    return isExact(a) && isExact(b) ? fdiv(a, b) : checked(asDecimal(a) / asDecimal(b));
+  }
+  function pow(b, e) {
+    if (isExact(b) && isExact(e) && e.d <= 12n) {
+      if (b.n === 0n && e.n < 0n) fail("0 can't be raised to a negative power.");
+      if (e.n > 2000n || e.n < -2000n) fail("That power is too big.");
+      const q = Number(e.d);
+      let base = b;
+      if (q > 1) {
+        if (b.n < 0n && q % 2 === 0) fail("A negative number has no even root.");
+        const root = fracRoot(b, q);
+        if (root) base = b.n < 0n ? fmul(root, F(-1)) : root;
+        else {
+          const sign = b.n < 0n && e.n % 2n !== 0n ? -1 : 1;
+          return checked(sign * Math.abs(asDecimal(b)) ** (Number(e.n) / q));
+        }
+      }
+      return fpow(base, Number(e.n));
+    }
+    const x = asDecimal(b) ** asDecimal(e);
+    return Number.isNaN(x) ? fail("A negative number has no even root.") : checked(x);
+  }
+  function factorial(v) {
+    if (!isWhole(v) || v.n < 0n || v.n > 1000n) fail("! needs a whole number from 0 to 1000.");
+    let r = 1n;
+    for (let i = 2n; i <= v.n; i++) r *= i;
+    return F(r);
+  }
+  function choose(n, r) {
+    if (!isWhole(n) || !isWhole(r) || r.n < 0n || r.n > n.n || n.n > 5000n) fail("nCr needs whole numbers with 0 \u2264 r \u2264 n.");
+    return F(C(Number(n.n), Number(r.n)));
+  }
+  function tokenize(text, shortcuts) {
+    const s = text.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/").replace(/[−–]/g, "-").replace(/\*\*/g, "^").replace(/ncr/gi, "C").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (sup) => "^" + [...sup].map((c) => "\u2070\xB9\xB2\xB3\u2074\u2075\u2076\u2077\u2078\u2079".indexOf(c)).join(""));
+    if (!shortcuts && /[Cc!]/.test(s)) fail("Work out nCr and ! yourself here.");
+    const out = [];
+    let i = 0;
+    while (i < s.length) {
+      const rest = s.slice(i), num = rest.match(/^(\d+\.?\d*|\.\d+)/);
+      if (num) {
+        out.push({ num: num[0] });
+        i += num[0].length;
+        continue;
+      }
+      if (/^ans/i.test(rest)) {
+        out.push("ans");
+        i += 3;
+        continue;
+      }
+      if ("+-*/^!()\u221A".includes(s[i]) || s[i] === "C" || s[i] === "c") {
+        out.push(s[i] === "c" ? "C" : s[i]);
+        i++;
+        continue;
+      }
+      fail(`I don't understand "${s[i]}".`);
+    }
+    return out;
+  }
+  var decimal = (str) => {
+    const [w, f = ""] = str.split(".");
+    return F(BigInt((w || "0") + f), 10n ** BigInt(f.length));
+  };
+  function calculate(text, ans, { shortcuts = true } = {}) {
+    try {
+      const t = tokenize(text, shortcuts);
+      if (!t.length) return { error: "" };
+      let i = 0;
+      const peek = () => t[i], take = () => t[i++];
+      const startsValue = (x) => x !== void 0 && (x.num !== void 0 || x === "ans" || x === "(" || x === "\u221A");
+      const expr = () => {
+        let v2 = term();
+        while (peek() === "+" || peek() === "-") {
+          const op = take(), r = term();
+          v2 = op === "+" ? add2(v2, r) : sub(v2, r);
+        }
+        return v2;
+      };
+      const term = () => {
+        let v2 = signed();
+        for (; ; ) {
+          const x = peek();
+          if (x === "*" || x === "/") {
+            take();
+            const r = signed();
+            v2 = x === "*" ? mul(v2, r) : div(v2, r);
+          } else if (startsValue(x)) v2 = mul(v2, signed());
+          else return v2;
+        }
+      };
+      const signed = () => peek() === "-" ? (take(), sub(F(0), signed())) : peek() === "+" ? (take(), signed()) : combos();
+      const combos = () => {
+        let v2 = power();
+        while (peek() === "C") {
+          take();
+          v2 = choose(v2, power());
+        }
+        return v2;
+      };
+      const power = () => {
+        const b = postfix();
+        if (peek() !== "^") return b;
+        take();
+        return pow(b, signed());
+      };
+      const postfix = () => {
+        let v2 = value();
+        while (peek() === "!") {
+          take();
+          v2 = factorial(v2);
+        }
+        return v2;
+      };
+      const value = () => {
+        const x = take();
+        if (x === void 0) fail("The expression ends too soon.");
+        if (x.num !== void 0) return decimal(x.num);
+        if (x === "ans") {
+          if (ans === void 0) fail("There is no answer yet for Ans.");
+          return ans;
+        }
+        if (x === "(") {
+          const v2 = expr();
+          if (peek() === ")") take();
+          else if (peek() !== void 0) fail("A bracket is not closed.");
+          return v2;
+        }
+        if (x === "\u221A") return pow(postfix(), F(1, 2));
+        fail(`"${x === "*" ? "\xD7" : x === "/" ? "\xF7" : x}" needs a number before it.`);
+      };
+      const v = expr();
+      if (i < t.length) fail(t[i] === ")" ? "There is a ) without a matching (." : "Something is missing between the numbers.");
+      return { value: v };
+    } catch (e) {
+      if (e instanceof CalcError) return { error: e.message };
+      throw e;
+    }
+  }
+
   // source/helpers/reading-input.js
   function parseNum(s) {
     s = String(s).replace(/−/g, "-").replace(/\s/g, "");
@@ -2844,8 +3101,14 @@ input[type=checkbox] {
     }
     return F(m[1] === "-" ? -num : num, den);
   }
+  function readNumber(s) {
+    const plain = parseNum(s);
+    if (plain) return plain;
+    const r = calculate(String(s), void 0, { shortcuts: false });
+    return r.value !== void 0 && isExact(r.value) ? r.value : null;
+  }
   var sameNum = (a, b) => {
-    const x = parseNum(a), y = parseNum(b);
+    const x = readNumber(a), y = readNumber(b);
     return !!x && !!y && feq(x, y);
   };
   function parseTerm(s) {
@@ -4206,7 +4469,7 @@ input[type=checkbox] {
     group: "other",
     blurb: "Expand with letters instead of numbers, such as (x + y)^5.",
     help: "Type two single letters, like (x+y)^5 or (p\u2212q)^6.",
-    fields: [{ id: "expr", kind: "text", label: "The expression", def: "(x+y)^5" }],
+    fields: [{ id: "expr", kind: "text", keys: "letters", label: "The expression", def: "(x+y)^5" }],
     parse(v) {
       const s = String(v.expr).replace(/\s/g, "").replace(/−/g, "-");
       const m = s.match(/^\(?([a-zA-Z])([+-])([a-zA-Z])\)?\^(\d+)$/);
@@ -4843,6 +5106,7 @@ input[type=checkbox] {
           inp.id = "ask_" + si + "_" + li + "_" + i;
           inp.inputMode = /[\/.]/.test(fl.answer) ? "text" : "numeric";
           inp.autocomplete = "off";
+          inp.dataset.maths = "number";
           lab.appendChild(inp);
           f.appendChild(lab);
           ins.push(inp);
@@ -5034,7 +5298,7 @@ input[type=checkbox] {
     const renderFields = () => {
       const t = TYPES[sel.value];
       $(pre + "help").textContent = t.help;
-      $(pre + "fields").innerHTML = t.fields.map((f) => f.kind === "sel" ? `<label>${f.label}<select id="${pre}f_${f.id}">${f.opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></label>` : `<label class="${f.kind === "expr" || f.kind === "text" ? "wide" : ""}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" ${f.kind === "int" ? 'inputmode="numeric"' : ""} autocomplete="off"></label>`).join("");
+      $(pre + "fields").innerHTML = t.fields.map((f) => f.kind === "sel" ? `<label>${f.label}<select id="${pre}f_${f.id}">${f.opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></label>` : `<label class="${f.kind === "expr" || f.kind === "text" ? "wide" : ""}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" data-maths="${f.keys || { int: "integer", expr: "expr", text: "expr" }[f.kind]}" ${f.kind === "int" ? 'inputmode="numeric"' : ""} autocomplete="off"></label>`).join("");
       t.fields.forEach((f) => {
         const el = $(pre + "f_" + f.id);
         if (f.kind === "sel") el.value = f.def;
@@ -5087,11 +5351,11 @@ input[type=checkbox] {
       return { ok: same(m, a.map) };
     }
     if (a.kind === "num") {
-      const f = parseNum(raw2);
+      const f = readNumber(raw2);
       if (!f) return { bad: "Type a number, or a fraction like 3/4." };
       return { ok: feq(f, a.val) };
     }
-    const v = parseFloat(String(raw2).replace(/−/g, "-"));
+    const r = calculate(String(raw2), void 0, { shortcuts: false }), v = r.value !== void 0 ? asDecimal(r.value) : NaN;
     if (isNaN(v)) return { bad: "Type a number." };
     return { ok: Math.abs(v - a.val) <= Math.abs(a.val) * 6e-4 };
   }
@@ -5123,7 +5387,7 @@ input[type=checkbox] {
       const T2 = TYPES[P.t], a = T2.ans(P);
       pr.a = a;
       const ph = a.kind === "poly" ? "e.g. 2x^5 + 11x^4 \u2212 3x" : a.kind === "num" ? "a number, or a fraction like 3/4" : "a number";
-      $("pq").innerHTML = `<span class="tag">${T2.name} \xB7 <span class="lvtag l${pLv}">${LEVELS[pLv - 1][1]}</span></span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off">
+      $("pq").innerHTML = `<span class="tag">${T2.name} \xB7 <span class="lvtag l${pLv}">${LEVELS[pLv - 1][1]}</span></span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off" data-maths="${a.kind === "poly" ? "poly" : "number"}">
     <div class="rowb"><button class="btn primary" id="pChk">Check</button><button class="btn" id="pHint">Hint</button><button class="btn" id="pShow">Show me the working</button></div>
     <p class="hint" id="pHintOut"></p><p class="fb" id="pFb"></p>`;
       $("pChk").onclick = () => {
@@ -5724,158 +5988,6 @@ input[type=checkbox] {
     });
   }
 
-  // source/maths/calculator-maths.js
-  var isExact = (v) => typeof v === "object";
-  var asDecimal = (v) => isExact(v) ? Number(v.n) / Number(v.d) : v;
-  var isWhole = (v) => isExact(v) && v.d === 1n;
-  var CalcError = class extends Error {
-  };
-  var fail = (msg) => {
-    throw new CalcError(msg);
-  };
-  var checked = (x) => Number.isFinite(x) ? x : fail("That number is too big or not defined.");
-  var add2 = (a, b) => isExact(a) && isExact(b) ? fadd(a, b) : checked(asDecimal(a) + asDecimal(b));
-  var sub = (a, b) => isExact(a) && isExact(b) ? fsub(a, b) : checked(asDecimal(a) - asDecimal(b));
-  var mul = (a, b) => isExact(a) && isExact(b) ? fmul(a, b) : checked(asDecimal(a) * asDecimal(b));
-  function div(a, b) {
-    if (asDecimal(b) === 0) fail("You can't divide by 0.");
-    return isExact(a) && isExact(b) ? fdiv(a, b) : checked(asDecimal(a) / asDecimal(b));
-  }
-  function pow(b, e) {
-    if (isExact(b) && isExact(e) && e.d <= 12n) {
-      if (b.n === 0n && e.n < 0n) fail("0 can't be raised to a negative power.");
-      if (e.n > 2000n || e.n < -2000n) fail("That power is too big.");
-      const q = Number(e.d);
-      let base = b;
-      if (q > 1) {
-        if (b.n < 0n && q % 2 === 0) fail("A negative number has no even root.");
-        const root = fracRoot(b, q);
-        if (root) base = b.n < 0n ? fmul(root, F(-1)) : root;
-        else {
-          const sign = b.n < 0n && e.n % 2n !== 0n ? -1 : 1;
-          return checked(sign * Math.abs(asDecimal(b)) ** (Number(e.n) / q));
-        }
-      }
-      return fpow(base, Number(e.n));
-    }
-    const x = asDecimal(b) ** asDecimal(e);
-    return Number.isNaN(x) ? fail("A negative number has no even root.") : checked(x);
-  }
-  function factorial(v) {
-    if (!isWhole(v) || v.n < 0n || v.n > 1000n) fail("! needs a whole number from 0 to 1000.");
-    let r = 1n;
-    for (let i = 2n; i <= v.n; i++) r *= i;
-    return F(r);
-  }
-  function choose(n, r) {
-    if (!isWhole(n) || !isWhole(r) || r.n < 0n || r.n > n.n || n.n > 5000n) fail("nCr needs whole numbers with 0 \u2264 r \u2264 n.");
-    return F(C(Number(n.n), Number(r.n)));
-  }
-  function tokenize(text) {
-    const s = text.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/").replace(/[−–]/g, "-").replace(/\*\*/g, "^").replace(/²/g, "^2").replace(/ncr/gi, "C");
-    const out = [];
-    let i = 0;
-    while (i < s.length) {
-      const rest = s.slice(i), num = rest.match(/^(\d+\.?\d*|\.\d+)/);
-      if (num) {
-        out.push({ num: num[0] });
-        i += num[0].length;
-        continue;
-      }
-      if (/^ans/i.test(rest)) {
-        out.push("ans");
-        i += 3;
-        continue;
-      }
-      if ("+-*/^!()\u221A".includes(s[i]) || s[i] === "C" || s[i] === "c") {
-        out.push(s[i] === "c" ? "C" : s[i]);
-        i++;
-        continue;
-      }
-      fail(`I don't understand "${s[i]}".`);
-    }
-    return out;
-  }
-  var decimal = (str) => {
-    const [w, f = ""] = str.split(".");
-    return F(BigInt((w || "0") + f), 10n ** BigInt(f.length));
-  };
-  function calculate(text, ans) {
-    try {
-      const t = tokenize(text);
-      if (!t.length) return { error: "" };
-      let i = 0;
-      const peek = () => t[i], take = () => t[i++];
-      const startsValue = (x) => x !== void 0 && (x.num !== void 0 || x === "ans" || x === "(" || x === "\u221A");
-      const expr = () => {
-        let v2 = term();
-        while (peek() === "+" || peek() === "-") {
-          const op = take(), r = term();
-          v2 = op === "+" ? add2(v2, r) : sub(v2, r);
-        }
-        return v2;
-      };
-      const term = () => {
-        let v2 = signed();
-        for (; ; ) {
-          const x = peek();
-          if (x === "*" || x === "/") {
-            take();
-            const r = signed();
-            v2 = x === "*" ? mul(v2, r) : div(v2, r);
-          } else if (startsValue(x)) v2 = mul(v2, signed());
-          else return v2;
-        }
-      };
-      const signed = () => peek() === "-" ? (take(), sub(F(0), signed())) : peek() === "+" ? (take(), signed()) : combos();
-      const combos = () => {
-        let v2 = power();
-        while (peek() === "C") {
-          take();
-          v2 = choose(v2, power());
-        }
-        return v2;
-      };
-      const power = () => {
-        const b = postfix();
-        if (peek() !== "^") return b;
-        take();
-        return pow(b, signed());
-      };
-      const postfix = () => {
-        let v2 = value();
-        while (peek() === "!") {
-          take();
-          v2 = factorial(v2);
-        }
-        return v2;
-      };
-      const value = () => {
-        const x = take();
-        if (x === void 0) fail("The expression ends too soon.");
-        if (x.num !== void 0) return decimal(x.num);
-        if (x === "ans") {
-          if (ans === void 0) fail("There is no answer yet for Ans.");
-          return ans;
-        }
-        if (x === "(") {
-          const v2 = expr();
-          if (peek() === ")") take();
-          else if (peek() !== void 0) fail("A bracket is not closed.");
-          return v2;
-        }
-        if (x === "\u221A") return pow(postfix(), F(1, 2));
-        fail(`"${x === "*" ? "\xD7" : x === "/" ? "\xF7" : x}" needs a number before it.`);
-      };
-      const v = expr();
-      if (i < t.length) fail(t[i] === ")" ? "There is a ) without a matching (." : "Something is missing between the numbers.");
-      return { value: v };
-    } catch (e) {
-      if (e instanceof CalcError) return { error: e.message };
-      throw e;
-    }
-  }
-
   // source/screens/calculator-drawer.js
   var KEYS2 = [
     ["x!", "!", "fn", "factorial"],
@@ -6031,6 +6143,105 @@ input[type=checkbox] {
     $2("calcClose").onclick = () => toggle(false);
   }
 
+  // source/screens/maths-keyboard.js
+  var SYMBOLS = {
+    integer: [["\u2212", "\u2212", "minus"]],
+    number: [["\u221A", "\u221A", "square root"], ["(", "("], [")", ")"], ["/", "/", "fraction bar"], ["^", "^", "to the power"], ['<span class="mkb-box">\u25A1</span>\xB2', "\xB2", "squared"], ["\u2212", "\u2212", "minus"]],
+    poly: [["x", "x"], ["x\xB2", "x\xB2", "x squared"], ["x\xB3", "x\xB3", "x cubed"], ["x\u207F", "^", "to the power"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
+    expr: [["x", "x"], ["(", "("], [")", ")"], ["^", "^", "to the power"], ['<span class="mkb-box">\u25A1</span>\xB2', "\xB2", "squared"], ["/", "/", "over"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]],
+    letters: [["x", "x"], ["y", "y"], ["a", "a"], ["b", "b"], ["(", "("], [")", ")"], ["^", "^", "to the power"], ["+", "+", "plus"], ["\u2212", "\u2212", "minus"]]
+  };
+  var HAS_POINT = { number: true, expr: true, letters: false, poly: false, integer: false };
+  var touch = () => matchMedia("(pointer: coarse)").matches;
+  function initMathsKeyboard() {
+    const kb = document.createElement("div");
+    kb.className = "mkb";
+    kb.hidden = true;
+    kb.setAttribute("role", "group");
+    kb.setAttribute("aria-label", "Maths keys");
+    document.body.appendChild(kb);
+    let target = null, watch = null;
+    function render(kind) {
+      const sym = SYMBOLS[kind] || SYMBOLS.number;
+      const cell = ([show2, types, name]) => `<button class="mkb-key sym" data-t="${types}"${name ? ` aria-label="${name}"` : ""}>${show2}</button>`;
+      const symCells = [...sym.map(cell)];
+      while (symCells.length % 3) symCells.push("<span></span>");
+      kb.innerHTML = `<div class="mkb-bar"><span>Maths keys</span><button class="mkb-hide" data-a="hide" aria-label="Hide the maths keys">\u25BE</button></div>
+      <div class="mkb-grid"><div class="mkb-syms">${symCells.join("")}</div>
+        <div class="mkb-digits">${["7", "8", "9", "4", "5", "6", "1", "2", "3"].map((d) => `<button class="mkb-key" data-t="${d}">${d}</button>`).join("")}
+          ${HAS_POINT[kind] ? '<button class="mkb-key" data-t=".">.</button>' : "<span></span>"}<button class="mkb-key" data-t="0">0</button><button class="mkb-key" data-a="del" aria-label="delete">\u232B</button></div>
+        <div class="mkb-side"><button class="mkb-key" data-a="left" aria-label="move left">\u25C0</button><button class="mkb-key" data-a="right" aria-label="move right">\u25B6</button>
+          <button class="mkb-key done" data-a="done" aria-label="done">\u2713</button></div></div>`;
+    }
+    function show(input) {
+      target = input;
+      render(input.dataset.maths);
+      kb.hidden = false;
+      document.body.classList.add("mkb-open");
+      document.documentElement.style.setProperty("--mkb-h", kb.offsetHeight + "px");
+      requestAnimationFrame(() => {
+        const r = input.getBoundingClientRect();
+        if (r.bottom > innerHeight - kb.offsetHeight - 12) input.scrollIntoView({ block: "center", behavior: "smooth" });
+      });
+      watch?.disconnect();
+      watch = new MutationObserver(() => {
+        if (!target?.isConnected) hide();
+      });
+      watch.observe(document.body, { childList: true, subtree: true });
+    }
+    function hide() {
+      kb.hidden = true;
+      target = null;
+      watch?.disconnect();
+      document.body.classList.remove("mkb-open");
+    }
+    const changed = () => target.dispatchEvent(new Event("input", { bubbles: true }));
+    function act(btn) {
+      if (!target?.isConnected) return hide();
+      const t = target, a = t.selectionStart ?? t.value.length, b = t.selectionEnd ?? a;
+      if (btn.dataset.t !== void 0) {
+        t.setRangeText(btn.dataset.t, a, b, "end");
+        changed();
+        return;
+      }
+      const what = btn.dataset.a;
+      if (what === "del") {
+        if (a !== b) t.setRangeText("", a, b, "end");
+        else if (a > 0) t.setRangeText("", a - 1, a, "end");
+        changed();
+      } else if (what === "left") t.setSelectionRange(Math.max(0, a - 1), Math.max(0, a - 1));
+      else if (what === "right") t.setSelectionRange(Math.min(t.value.length, b + 1), Math.min(t.value.length, b + 1));
+      else if (what === "done") t.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+      else if (what === "hide") hide();
+    }
+    kb.addEventListener("pointerdown", (e) => e.preventDefault());
+    kb.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (btn) act(btn);
+    });
+    document.addEventListener("pointerdown", (e) => {
+      const i = e.target.closest?.("input[data-maths]");
+      if (i && touch()) i.inputMode = "none";
+    }, true);
+    document.addEventListener("focusin", (e) => {
+      const i = e.target.closest?.("input[data-maths]");
+      if (i) show(i);
+      else if (!kb.contains(e.target)) hide();
+    });
+    document.addEventListener("click", (e) => {
+      const i = e.target.closest?.("input[data-maths]");
+      if (i && kb.hidden) show(i);
+    });
+    document.addEventListener("focusout", (e) => {
+      if (e.target === target && !kb.contains(e.relatedTarget)) setTimeout(() => {
+        if (document.activeElement !== target) hide();
+      }, 0);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && target && e.target === target) hide();
+    }, true);
+  }
+
   // source/start.js
   initNotebook();
   var learn = initLearn();
@@ -6040,6 +6251,7 @@ input[type=checkbox] {
   initPractice();
   initGames();
   initCalculator();
+  initMathsKeyboard();
 })();
 </script>
 </body>

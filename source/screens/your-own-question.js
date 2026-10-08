@@ -22,7 +22,7 @@ export function makeBuilder(cid,pre,defG){
   const renderFields=()=>{const t=TYPES[sel.value];$(pre+'help').textContent=t.help;
     $(pre+'fields').innerHTML=t.fields.map(f=>f.kind==='sel'
       ?`<label>${f.label}<select id="${pre}f_${f.id}">${f.opts.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></label>`
-      :`<label class="${f.kind==='expr'||f.kind==='text'?'wide':''}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" ${f.kind==='int'?'inputmode="numeric"':''} autocomplete="off"></label>`).join('');
+      :`<label class="${f.kind==='expr'||f.kind==='text'?'wide':''}">${f.label}<input type="text" id="${pre}f_${f.id}" value="${f.def}" data-maths="${f.keys||{int:'integer',expr:'expr',text:'expr'}[f.kind]}" ${f.kind==='int'?'inputmode="numeric"':''} autocomplete="off"></label>`).join('');
     t.fields.forEach(f=>{const el=$(pre+'f_'+f.id);if(f.kind==='sel')el.value=f.def;el.addEventListener('input',preview);el.addEventListener('change',preview);
       el.addEventListener('keydown',e=>{if(e.key==='Enter')start(defG)})});preview()};
   const start=g=>{const P=preview();if(!P)return;openBook(TYPES[P.t].build(P),g)};

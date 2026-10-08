@@ -10,7 +10,7 @@ const ltr=(u,e)=>e===0?'':e===1?u:`${u}<sup>${e}</sup>`;
 T('letters',{name:'Expand (a + b)^n with letters',group:'other',
   blurb:'Expand with letters instead of numbers, such as (x + y)^5.',
   help:'Type two single letters, like (x+y)^5 or (p−q)^6.',
-  fields:[{id:'expr',kind:'text',label:'The expression',def:'(x+y)^5'}],
+  fields:[{id:'expr',kind:'text',keys:'letters',label:'The expression',def:'(x+y)^5'}],
   parse(v){const s=String(v.expr).replace(/\s/g,'').replace(/−/g,'-');const m=s.match(/^\(?([a-zA-Z])([+-])([a-zA-Z])\)?\^(\d+)$/);if(!m)return {err:'Type it like (x+y)^5 or (a-b)^4.'};if(m[1]===m[3])return {err:'Use two different letters.'};
     const n=+m[4];if(n<1||n>12)return {err:'Use a power from 1 to 12.'};return {p:{t:'letters',u:m[1],v:m[3],neg:m[2]==='-',n}}},
   text:P=>P.askr!==undefined?`In the expansion of (${P.u} ${P.neg?MINUS:'+'} ${P.v})<sup>${P.n}</sup>, find the coefficient of ${ltr(P.u,P.n-P.askr)}${ltr(P.v,P.askr)}.`:`Expand (${P.u} ${P.neg?MINUS:'+'} ${P.v})<sup>${P.n}</sup>.`,
