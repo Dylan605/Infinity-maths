@@ -74,7 +74,7 @@ T('inverse',{name:'Inverse functions',group:'composite',syllabus:{aa:'SL 2.5',ai
     const lo=kind==='rat'?Math.min(-P.d/P.c,P.a/P.c)-6:Math.min(kind==='lin'?-4:Math.min(P.h,P.k)-3,-1),hi=kind==='rat'?Math.max(-P.d/P.c,P.a/P.c)+6:Math.max(kind==='lin'?4:Math.max(P.h,P.k)+5,1);
     const v=kind==='lin'?viewFor([x0,fnum(y0),-4,4],[x0,fnum(y0),-4,4]):{x:[lo,hi],y:[lo,hi]};
     S('Check, and see it',`f(${x0}) = ${plain(y0)}, so ${INV}(${plain(y0)}) must be ${x0}.`,[
-      L(`${INV}(${val(y0)}) = ${invH(P).replace(/<i>x<\/i>/g,par(y0))} = ${val(x0)} ✓`,`f takes ${val(x0)} to ${val(y0)}, and ${INV} takes it back.`),
+      L(`${INV}(${val(y0)}) = ${invH(P).replace(/(\d)<i>x<\/i>/g,`$1 × ${par(y0)}`).replace(/<i>x<\/i>/g,par(y0))} = ${val(x0)} ✓`,`f takes ${val(x0)} to ${val(y0)}, and ${INV} takes it back.`),
       L(graph({...v,curves:[{f,colour:1,label:'y = f(x)'},{f:g,colour:2,label:'y = f⁻¹(x)'}],lines:[{m:1,c:0,colour:3,label:'y = x'}],
         points:[{x:x0,y:fnum(y0),label:`(${sg(x0)}, ${plain(y0)})`,at:'nw'},{x:fnum(y0),y:x0,label:`(${plain(y0)}, ${sg(x0)})`,at:'se'}],description:'The graphs of f and its inverse, mirror images in the line y = x'}),
         `The graph of ${INV} is the graph of <i>f</i> reflected in the line ${Y} = ${X} (dashed).`,

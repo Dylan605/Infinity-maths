@@ -30,6 +30,7 @@ const plain=v=>sg(fstr(v));
 const asked=P=>{const {o,i}=parts(P);return P.style==='nest'?`<i>${o}</i>(<i>${i}</i>(${val(P.a)}))`:`(<i>${o}</i> ∘ <i>${i}</i>)(${val(P.a)})`};
 const askedPlain=P=>asked(P).replace(/<[^>]+>/g,'');
 function values(P){const {out,inn}=parts(P),mid=fnExact(inn,F(P.a));return {mid,res:mid&&fnExact(out,mid)}}
+const HOW={lin:'Multiply first, then add.',quad:'Powers first, then multiply, then add.',sqrt:'Work out the inside of the root, then take the square root.',recip:'Work out the bottom, then divide.'};
 const box=n=>`<b>[ <i>${n}</i> ]</b>`;
 const flow=(P,mid,res)=>{const {o,i}=parts(P);return `${val(P.a)} ⟶ ${box(i)} ⟶ ${mid} ⟶ ${box(o)} ⟶ ${res}`};
 const LIN=()=>({kind:'lin',m:rnz(-5,5),c:rnz(-7,7)}),QUAD=lv=>({kind:'quad',p:lv===2?1:[1,-1,2,-2][ri(0,3)],q:ri(-4,4),r:ri(-6,6)});
@@ -41,7 +42,7 @@ T('compval',{name:'Composite functions: a value',group:'composite',syllabus:{aa:
   parse(v){const n={};for(const k of ['m','c','p','q','r','a']){const r=int(v[k],-20,20,k);if(r.err)return r;n[k]=r.v}
     if(n.m===0&&n.p===0&&n.q===0)return {err:'Both functions would be constants. Give m, or p or q, a value that is not 0.'};
     return {p:{t:'compval',f:{kind:'lin',m:n.m,c:n.c},g:{kind:'quad',p:n.p,q:n.q,r:n.r},order:'fg',style:'circ',a:n.a}}},
-  text:P=>`Let <i>f</i>(${X}) = ${fnHtml(P.f)}${domainText(P.f)} and <i>g</i>(${X}) = ${fnHtml(P.g)}${domainText(P.g)}. Find ${asked(P)}.`,
+  text:P=>`Let <i>f</i>(${X}) = ${fnHtml(P.f)}${domainText(P.f)}${domainText(P.f)?',':''} and <i>g</i>(${X}) = ${fnHtml(P.g)}${domainText(P.g)}. Find ${asked(P)}.`,
   expr:P=>asked(P),
   build(P){const {out,inn,o,i}=parts(P),{mid,res}=values(P),{steps,S}=newSteps(),A=F(P.a);
     const O=`<i>${o}</i>`,I=`<i>${i}</i>`;
@@ -53,11 +54,11 @@ T('compval',{name:'Composite functions: a value',group:'composite',syllabus:{aa:
       MC(`In ${askedPlain(P)}, which function do you use first?`,i,[o,'either: the order does not matter','both at the same time'],`${i} is next to the number (the inside bracket), so it acts first. The order matters: ${o}(${i}(a)) and ${i}(${o}(a)) are usually different.`),
       [`The order matters. ${O}(${I}(${val(P.a)})) and ${I}(${O}(${val(P.a)})) are usually different numbers. Working from the outside in is the most common mistake.`])]);
     S(`The inside: ${i}(${sg(P.a)})`,`Put ${val(P.a)} in place of every x in ${i}.`,[
-      L(`${I}(${val(P.a)}) = ${fnHtml(inn,val(A))} = ${val(mid)}`,inn.kind==='quad'?'Powers first, then multiply, then add.':'Multiply first, then add.',
+      L(`${I}(${val(P.a)}) = ${fnHtml(inn,val(A))} = ${val(mid)}`,HOW[inn.kind],
         Nm(`What is ${i}(${sg(P.a)})?`,[{label:`${i}(${sg(P.a)})`,answer:plain(mid)}],`${i}(${sg(P.a)}) = ${plain(mid)}.`),
         [`Use brackets round the number you put in, especially a negative one: (${MINUS}2)² = 4, but ${MINUS}2² could be misread as ${MINUS}4.`])]);
     S(`The outside: ${o}(${plain(mid)})`,`Now ${val(mid)} goes into ${o}.`,[
-      L(`${O}(${val(mid)}) = ${fnHtml(out,val(mid))} = ${val(res)}`,out.kind==='sqrt'?'Work out the inside of the root, then take the square root.':out.kind==='recip'?'Work out the bottom, then divide.':'Same rules: powers, multiply, add.',
+      L(`${O}(${val(mid)}) = ${fnHtml(out,val(mid))} = ${val(res)}`,HOW[out.kind],
         Nm(`What is ${o}(${plain(mid)})?`,[{label:`${o}(${plain(mid)})`,answer:plain(res)}],`${o}(${plain(mid)}) = ${plain(res)}.`),
         out.kind==='sqrt'?[`√ means the positive square root, so √${val(fnExact({kind:'lin',m:1,c:out.c},mid))} = ${val(res)}.`]:undefined)]);
     S('Final answer','The output of the second machine.',[L(flow(P,val(mid),`<span class="answer">${val(res)}</span>`),`${askedPlain(P)} = ${plain(res)}.`),

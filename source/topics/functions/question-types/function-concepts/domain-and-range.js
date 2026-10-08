@@ -71,8 +71,8 @@ T('domrange',{name:'Domain and range',group:'concepts',syllabus:{aa:'SL 2.2',ai:
     if(kind==='ln')lines.push({x:h,label:`x = ${sg(h)}`});
     if(kind==='sqrt'||kind==='quad'){lines.push({y:k,colour:2,label:`y = ${sg(k)}`});points.push({x:h,y:k,label:`(${sg(h)}, ${sg(k)})`,at:up?'se':'ne'})}
     const v=viewFor([h-4,h+4],[k-5,k+5]);
-    S('Sketch it','The graph shows both answers.',[L(graph({...v,curves:[{f,colour:1,label:'y = f(x)'}],lines,points,description:'The graph of y = f(x), with its asymptotes or end point'}),
-      kind==='recip'||kind==='exp'||kind==='ln'?'The dashed lines are asymptotes: the graph gets close to them but never touches them.':`The graph ${kind==='sqrt'?'starts at':'turns at'} (${val(h)}, ${val(k)}) and never goes ${up?'below':'above'} the dashed line.`,undefined,
+    S('Sketch it','The graph shows both answers.',[L(graph({...v,curves:[{f,colour:1}],lines,points,description:'The graph of y = f(x), with its asymptotes or end point'}),
+      kind==='recip'?'The dashed lines are asymptotes: the graph gets close to them but never touches them.':kind==='exp'||kind==='ln'?'The dashed line is an asymptote: the graph gets close to it but never touches it.':`The graph ${kind==='sqrt'?'starts at':'turns at'} (${val(h)}, ${val(k)}) and never goes ${up?'below':'above'} the dashed line.`,undefined,
       [`Read the domain left to right along the ${X}-axis (where is there graph?) and the range up the ${Y}-axis (which heights does the graph reach?).`])]);
     S('Final answer','Domain for x, range for y.',[L(`(a) <span class="answer">${it(D.disp)}</span> &nbsp; (b) <span class="answer">${it(R.disp)}</span>`,'The range is about y, so write it with y.')]);
     return mk(P,steps)},

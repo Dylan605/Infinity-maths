@@ -56,7 +56,7 @@ T('readgraph',{name:'Reading a graph',group:'concepts',syllabus:{aa:'SL 2.3',ai:
     return mk(P,steps)},
   gen(lv=2){
     if(lv>1&&ri(0,2)===0||lv===1&&ri(0,1)===0){const s=lv===3?[1,-1,2,-2][ri(0,3)]:lv===2?[1,-1][ri(0,1)]:1,h=ri(-2,2),m=s>0?ri(-5,-1):ri(1,5);
-      const big=Math.abs(s)===2?2:3,d=lv===3&&ri(0,3)===0?0:ri(1,big);let a;do a=h+ri(-big,big);while(a===h+d||a===h-d);
+      const big=Math.abs(s)===2?2:3,d=lv===3&&ri(0,3)===0?0:ri(1,big);let a;do a=h+ri(-big,big);while(a===h+d||a===h-d||a===0);
       return {t:'readgraph',kind:'quad',s,h,m,a,k:m+s*d*d}}
     const n=lv===1?3:lv===2?ri(3,4):ri(4,5),slopes=lv===1?[1,-1,2,-2]:lv===2?[1,-1,2,-2,3,-3]:[1,-1,2,-2,3,-3,0,0.5,-0.5];
     for(;;){const xs=[ri(-5,-2)],ys=[ri(-3,3)];
@@ -66,7 +66,7 @@ T('readgraph',{name:'Reading a graph',group:'concepts',syllabus:{aa:'SL 2.3',ai:
       const as=[];for(let x=xs[0];x<=xs.at(-1);x++)if(Number.isInteger(f(x)))as.push(x);
       const ks=[];for(let k=Math.min(...ys);k<=Math.max(...ys);k++){const s=readSolutions(P,k);if(s&&s.length&&s.length<=3&&s.every(Number.isInteger)&&(lv===1||s.length>1))ks.push(k)}
       if(!ks.length||!as.length)continue;
-      return {...P,a:as[ri(0,as.length-1)],k:ks[ri(0,ks.length-1)]}}},
+      const as0=as.filter(x=>x!==0);return {...P,a:as0.length?as0[ri(0,as0.length-1)]:as[0],k:ks[ri(0,ks.length-1)]}}},
   ans:P=>multiAns(labelled(`f(${sg(P.a)}) =`,exactAns(fa(P))),labelled('x =',listAns(readSolutions(P)))),
   hints:P=>[`f(${sg(P.a)}) is the height of the graph at x = ${sg(P.a)}.`,`For (b), draw the horizontal line y = ${sg(P.k)} across the graph.`,'Every point where that line meets the graph gives a value of x. There may be more than one.'],
   example:{t:'readgraph',kind:'lines',xs:[-4,-1,2,5],ys:[-2,4,1,4],a:2,k:2}});

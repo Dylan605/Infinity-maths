@@ -27,7 +27,7 @@ const plain=v=>sg(fstr(v));
 
 T('compexpr',{name:'Composite functions: an expression',group:'composite',syllabus:{aa:'SL 2.5',ai:'AHL 2.7'},
   blurb:'To find f(g(x)), put the whole of g(x) in place of every x in f, then simplify.',
-  text:P=>`Let <i>f</i>(${X}) = ${fnHtml(P.f)}${domainText(P.f)} and <i>g</i>(${X}) = ${fnHtml(P.g)}${domainText(P.g)}. Find ${asked(P)}.`,
+  text:P=>`Let <i>f</i>(${X}) = ${fnHtml(P.f)}${domainText(P.f)}${domainText(P.f)?',':''} and <i>g</i>(${X}) = ${fnHtml(P.g)}${domainText(P.g)}. Find ${asked(P)}.`,
   expr:P=>asked(P),
   build(P){const {out,inn,o,i}=parts(P),R=composite(P),{steps,S}=newSteps(),O=`<i>${o}</i>`,I=`<i>${i}</i>`,gH=fnHtml(inn);
     S('Read the question','What is being asked?',[readLine(P,[`${asked(P)} means ${O}(${I}(${X})): first ${I}, then ${O}. The answer is a new function of ${X}: one rule that does both jobs in one go.`]),
@@ -36,7 +36,7 @@ T('compexpr',{name:'Composite functions: an expression',group:'composite',syllab
     S(`Put ${i}(x) inside ${o}`,`${i} is the inside function.`,[
       L(`${O}(${I}(${X})) = ${O}(${gH})`,`${I}(${X}) is ${gH}.`,MC(`In ${asked(P).replace(/<[^>]+>/g,'')}, which function goes inside the other?`,`${i} goes inside ${o}`,[`${o} goes inside ${i}`,`multiply ${o}(x) by ${i}(x)`,`add ${o}(x) and ${i}(x)`],
         `${o}(${i}(x)): ${i}(x) is the input of ${o}. It is not a multiplication.`),[`A common mistake is to multiply ${O}(${X}) × ${I}(${X}). The ∘ does not mean multiply: it means "put one into the other".`]),
-      L(`= ${fnHtml(out,gH)}`,`Everywhere ${O} has an ${X}, write (${gH}).`,undefined,[`${O}(${X}) = ${fnHtml(out)}. Rub out each ${X} and write the whole of ${gH} in its place, in brackets so nothing gets lost.`])]);
+      L(`= ${fnHtml(out,gH)}`,`Everywhere ${O} has an ${X}, write ${out.kind==='lin'||out.kind==='quad'?`(${gH})`:gH}.`,undefined,[`${O}(${X}) = ${fnHtml(out)}. Rub out each ${X} and write the whole of ${gH} in its place${out.kind==='lin'||out.kind==='quad'?', in brackets so nothing gets lost':''}.`])]);
     const sl=[];
     if(out.kind==='lin')sl.push(L(`= ${terms([...pieces(polyOf(inn),out.m),[out.c,'']])}`,`Multiply every term in the bracket by ${val(out.m)}.`,undefined,[`${val(out.m)} × each term: the bracket is (${gH}).`]));
     else if(out.kind==='quad'){sl.push(L(`(${gH})<sup>2</sup> = ${polyH(R.sq)}`,'First square the bracket: multiply it by itself.',
