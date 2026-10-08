@@ -4,11 +4,11 @@ import {asDecimal,calculate,isExact} from '../maths/calculator-maths.js';
 import {ff,fh,sg} from '../helpers/maths-display.js';
 
 /* [label, what it types (or an action), extra class, screen-reader name] */
-const KEYS=[['nCr','C','fn','n choose r'],['x!','!','fn','factorial'],['xʸ','^','fn','to the power'],['x²','^2','fn','squared'],['√','√(','fn','square root'],
+const KEYS=[['x!','!','fn','factorial'],['xʸ','^','fn','to the power'],['x²','^2','fn','squared'],['√','√(','fn','square root'],['AC','@clear','fn','clear'],
   ['7','7'],['8','8'],['9','9'],['(','('],[')',')'],
   ['4','4'],['5','5'],['6','6'],['×','×','op','times'],['÷','÷','op','divide'],
   ['1','1'],['2','2'],['3','3'],['+','+','op','plus'],['−','−','op','minus'],
-  ['0','0'],['.','.'],['Ans','Ans','fn','previous answer'],['⌫','@del','fn','delete'],['AC','@clear','fn','clear'],
+  ['0','0','wide'],['.','.'],['Ans','Ans','fn','previous answer'],['⌫','@del','fn','delete'],
   ['S⇔D','@toggle','fn wide','fraction or decimal'],['=','@equals','eq wider','equals']];
 
 export function initCalculator(){
@@ -17,7 +17,7 @@ export function initCalculator(){
     <aside class="calc" id="calc" aria-label="Calculator">
       <div class="calc-head"><h2>Calculator</h2><button class="calc-close" id="calcClose" aria-label="Close the calculator">✕</button></div>
       <div class="calc-screen">
-        <input class="calc-input" id="calcIn" inputmode="none" autocomplete="off" spellcheck="false" placeholder="e.g. 10C3 × 2^4" aria-label="Calculation">
+        <input class="calc-input" id="calcIn" inputmode="none" autocomplete="off" spellcheck="false" placeholder="e.g. (2/3)^4 × 15" aria-label="Calculation">
         <div class="calc-out" id="calcOut" aria-live="polite"></div>
       </div>
       <div class="calc-keys">${KEYS.map(([label,does,cls='',name])=>`<button class="calc-key ${cls}" data-k="${does}"${name?` aria-label="${name}"`:''}>${label}</button>`).join('')}</div>
