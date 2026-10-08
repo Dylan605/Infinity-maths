@@ -2,10 +2,10 @@
 import {checkAnswer} from '../../maths/checking-answers.js';
 import {openBook} from '../../notebook/notebook.js';
 import {getTopic} from '../current-topic.js';
-import {syllabusBadge} from '../study-settings.js';
+import {calculatorAllowed,syllabusBadge} from '../study-settings.js';
 import {answerBoxes,answerHtml,isBlank,markBoxes,onEnter,readBoxes} from '../answer-boxes.js';
 
-export const paperBadge=paper=>`<span class="paper-badge p${paper}">Paper ${paper} · ${paper===1?'no calculator':'calculator'}</span>`;
+export const paperBadge=paper=>`<span class="paper-badge p${paper}">Paper ${paper} · ${calculatorAllowed(paper)?'calculator':'no calculator'}</span>`;
 
 /* onBack: return to the list */
 export function showExamQuestion(box,exam,{onBack}){

@@ -23,7 +23,8 @@ const GAME_STARS=[60,180,360];
 /* [code, short name, course, level]; topics list the course codes they belong to */
 const COURSES=[['ai-sl','AI SL','Applications and interpretation','Standard level'],['ai-hl','AI HL','Applications and interpretation','Higher level'],
   ['aa-sl','AA SL','Analysis and approaches','Standard level'],['aa-hl','AA HL','Analysis and approaches','Higher level']];
-const PAPERS=[['1','Paper 1','no calculator'],['2','Paper 2','calculator']];
+/* [code, name]. Only AA Paper 1 is a non-calculator paper; in the AI courses a GDC is allowed in both papers */
+const PAPERS=[['1','Paper 1'],['2','Paper 2']];
 /* the year of the two-year Diploma Programme: [code, name, what it means, short note]; topics list the grades they are taught in */
 const GRADES=[['11','Grade 11','First year of the Diploma (DP1)','DP1'],['12','Grade 12','Second year of the Diploma (DP2)','DP2'],['all','Both years','Everything, for exam revision','revision']];
 const COURSE_KEY='infinity_course';

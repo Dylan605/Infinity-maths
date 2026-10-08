@@ -160,5 +160,5 @@ Make a `topics/<topic>/` folder like `functions/`, whose `<topic>.js` exports a 
 
 ## Courses and years
 
-The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`; the years in `GRADES`: Grade 11, Grade 12 and both. A `syllabus` tag is one section for every course (`'SL 1.9'`, `'AHL 1.10'` for HL only) or one per course family (`{aa:'SL 2.5', ai:'AHL 2.7'}`, leaving out a family that doesn't have it). Which year a topic is taught in differs between schools: change a topic's `grades` to match yours.
+The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`; the years in `GRADES`: Grade 11, Grade 12 and both. A `syllabus` tag is one section for every course (`'SL 1.9'`, `'AHL 1.10'` for HL only) or one per course family (`{aa:'SL 2.5', ai:'AHL 2.7'}`, leaving out a family that doesn't have it). Which year a topic is taught in differs between schools: change a topic's `grades` to match yours. Papers are in `PAPERS`; only AA Paper 1 is a non-calculator paper (the AI courses allow a GDC in both), so the calculator and the paper labels follow the course.
 

@@ -6,7 +6,7 @@ const AA='data-only="aa-sl aa-hl"',AA_AIHL='data-only="aa-sl aa-hl ai-hl"',AI='d
 const fr=(top,bottom)=>`<span class="fr"><span>${top}</span><span>${bottom}</span></span>`;
 /* one small graph with a caption, for the grid of key shapes */
 const small=(caption,options,only='')=>`<div ${only}>${graph({width:220,height:170,...options})}<p class="hint">${caption}</p></div>`;
-const GRID='style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"';
+const GRID='class="graph-grid"';
 
 const SHAPES=`<div ${GRID}>
   ${small('<i>y</i> = (<i>x</i> − 1)<sup>2</sup> − 4: vertex (1, −4), axis of symmetry <i>x</i> = 1, zeros −1 and 3.',{x:[-3,5],y:[-5,6],description:'The parabola y = (x − 1)² − 4 with its vertex and zeros marked',
@@ -150,8 +150,8 @@ ${SHAPES}
 </table></div>
 
 <div class="paper-1-only">
-  <h3>Paper 1: no calculator</h3>
-  <p class="hint" ${AI}>In the AI courses you may use a GDC in both papers. Paper 1 here means practising without one, so the GDC tips are below as well.</p>
+  <h3>Paper 1<span data-only="aa-sl aa-hl">: no calculator</span></h3>
+  <p class="hint" ${AI}>In the AI courses a GDC is allowed in both papers, so the calculator stays available and the GDC tips below apply to Paper 1 too.</p>
   <ul>
     <li>Factorise quadratics first; use the quadratic formula only when it won't factorise<span ${AI}> (or use your GDC)</span>.</li>
     <li>Leave answers exact: fractions, surds like √5, and logs like ln 3, unless the question says otherwise.</li>

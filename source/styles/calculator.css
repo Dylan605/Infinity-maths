@@ -2,7 +2,7 @@
 .calc-wrap{position:fixed;top:0;right:0;bottom:0;z-index:70;width:min(340px,calc(100vw - 52px));transform:translateX(100%);transition:transform .4s var(--ease);pointer-events:none}
 .calc-wrap.open{transform:none}
 .playing .calc-wrap{display:none}  /* no calculator during the revision games */
-.paper-1 .calc-wrap{display:none}  /* Paper 1 is a non-calculator paper */
+.no-calculator .calc-wrap{display:none}  /* AA Paper 1 is a non-calculator paper */
 .calc-handle{pointer-events:auto;position:absolute;top:50%;right:100%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px;border-radius:14px 0 0 14px;border:1px solid var(--line);border-right:0;background:var(--solid);color:var(--ink);font:inherit;font-weight:700;font-size:.8rem;cursor:pointer;box-shadow:-6px 0 20px rgba(0,0,0,.12);transition:padding .25s var(--ease),background .25s}
 .calc-handle span:first-child{font-size:1.3rem}
 .calc-handle-label{writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.06em}

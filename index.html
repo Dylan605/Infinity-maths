@@ -1388,6 +1388,11 @@ input[type=checkbox] {
 .cheat h3 {
   margin-top: 8px;
 }
+.cheat .graph-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
 .cheat table {
   border-collapse: collapse;
   width: 100%;
@@ -2699,7 +2704,7 @@ input[type=checkbox] {
 .playing .calc-wrap {
   display: none;
 }
-.paper-1 .calc-wrap {
+.no-calculator .calc-wrap {
   display: none;
 }
 .calc-handle {
@@ -7085,7 +7090,7 @@ input[type=checkbox] {
   var AI = 'data-only="ai-sl ai-hl"';
   var fr2 = (top, bottom2) => `<span class="fr"><span>${top}</span><span>${bottom2}</span></span>`;
   var small = (caption, options, only = "") => `<div ${only}>${graph({ width: 220, height: 170, ...options })}<p class="hint">${caption}</p></div>`;
-  var GRID = 'style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"';
+  var GRID = 'class="graph-grid"';
   var SHAPES = `<div ${GRID}>
   ${small("<i>y</i> = (<i>x</i> \u2212 1)<sup>2</sup> \u2212 4: vertex (1, \u22124), axis of symmetry <i>x</i> = 1, zeros \u22121 and 3.", {
     x: [-3, 5],
@@ -7253,8 +7258,8 @@ ${SHAPES}
 </table></div>
 
 <div class="paper-1-only">
-  <h3>Paper 1: no calculator</h3>
-  <p class="hint" ${AI}>In the AI courses you may use a GDC in both papers. Paper 1 here means practising without one, so the GDC tips are below as well.</p>
+  <h3>Paper 1<span data-only="aa-sl aa-hl">: no calculator</span></h3>
+  <p class="hint" ${AI}>In the AI courses a GDC is allowed in both papers, so the calculator stays available and the GDC tips below apply to Paper 1 too.</p>
   <ul>
     <li>Factorise quadratics first; use the quadratic formula only when it won't factorise<span ${AI}> (or use your GDC)</span>.</li>
     <li>Leave answers exact: fractions, surds like \u221A5, and logs like ln 3, unless the question says otherwise.</li>
@@ -11561,7 +11566,7 @@ ${SHAPES}
     ["aa-sl", "AA SL", "Analysis and approaches", "Standard level"],
     ["aa-hl", "AA HL", "Analysis and approaches", "Higher level"]
   ];
-  var PAPERS = [["1", "Paper 1", "no calculator"], ["2", "Paper 2", "calculator"]];
+  var PAPERS = [["1", "Paper 1"], ["2", "Paper 2"]];
   var GRADES = [["11", "Grade 11", "First year of the Diploma (DP1)", "DP1"], ["12", "Grade 12", "Second year of the Diploma (DP2)", "DP2"], ["all", "Both years", "Everything, for exam revision", "revision"]];
   var COURSE_KEY = "infinity_course";
   var GRADE_KEY = "infinity_grade";
@@ -11623,6 +11628,7 @@ ${SHAPES}
   var level = () => getCourse().endsWith("hl") ? "hl" : "sl";
   var family = () => getCourse().slice(0, 2);
   var courseFamily = family;
+  var calculatorAllowed = (p = paper) => !(String(p) === "1" && family() === "aa");
   var syllabusFor = (item) => {
     const s = item.syllabus;
     return s == null ? null : typeof s === "string" ? s : s[family()] ?? null;
@@ -11637,7 +11643,10 @@ ${SHAPES}
   };
   function apply(announce) {
     $("studyBar").querySelectorAll("[data-course]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.course === getCourse()));
-    $("studyBar").querySelectorAll("[data-paper]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.paper === paper));
+    $("studyBar").querySelectorAll("[data-paper]").forEach((b) => {
+      b.setAttribute("aria-pressed", b.dataset.paper === paper);
+      b.querySelector("small").textContent = calculatorAllowed(b.dataset.paper) ? "calculator" : "no calculator";
+    });
     $("studyBar").querySelectorAll("[data-grade]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.grade === getGrade()));
     const cl = document.body.classList;
     COURSES.forEach(([c]) => cl.toggle("course-" + c, c === getCourse()));
@@ -11647,6 +11656,7 @@ ${SHAPES}
     cl.toggle("course-hl", level() === "hl");
     GRADES.forEach(([g]) => cl.toggle("grade-" + g, g === getGrade()));
     cl.toggle("paper-1", paper === "1");
+    cl.toggle("no-calculator", !calculatorAllowed());
     cl.toggle("paper-2", paper === "2");
     if (announce) document.dispatchEvent(new CustomEvent("studychange", { detail: { course: getCourse(), paper } }));
   }
@@ -11663,7 +11673,7 @@ ${SHAPES}
   function initStudySettings() {
     $("studyBar").innerHTML = `<div class="study-group" role="group" aria-label="Course"><span class="study-label">Course</span>${COURSES.map(([v, l]) => `<button data-course="${v}">${l}</button>`).join("")}</div>
     <div class="study-group" role="group" aria-label="Year"><span class="study-label">Year</span>${GRADES.map(([v, l, , note2]) => `<button data-grade="${v}">${v === "all" ? "Both" : l}<small>${note2}</small></button>`).join("")}</div>
-    <div class="study-group" role="group" aria-label="Paper"><span class="study-label">Paper</span>${PAPERS.map(([v, l, note2]) => `<button data-paper="${v}">${l}<small>${note2}</small></button>`).join("")}</div>`;
+    <div class="study-group" role="group" aria-label="Paper"><span class="study-label">Paper</span>${PAPERS.map(([v, l]) => `<button data-paper="${v}">${l}<small></small></button>`).join("")}</div>`;
     $("studyBar").addEventListener("click", (e) => {
       const b = e.target.closest("button");
       if (!b) return;
@@ -13472,7 +13482,7 @@ ${SHAPES}
   }
 
   // source/screens/exam/exam-question.js
-  var paperBadge = (paper2) => `<span class="paper-badge p${paper2}">Paper ${paper2} \xB7 ${paper2 === 1 ? "no calculator" : "calculator"}</span>`;
+  var paperBadge = (paper2) => `<span class="paper-badge p${paper2}">Paper ${paper2} \xB7 ${calculatorAllowed(paper2) ? "calculator" : "no calculator"}</span>`;
   function showExamQuestion(box3, exam13, { onBack }) {
     const q = exam13.make(), total = q.parts.reduce((s, p) => s + p.marks, 0), got = q.parts.map(() => null);
     box3.hidden = false;

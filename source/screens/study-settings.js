@@ -1,5 +1,5 @@
 /* The study bar under the logo: which IB maths course (AI SL, AI HL, AA SL or AA HL), which year (Grade 11, Grade 12 or both)
-   and which paper (Paper 1, no calculator, or Paper 2, calculator) you are practising for. Remembered in this browser.
+   and which paper (Paper 1 or Paper 2; only AA Paper 1 is without a calculator) you are practising for. Remembered in this browser.
    Other screens read it with getCourse, getGrade, getPaper, inCourse and inGrade, and listen for a 'studychange' event on document. */
 import {COURSES,COURSE_KEY,GRADES,GRADE_KEY,PAPERS,PAPER_KEY} from '../settings.js';
 import {$} from '../helpers/page-helpers.js';
@@ -23,6 +23,8 @@ export const courseShort=()=>COURSES.find(x=>x[0]===getCourse())[1];
 const level=()=>getCourse().endsWith('hl')?'hl':'sl';
 const family=()=>getCourse().slice(0,2);  // 'aa' or 'ai'
 export const courseFamily=family;
+/* is a calculator allowed in this paper? Only AA Paper 1 is a non-calculator paper */
+export const calculatorAllowed=(p=paper)=>!(String(p)==='1'&&family()==='aa');
 /* an item's syllabus section for the chosen course. syllabus is either one section for every course ('SL 1.9'),
    or one per course family ({aa:'SL 2.5', ai:'AHL 2.7'}); a family left out does not have it */
 export const syllabusFor=item=>{const s=item.syllabus;return s==null?null:typeof s==='string'?s:s[family()]??null};
@@ -35,9 +37,9 @@ export const syllabusBadge=item=>{const s=syllabusFor(item);if(!s)return '';cons
 
 function apply(announce){
   $('studyBar').querySelectorAll('[data-course]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.course===getCourse()));
-  $('studyBar').querySelectorAll('[data-paper]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.paper===paper));
+  $('studyBar').querySelectorAll('[data-paper]').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.paper===paper);b.querySelector('small').textContent=calculatorAllowed(b.dataset.paper)?'calculator':'no calculator'});
   $('studyBar').querySelectorAll('[data-grade]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.grade===getGrade()));
-  const cl=document.body.classList;COURSES.forEach(([c])=>cl.toggle('course-'+c,c===getCourse()));cl.toggle('course-aa',family()==='aa');cl.toggle('course-ai',family()==='ai');cl.toggle('course-sl',level()==='sl');cl.toggle('course-hl',level()==='hl');GRADES.forEach(([g])=>cl.toggle('grade-'+g,g===getGrade()));cl.toggle('paper-1',paper==='1');cl.toggle('paper-2',paper==='2');
+  const cl=document.body.classList;COURSES.forEach(([c])=>cl.toggle('course-'+c,c===getCourse()));cl.toggle('course-aa',family()==='aa');cl.toggle('course-ai',family()==='ai');cl.toggle('course-sl',level()==='sl');cl.toggle('course-hl',level()==='hl');GRADES.forEach(([g])=>cl.toggle('grade-'+g,g===getGrade()));cl.toggle('paper-1',paper==='1');cl.toggle('no-calculator',!calculatorAllowed());cl.toggle('paper-2',paper==='2');
   if(announce)document.dispatchEvent(new CustomEvent('studychange',{detail:{course:getCourse(),paper}}))}
 /* used by the first-open question */
 export function setCourse(v){course=v;save(COURSE_KEY,v);apply(true)}
@@ -46,7 +48,7 @@ export function setGrade(v){grade=v;save(GRADE_KEY,v);apply(true)}
 export function initStudySettings(){
   $('studyBar').innerHTML=`<div class="study-group" role="group" aria-label="Course"><span class="study-label">Course</span>${COURSES.map(([v,l])=>`<button data-course="${v}">${l}</button>`).join('')}</div>
     <div class="study-group" role="group" aria-label="Year"><span class="study-label">Year</span>${GRADES.map(([v,l,,note])=>`<button data-grade="${v}">${v==='all'?'Both':l}<small>${note}</small></button>`).join('')}</div>
-    <div class="study-group" role="group" aria-label="Paper"><span class="study-label">Paper</span>${PAPERS.map(([v,l,note])=>`<button data-paper="${v}">${l}<small>${note}</small></button>`).join('')}</div>`;
+    <div class="study-group" role="group" aria-label="Paper"><span class="study-label">Paper</span>${PAPERS.map(([v,l])=>`<button data-paper="${v}">${l}<small></small></button>`).join('')}</div>`;
   $('studyBar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
     if(b.dataset.course)return setCourse(b.dataset.course);if(b.dataset.grade)return setGrade(b.dataset.grade);paper=b.dataset.paper;save(PAPER_KEY,paper);apply(true)});
   apply(false);
