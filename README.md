@@ -1,6 +1,6 @@
 # Infinity Maths
 
-Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
+For students of IB Diploma Programme Mathematics: analysis and approaches (SL and HL). Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
 
 ## Working on it
 
@@ -31,6 +31,8 @@ source/
     practice-and-cheat-sheet.css   the Practice tab, the question form and the cheat sheet
     games.css                      the revision games: cards, game stage, number pad, effects, results
     calculator.css                 the slide-out calculator
+    study-settings.css             the course and paper bar, syllabus labels, and what each choice hides
+    exam.css                       exam practice: the question list and the exam-paper layout
     maths-keyboard.css             the maths keyboard
     small-screens.css              phones, and less motion for people who ask for it
   helpers/                         small tools used everywhere
@@ -59,6 +61,8 @@ source/
       unknowns-and-estimates/      find-k-from-a-coefficient, find-k-when-coefficients-are-equal,
                                    find-n-from-a-coefficient, estimate-a-number, negative-or-fractional-power
       other-skills/                evaluate-ncr, solve-ncr-for-n, expand-with-letters
+    cheat-sheet.js                 the cheat sheet: formula booklet, what to remember, command terms, GDC tips
+    exam-questions/                one file per exam-style question, listed in exam-list.js
     games/                         one file per revision game
       game-list.js                 every game, in the order shown on the tab
       game-helpers.js              multiple-choice, typed answers, values per level
@@ -84,6 +88,11 @@ source/
       saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
     calculator-drawer.js           the calculator that slides out from the right-hand edge
+    study-settings.js              the course (AA SL / HL) and paper (1 / 2) bar under the logo
+    cheat-sheet-tab.js             shows the topic's cheat sheet
+    exam/
+      exam-tab.js                  the list of exam-style questions for the chosen course and paper
+      exam-question.js             one question: parts, marks, checking, markscheme
     maths-keyboard.js              the maths keyboard that docks at the bottom while typing in a maths box
 ```
 
@@ -112,6 +121,10 @@ Make a new file in the right group folder under `topics/binomials/question-types
 ## When to make a new file
 
 Whenever the new code is a separate thing: a question type, a screen, a topic, or styles for a new screen. Split any file that passes about 150 lines or starts doing two jobs. `CLAUDE.md` has the full rules.
+
+## Adding an exam-style question
+
+Make a file in `topics/binomials/exam-questions/` that exports `exam = {id, title, syllabus, paper, marks, make()}`, copying a neighbour, and add it to `exam-list.js`. `make()` returns `{stem, parts}`, each part made with `part({text, marks, scheme, lesson})` from `exam-helpers.js`. `lesson` is a question of one of the topic's question types: its answer becomes the part's answer, and "Show me the working" opens its worked solution.
 
 ## Adding a revision game
 
