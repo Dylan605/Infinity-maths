@@ -2,7 +2,7 @@
 import {gcdB,iroot} from './whole-numbers.js';
 
 export const F=(n,d=1n)=>{n=BigInt(n);d=BigInt(d);if(d<0n){n=-n;d=-d}const g=gcdB(n,d)||1n;return {n:n/g,d:d/g}};
-const fadd=(x,y)=>F(x.n*y.d+y.n*x.d,x.d*y.d);
+export const fadd=(x,y)=>F(x.n*y.d+y.n*x.d,x.d*y.d);
 export const fsub=(x,y)=>F(x.n*y.d-y.n*x.d,x.d*y.d);
 export const fmul=(x,y)=>F(x.n*y.n,x.d*y.d);
 export const fdiv=(x,y)=>F(x.n*y.d,x.d*y.n);

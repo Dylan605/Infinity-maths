@@ -2261,6 +2261,245 @@ input[type=checkbox] {
   }
 }
 
+/* source/styles/calculator.css */
+.calc-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  width: min(340px, calc(100vw - 52px));
+  transform: translateX(100%);
+  transition: transform .4s var(--ease);
+  pointer-events: none;
+}
+.calc-wrap.open {
+  transform: none;
+}
+.playing .calc-wrap {
+  display: none;
+}
+.calc-handle {
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border-radius: 14px 0 0 14px;
+  border: 1px solid var(--line);
+  border-right: 0;
+  background: var(--solid);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: .8rem;
+  cursor: pointer;
+  box-shadow: -6px 0 20px rgba(0, 0, 0, .12);
+  transition: padding .25s var(--ease), background .25s;
+}
+.calc-handle span:first-child {
+  font-size: 1.3rem;
+}
+.calc-handle-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: .06em;
+}
+.calc-handle:hover {
+  padding-right: 12px;
+  background: var(--shade);
+}
+.calc-handle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.calc {
+  pointer-events: auto;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  background: var(--solid);
+  border-left: 1px solid var(--line);
+  box-shadow: -20px 0 50px rgba(0, 0, 0, .18);
+}
+.calc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.calc-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.calc-close {
+  font: inherit;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+}
+.calc-screen {
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: var(--shade);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.calc-input {
+  font: 500 1.25rem var(--f-math);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: right;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  outline: none;
+}
+.calc-input:focus-visible {
+  outline: none;
+}
+.calc-screen:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.calc-input::placeholder {
+  color: var(--pencil);
+  opacity: .6;
+  font-size: 1rem;
+}
+.calc-out {
+  min-height: 2.1rem;
+  text-align: right;
+  font: 500 1.5rem var(--f-math);
+  color: var(--pencil);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.calc-out.done {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.8rem;
+  animation: rise .3s var(--ease);
+}
+.calc-out.error {
+  color: var(--red);
+  font: 600 .9rem var(--f-ui);
+  white-space: normal;
+}
+.calc-out .fr {
+  font-size: .8em;
+}
+.calc-out.long {
+  font-size: 1.05rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.calc-keys {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+.calc-key {
+  font: 600 1.1rem var(--f-ui);
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--glass2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .12s var(--ease), background .2s;
+}
+.calc-key:hover {
+  background: var(--shade);
+}
+.calc-key:active {
+  transform: scale(.92);
+}
+.calc-key.fn {
+  font-size: .9rem;
+  color: var(--accent);
+}
+.calc-key.op {
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+.calc-key.wide {
+  grid-column: span 2;
+}
+.calc-key.wider {
+  grid-column: span 3;
+}
+.calc-key.eq {
+  background: var(--grad);
+  color: var(--btnfg);
+  border-color: transparent;
+  font-size: 1.3rem;
+}
+.calc-history h3 {
+  margin: 4px 0 6px;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+.calc-history ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.calc-history button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font: 500 .95rem var(--f-math);
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.calc-history button:hover {
+  background: var(--shade);
+}
+.calc-h-q {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.calc-h-a {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.calc-empty {
+  font-size: .85rem;
+  color: var(--pencil);
+}
+
 /* source/styles/small-screens.css */
 @media (max-width: 520px) {
   .topbar .title {
@@ -2473,6 +2712,7 @@ input[type=checkbox] {
     const g = gcdB(n, d) || 1n;
     return { n: n / g, d: d / g };
   };
+  var fadd = (x, y) => F(x.n * y.d + y.n * x.d, x.d * y.d);
   var fsub = (x, y) => F(x.n * y.d - y.n * x.d, x.d * y.d);
   var fmul = (x, y) => F(x.n * y.n, x.d * y.d);
   var fdiv = (x, y) => F(x.n * y.d, x.d * y.n);
@@ -3402,7 +3642,7 @@ input[type=checkbox] {
     },
     build(P) {
       const { cfg, which } = P, Q = question(cfg), { steps, S } = newSteps(), e1 = TYPES.sumcoef.evalAt(cfg, 1), e2 = TYPES.sumcoef.evalAt(cfg, -1), hasM = cfg.c !== void 0;
-      const sub = (xv) => {
+      const sub2 = (xv) => {
         const sx = xv === 1 ? "1" : `(${MINUS}1)`;
         const A = raw(BigInt(cfg.a), 0), b = BigInt(cfg.b);
         const part = (co, e) => e === 0 ? sg(co) : `${sg(co)}${e < 0 ? "/" : "\xD7"}${sx}${Math.abs(e) === 1 ? "" : "<sup>" + Math.abs(e) + "</sup>"}`.replace("\xD7", " \xD7 ").replace("/", " \xF7 ");
@@ -3413,13 +3653,13 @@ input[type=checkbox] {
         L("Idea: put x = 1. Every power of x becomes 1, so only the coefficients are left.", "This avoids expanding anything.", null, [`If the expansion is 5x\xB3 + 2x \u2212 7 and you put x = 1, you get 5\xD71 + 2\xD71 \u2212 7. That is just 5 + 2 \u2212 7, the sum of the coefficients.`])
       ]);
       S("Put x = 1", "Replace every x with 1.", [
-        L(`f(1) = ${sub(1)}`, "f(x) means the whole expression.", void 0, [`Because 1 to any power is 1, every x part disappears. Be careful with a 1/x term: 1 \xF7 1 = 1 too.`]),
+        L(`f(1) = ${sub2(1)}`, "f(x) means the whole expression.", void 0, [`Because 1 to any power is 1, every x part disappears. Be careful with a 1/x term: 1 \xF7 1 = 1 too.`]),
         L(`= ${sg(e1.L1)}${hasM ? " \xD7 " : ""}(${sg(e1.A)} + ${sg(e1.B)})<sup>${cfg.n}</sup> = <span class="hl">${sg(e1.val)}</span>`.replace(`${sg(e1.L1)} \xD7 `, hasM ? `${sg(e1.L1)} \xD7 ` : "").replace(/^= 1\(/, "= ("), "Work it out.", Nm("What is f(1)?", [{ label: "f(1)", answer: e1.val.toString() }], `${hasM ? sg(e1.L1) + " \xD7 " : ""}(${sg(e1.A)} + ${sg(e1.B)})^${cfg.n} = ${sg(e1.val)}.`))
       ]);
       if (which === "all") S("Final answer", "That is the sum of all the coefficients.", [L(`sum of all coefficients = <span class="answer">${sg(e1.val)}</span>`, "Done.")]);
       else {
         S("Put x = \u22121 as well", `x = 1 gives (even + odd). x = ${MINUS}1 gives (even ${MINUS} odd).`, [
-          L(`f(${MINUS}1) = ${sub(-1)}`, "Odd powers of x flip sign when x = \u22121. Even powers stay positive.", void 0, [`(${MINUS}1)\xB2 = 1 but (${MINUS}1)\xB3 = ${MINUS}1. So odd powers change sign and even powers do not.`]),
+          L(`f(${MINUS}1) = ${sub2(-1)}`, "Odd powers of x flip sign when x = \u22121. Even powers stay positive.", void 0, [`(${MINUS}1)\xB2 = 1 but (${MINUS}1)\xB3 = ${MINUS}1. So odd powers change sign and even powers do not.`]),
           L(`= ${hasM ? sg(e2.L1) + " \xD7 " : ""}(${sg(e2.A)} + ${sg(e2.B)})<sup>${cfg.n}</sup> = <span class="hl">${sg(e2.val)}</span>`, "Work it out.")
         ]);
         const v = TYPES.sumcoef.value(P);
@@ -4241,6 +4481,7 @@ input[type=checkbox] {
   var GAME_BOARD_BONUS_SECONDS = 5;
   var GAME_LEVEL_UP_EVERY = 6;
   var GAME_STARS = [60, 180, 360];
+  var CALC_HISTORY_SIZE = 8;
   var BEST_SCORE_KEY = "bin_best_";
   var SOUND_KEY = "infinity_sound";
   var GROUP_DESCRIPTIONS = {
@@ -5483,6 +5724,314 @@ input[type=checkbox] {
     });
   }
 
+  // source/maths/calculator-maths.js
+  var isExact = (v) => typeof v === "object";
+  var asDecimal = (v) => isExact(v) ? Number(v.n) / Number(v.d) : v;
+  var isWhole = (v) => isExact(v) && v.d === 1n;
+  var CalcError = class extends Error {
+  };
+  var fail = (msg) => {
+    throw new CalcError(msg);
+  };
+  var checked = (x) => Number.isFinite(x) ? x : fail("That number is too big or not defined.");
+  var add2 = (a, b) => isExact(a) && isExact(b) ? fadd(a, b) : checked(asDecimal(a) + asDecimal(b));
+  var sub = (a, b) => isExact(a) && isExact(b) ? fsub(a, b) : checked(asDecimal(a) - asDecimal(b));
+  var mul = (a, b) => isExact(a) && isExact(b) ? fmul(a, b) : checked(asDecimal(a) * asDecimal(b));
+  function div(a, b) {
+    if (asDecimal(b) === 0) fail("You can't divide by 0.");
+    return isExact(a) && isExact(b) ? fdiv(a, b) : checked(asDecimal(a) / asDecimal(b));
+  }
+  function pow(b, e) {
+    if (isExact(b) && isExact(e) && e.d <= 12n) {
+      if (b.n === 0n && e.n < 0n) fail("0 can't be raised to a negative power.");
+      if (e.n > 2000n || e.n < -2000n) fail("That power is too big.");
+      const q = Number(e.d);
+      let base = b;
+      if (q > 1) {
+        if (b.n < 0n && q % 2 === 0) fail("A negative number has no even root.");
+        const root = fracRoot(b, q);
+        if (root) base = b.n < 0n ? fmul(root, F(-1)) : root;
+        else {
+          const sign = b.n < 0n && e.n % 2n !== 0n ? -1 : 1;
+          return checked(sign * Math.abs(asDecimal(b)) ** (Number(e.n) / q));
+        }
+      }
+      return fpow(base, Number(e.n));
+    }
+    const x = asDecimal(b) ** asDecimal(e);
+    return Number.isNaN(x) ? fail("A negative number has no even root.") : checked(x);
+  }
+  function factorial(v) {
+    if (!isWhole(v) || v.n < 0n || v.n > 1000n) fail("! needs a whole number from 0 to 1000.");
+    let r = 1n;
+    for (let i = 2n; i <= v.n; i++) r *= i;
+    return F(r);
+  }
+  function choose(n, r) {
+    if (!isWhole(n) || !isWhole(r) || r.n < 0n || r.n > n.n || n.n > 5000n) fail("nCr needs whole numbers with 0 \u2264 r \u2264 n.");
+    return F(C(Number(n.n), Number(r.n)));
+  }
+  function tokenize(text) {
+    const s = text.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/").replace(/[−–]/g, "-").replace(/\*\*/g, "^").replace(/²/g, "^2").replace(/ncr/gi, "C");
+    const out = [];
+    let i = 0;
+    while (i < s.length) {
+      const rest = s.slice(i), num = rest.match(/^(\d+\.?\d*|\.\d+)/);
+      if (num) {
+        out.push({ num: num[0] });
+        i += num[0].length;
+        continue;
+      }
+      if (/^ans/i.test(rest)) {
+        out.push("ans");
+        i += 3;
+        continue;
+      }
+      if ("+-*/^!()\u221A".includes(s[i]) || s[i] === "C" || s[i] === "c") {
+        out.push(s[i] === "c" ? "C" : s[i]);
+        i++;
+        continue;
+      }
+      fail(`I don't understand "${s[i]}".`);
+    }
+    return out;
+  }
+  var decimal = (str) => {
+    const [w, f = ""] = str.split(".");
+    return F(BigInt((w || "0") + f), 10n ** BigInt(f.length));
+  };
+  function calculate(text, ans) {
+    try {
+      const t = tokenize(text);
+      if (!t.length) return { error: "" };
+      let i = 0;
+      const peek = () => t[i], take = () => t[i++];
+      const startsValue = (x) => x !== void 0 && (x.num !== void 0 || x === "ans" || x === "(" || x === "\u221A");
+      const expr = () => {
+        let v2 = term();
+        while (peek() === "+" || peek() === "-") {
+          const op = take(), r = term();
+          v2 = op === "+" ? add2(v2, r) : sub(v2, r);
+        }
+        return v2;
+      };
+      const term = () => {
+        let v2 = signed();
+        for (; ; ) {
+          const x = peek();
+          if (x === "*" || x === "/") {
+            take();
+            const r = signed();
+            v2 = x === "*" ? mul(v2, r) : div(v2, r);
+          } else if (startsValue(x)) v2 = mul(v2, signed());
+          else return v2;
+        }
+      };
+      const signed = () => peek() === "-" ? (take(), sub(F(0), signed())) : peek() === "+" ? (take(), signed()) : combos();
+      const combos = () => {
+        let v2 = power();
+        while (peek() === "C") {
+          take();
+          v2 = choose(v2, power());
+        }
+        return v2;
+      };
+      const power = () => {
+        const b = postfix();
+        if (peek() !== "^") return b;
+        take();
+        return pow(b, signed());
+      };
+      const postfix = () => {
+        let v2 = value();
+        while (peek() === "!") {
+          take();
+          v2 = factorial(v2);
+        }
+        return v2;
+      };
+      const value = () => {
+        const x = take();
+        if (x === void 0) fail("The expression ends too soon.");
+        if (x.num !== void 0) return decimal(x.num);
+        if (x === "ans") {
+          if (ans === void 0) fail("There is no answer yet for Ans.");
+          return ans;
+        }
+        if (x === "(") {
+          const v2 = expr();
+          if (peek() === ")") take();
+          else if (peek() !== void 0) fail("A bracket is not closed.");
+          return v2;
+        }
+        if (x === "\u221A") return pow(postfix(), F(1, 2));
+        fail(`"${x === "*" ? "\xD7" : x === "/" ? "\xF7" : x}" needs a number before it.`);
+      };
+      const v = expr();
+      if (i < t.length) fail(t[i] === ")" ? "There is a ) without a matching (." : "Something is missing between the numbers.");
+      return { value: v };
+    } catch (e) {
+      if (e instanceof CalcError) return { error: e.message };
+      throw e;
+    }
+  }
+
+  // source/screens/calculator-drawer.js
+  var KEYS2 = [
+    ["nCr", "C", "fn", "n choose r"],
+    ["x!", "!", "fn", "factorial"],
+    ["x\u02B8", "^", "fn", "to the power"],
+    ["x\xB2", "^2", "fn", "squared"],
+    ["\u221A", "\u221A(", "fn", "square root"],
+    ["7", "7"],
+    ["8", "8"],
+    ["9", "9"],
+    ["(", "("],
+    [")", ")"],
+    ["4", "4"],
+    ["5", "5"],
+    ["6", "6"],
+    ["\xD7", "\xD7", "op", "times"],
+    ["\xF7", "\xF7", "op", "divide"],
+    ["1", "1"],
+    ["2", "2"],
+    ["3", "3"],
+    ["+", "+", "op", "plus"],
+    ["\u2212", "\u2212", "op", "minus"],
+    ["0", "0"],
+    [".", "."],
+    ["Ans", "Ans", "fn", "previous answer"],
+    ["\u232B", "@del", "fn", "delete"],
+    ["AC", "@clear", "fn", "clear"],
+    ["S\u21D4D", "@toggle", "fn wide", "fraction or decimal"],
+    ["=", "@equals", "eq wider", "equals"]
+  ];
+  function initCalculator() {
+    const wrap = document.createElement("div");
+    wrap.className = "calc-wrap";
+    wrap.innerHTML = `<button class="calc-handle" id="calcHandle" aria-expanded="false" aria-controls="calc"><span aria-hidden="true">\u{1F9EE}</span><span class="calc-handle-label">Calculator</span></button>
+    <aside class="calc" id="calc" aria-label="Calculator">
+      <div class="calc-head"><h2>Calculator</h2><button class="calc-close" id="calcClose" aria-label="Close the calculator">\u2715</button></div>
+      <div class="calc-screen">
+        <input class="calc-input" id="calcIn" inputmode="none" autocomplete="off" spellcheck="false" placeholder="e.g. 10C3 \xD7 2^4" aria-label="Calculation">
+        <div class="calc-out" id="calcOut" aria-live="polite"></div>
+      </div>
+      <div class="calc-keys">${KEYS2.map(([label, does, cls = "", name]) => `<button class="calc-key ${cls}" data-k="${does}"${name ? ` aria-label="${name}"` : ""}>${label}</button>`).join("")}</div>
+      <div class="calc-history"><h3>History</h3><ol id="calcHist"><li class="calc-empty">Your calculations will appear here. Tap one to use it again.</li></ol></div>
+    </aside>`;
+    document.body.appendChild(wrap);
+    const $2 = (id) => wrap.querySelector("#" + id), input = $2("calcIn"), out = $2("calcOut"), hist = $2("calcHist");
+    let ans, result = null, asDec = false, justDone = false;
+    const history = [];
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const show = (v) => isExact(v) && !asDec ? v.d === 1n ? group(sg(v.n)) : fh(v) : sg(ff(asDecimal(v), 10));
+    const group = (t) => t.replace(/\B(?=(\d{3})+(?!\d))/g, "\u2009");
+    const fit = () => out.classList.toggle("long", out.textContent.length > 16);
+    function preview() {
+      justDone = false;
+      result = null;
+      const r = calculate(input.value, ans);
+      out.className = "calc-out preview";
+      out.innerHTML = r.value !== void 0 ? "= " + show(r.value) : "";
+      fit();
+    }
+    function equals() {
+      const text = input.value.trim();
+      if (!text) return;
+      const r = calculate(text, ans);
+      if (r.error !== void 0) {
+        out.className = "calc-out error";
+        out.textContent = r.error;
+        out.classList.remove("shake");
+        void out.offsetWidth;
+        out.classList.add("shake");
+        return;
+      }
+      ans = r.value;
+      result = r.value;
+      justDone = true;
+      asDec = false;
+      out.className = "calc-out done";
+      out.innerHTML = "= " + show(r.value);
+      fit();
+      history.unshift({ text, value: r.value });
+      history.length = Math.min(history.length, CALC_HISTORY_SIZE);
+      hist.innerHTML = history.map((h, i) => `<li><button data-h="${i}"><span class="calc-h-q">${esc(h.text)}</span><span class="calc-h-a">= ${show(h.value)}</span></button></li>`).join("");
+    }
+    function type(t) {
+      if (justDone) {
+        input.value = /^[+−×÷^!C]/.test(t) ? "Ans" : "";
+        justDone = false;
+      }
+      const a = input.selectionStart ?? input.value.length, b = input.selectionEnd ?? a;
+      input.setRangeText(t, a, b, "end");
+      input.focus({ preventScroll: true });
+      preview();
+    }
+    function press(k) {
+      if (k === "@equals") return equals();
+      if (k === "@clear") {
+        input.value = "";
+        out.innerHTML = "";
+        justDone = false;
+        result = null;
+        return input.focus({ preventScroll: true });
+      }
+      if (k === "@del") {
+        if (justDone) {
+          input.value = "";
+          out.innerHTML = "";
+          justDone = false;
+          return;
+        }
+        const a = input.selectionStart ?? input.value.length, b = input.selectionEnd ?? a;
+        if (a === b && a > 0) input.setRangeText("", a - (input.value.slice(a - 3, a) === "Ans" ? 3 : 1), a, "end");
+        else input.setRangeText("", a, b, "end");
+        input.focus({ preventScroll: true });
+        return preview();
+      }
+      if (k === "@toggle") {
+        if (result && isExact(result)) {
+          asDec = !asDec;
+          out.innerHTML = "= " + show(result);
+          fit();
+        }
+        return;
+      }
+      type(k);
+    }
+    wrap.querySelector(".calc-keys").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-k]");
+      if (b) press(b.dataset.k);
+    });
+    hist.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-h]");
+      if (!b) return;
+      input.value = history[+b.dataset.h].text;
+      input.focus({ preventScroll: true });
+      preview();
+    });
+    input.addEventListener("input", preview);
+    input.addEventListener("keydown", (e) => {
+      e.stopPropagation();
+      if (e.key === "Enter" || e.key === "=") {
+        e.preventDefault();
+        equals();
+      } else if (e.key === "Escape") toggle(false);
+    });
+    const panel = $2("calc"), handle = $2("calcHandle");
+    panel.inert = true;
+    function toggle(open = !wrap.classList.contains("open")) {
+      wrap.classList.toggle("open", open);
+      panel.inert = !open;
+      handle.setAttribute("aria-expanded", open);
+      if (open) setTimeout(() => input.focus({ preventScroll: true }), 250);
+      else handle.focus({ preventScroll: true });
+    }
+    handle.onclick = () => toggle();
+    $2("calcClose").onclick = () => toggle(false);
+  }
+
   // source/start.js
   initNotebook();
   var learn = initLearn();
@@ -5491,6 +6040,7 @@ input[type=checkbox] {
   makeBuilder("bLearn", "L_", false);
   initPractice();
   initGames();
+  initCalculator();
 })();
 </script>
 </body>

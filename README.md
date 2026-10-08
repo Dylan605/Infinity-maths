@@ -30,6 +30,7 @@ source/
     notebook.css                   the notebook and its writing animations
     practice-and-cheat-sheet.css   the Practice tab, the question form and the cheat sheet
     games.css                      the revision games: cards, game stage, number pad, effects, results
+    calculator.css                 the slide-out calculator
     small-screens.css              phones, and less motion for people who ask for it
   helpers/                         small tools used everywhere
     page-helpers.js                find an element, wait, check reduced motion
@@ -41,6 +42,7 @@ source/
   maths/
     binomial-expansion.js          the expansion itself: every term of (a + b)^n
     checking-answers.js            marking a typed answer right or wrong
+    calculator-maths.js            the calculator's maths: nCr, !, powers, roots, exact fractions
   worked-solutions/
     building-blocks.js             one line of working, a question to the learner, numbered steps
     shared-steps.js                steps several question types use
@@ -80,6 +82,7 @@ source/
       game-results.js              the end-of-round screen
       saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
+    calculator-drawer.js           the calculator that slides out from the right-hand edge
 ```
 
 ## How the files link
