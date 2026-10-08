@@ -24,7 +24,10 @@ const GAME_STARS=[60,180,360];
 const COURSES=[['ai-sl','AI SL','Applications and interpretation','Standard level'],['ai-hl','AI HL','Applications and interpretation','Higher level'],
   ['aa-sl','AA SL','Analysis and approaches','Standard level'],['aa-hl','AA HL','Analysis and approaches','Higher level']];
 const PAPERS=[['1','Paper 1','no calculator'],['2','Paper 2','calculator']];
+/* the year of the two-year Diploma Programme: [code, name, what it means, short note]; topics list the grades they are taught in */
+const GRADES=[['11','Grade 11','First year of the Diploma (DP1)','DP1'],['12','Grade 12','Second year of the Diploma (DP2)','DP2'],['all','Both years','Everything, for exam revision','revision']];
 const COURSE_KEY='infinity_course';
+const GRADE_KEY='infinity_grade';
 const PAPER_KEY='infinity_paper';
 /* true: ask which course every time the app opens (the last choice is highlighted); false: ask only the first time */
 const ASK_COURSE_EVERY_TIME=true;
@@ -35,5 +38,5 @@ const CALC_HISTORY_SIZE=8;
 /* localStorage key prefix for best game scores, and the key for the sound on/off switch */
 const BEST_SCORE_KEY='bin_best_';
 const SOUND_KEY='infinity_sound';
-export {LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,ASK_COURSE_EVERY_TIME,WRITE_SPEED_MS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
+export {LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,GRADES,COURSE_KEY,PAPER_KEY,GRADE_KEY,ASK_COURSE_EVERY_TIME,WRITE_SPEED_MS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
   GAME_SECONDS,GAME_LIVES,GAME_POINTS,GAME_COMBO_EVERY,GAME_MAX_COMBO,GAME_COMBO_BONUS_SECONDS,GAME_BOARD_BONUS_SECONDS,GAME_LEVEL_UP_EVERY,GAME_STARS};

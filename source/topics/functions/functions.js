@@ -57,7 +57,7 @@ import './question-types/transformations/transform-an-equation.js';
 import './question-types/transformations/describe-a-transformation.js';
 
 /* courses, sections, groups and keys: see topics/binomials/binomials.js */
-export const topic={id:'functions',name:'Functions',courses:['ai-sl','ai-hl','aa-sl','aa-hl'],sections:{aa:'SL 2.1–2.11',ai:'SL 2.1–2.6 · AHL 2.7–2.9'},
+export const topic={id:'functions',name:'Functions',courses:['ai-sl','ai-hl','aa-sl','aa-hl'],grades:[11],sections:{aa:'SL 2.1–2.11',ai:'SL 2.1–2.6 · AHL 2.7–2.9'},
   desc:'Straight lines, domain and range, graph features, composite and inverse functions, quadratics, rational, exponential and log functions, solving equations, transformations',
   keys:'functions function straight line lines gradient slope parallel perpendicular domain range graph graphs intercept intercepts vertex zeros roots asymptote asymptotes maximum minimum symmetry composite inverse quadratic quadratics completing the square discriminant inequality inequalities rational reciprocal exponential exponentials logarithm logarithms log ln e solve solving equations gdc calculator transformation transformations translation stretch reflection',
   groups:[['lines','Straight lines','Gradient, the three forms of a line, parallel and perpendicular lines'],

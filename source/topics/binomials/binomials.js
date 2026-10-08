@@ -30,9 +30,9 @@ import './question-types/other-skills/evaluate-ncr.js';
 import './question-types/other-skills/solve-ncr-for-n.js';
 import './question-types/other-skills/expand-with-letters.js';
 
-/* courses: the course codes the topic is in. sections: its syllabus sections for each course family (aa, ai).
+/* courses: the course codes the topic is in. grades: the year(s) it is usually taught in (11, 12). sections: its syllabus sections for each course family (aa, ai).
    groups: [id, folder name, one-line description], one Learn folder each. keys: extra words the topic search finds. */
-export const topic={id:'binomial',name:'Binomials',courses:['aa-sl','aa-hl'],sections:{aa:'SL 1.9 · AHL 1.10'},
+export const topic={id:'binomial',name:'Binomials',courses:['aa-sl','aa-hl'],grades:[11],sections:{aa:'SL 1.9 · AHL 1.10'},
   desc:"Expansion, Pascal's triangle, nCr, coefficients, terms, unknowns, estimates, and negative or fractional powers (HL)",
   keys:'binomial binomials binomial expansion expand expansion pascal pascals triangle ncr combinations choose algebra powers brackets series coefficient constant term independent of x middle term ascending powers approximation estimate negative fractional power sum of coefficients greatest coefficient unknown k find n factorial theorem',
   groups:[['expand','Expanding brackets','Multiplying out brackets with a power'],['find','Finding terms and coefficients','Coefficients, the constant term, a particular term and more'],

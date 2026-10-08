@@ -1,4 +1,4 @@
-/* The course question shown when the app opens, and the note shown when a course has no topics yet. */
+/* The course and year questions shown when the app opens, and the note shown when a course has no topics yet. */
 .welcome{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);animation:fade .3s both}
 .welcome.closing{animation:fade .3s reverse forwards;pointer-events:none}
 .welcoming .calc-wrap,.welcoming .mkb{display:none}
@@ -19,6 +19,12 @@
 .wc-short{font-weight:800;font-size:1.35rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .wc-name{font-weight:700;font-size:.92rem}
 .wc-level{font-size:.8rem;color:var(--pencil)}
+.welcome-step{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.welcome-step.next{animation:rise .4s var(--ease) both}
+.welcome-count{margin:0;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.welcome-options.three{grid-template-columns:repeat(3,1fr)}
+.welcome-foot{margin:4px 0 0;font-size:.82rem;color:var(--pencil)}
 .no-topics{border-radius:20px;padding:18px 20px;background:var(--glass);border:1px solid var(--glassb);box-shadow:var(--shadow);max-width:60ch}
 .no-topics p{margin:0 0 6px}.no-topics p:last-child{margin:0;color:var(--pencil)}
+@media (max-width:560px){.welcome-options.three{grid-template-columns:1fr}}
 @media (max-width:420px){.welcome-options{grid-template-columns:1fr}}
