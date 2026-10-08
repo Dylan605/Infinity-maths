@@ -3,8 +3,8 @@ import {$} from '../helpers/page-helpers.js';
 
 /* onOpenTopic: called whenever a topic folder is opened */
 export function initHub({onOpenTopic}){
-  function showHub(){$('folderView').hidden=true;$('hub').hidden=false;window.scrollTo(0,0);$('search').focus()}
-  function openFolder(){$('hub').hidden=true;$('folderView').hidden=false;window.scrollTo(0,0);onOpenTopic()}
+  function showHub(){$('folderView').hidden=true;$('hub').hidden=false;document.body.classList.remove('topic-open');window.scrollTo(0,0);$('search').focus()}
+  function openFolder(){$('hub').hidden=true;$('folderView').hidden=false;document.body.classList.add('topic-open');window.scrollTo(0,0);onOpenTopic()}
   $('f-binomial').onclick=openFolder;
   $('backHub').onclick=showHub;
   $('search').addEventListener('input',()=>{const q=$('search').value.trim().toLowerCase();let shown=0;

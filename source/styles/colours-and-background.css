@@ -33,10 +33,16 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16p
 @keyframes drift1{to{transform:translate(18vmax,12vmax) scale(1.15)}}
 @keyframes drift2{to{transform:translate(-16vmax,-10vmax) scale(1.1)}}
 @keyframes drift3{to{transform:translate(-22vmax,14vmax) scale(.85)}}
+/* the background only drifts on the home page; inside a topic it holds still, because every glass panel has to be redrawn on each frame it moves */
+.topic-open .bg i{animation-play-state:paused}
 
 /* glass surfaces */
-.glass,.sheetHome,.qcard,.subfolder,.folder,.explain,.custom,.pq,.gcard,.formula,.searchbar input,.ask{
+.glass,.folder,.searchbar input,.ask{
   background:var(--glass);border:1px solid var(--glassb);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--shadow)}
+/* the topic sheet and the cards on it look the same but skip the blur: what is behind them is already a soft blur,
+   and blurring it again for every card made topic pages drop to about 15 frames a second */
+.sheetHome,.qcard,.subfolder,.explain,.custom,.pq,.gcard,.formula{background:var(--glass);border:1px solid var(--glassb);box-shadow:var(--shadow)}
+.sheetHome .btn{-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* entrance animations */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}

@@ -185,16 +185,11 @@ body {
     transform: translate(-22vmax, 14vmax) scale(.85);
   }
 }
+.topic-open .bg i {
+  animation-play-state: paused;
+}
 .glass,
-.sheetHome,
-.qcard,
-.subfolder,
 .folder,
-.explain,
-.custom,
-.pq,
-.gcard,
-.formula,
 .searchbar input,
 .ask {
   background: var(--glass);
@@ -202,6 +197,22 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(160%);
   backdrop-filter: blur(18px) saturate(160%);
   box-shadow: var(--shadow);
+}
+.sheetHome,
+.qcard,
+.subfolder,
+.explain,
+.custom,
+.pq,
+.gcard,
+.formula {
+  background: var(--glass);
+  border: 1px solid var(--glassb);
+  box-shadow: var(--shadow);
+}
+.sheetHome .btn {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 @keyframes rise {
   from {
@@ -4704,12 +4715,14 @@ input[type=checkbox] {
     function showHub() {
       $("folderView").hidden = true;
       $("hub").hidden = false;
+      document.body.classList.remove("topic-open");
       window.scrollTo(0, 0);
       $("search").focus();
     }
     function openFolder() {
       $("hub").hidden = true;
       $("folderView").hidden = false;
+      document.body.classList.add("topic-open");
       window.scrollTo(0, 0);
       onOpenTopic();
     }
