@@ -53,6 +53,7 @@ export function initMathsKeyboard(){
   document.addEventListener('pointerdown',e=>{const i=e.target.closest?.('input[data-maths]');if(i&&touch())i.inputMode='none'},true);
   document.addEventListener('focusin',e=>{const i=e.target.closest?.('input[data-maths]');if(i)show(i);else if(!kb.contains(e.target))hide()});
   document.addEventListener('click',e=>{const i=e.target.closest?.('input[data-maths]');if(i&&kb.hidden)show(i)});  // tapping the box again brings the keys back
-  document.addEventListener('focusout',e=>{if(e.target===target&&!kb.contains(e.relatedTarget))setTimeout(()=>{if(document.activeElement!==target)hide()},0)});
+  // wait a moment before closing, so the page doesn't jump while the tap that moved the focus is still landing
+  document.addEventListener('focusout',e=>{if(e.target===target&&!kb.contains(e.relatedTarget))setTimeout(()=>{if(document.activeElement!==target)hide()},250)});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&target&&e.target===target)hide()},true);
 }

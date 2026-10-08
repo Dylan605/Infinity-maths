@@ -7,7 +7,7 @@ import {F} from '../../../../helpers/fractions.js';
 import {MINUS,bn,ff,fh,mono} from '../../../../helpers/maths-display.js';
 import {ri} from '../../../../helpers/random-numbers.js';
 
-T('greatest',{name:'Greatest coefficient',group:'find',
+T('greatest',{name:'Greatest coefficient',group:'find',syllabus:'SL 1.9',
   blurb:'Find which term has the biggest coefficient, by comparing neighbouring terms.',
   help:'Type a bracket with positive numbers, like (2x+3)^10.',
   fields:[exprField('(2x+3)^10')],

@@ -8,7 +8,7 @@ import {solveNLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('unkn',{name:'Find n from a coefficient',group:'unknown',
+T('unkn',{name:'Find n from a coefficient',group:'unknown',syllabus:'SL 1.9',
   blurb:'(1 + bx)^n has a known coefficient. Work out the power n.',
   help:'The bracket is (1 + bx)^n. Say which power of x has a known coefficient, and its value.',
   fields:[intField('b','b (number with x)','2'),intField('m','Coefficient of x^m. m =','2'),intField('V','Its value','180')],

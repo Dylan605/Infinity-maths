@@ -3,11 +3,12 @@ import {GROUPS} from '../settings.js';
 import {openBook} from '../notebook/notebook.js';
 import {TYPES} from '../topics/binomials/question-list.js';
 import {$} from '../helpers/page-helpers.js';
+import {inCourse} from './study-settings.js';
 
 export function makeBuilder(cid,pre,defG){
   const root=$(cid);
-  const opts=GROUPS.map(([g,label])=>`<optgroup label="${label}">${Object.values(TYPES).filter(t=>t.group===g&&t.parse).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('');
-  root.innerHTML=`<label class="blab">What does the question ask?<select id="${pre}type">${opts}</select></label>
+  const optsHtml=()=>GROUPS.map(([g,label])=>`<optgroup label="${label}">${Object.values(TYPES).filter(t=>t.group===g&&t.parse&&inCourse(t)).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('');
+  root.innerHTML=`<label class="blab">What does the question ask?<select id="${pre}type">${optsHtml()}</select></label>
     <p class="hint" id="${pre}help"></p>
     <div class="bfields" id="${pre}fields"></div>
     <div class="preview" id="${pre}prev"></div>
@@ -30,4 +31,6 @@ export function makeBuilder(cid,pre,defG){
   if(!defG)$(pre+'watch').onclick=()=>start(false);
   $(pre+'guided').onclick=()=>start(true);
   renderFields();
+  // the list of question types follows the course (SL leaves out the HL-only types)
+  document.addEventListener('studychange',()=>{const keep=sel.value;sel.innerHTML=optsHtml();if([...sel.options].some(o=>o.value===keep))sel.value=keep;renderFields()});
 }

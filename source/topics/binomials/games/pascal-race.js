@@ -3,7 +3,7 @@ import {C} from '../../../helpers/whole-numbers.js';
 import {ri} from '../../../helpers/random-numbers.js';
 import {byLevel,typed} from './game-helpers.js';
 
-export const game={id:'pascal',name:'Pascal race',icon:'🔺',skill:"Pascal's triangle",
+export const game={id:'pascal',syllabus:'SL 1.9',name:'Pascal race',icon:'🔺',skill:"Pascal's triangle",
   how:'Fill the gap. Every number is the two above it added together.',
   next(level){const n=ri(...byLevel(level,[3,5],[4,7],[6,10])),r=ri(1,n-1);
     const row=(k,gap)=>`<div class="tri-row">${[...Array(k+1)].map((_,i)=>i===gap?'<span class="gap">?</span>':`<span>${C(k,i)}</span>`).join('')}</div>`;

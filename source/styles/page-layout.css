@@ -92,3 +92,6 @@ h3{font-family:var(--f-hand);font-weight:800;font-size:1.45rem;letter-spacing:-.
 .preview{font-family:var(--f-math);font-size:1.4rem;min-height:1.6em;animation:fade .3s}
 .err{color:var(--red);font-size:.92rem;margin:0}
 .hint{color:var(--pencil);font-size:.92rem;margin:0}
+/* the footer with the IB disclaimer */
+.site-foot{margin-top:auto;padding-top:24px;text-align:center}
+.site-foot p{margin:0 auto;max-width:70ch;font-size:.76rem;line-height:1.5;color:var(--pencil)}

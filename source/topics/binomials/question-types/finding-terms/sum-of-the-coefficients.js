@@ -8,7 +8,7 @@ import {MINUS,raw,sg} from '../../../../helpers/maths-display.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('sumcoef',{name:'Sum of the coefficients',group:'find',
+T('sumcoef',{name:'Sum of the coefficients',group:'find',syllabus:'SL 1.9',
   blurb:'Add up every coefficient at once, using the x = 1 trick.',
   help:'Type the expression and choose all, even-power or odd-power coefficients.',
   fields:[exprField('(2x+3)^5'),{id:'which',kind:'sel',label:'Which coefficients?',def:'all',opts:[['all','All of them'],['even','Even powers of x'],['odd','Odd powers of x']]}],

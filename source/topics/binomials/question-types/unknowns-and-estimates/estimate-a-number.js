@@ -6,7 +6,7 @@ import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {MINUS,bn,ff,sg} from '../../../../helpers/maths-display.js';
 import {ri} from '../../../../helpers/random-numbers.js';
 
-T('approx',{name:'Estimate a number',group:'unknown',
+T('approx',{name:'Estimate a number',group:'unknown',syllabus:'SL 1.9',
   blurb:'Use the first few terms of an expansion to estimate something like 1.02^8.',
   help:'Type a number close to a whole number, with a whole-number power, like 1.02^8 or 2.01^6.',
   fields:[{id:'expr',kind:'text',label:'The number',def:'1.02^8'},intField('nt','How many terms to use','3')],

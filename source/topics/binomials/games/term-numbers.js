@@ -3,7 +3,7 @@ import {ord} from '../../../helpers/maths-display.js';
 import {ri} from '../../../helpers/random-numbers.js';
 import {byLevel,mcq} from './game-helpers.js';
 
-export const game={id:'termname',name:'Term numbers',icon:'🔢',skill:'Which term is which',
+export const game={id:'termname',syllabus:'SL 1.9',name:'Term numbers',icon:'🔢',skill:'Which term is which',
   how:'The (r+1)th term uses r, and there is always one more term than the power.',
   next(level){const n=ri(...byLevel(level,[4,8],[4,14],[8,20])),v=level===1?[0,2][ri(0,1)]:ri(0,3);
     if(v===0){const t=ri(2,n);return mcq(`The ${ord(t)} term of an expansion uses r = ?`,String(t-1),[String(t),String(t+1),String(t-2)],`The (r+1)th term uses r, so r = ${t} − 1 = ${t-1}.`)}

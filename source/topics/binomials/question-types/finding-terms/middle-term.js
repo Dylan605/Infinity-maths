@@ -7,7 +7,7 @@ import {MINUS,bn,mono,sg} from '../../../../helpers/maths-display.js';
 import {termLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('middle',{name:'Find the middle term',group:'find',
+T('middle',{name:'Find the middle term',group:'find',syllabus:'SL 1.9',
   blurb:'Find the term (or two terms) in the middle of an expansion.',
   help:'Type the bracket with its power. An even power has one middle term, an odd power has two.',
   fields:[exprField('(x+2)^8')],

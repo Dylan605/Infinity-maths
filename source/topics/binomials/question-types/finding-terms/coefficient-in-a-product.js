@@ -8,7 +8,7 @@ import {coefSteps,gtLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('pcoef',{name:'Coefficient in a product',group:'find',
+T('pcoef',{name:'Coefficient in a product',group:'find',syllabus:'SL 1.9',
   blurb:'Find a coefficient when another bracket multiplies the expansion.',
   help:'Type the other bracket and the bracket with the power, then the power of x. Example: (1+2x)(3−x)^7',
   fields:[exprField('(1+2x)(3−x)^7'),intField('k','Power of x (k)','3')],

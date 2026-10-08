@@ -8,7 +8,7 @@ import {coefSteps,gtLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('coef',{name:'Find the coefficient of x^k',group:'find',
+T('coef',{name:'Find the coefficient of x^k',group:'find',syllabus:'SL 1.9',
   blurb:'Find the number in front of a given power of x, without expanding everything.',
   help:'Type the bracket and the power of x you want. If there is another bracket in front, I switch to the product method.',
   fields:[exprField('(2x+1)^6'),intField('k','Power of x (k)','3')],

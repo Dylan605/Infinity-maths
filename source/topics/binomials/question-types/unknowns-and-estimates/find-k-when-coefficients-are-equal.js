@@ -7,7 +7,7 @@ import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {C,pw} from '../../../../helpers/whole-numbers.js';
 import {ri} from '../../../../helpers/random-numbers.js';
 
-T('unkeq',{name:'Find k when two coefficients are equal',group:'unknown',
+T('unkeq',{name:'Find k when two coefficients are equal',group:'unknown',syllabus:'SL 1.9',
   blurb:'Two neighbouring coefficients of (a + kx)^n are the same. Find k.',
   help:'The bracket is (a + kx)^n. The coefficients of x^m and x^(m+1) are equal.',
   fields:[intField('a','a (the number)','3'),intField('n','Power n','8'),intField('m','Coefficients of x^m and x^(m+1). m =','2')],

@@ -6,7 +6,7 @@ import {buildExpand} from '../../../../worked-solutions/expanding-lesson.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 import {poly} from '../../../../helpers/maths-display.js';
 
-T('expand',{name:'Expand and simplify',group:'expand',
+T('expand',{name:'Expand and simplify',group:'expand',syllabus:'SL 1.9',
   blurb:'Multiply out a bracket with a power, with or without another bracket in front.',
   help:'Type the bracket with its power. You can put another bracket in front, like (2x+3)(x+1)^4.',
   fields:[exprField('(2x+3)(x+1)^4')],

@@ -3,7 +3,7 @@ import {T,exprField} from '../../question-list.js';
 import {intCfg} from '../../../../helpers/reading-input.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('const',{name:'Find the constant term',group:'find',
+T('const',{name:'Find the constant term',group:'find',syllabus:'SL 1.9',
   blurb:'The term with no x, often when one term has 1/x.',
   help:'Type a bracket like (x+2/x)^6. The constant term is the term independent of x.',
   fields:[exprField('(2x−3/x)^10')],

@@ -7,7 +7,7 @@ import {ri} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
 const ltr=(u,e)=>e===0?'':e===1?u:`${u}<sup>${e}</sup>`;
-T('letters',{name:'Expand (a + b)^n with letters',group:'other',
+T('letters',{name:'Expand (a + b)^n with letters',group:'other',syllabus:'SL 1.9',
   blurb:'Expand with letters instead of numbers, such as (x + y)^5.',
   help:'Type two single letters, like (x+y)^5 or (p−q)^6.',
   fields:[{id:'expr',kind:'text',keys:'letters',label:'The expression',def:'(x+y)^5'}],

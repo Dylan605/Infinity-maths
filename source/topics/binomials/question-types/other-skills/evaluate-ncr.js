@@ -7,7 +7,7 @@ import {C} from '../../../../helpers/whole-numbers.js';
 import {ri} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('ncr',{name:'Evaluate nCr',group:'other',
+T('ncr',{name:'Evaluate nCr',group:'other',syllabus:'SL 1.9',
   blurb:'Work out nCr by hand or on a calculator, and use the factorial rules.',
   help:'Type n and r to work out nCr.',
   fields:[intField('n','n','12'),intField('r','r','4')],

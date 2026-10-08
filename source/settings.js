@@ -2,7 +2,7 @@
 
 const GROUPS=[['expand','Expanding brackets'],['find','Finding terms and coefficients'],['unknown','Unknowns and estimates'],['other','Other skills']];
 const LEVELS=[[1,'Easy'],[2,'Medium'],[3,'Hard']];
-const TABS=['learn','practice','revise','cheat'];
+const TABS=['learn','practice','exam','revise','cheat'];
 /* milliseconds per handwritten character, indexed by the Speed slider (1 = slow … 3 = fast) */
 const WRITE_SPEED_MS=[0,70,38,16];
 /* revision games: length of a round in seconds, and lives (wrong answers allowed) */
@@ -20,6 +20,13 @@ const GAME_BOARD_BONUS_SECONDS=5;
 const GAME_LEVEL_UP_EVERY=6;
 /* scores needed for 1, 2 and 3 stars */
 const GAME_STARS=[60,180,360];
+/* the IB courses and papers you can study for, and where the choice is remembered */
+const COURSES=[['sl','AA SL'],['hl','AA HL']];
+const PAPERS=[['1','Paper 1','no calculator'],['2','Paper 2','calculator']];
+const COURSE_KEY='infinity_course';
+const PAPER_KEY='infinity_paper';
+/* rough exam timing, used to suggest how long an exam-style question should take */
+const EXAM_MINUTES_PER_MARK=1.1;
 /* how many past calculations the calculator keeps in its history */
 const CALC_HISTORY_SIZE=8;
 /* localStorage key prefix for best game scores, and the key for the sound on/off switch */
@@ -28,5 +35,5 @@ const SOUND_KEY='infinity_sound';
 /* one-line descriptions under each Learn folder */
 const GROUP_DESCRIPTIONS={expand:'Multiplying out brackets with a power',find:'Coefficients, the constant term, a particular term and more',
   unknown:'Finding k or n, estimates, negative and fractional powers',other:'nCr, and expanding with letters'};
-export {GROUPS,LEVELS,TABS,WRITE_SPEED_MS,GROUP_DESCRIPTIONS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
+export {GROUPS,LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,WRITE_SPEED_MS,GROUP_DESCRIPTIONS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
   GAME_SECONDS,GAME_LIVES,GAME_POINTS,GAME_COMBO_EVERY,GAME_MAX_COMBO,GAME_COMBO_BONUS_SECONDS,GAME_BOARD_BONUS_SECONDS,GAME_LEVEL_UP_EVERY,GAME_STARS};

@@ -3,7 +3,7 @@ import {MINUS,sg} from '../../../helpers/maths-display.js';
 import {ri,rnz} from '../../../helpers/random-numbers.js';
 import {byLevel} from './game-helpers.js';
 
-export const game={id:'signs',name:'Sign spotter',icon:'🚦',skill:'Signs of terms',
+export const game={id:'signs',syllabus:'SL 1.9',name:'Sign spotter',icon:'🚦',skill:'Signs of terms',
   how:'Plus or minus? Swipe with ← and →. A minus to an odd power stays minus.',
   next(level){const n=ri(...byLevel(level,[2,5],[3,9],[6,12])),r=ri(0,n);
     const b=rnz(-5,5),a=level<3?ri(1,3):rnz(-3,3);  // on the hardest level the first term can be negative too

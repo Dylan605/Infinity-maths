@@ -8,7 +8,7 @@ import {MINUS,fh,fmono,fseries,ord,sg,xp} from '../../../../helpers/maths-displa
 import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('extended',{name:'Negative or fractional power',group:'unknown',
+T('extended',{name:'Negative or fractional power',group:'unknown',syllabus:'AHL 1.10',
   blurb:'Expand (1 + x)^−2 or (1 + x)^(1/2) and say when it is valid.',
   help:'Type (a + bx) with a power that is negative or a fraction, like (1+2x)^-3 or (4+x)^(1/2).',
   fields:[exprField('(1+2x)^(-3)'),intField('upto','Up to and including x^','3')],

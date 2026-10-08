@@ -8,7 +8,7 @@ import {solveNLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri} from '../../../../helpers/random-numbers.js';
 import {F} from '../../../../helpers/fractions.js';
 
-T('ncrn',{name:'Solve nCr = number for n',group:'other',
+T('ncrn',{name:'Solve nCr = number for n',group:'other',syllabus:'SL 1.9',
   blurb:'Given nC2 = 45 (or nC1, nC3), find n.',
   help:'Choose r (1, 2 or 3) and the value of nCr.',
   fields:[intField('r','r (1, 2 or 3)','2'),intField('V','nCr =','45')],

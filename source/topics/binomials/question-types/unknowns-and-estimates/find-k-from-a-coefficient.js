@@ -7,7 +7,7 @@ import {F,fabs,fracRoot,fstr} from '../../../../helpers/fractions.js';
 import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('unkv',{name:'Find k from a coefficient',group:'unknown',
+T('unkv',{name:'Find k from a coefficient',group:'unknown',syllabus:'SL 1.9',
   blurb:'(a + kx)^n has a known coefficient. Work backwards to find k.',
   help:'The bracket is (a + kx)^n. Say which power of x has a known coefficient, and what it is.',
   fields:[intField('a','a (the number)','2'),intField('n','Power n','6'),intField('m','Coefficient of x^m. m =','2'),intField('V','Its value','960')],

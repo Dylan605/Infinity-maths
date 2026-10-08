@@ -11,7 +11,7 @@ const KINDS={
   power:()=>{const k=ri(2,5),e=ri(2,4);return {a:`(${k}<i>x</i>)<sup>${e}</sup>`,b:mono(BigInt(k)**BigInt(e),e,true),why:`(${k}x)^${e} = ${k}^${e} x^${e} = ${(BigInt(k)**BigInt(e))}x^${e}`}},
   count:()=>{const n=ri(3,15);return {a:`(a + b)<sup>${n}</sup>`,b:`${n+1} terms`,why:`(a + b)^${n} has ${n} + 1 = ${n+1} terms`}},
 };
-export const game={id:'match',name:'Match up',icon:'🃏',skill:'Mixed skills',type:'match',
+export const game={id:'match',syllabus:'SL 1.9',name:'Match up',icon:'🃏',skill:'Mixed skills',type:'match',
   how:'Tap two cards that belong together. Clear the board for bonus time.',
   next(level){const kinds=byLevel(level,['ncr','term'],['ncr','term','power'],['ncr','term','power','count']),count=byLevel(level,4,5,6);
     const pairs=[],seen=new Set();

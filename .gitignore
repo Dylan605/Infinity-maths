@@ -1,1 +1,3 @@
 node_modules/
+# stray screenshots from testing (app images live in source/images/)
+/*.png

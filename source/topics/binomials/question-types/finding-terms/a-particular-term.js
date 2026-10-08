@@ -7,7 +7,7 @@ import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {termLines} from '../../../../worked-solutions/shared-steps.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('rth',{name:'Find a particular term',group:'find',
+T('rth',{name:'Find a particular term',group:'find',syllabus:'SL 1.9',
   blurb:'Find the 3rd, 4th, 5th … term of an expansion.',
   help:'Type the bracket and which term you want (1 = the first term).',
   fields:[exprField('(2x+3)^7'),intField('tn','Which term? (1 = first)','4')],

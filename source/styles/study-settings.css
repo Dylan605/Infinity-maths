@@ -1,0 +1,20 @@
+/* The study bar (course and paper), the IB syllabus labels, and what each choice hides. */
+.study-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:-6px}
+.study-group{display:flex;align-items:center;gap:4px;padding:4px;border-radius:14px;background:var(--glass);border:1px solid var(--glassb);box-shadow:var(--shadow)}
+.study-label{font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);padding:0 8px 0 6px}
+.study-group button{font:inherit;font-weight:700;font-size:.88rem;border:0;border-radius:10px;padding:7px 12px;background:transparent;color:var(--pencil);cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15;transition:background .3s var(--ease),color .2s}
+.study-group button small{font-size:.66rem;font-weight:600;opacity:.8}
+.study-group button:hover{color:var(--ink);background:var(--shade)}
+.study-group button[aria-pressed="true"]{background:var(--grad);color:var(--btnfg)}
+.study-group button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* syllabus labels: "SL 1.9" on content for both courses, "HL only · 1.10" on HL content */
+.syl{display:inline-block;flex:none;font:700 .68rem var(--f-ui);letter-spacing:.04em;padding:3px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);color:var(--accent);white-space:nowrap}
+.syl.hl{border-color:transparent;background:linear-gradient(120deg,#f59e0b,var(--b3));color:#fff}
+.qcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.pq .tag .syl,.gcard .syl{margin-left:6px;vertical-align:middle}
+
+/* what each choice hides */
+.course-sl .hl-only{display:none!important}
+.paper-1 .paper-2-only{display:none!important}
+.paper-2 .paper-1-only{display:none!important}

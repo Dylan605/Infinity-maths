@@ -5,7 +5,7 @@ import {question} from '../../../../maths/binomial-expansion.js';
 import {buildExpand} from '../../../../worked-solutions/expanding-lesson.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('terms',{name:'First three and last two terms',group:'expand',
+T('terms',{name:'First three and last two terms',group:'expand',syllabus:'SL 1.9',
   blurb:'Write the start and the end of an expansion using the pattern, without simplifying.',
   help:'Type the bracket with a power of 4 or more. Example: (3x+2/x)^15',
   fields:[exprField('(3x+2/x)^15')],

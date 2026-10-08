@@ -3,7 +3,7 @@ import {C} from '../../../helpers/whole-numbers.js';
 import {ri} from '../../../helpers/random-numbers.js';
 import {byLevel,typed} from './game-helpers.js';
 
-export const game={id:'ncr',name:'nCr sprint',icon:'🎯',skill:'Working out nCr',
+export const game={id:'ncr',syllabus:'SL 1.9',name:'nCr sprint',icon:'🎯',skill:'Working out nCr',
   how:'nC0 = 1, nC1 = n, nC2 = n(n−1)/2, and the row is symmetrical.',
   next(level){const n=ri(...byLevel(level,[4,10],[4,15],[5,12]));
     const rs=byLevel(level,[0,1,n-1,n],[0,1,2,n-2,n-1,n],[2,3,n-3,n-2]),r=rs[ri(0,rs.length-1)];

@@ -7,7 +7,7 @@ import {L,Nm,newSteps} from '../../../../worked-solutions/building-blocks.js';
 import {add} from '../../../../helpers/whole-numbers.js';
 import {ri,rnz} from '../../../../helpers/random-numbers.js';
 
-T('ascend',{name:'Ascending powers of x',group:'find',
+T('ascend',{name:'Ascending powers of x',group:'find',syllabus:'SL 1.9',
   blurb:'Write the first few terms with the smallest power of x first.',
   help:'Type a bracket like (2+3x)^6 and the highest power of x you need.',
   fields:[exprField('(2−3x)^6'),intField('upto','Up to and including x^','2')],
