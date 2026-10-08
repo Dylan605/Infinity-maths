@@ -1,6 +1,7 @@
 /* Entry point: register the topic's question types, then set up each part of the page. */
 import './topics/binomials/binomials.js';
 import {initStudySettings} from './screens/study-settings.js';
+import {initWelcome} from './screens/welcome-screen.js';
 import {initNotebook} from './notebook/notebook.js';
 import {initLearn} from './screens/learn-tab.js';
 import {initHub} from './screens/home-screen.js';
@@ -23,5 +24,6 @@ initPractice();
 initExam();
 initGames();
 initCheatSheet();
+initWelcome();
 initCalculator();
 initMathsKeyboard();

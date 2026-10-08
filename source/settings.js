@@ -21,7 +21,9 @@ const GAME_LEVEL_UP_EVERY=6;
 /* scores needed for 1, 2 and 3 stars */
 const GAME_STARS=[60,180,360];
 /* the IB courses and papers you can study for, and where the choice is remembered */
-const COURSES=[['sl','AA SL'],['hl','AA HL']];
+/* [code, short name, course, level]; topics list the course codes they belong to */
+const COURSES=[['ai-sl','AI SL','Applications and interpretation','Standard level'],['ai-hl','AI HL','Applications and interpretation','Higher level'],
+  ['aa-sl','AA SL','Analysis and approaches','Standard level'],['aa-hl','AA HL','Analysis and approaches','Higher level']];
 const PAPERS=[['1','Paper 1','no calculator'],['2','Paper 2','calculator']];
 const COURSE_KEY='infinity_course';
 const PAPER_KEY='infinity_paper';

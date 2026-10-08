@@ -22,6 +22,7 @@ Don't grow a file when the new code is a separate thing. Make a new file for it:
 - Imports only point one way: `screens/` → `notebook/` and `topics/` → `worked-solutions/` → `maths/` → `helpers/`. The notebook uses only `helpers/` and `settings.js`. Never make two files import each other.
 - Every file starts with a one-line comment saying what it is for.
 - When you add, split or rename a file, update the "What is where" map in `README.md`.
-- Every question type, game and exam question has a `syllabus` tag (e.g. `'SL 1.9'`, or `'AHL 1.10'` for HL-only content), so the AA SL / AA HL switch can hide HL-only content. Screens filter with `inCourse` from `screens/study-settings.js`; markup that is HL-only or for one paper gets the class `hl-only`, `paper-1-only` or `paper-2-only`.
+- Every question type, game and exam question has a `syllabus` tag (e.g. `'SL 1.9'`, or `'AHL 1.10'` for HL-only content), so choosing an SL course hides HL-only content. Screens filter with `inCourse` from `screens/study-settings.js`; markup that is HL-only or for one paper gets the class `hl-only`, `paper-1-only` or `paper-2-only`.
+- Every topic's folder button in `page.html` has `data-courses` listing the courses it belongs to (`ai-sl`, `ai-hl`, `aa-sl`, `aa-hl`), so the home screen shows only the topics in the course the student chose.
 - The app is for IB DP students, but it is independent: never use the IB logo or call content official or past-paper material. Keep the disclaimer in the footer.
 - Every box the learner types maths into gets `data-maths="integer|number|poly|expr|letters"`, which brings up the maths keyboard with the right keys. Typed numbers are read with `readNumber`/`sameNum` from `helpers/reading-input.js`, which understand √, powers and fractions.

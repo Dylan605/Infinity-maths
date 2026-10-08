@@ -1,0 +1,21 @@
+/* The first-open course question, and the note shown when a course has no topics yet. */
+.welcome{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);animation:fade .3s both}
+.welcome.closing{animation:fade .3s reverse forwards;pointer-events:none}
+.welcoming .calc-wrap,.welcoming .mkb{display:none}
+.welcoming .cover{visibility:hidden}
+.welcome-card{box-sizing:border-box;width:min(640px,100%);text-align:center;padding:24px 22px;border-radius:28px;background:var(--solid);border:1px solid var(--glassb);box-shadow:0 30px 80px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;gap:10px;animation:pop .45s var(--ease) both}
+.welcome-logo h1{margin:0;line-height:0}
+.welcome-logo .logo{height:110px}
+.welcome-card h2{margin:6px 0 0;font-size:clamp(1.3rem,4vw,1.6rem);font-weight:800;letter-spacing:-.02em}
+.welcome-lead{margin:0;max-width:44ch;color:var(--pencil)}
+.welcome-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin-top:10px}
+.welcome-options button{font:inherit;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:16px 18px;border-radius:18px;border:1.5px solid var(--line);background:var(--glass2);color:var(--ink);cursor:pointer;transition:transform .25s var(--ease),border-color .2s,box-shadow .25s;animation:rise .45s var(--ease) both}
+.welcome-options button:nth-child(2){animation-delay:.05s}.welcome-options button:nth-child(3){animation-delay:.1s}.welcome-options button:nth-child(4){animation-delay:.15s}
+.welcome-options button:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--glow)}
+.welcome-options button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wc-short{font-weight:800;font-size:1.35rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wc-name{font-weight:700;font-size:.92rem}
+.wc-level{font-size:.8rem;color:var(--pencil)}
+.no-topics{border-radius:20px;padding:18px 20px;background:var(--glass);border:1px solid var(--glassb);box-shadow:var(--shadow);max-width:60ch}
+.no-topics p{margin:0 0 6px}.no-topics p:last-child{margin:0;color:var(--pencil)}
+@media (max-width:420px){.welcome-options{grid-template-columns:1fr}}

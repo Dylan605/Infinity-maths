@@ -1,6 +1,6 @@
 # Infinity Maths
 
-For students of IB Diploma Programme Mathematics: analysis and approaches (SL and HL). Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
+For students of IB Diploma Programme mathematics. On first open the app asks which course you take (AI SL, AI HL, AA SL or AA HL) and shows only the topics in that course. Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
 
 ## Working on it
 
@@ -20,7 +20,7 @@ build.mjs                          packs source/ into index.html
 source/
   page.html                        the page itself: tabs, buttons, notebook
   start.js                         starts the app: loads the questions, then each screen
-  settings.js                      group names, difficulty names, tabs, writing speeds, and game rules (time, lives, combos, stars)
+  settings.js                      courses, group names, difficulty names, tabs, writing speeds, and game rules (time, lives, combos, stars)
   images/                          logo-light, logo-dark, tab-icon
   styles/
     all-styles.css                 loads the others in order (keep the order)
@@ -32,6 +32,7 @@ source/
     games.css                      the revision games: cards, game stage, number pad, effects, results
     calculator.css                 the slide-out calculator
     study-settings.css             the course and paper bar, syllabus labels, and what each choice hides
+    welcome.css                    the "Which course do you take?" question on first open
     exam.css                       exam practice: the question list and the exam-paper layout
     maths-keyboard.css             the maths keyboard
     small-screens.css              phones, and less motion for people who ask for it
@@ -72,7 +73,8 @@ source/
     notebook.js                    writes the working line by line, asks Try-it questions
     number-animation.js            numbers merging into the answer
   screens/
-    home-screen.js                 search and topic folders
+    home-screen.js                 search, and the topic folders for the chosen course
+    welcome-screen.js              asks which course you take the first time the app opens
     tabs.js                        switching tabs
     learn-tab.js                   Learn folders and question cards
     your-own-question.js           the type-your-own-question form
@@ -88,7 +90,7 @@ source/
       saved-scores.js              best scores and stars
     difficulty-buttons.js          the Easy / Medium / Hard switch
     calculator-drawer.js           the calculator that slides out from the right-hand edge
-    study-settings.js              the course (AA SL / HL) and paper (1 / 2) bar under the logo
+    study-settings.js              the course (AI SL / AI HL / AA SL / AA HL) and paper (1 / 2) bar under the logo
     cheat-sheet-tab.js             shows the topic's cheat sheet
     exam/
       exam-tab.js                  the list of exam-style questions for the chosen course and paper
@@ -132,4 +134,8 @@ Make a file in `topics/binomials/games/` that exports `game = {id, name, icon, s
 
 ## Adding a topic
 
-Make a `topics/<topic>/` folder like `binomials/`, add a folder button to `page.html`, and load the topic in `start.js`.
+Make a `topics/<topic>/` folder like `binomials/`, add a folder button to `page.html`, and load the topic in `start.js`. Give the folder button `data-courses` listing every course the topic is in, e.g. `data-courses="ai-sl ai-hl aa-sl aa-hl"`. The home screen shows it only to students who chose one of those courses.
+
+## Courses
+
+The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`. The first time the app opens, `welcome-screen.js` asks which one the student takes; the choice is saved and can be changed in the bar under the logo. The level (SL or HL) decides whether `hl-only` content is shown; the course decides which topics appear.
