@@ -1,0 +1,53 @@
+/* Colour tokens for light and dark, fonts, the drifting background, glass surfaces and entrance animations. */
+:root{
+  --bg:#eef0fb; --b1:#8b5cf6; --b2:#06b6d4; --b3:#f472b6;
+  --glass:rgba(255,255,255,.55); --glass2:rgba(255,255,255,.78); --glassb:rgba(255,255,255,.85); --solid:#ffffff;
+  --ink:#141a33; --pencil:#5b6380; --accent:#7c3aed; --accent2:#0891b2; --red:#e11d48; --green:#059669; --amber:#d97706;
+  --hl:rgba(250,204,21,.42); --line:rgba(20,26,51,.1); --grid:rgba(124,58,237,.07); --margin:rgba(225,29,72,.4);
+  --btnfg:#ffffff; --shade:rgba(124,58,237,.08); --shadow:0 12px 32px rgba(40,30,110,.14); --glow:0 0 0 1px rgba(124,58,237,.25),0 16px 40px rgba(124,58,237,.22);
+  --grad:linear-gradient(120deg,var(--accent),var(--accent2));
+  --f-hand:"Plus Jakarta Sans",system-ui,sans-serif; --f-math:"Lexend",system-ui,sans-serif; --f-ui:"Plus Jakarta Sans",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#080b1a; --b1:#7c3aed; --b2:#0e7490; --b3:#be185d;
+  --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.1); --glassb:rgba(255,255,255,.14); --solid:#141936;
+  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399; --amber:#fbbf24;
+  --hl:rgba(250,204,21,.26); --line:rgba(255,255,255,.1); --grid:rgba(167,139,250,.07); --margin:rgba(251,113,133,.4);
+  --btnfg:#0b0e1f; --shade:rgba(167,139,250,.12); --shadow:0 12px 36px rgba(0,0,0,.45); --glow:0 0 0 1px rgba(167,139,250,.35),0 16px 44px rgba(124,58,237,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#080b1a; --b1:#7c3aed; --b2:#0e7490; --b3:#be185d;
+  --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.1); --glassb:rgba(255,255,255,.14); --solid:#141936;
+  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399; --amber:#fbbf24;
+  --hl:rgba(250,204,21,.26); --line:rgba(255,255,255,.1); --grid:rgba(167,139,250,.07); --margin:rgba(251,113,133,.4);
+  --btnfg:#0b0e1f; --shade:rgba(167,139,250,.12); --shadow:0 12px 36px rgba(0,0,0,.45); --glow:0 0 0 1px rgba(167,139,250,.35),0 16px 44px rgba(124,58,237,.35); color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+/* drifting colour background */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg i{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(70px);opacity:.55}
+.bg i:nth-child(1){background:var(--b1);top:-20vmax;left:-15vmax;animation:drift1 22s ease-in-out infinite alternate}
+.bg i:nth-child(2){background:var(--b2);bottom:-25vmax;right:-15vmax;animation:drift2 26s ease-in-out infinite alternate}
+.bg i:nth-child(3){background:var(--b3);top:30%;left:40%;width:35vmax;height:35vmax;opacity:.35;animation:drift3 30s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(18vmax,12vmax) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-16vmax,-10vmax) scale(1.1)}}
+@keyframes drift3{to{transform:translate(-22vmax,14vmax) scale(.85)}}
+
+/* glass surfaces */
+.glass,.sheetHome,.qcard,.subfolder,.folder,.explain,.custom,.pq,.gcard,.arena,.formula,.searchbar input,.ask{
+  background:var(--glass);border:1px solid var(--glassb);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--shadow)}
+
+/* entrance animations */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.plate,.hub,#folderView,.panel:not([hidden]){animation:rise .5s var(--ease) both}
+.folder,.subfolder,.qcard,.gcard{animation:rise .5s var(--ease) both}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(2){animation-delay:.05s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(3){animation-delay:.1s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(4){animation-delay:.15s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(5){animation-delay:.2s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(6){animation-delay:.25s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(7){animation-delay:.3s}
+:is(.folder,.subfolder,.qcard,.gcard):nth-child(n+8){animation-delay:.35s}
