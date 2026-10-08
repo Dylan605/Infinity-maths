@@ -20,7 +20,8 @@ export function readSolutions(P,k=P.k){if(P.kind==='quad'){const d2=(k-P.m)/P.s;
   return out.sort((p,q)=>p-q)}
 /* the graph window: whole numbers, with the axes in it, so the grid is in 1s */
 function view(P){if(P.kind==='quad'){const up=P.s>0;return {x:[P.h-4,P.h+4],y:up?[Math.min(P.m-1,-1),P.m+10]:[P.m-10,Math.max(P.m+1,1)]}}
-  const {xs,ys}=P;return {x:[Math.min(xs[0],0)-1,Math.max(xs[xs.length-1],0)+1],y:[Math.min(...ys,0)-1,Math.max(...ys,0)+1]}}
+  const {xs,ys}=P,wide=([lo,hi])=>{while(hi-lo<8){lo--;if(hi-lo<8)hi++}return [lo,hi]};  // at least 8 wide, so the grid stays in 1s
+  return {x:wide([Math.min(xs[0],0)-1,Math.max(xs[xs.length-1],0)+1]),y:wide([Math.min(...ys,0)-1,Math.max(...ys,0)+1])}}
 const draw=(P,lines=[],points=[],desc='The graph of y = f(x)')=>{const f=readFn(P),ends=P.kind==='lines'?[{x:P.xs[0],y:P.ys[0]},{x:P.xs.at(-1),y:P.ys.at(-1)}]:[];
   return graph({...view(P),curves:[{f,colour:1,label:'y = f(x)'}],lines,points:[...ends,...points],description:desc})};
 const fa=P=>readFn(P)(P.a);

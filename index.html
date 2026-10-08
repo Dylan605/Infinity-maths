@@ -8251,8 +8251,14 @@ ${SHAPES}
       const up = P.s > 0;
       return { x: [P.h - 4, P.h + 4], y: up ? [Math.min(P.m - 1, -1), P.m + 10] : [P.m - 10, Math.max(P.m + 1, 1)] };
     }
-    const { xs, ys } = P;
-    return { x: [Math.min(xs[0], 0) - 1, Math.max(xs[xs.length - 1], 0) + 1], y: [Math.min(...ys, 0) - 1, Math.max(...ys, 0) + 1] };
+    const { xs, ys } = P, wide = ([lo, hi]) => {
+      while (hi - lo < 8) {
+        lo--;
+        if (hi - lo < 8) hi++;
+      }
+      return [lo, hi];
+    };
+    return { x: wide([Math.min(xs[0], 0) - 1, Math.max(xs[xs.length - 1], 0) + 1]), y: wide([Math.min(...ys, 0) - 1, Math.max(...ys, 0) + 1]) };
   }
   var draw = (P, lines = [], points = [], desc = "The graph of y = f(x)") => {
     const f2 = readFn(P), ends = P.kind === "lines" ? [{ x: P.xs[0], y: P.ys[0] }, { x: P.xs.at(-1), y: P.ys.at(-1) }] : [];
