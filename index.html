@@ -7,7 +7,7 @@
 :root{
   --bg:#eef0fb; --b1:#8b5cf6; --b2:#06b6d4; --b3:#f472b6;
   --glass:rgba(255,255,255,.55); --glass2:rgba(255,255,255,.78); --glassb:rgba(255,255,255,.85); --solid:#ffffff;
-  --ink:#141a33; --pencil:#5b6380; --accent:#7c3aed; --accent2:#0891b2; --red:#e11d48; --green:#059669;
+  --ink:#141a33; --pencil:#5b6380; --accent:#7c3aed; --accent2:#0891b2; --red:#e11d48; --green:#059669; --amber:#d97706;
   --hl:rgba(250,204,21,.42); --line:rgba(20,26,51,.1); --grid:rgba(124,58,237,.07); --margin:rgba(225,29,72,.4);
   --btnfg:#ffffff; --shade:rgba(124,58,237,.08); --shadow:0 12px 32px rgba(40,30,110,.14); --glow:0 0 0 1px rgba(124,58,237,.25),0 16px 40px rgba(124,58,237,.22);
   --grad:linear-gradient(120deg,var(--accent),var(--accent2));
@@ -17,13 +17,13 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#080b1a; --b1:#7c3aed; --b2:#0e7490; --b3:#be185d;
   --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.1); --glassb:rgba(255,255,255,.14); --solid:#141936;
-  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399;
+  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399; --amber:#fbbf24;
   --hl:rgba(250,204,21,.26); --line:rgba(255,255,255,.1); --grid:rgba(167,139,250,.07); --margin:rgba(251,113,133,.4);
   --btnfg:#0b0e1f; --shade:rgba(167,139,250,.12); --shadow:0 12px 36px rgba(0,0,0,.45); --glow:0 0 0 1px rgba(167,139,250,.35),0 16px 44px rgba(124,58,237,.35); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#080b1a; --b1:#7c3aed; --b2:#0e7490; --b3:#be185d;
   --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.1); --glassb:rgba(255,255,255,.14); --solid:#141936;
-  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399;
+  --ink:#e8ebf8; --pencil:#9ba3c0; --accent:#a78bfa; --accent2:#22d3ee; --red:#fb7185; --green:#34d399; --amber:#fbbf24;
   --hl:rgba(250,204,21,.26); --line:rgba(255,255,255,.1); --grid:rgba(167,139,250,.07); --margin:rgba(251,113,133,.4);
   --btnfg:#0b0e1f; --shade:rgba(167,139,250,.12); --shadow:0 12px 36px rgba(0,0,0,.45); --glow:0 0 0 1px rgba(167,139,250,.35),0 16px 44px rgba(124,58,237,.35); color-scheme:dark}
 html,body{height:100%}
@@ -114,6 +114,16 @@ h3{font-family:var(--f-hand);font-weight:800;font-size:1.45rem;letter-spacing:-.
 .cbtns{display:flex;gap:8px;margin-top:auto;padding-top:6px}.cbtns .btn{flex:1}
 .tag{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pencil);font-weight:800}
 .what{color:var(--pencil);font-size:.9rem;margin:0}
+.lvls{display:inline-flex;gap:3px;padding:3px;border-radius:12px;background:var(--shade);border:1px solid var(--line);align-self:flex-start}
+.lv{font:inherit;font-size:.78rem;font-weight:700;border:0;background:transparent;color:var(--pencil);padding:4px 11px;border-radius:9px;cursor:pointer;transition:background .3s var(--ease),color .2s,transform .2s var(--ease)}
+.lv:hover{color:var(--ink)}
+.lv:active{transform:scale(.94)}
+.lv:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lv[data-lv="1"][aria-pressed="true"]{background:var(--green);color:var(--btnfg)}
+.lv[data-lv="2"][aria-pressed="true"]{background:var(--amber);color:var(--btnfg)}
+.lv[data-lv="3"][aria-pressed="true"]{background:var(--red);color:var(--btnfg)}
+.lvtag.l1{color:var(--green)}.lvtag.l2{color:var(--amber)}.lvtag.l3{color:var(--red)}
+.qtext.swap{animation:rise .35s var(--ease)}
 
 /* buttons */
 .btn{font:inherit;font-weight:700;border-radius:12px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:var(--glass2);color:var(--ink);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
@@ -225,6 +235,7 @@ input[type=range],input[type=checkbox]{accent-color:var(--accent)}
 .fr>span:last-child{padding:0 .2em}
 .qs{font-family:var(--f-math);font-size:1.4rem;line-height:1.45;display:block;max-width:34ch}
 .blab{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.rowb:has(.blab){align-items:flex-end;gap:12px}.rowb .blab{align-items:flex-start;gap:6px}
 .blab select,.bfields select,.rowb select{font:inherit;font-weight:400;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--glass2);color:var(--ink);min-width:0;max-width:100%}
 .bfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .bfields label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--pencil)}
@@ -287,7 +298,7 @@ input[type=range],input[type=checkbox]{accent-color:var(--accent)}
   <section class="panel" id="p-practice" hidden>
     <div class="explain"><p>New questions every time, from every type. Type your answer and check it. Stuck? Press <b>Hint</b>, or <b>Show me the working</b> to open that exact question in the notebook.</p>
       <p class="hint">Type powers with ^ like <b>2x^5 + 11x^4</b>. Fractions like <b>3/4</b> are fine. Spaces don't matter.</p></div>
-    <div class="rowb"><label class="blab">Question type<select id="pType"></select></label><button class="btn" id="pNew">New question</button></div>
+    <div class="rowb"><label class="blab">Question type<select id="pType"></select></label><div class="blab" id="pLvWrap">Difficulty</div><button class="btn" id="pNew">New question</button></div>
     <div class="score" id="score">Correct: 0 / 0</div>
     <div class="pq" id="pq"></div>
   </section>
@@ -697,7 +708,9 @@ T('expand',{name:'Expand and simplify',group:'expand',
   text:P=>`Expand and simplify ${question(P.cfg).html}.`,
   expr:P=>question(P.cfg).html,
   build:P=>{const l=buildExpand(P.cfg,'full');l.title=TYPES.expand.name+' · '+question(P.cfg).html;return l},
-  gen(){const hasM=Math.random()<.6;let cfg={a:ri(1,2),p:1,b:rnz(-3,3),q:0,n:hasM?ri(2,4):ri(3,5)};if(Math.random()<.3)cfg=swapTerms(cfg);if(hasM){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'expand',cfg}},
+  gen(lv=2){if(lv===1)return {t:'expand',cfg:{a:1,p:1,b:ri(1,3),q:0,n:ri(3,4)}};
+    const hasM=lv===3||Math.random()<.6;let cfg=lv===3?{a:ri(2,3),p:1,b:rnz(-4,4),q:0,n:ri(3,5)}:{a:ri(1,2),p:1,b:rnz(-3,3),q:0,n:hasM?ri(2,4):ri(3,5)};
+    if(Math.random()<.3)cfg=swapTerms(cfg);if(hasM){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'expand',cfg}},
   ans(P){const m=productMap(P.cfg);return {kind:'poly',map:m,disp:poly(m)}},
   hints:P=>['Expand the bracket with the power first, using nCr and the pattern.',P.cfg.c!==undefined?'Then multiply every term by both parts of the other bracket, and collect like terms.':'Add the terms up, highest power first.'],
   example:{t:'expand',cfg:{a:1,p:1,b:1,q:0,n:4,c:2,d:3}}});
@@ -710,7 +723,8 @@ T('terms',{name:'First three and last two terms',group:'expand',
   text:P=>`Write down the first three and last two terms of ${question(P.cfg).html}. Do not simplify.`,
   expr:P=>question(P.cfg).html,
   build:P=>{const l=buildExpand(P.cfg,'terms');l.title=TYPES.terms.name+' · '+question(P.cfg).html;return l},
-  gen(){return TYPES.rth.gen(3)},
+  gen(lv=2){return TYPES.rth.gen(lv,3)},
+  learn(lv=2){const cfg=lv===1?{a:1,p:1,b:ri(1,3),q:0,n:ri(5,7)}:lv===2?{a:ri(2,3),p:1,b:rnz(-3,3),q:0,n:ri(6,10)}:{a:ri(2,4),p:1,b:rnz(-4,4),q:-1,n:ri(10,15)};return {t:'terms',cfg}},
   example:{t:'terms',cfg:{a:3,p:1,b:2,q:-1,n:15}}});
 
 T('coef',{name:'Find the coefficient of x^k',group:'find',
@@ -730,7 +744,9 @@ T('coef',{name:'Find the coefficient of x^k',group:'find',
     const cs=coefSteps(cfg,k,Q);cs.steps.forEach(s=>S(s.h,s.intro,s.lines));
     S('Final answer','Say it in a sentence.',[L(`${k===0?'constant term':'coefficient of '+xp(k)} = <span class="answer">${sg(cs.val)}</span>`,cs.valid?`Check: at r = ${cs.r} the power of x is ${powExprHtml(cfg.p,cfg.q,cfg.n).replace(/r/g,'('+cs.r+')')} = ${sg(k)} ✓`:'There is no term with that power, so the answer is 0.')]);
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:Math.random()<.45?-1:0,n:ri(4,10)};let k;
+  gen(lv=2){if(lv===1){const n=ri(4,6);return {t:'coef',cfg:{a:1,p:1,b:ri(1,3),q:0,n},k:ri(1,n-1)}}
+    if(lv===3){const cfg={a:ri(2,3),p:1,b:rnz(-4,4),q:-1,n:ri(7,10)};return {t:'coef',cfg,k:cfg.n-2*ri(1,cfg.n-1)}}
+    const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:Math.random()<.45?-1:0,n:ri(4,10)};let k;
     if(cfg.q===-1){const r=ri(0,cfg.n);k=cfg.n-2*r;if(Math.random()<.25)k=0}else k=Math.random()<.2?0:ri(0,cfg.n);
     if(cfg.q===-1&&cfg.n%2&&k===0)k=1;return {t:'coef',cfg,k}},
   ans(P){const v=productMap(P.cfg).get(P.k)||0n;return {kind:'num',val:F(v),disp:sg(v)}},
@@ -743,6 +759,7 @@ T('const',{name:'Find the constant term',group:'find',
   fields:[exprField('(2x−3/x)^10')],
   parse(v){const r=intCfg(v.expr);if(r.err!==undefined)return r;if(r.cfg.c!==undefined)return {p:{t:'pcoef',cfg:r.cfg,k:0}};
     if(r.cfg.p===r.cfg.q)return {err:'Both terms have the same power of x. Combine them first.'};return {p:{t:'coef',cfg:r.cfg,k:0}}},
+  gen(lv=2){const cfg=lv===1?{a:1,p:1,b:ri(1,3),q:-1,n:2*ri(2,3)}:lv===2?{a:ri(1,3),p:1,b:rnz(-3,3),q:-1,n:2*ri(3,5)}:{a:ri(1,3),p:2,b:rnz(-3,3),q:-1,n:3*ri(2,4)};return {t:'coef',cfg,k:0}},
   example:{t:'coef',cfg:{a:2,p:1,b:-3,q:-1,n:10},k:0}});
 
 T('pcoef',{name:'Coefficient in a product',group:'find',
@@ -774,7 +791,8 @@ T('pcoef',{name:'Coefficient in a product',group:'find',
       L(`${c!==0n?`(${sg(c)})(${sg(av)})`:''}${c!==0n&&d!==0n?' + ':''}${d!==0n?`(${sg(d)})(${sg(bv)})`:''}`,'Put the numbers in.',undefined,[`The first number in each pair comes from the front bracket. The second is the coefficient we just found in the long bracket.`]),
       L(`${k===0?'constant term':'coefficient of '+xp(k)} = <span class="answer">${sg(total)}</span>`,'Done.',Nm('What is the total?',[{label:'answer',answer:total.toString()}],`${c!==0n?sg(c*av):''}${c!==0n&&d!==0n?' + ':''}${d!==0n?sg(d*bv):''} = ${sg(total)}.`))]);
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:ri(5,9),c:ri(1,3),d:rnz(-3,3)};return {t:'pcoef',cfg,k:ri(2,cfg.n)}},
+  gen(lv=2){const cfg=lv===1?{a:1,p:1,b:ri(1,2),q:0,n:ri(4,5),c:1,d:ri(1,2)}:lv===2?{a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:ri(5,9),c:ri(1,3),d:rnz(-3,3)}:{a:ri(2,3),p:1,b:rnz(-3,3),q:0,n:ri(7,9),c:ri(2,3),d:rnz(-3,3)};
+    return {t:'pcoef',cfg,k:lv===1?ri(2,3):lv===2?ri(2,cfg.n):ri(3,cfg.n)}},
   ans(P){const v=productMap(P.cfg).get(P.k)||0n;return {kind:'num',val:F(v),disp:sg(v)}},
   hints:P=>['Only two pairs of terms multiply to make x^'+P.k+': the x with the x^'+(P.k-1)+' term, and the number with the x^'+P.k+' term.','Find each coefficient from the general term, multiply by its partner, then add.'],
   example:{t:'pcoef',cfg:{a:3,p:0,b:-1,q:1,n:7,c:2,d:1},k:3}});
@@ -801,7 +819,9 @@ T('rth',{name:'Find a particular term',group:'find',
         Nm('What is the number in front (the coefficient)?',[{label:'coefficient',answer:t.val.toString()}],`${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}.`),
         [`Numbers: ${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}. Powers of x: ${t.ea} + ${t.eb} = ${t.e}.`])]);
     return mk(P,steps)},
-  gen(tn){const n=ri(5,9),cfg={a:ri(1,3),p:Math.random()<.2?2:1,b:rnz(-3,3),q:0,n};return {t:'rth',cfg,tn:tn||ri(2,n)}},
+  gen(lv=2,tn){const n=lv===1?ri(4,6):lv===2?ri(5,9):ri(8,12);
+    const cfg=lv===1?{a:1,p:1,b:ri(1,3),q:0,n}:lv===2?{a:ri(1,3),p:Math.random()<.2?2:1,b:rnz(-3,3),q:0,n}:{a:ri(2,4),p:ri(1,2),b:rnz(-4,4),q:0,n};
+    return {t:'rth',cfg,tn:tn||(lv===1?ri(2,4):lv===2?ri(2,n):ri(3,n))}},
   ans(P){const t=expand(P.cfg).terms[P.tn-1];return {kind:'poly',map:new Map([[t.e,t.val]]),disp:mono(t.val,t.e,true)}},
   hints:P=>[`The ${ord(P.tn)} term uses r = ${P.tn-1}.`,'T = nCr × (first)^(n−r) × (second)^r. Work out each piece, then multiply.'],
   example:{t:'rth',cfg:{a:2,p:1,b:3,q:0,n:7},tn:4}});
@@ -826,7 +846,7 @@ T('middle',{name:'Find the middle term',group:'find',
         L(`T<sub>${r+1}</sub> = ${bn(n,r)}(${Q.A})<sup>${n-r}</sup>(${Q.B})<sup>${r}</sup>`,'The general term with r put in.'),...termLines(cfg,Q,r,t),
         L(`T<sub>${r+1}</sub> = <span class="answer">${mono(t.val,t.e,true)||'0'}</span>`,'Multiply them together.',Nm('What is the coefficient?',[{label:'coefficient',answer:t.val.toString()}],`${t.coef} × ${sg(t.ap)} × ${sg(t.bp)} = ${sg(t.val)}.`))])});
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:2*ri(2,5)};return {t:'middle',cfg}},
+  gen(lv=2){const cfg=lv===1?{a:1,p:1,b:ri(1,3),q:0,n:2*ri(2,3)}:lv===2?{a:ri(1,3),p:1,b:rnz(-3,3),q:0,n:2*ri(2,5)}:{a:ri(2,3),p:1,b:rnz(-4,4),q:0,n:2*ri(4,6)};return {t:'middle',cfg}},
   ans(P){const t=expand(P.cfg).terms[P.cfg.n/2];return {kind:'poly',map:new Map([[t.e,t.val]]),disp:mono(t.val,t.e,true)}},
   hints:P=>[`${P.cfg.n+1} terms, so the middle one is term number ${P.cfg.n/2+1}, which uses r = ${P.cfg.n/2}.`,'Work out nCr × (first)^(n−r) × (second)^r.'],
   example:{t:'middle',cfg:{a:1,p:1,b:2,q:0,n:8}}});
@@ -857,7 +877,8 @@ T('ascend',{name:'Ascending powers of x',group:'find',
     const mp=new Map();terms.slice(0,rm+1).forEach(t=>add(mp,t.e,t.val));
     S('Final answer','Add them in order, smallest power first.',[L(`${Q.html} = <span class="answer">${[...mp.keys()].sort((x,y)=>x-y).map((e,i)=>mono(mp.get(e),e,i===0)).join('')} + …</span>`,`The "+ …" shows that there are more terms, with powers bigger than ${xp(upto)}.`)]);
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,4),p:0,b:rnz(-3,3),q:1,n:ri(4,9)};return {t:'ascend',cfg,upto:ri(2,3)}},
+  gen(lv=2){const cfg=lv===1?{a:1,p:0,b:ri(1,3),q:1,n:ri(4,6)}:lv===2?{a:ri(1,4),p:0,b:rnz(-3,3),q:1,n:ri(4,9)}:{a:ri(2,4),p:0,b:rnz(-4,4),q:1,n:ri(7,10)};
+    return {t:'ascend',cfg,upto:lv===1?2:lv===2?ri(2,3):3}},
   ans(P){const mp=new Map(),rm=TYPES.ascend.rmax(P);expand(P.cfg).terms.slice(0,rm+1).forEach(t=>add(mp,t.e,t.val));return {kind:'poly',map:mp,disp:[...mp.keys()].sort((x,y)=>x-y).map((e,i)=>mono(mp.get(e),e,i===0)).join('')}},
   hints:P=>['Start with r = 0 (the plain number) and go up. The power of x is r.','Use nCr × (first)^(n−r) × (second)^r for each r.'],
   example:{t:'ascend',cfg:{a:2,p:0,b:-3,q:1,n:6},upto:2}});
@@ -897,7 +918,7 @@ T('unkv',{name:'Find k from a coefficient',group:'unknown',
     S('Solve for k','Now it is just algebra.',sl);
     S('Final answer','Check by putting k back in.',[L(`<i>k</i> = <span class="answer">${s.none?'no real value':s.disp}</span>`,s.none?'':`Check: ${Cn} × ${sg(pw(A,n-m))} × (${s.exact?s.disp.replace('±',''):'k'})<sup>${m}</sup> = ${sg(V)} ✓`)]);
     return mk(P,steps)},
-  gen(){const a=ri(1,4),n=ri(4,8),m=ri(1,3),k=rnz(1,3);const co=C(n,m)*pw(BigInt(a),n-m);const kk=m%2===0?Math.abs(k):k;return {t:'unkv',a,n,m,V:co*pw(BigInt(kk),m),pos:m%2===0}},
+  gen(lv=2){const a=lv===1?1:lv===2?ri(1,4):ri(2,4),n=lv===1?ri(4,6):lv===2?ri(4,8):ri(6,9),m=lv===1?ri(1,2):lv===2?ri(1,3):ri(2,3),k=lv===3?rnz(-3,3):rnz(1,3);const co=C(n,m)*pw(BigInt(a),n-m);const kk=m%2===0?Math.abs(k):k;return {t:'unkv',a,n,m,V:co*pw(BigInt(kk),m),pos:m%2===0}},
   ans(P){const s=TYPES.unkv.solve(P);return {kind:s.exact?'num':'approx',val:s.exact?(s.val||s.roots[0]):s.approx,disp:s.disp}},
   hints:P=>[`The ${xp(P.m)} term uses r = ${P.m}. Its coefficient is nCr × a^(n−r) × k^r.`,'Set that equal to the given value and solve for k.'],
   example:{t:'unkv',a:2,n:6,m:2,V:960n,pos:true}});
@@ -924,7 +945,7 @@ T('unkeq',{name:'Find k when two coefficients are equal',group:'unknown',
       L(`<i>k</i> = ${sg(c1*A)} ÷ ${c2} = <span class="hl">${fh(k)}</span>`,'Cancel the fraction if you can.',Nm('What is k? (fraction like 3/4 is fine)',[{label:'k',answer:fstr(k)}],`${sg(c1*A)} ÷ ${c2} = ${fstr(k)}.`),[`A quick shortcut: ${bn(n,m)} ÷ ${bn(n,m+1)} = ${m+1}/${n-m}, so k = ${sg(a)} × ${m+1}/${n-m}.`])]);
     S('Final answer','Check both coefficients are really equal.',[L(`<i>k</i> = <span class="answer">${fstr(k)}</span>`,`Check: ${c1} × ${sg(pw(A,n-m))} × k${m?'^'+m:''} and ${c2} × ${sg(pw(A,n-m-1))} × k^${m+1} both come to ${fstr(fmul(F(c1*pw(A,n-m)),fpow(k,m)))} ✓`)]);
     return mk(P,steps)},
-  gen(){const a=ri(1,5),n=ri(4,10),m=ri(0,n-2);return {t:'unkeq',a,n,m}},
+  gen(lv=2){const a=lv===1?ri(1,2):lv===2?ri(1,5):ri(3,5),n=lv===1?ri(4,6):lv===2?ri(4,10):ri(8,12),m=lv===1?ri(0,1):lv===2?ri(0,n-2):ri(2,n-3);return {t:'unkeq',a,n,m}},
   ans(P){const k=TYPES.unkeq.kval(P);return {kind:'num',val:k,disp:fstr(k)}},
   hints:P=>[`Coefficient of ${xp(P.m)||'the constant'} uses r = ${P.m}. Coefficient of ${xp(P.m+1)} uses r = ${P.m+1}.`,'Set them equal, divide away the shared factors, and solve for k.'],
   example:{t:'unkeq',a:3,n:8,m:2}});
@@ -936,8 +957,9 @@ T('unkn',{name:'Find n from a coefficient',group:'unknown',
   parse(v){const b=int(v.b,-10,10,'b');if(b.err)return b;if(b.v===0)return {err:'b cannot be 0.'};const m=int(v.m,1,3,'m');if(m.err)return m;const V=int(v.V,-1e12,1e12,'The value');if(V.err)return V;
     const bm=pw(BigInt(b.v),m.v),Vb=BigInt(V.v);if(Vb%bm!==0n||Vb/bm<=0n)return {err:'That value does not give a whole number n. Check the numbers.'};
     const R=Vb/bm;if(findN(m.v,R)===null)return {err:'No whole number n gives that coefficient. Check the numbers.'};return {p:{t:'unkn',b:b.v,m:m.v,V:Vb}}},
-  text:P=>`In the expansion of (1 + ${sg(P.b)}<i>x</i>)<sup><i>n</i></sup>, where <i>n</i> is a positive integer, the coefficient of ${xp(P.m)} is ${sg(P.V)}. Find <i>n</i>.`,
-  expr:P=>`(1 + ${sg(P.b)}<i>x</i>)<sup><i>n</i></sup>`,
+  text:P=>`In the expansion of ${TYPES.unkn.br(P)}<sup><i>n</i></sup>, where <i>n</i> is a positive integer, the coefficient of ${xp(P.m)} is ${sg(P.V)}. Find <i>n</i>.`,
+  br:P=>`(1 ${P.b<0?MINUS:'+'} ${Math.abs(P.b)===1?'':Math.abs(P.b)}<i>x</i>)`,
+  expr:P=>`${TYPES.unkn.br(P)}<sup><i>n</i></sup>`,
   build(P){const {b,m,V}=P,B=BigInt(b),bm=pw(B,m),R=V/bm,{steps,S}=newSteps();
     S('Read the question','What is actually being asked?',[readLine(P,[`This time the unknown is the POWER n. We still use the general term, but nCr now has an n in it.`]),L('Plan: write the coefficient using nCr, make an equation, then solve for n.','n has to be a whole number.')]);
     S(`The ${xp(m)} term`,'The first term is 1, so only the second term has x.',[
@@ -950,7 +972,7 @@ T('unkn',{name:'Find n from a coefficient',group:'unknown',
     const sn=solveNLines(m,R);S('Solve for n','Turn nCr into an ordinary expression in n.',sn.lines);
     S('Final answer','Check it.',[L(`<i>n</i> = <span class="answer">${sn.n}</span>`,`Check: ${bn(sn.n,m)} × ${sg(bm)} = ${C(sn.n,m)} × ${sg(bm)} = ${sg(V)} ✓`)]);
     return mk(P,steps)},
-  gen(){const b=rnz(-3,3),m=ri(1,3),n=ri(m+2,12);return {t:'unkn',b,m,V:C(n,m)*pw(BigInt(b),m)}},
+  gen(lv=2){const b=lv===1?ri(1,2):rnz(-3,3),m=lv===1?ri(1,2):lv===2?ri(1,3):ri(2,3),n=lv===1?ri(m+2,8):lv===2?ri(m+2,12):ri(7,12);return {t:'unkn',b,m,V:C(n,m)*pw(BigInt(b),m)}},
   ans(P){const n=findN(P.m,P.V/pw(BigInt(P.b),P.m));return {kind:'num',val:F(n),disp:String(n)}},
   hints:P=>[`The ${xp(P.m)} term has coefficient nC${P.m} × b^${P.m}.`,'Divide by the b part, then solve nCr = number for n.'],
   example:{t:'unkn',b:2,m:2,V:180n}});
@@ -979,7 +1001,8 @@ T('approx',{name:'Estimate a number',group:'unknown',
       L(`≈ ${ff(sum,8)} = <span class="answer">${ff(sum,4)}</span> <span class="mu">(4 s.f.)</span>`,'Round to 4 significant figures.'),
       L(`Check with a calculator: ${val}<sup>${n}</sup> = ${ff(exact,8)}`,`The estimate is within ${ff(Math.abs(exact-sum),2)} of the real value.`,null,[`If you took more terms, the estimate would get even closer. The terms after the ones we used are so small that they hardly change the answer.`])]);
     return mk(P,steps)},
-  gen(){const a=ri(1,3),d=[0.01,0.02,0.03,-0.01,-0.02,0.005][ri(0,5)],n=ri(5,10),val=String(+(a+d).toFixed(3));return {t:'approx',val,a,d:+(+val-a).toFixed(3),n,nt:3}},
+  gen(lv=2){const ds=lv===1?[0.01,0.02]:lv===2?[0.01,0.02,0.03,-0.01,-0.02,0.005]:[0.003,-0.002,0.005,-0.005,-0.03];
+    const a=lv===1?1:lv===2?ri(1,3):ri(2,3),d=ds[ri(0,ds.length-1)],n=lv===1?ri(4,6):lv===2?ri(5,10):ri(8,12),val=String(+(a+d).toFixed(3));return {t:'approx',val,a,d:+(+val-a).toFixed(3),n,nt:3}},
   ans(P){const s=TYPES.approx.terms(P).reduce((x,y)=>x+y,0);return {kind:'approx',val:s,disp:ff(s,4)}},
   hints:P=>[`Write ${P.val} as ${P.a} + (${sg(P.d)}).`,`Expand (${P.a} + (${sg(P.d)}))^${P.n} and keep the first ${P.nt} terms.`],
   example:{t:'approx',val:'1.02',a:1,d:0.02,n:8,nt:3}});
@@ -1031,8 +1054,10 @@ T('extended',{name:'Negative or fractional power',group:'unknown',
       L(`|<i>x</i>| &lt; ${fh(bound)}`,`Divide by ${fh(fabs(k.y))}.`),
       L(`${MINUS}${fh(bound)} &lt; <i>x</i> &lt; ${fh(bound)}`,'Written as a range.',undefined,[`Whole-number powers never need this condition (they are always valid). Negative and fractional powers always do.`])]);
     return mk(P,steps)},
-  gen(){const opts=[{a:1,m:F(-1)},{a:1,m:F(-2)},{a:1,m:F(-3)},{a:1,m:F(1,2)},{a:1,m:F(-1,2)},{a:4,m:F(1,2)},{a:4,m:F(-1,2)},{a:9,m:F(-1,2)},{a:8,m:F(1,3)},{a:2,m:F(-2)}];
-    const o=opts[ri(0,opts.length-1)];return {t:'extended',cfg:{a:o.a,p:0,b:rnz(-3,3),q:1,n:0},m:o.m,upto:3,askj:ri(1,3)}},
+  gen(lv=2){const opts=lv===1?[{a:1,m:F(-1)},{a:1,m:F(-2)},{a:1,m:F(1,2)}]
+      :lv===2?[{a:1,m:F(-1)},{a:1,m:F(-2)},{a:1,m:F(-3)},{a:1,m:F(1,2)},{a:1,m:F(-1,2)},{a:4,m:F(1,2)},{a:4,m:F(-1,2)},{a:9,m:F(-1,2)},{a:8,m:F(1,3)},{a:2,m:F(-2)}]
+      :[{a:4,m:F(-1,2)},{a:9,m:F(-1,2)},{a:8,m:F(1,3)},{a:2,m:F(-2)},{a:4,m:F(1,2)},{a:1,m:F(-3)}];
+    const o=opts[ri(0,opts.length-1)];return {t:'extended',cfg:{a:o.a,p:0,b:lv===1?ri(1,2):rnz(-3,3),q:1,n:0},m:o.m,upto:3,askj:lv===1?ri(1,2):lv===2?ri(1,3):ri(2,3)}},
   ans(P){const k=TYPES.extended.calc(P);const v=k.fin[P.askj];return {kind:'num',val:v,disp:fstr(v)}},
   hints:P=>['(1+y)^m = 1 + my + m(m−1)/2! y² + m(m−1)(m−2)/3! y³ + …','If the first term is not 1, take it out of the bracket first, then multiply back at the end.'],
   example:{t:'extended',cfg:{a:1,p:0,b:2,q:1,n:0},m:F(-3),upto:3}});
@@ -1065,7 +1090,9 @@ T('sumcoef',{name:'Sum of the coefficients',group:'find',
         L(which==='even'?`E = (${sg(e1.val)} + ${sg(e2.val)}) ÷ 2`:`O = (${sg(e1.val)} ${MINUS} ${e2.val<0n?'('+sg(e2.val)+')':sg(e2.val)}) ÷ 2`,which==='even'?'Add the two equations and halve.':'Subtract the two equations and halve.',undefined,[`Adding f(1) + f(−1) = 2E, because the O's cancel. Subtracting f(1) − f(−1) = 2O, because the E's cancel.`]),
         L(`= <span class="answer">${sg(v)}</span>`,'Done.',Nm('What is the answer?',[{label:'answer',answer:v.toString()}],`${which==='even'?`(${sg(e1.val)} + ${sg(e2.val)})`:`(${sg(e1.val)} − ${sg(e2.val)})`} ÷ 2 = ${sg(v)}.`))])}
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,4),p:1,b:rnz(-4,4),q:0,n:ri(3,7)};if(Math.random()<.4){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'sumcoef',cfg,which:['all','all','even','odd'][ri(0,3)]}},
+  gen(lv=2){if(lv===1)return {t:'sumcoef',cfg:{a:ri(1,2),p:1,b:ri(1,3),q:0,n:ri(3,5)},which:'all'};
+    const cfg=lv===2?{a:ri(1,4),p:1,b:rnz(-4,4),q:0,n:ri(3,7)}:{a:ri(2,4),p:1,b:rnz(-4,4),q:0,n:ri(5,8)};
+    if(lv===3||Math.random()<.4){cfg.c=ri(1,3);cfg.d=rnz(-3,3)}return {t:'sumcoef',cfg,which:lv===3?['even','odd'][ri(0,1)]:['all','all','even','odd'][ri(0,3)]}},
   ans(P){const v=TYPES.sumcoef.value(P);return {kind:'num',val:F(v),disp:sg(v)}},
   hints:P=>['Put x = 1 to get the sum of all the coefficients.',P.which==='all'?'Work out the bracket with x = 1.':'Also put x = −1, then add or subtract the two answers and halve.'],
   example:{t:'sumcoef',cfg:{a:2,p:1,b:3,q:0,n:5},which:'all'}});
@@ -1099,7 +1126,7 @@ T('greatest',{name:'Greatest coefficient',group:'find',
     const t=terms[mx],t2=ties.length>1?terms[ties[1]]:null;
     S('Final answer',P.valueOnly?'The question asks for the value.':'Write the term.',[L(P.valueOnly?`greatest coefficient = <span class="answer">${t.val}</span>`:`${ties.length>1?'T<sub>'+(ties[0]+1)+'</sub> and T<sub>'+(ties[1]+1)+'</sub> are':'T<sub>'+(mx+1)+'</sub> is'} <span class="answer">${mono(t.val,t.e,true)}${t2?' and '+mono(t2.val,t2.e,true):''}</span>`,`The greatest coefficient is ${t.val}.`)]);
     return mk(P,steps)},
-  gen(){const cfg={a:ri(1,4),p:1,b:ri(1,4),q:0,n:ri(5,12)};return {t:'greatest',cfg,valueOnly:true}},
+  gen(lv=2){const cfg=lv===1?{a:1,p:1,b:ri(1,2),q:0,n:ri(5,7)}:lv===2?{a:ri(1,4),p:1,b:ri(1,4),q:0,n:ri(5,12)}:{a:ri(2,4),p:1,b:ri(2,5),q:0,n:ri(9,14)};return {t:'greatest',cfg,valueOnly:true}},
   ans(P){const {terms,mx}=TYPES.greatest.best(P);return {kind:'num',val:F(terms[mx].val),disp:terms[mx].val.toString()}},
   hints:P=>['Compare t(r+1) with t(r): the ratio is (n−r)/(r+1) × b/a.','Solve ratio ≥ 1 for r, then take the next whole number along.'],
   example:{t:'greatest',cfg:{a:2,p:1,b:3,q:0,n:10}}});
@@ -1120,7 +1147,7 @@ T('ncr',{name:'Evaluate nCr',group:'other',
       L(`= ${num.reduce((x,y)=>x*y,1)} ÷ ${den.reduce((x,y)=>x*y,1)} = <span class="answer">${C(n,r)}</span>`,'Work it out.',Nm('What is the answer?',[{label:'answer',answer:C(n,r).toString()}],`${num.reduce((x,y)=>x*y,1)} ÷ ${den.reduce((x,y)=>x*y,1)} = ${C(n,r)}.`)),
       L(`Calculator: type ${n}, press nCr, type ${r}, press =`,'The same answer.')]);
     return mk(P,steps)},
-  gen(){const n=ri(5,14);return {t:'ncr',n,r:ri(2,n-2)}},
+  gen(lv=2){const n=lv===1?ri(5,7):lv===2?ri(5,14):ri(10,15);return {t:'ncr',n,r:lv===1?2:lv===2?ri(2,n-2):ri(3,n-3)}},
   ans(P){const v=C(P.n,P.r);return {kind:'num',val:F(v),disp:v.toString()}},
   hints:P=>['nCr = n! ÷ (r! (n−r)!). Cancel the big factorials.','Or use your calculator.'],
   example:{t:'ncr',n:10,r:3}});
@@ -1136,7 +1163,7 @@ T('ncrn',{name:'Solve nCr = number for n',group:'other',
     S('Solve for n',`Turn ${bn('n',r)} into an expression in n.`,sn.lines);
     S('Final answer','Check it.',[L(`<i>n</i> = <span class="answer">${sn.n}</span>`,`Check: ${bn(sn.n,r)} = ${C(sn.n,r)} ✓`)]);
     return mk(P,steps)},
-  gen(){const r=ri(2,3),n=ri(r+2,12);return {t:'ncrn',r,V:C(n,r)}},
+  gen(lv=2){const r=lv===1?2:lv===2?ri(2,3):3,n=lv===1?ri(4,7):lv===2?ri(r+2,12):ri(7,14);return {t:'ncrn',r,V:C(n,r)}},
   ans(P){const n=findN(P.r,P.V);return {kind:'num',val:F(n),disp:String(n)}},
   hints:P=>[P.r===2?'nC2 = n(n−1)/2. Multiply by 2 and solve the quadratic.':'nC3 = n(n−1)(n−2)/6. Multiply by 6 and try values.'],
   example:{t:'ncrn',r:2,V:45n}});
@@ -1163,7 +1190,7 @@ T('letters',{name:'Expand (a + b)^n with letters',group:'other',
     S('Write the terms','Put each r into the pattern.',rows.map((r,i)=>(big&&r===n-1&&rows[i-1]===2?[L('+ …','Skipping the middle.')]:[]).concat([L(`${i?'+ ':''}${un(r)}`,`r = ${r}`)])).flat());
     S('Simplify','Work out signs and numbers.',[L(`<span class="answer">${rows.map((r,i)=>term(r,i===0)+(big&&r===2?' + … ':'')).join('')}${big?'':''}</span>`,big?'First three and last two terms. The middle is not written.':'The full expansion.')]);
     return mk(P,steps)},
-  gen(){const u=['x','a','p','m'][ri(0,3)],v=['y','b','q','n'][ri(0,3)];const n=ri(4,9),r=ri(1,n-1);return {t:'letters',u,v,neg:Math.random()<.5,n,askr:r}},
+  gen(lv=2){const u=['x','a','p','m'][ri(0,3)],v=['y','b','q','n'][ri(0,3)];const n=lv===1?ri(3,5):lv===2?ri(4,9):ri(7,10),r=ri(1,n-1);return {t:'letters',u,v,neg:lv===1?false:lv===2?Math.random()<.5:true,n,askr:r}},
   ans(P){const c=C(P.n,P.askr)*(P.neg&&P.askr%2?-1n:1n);return {kind:'num',val:F(c),disp:sg(c)}},
   hints:P=>['Coefficient = nCr × (±1)^r. A minus sign only matters when r is odd.'],
   example:{t:'letters',u:'x',v:'y',neg:true,n:5}});
@@ -1296,8 +1323,16 @@ function makeBuilder(cid,pre,defG){
 }
 makeBuilder('bLearn','L_',false);
 
+/* ============ difficulty ============ */
+const LEVELS=[[1,'Easy'],[2,'Medium'],[3,'Hard']];
+const lvSwitch=(cur,extra='')=>`<div class="lvls" role="group" aria-label="Difficulty" ${extra}>${LEVELS.map(([v,l])=>`<button class="lv" data-lv="${v}" aria-pressed="${v===cur}">${l}</button>`).join('')}</div>`;
+function genQ(id,lv,forLearn){const T=TYPES[id],f=forLearn&&T.learn||T.gen;let P;
+  for(let i=0;i<20;i++){P=f(lv);const a=TYPES[P.t].ans;if(!a)break;const v=a(P).val;if(!(v&&v.n===0n))break}
+  return P}
+
 /* ============ learn tab: a folder per group of question types ============ */
 const learnFolders=(()=>{
+  const cur={};
   const types=Object.values(TYPES).filter(t=>t.example);
   const desc={expand:'Multiplying out brackets with a power',find:'Coefficients, the constant term, a particular term and more',
     unknown:'Finding k or n, estimates, negative and fractional powers',other:'nCr, and expanding with letters'};
@@ -1309,13 +1344,19 @@ const learnFolders=(()=>{
     $('learnTitle').textContent=own?'Your own question':grp.label;
     $('learnLead').innerHTML=own?'Type in your question, then watch it solved or try it yourself.':'Press <b>Watch</b> to see the working written out, or <b>Try it</b> to fill in each step yourself.';
     $('bLearn').hidden=!own;
-    $('learnCards').innerHTML=own?'':grp.list.map(t=>`<div class="qcard"><h4 class="cname">${t.name}</h4><p class="what">${t.blurb}</p><div class="m">${TYPES[t.example.t].text(t.example)}</div>
-      <div class="cbtns"><button class="btn primary small" data-t="${t.id}">Watch</button><button class="btn small" data-t="${t.id}" data-g="1">Try it</button></div></div>`).join('');
+    $('learnCards').innerHTML=own?'':grp.list.map(t=>{cur[t.id]=t.example;return `<div class="qcard" data-id="${t.id}"><h4 class="cname">${t.name}</h4><p class="what">${t.blurb}</p>
+      ${t.gen?lvSwitch(0,'title="Pick a level for a new question. Press it again for another."'):''}<div class="m qtext">${TYPES[t.example.t].text(t.example)}</div>
+      <div class="cbtns"><button class="btn primary small" data-t="${t.id}">Watch</button><button class="btn small" data-t="${t.id}" data-g="1">Try it</button></div></div>`}).join('');
     $('learnOpen').scrollIntoView({block:'nearest'})};
   const home=()=>{$('learnOpen').hidden=true;$('learnHome').hidden=false};
   $('subfolders').addEventListener('click',e=>{const b=e.target.closest('.subfolder');if(b)show(b.dataset.f)});
   $('learnBack').onclick=home;
-  $('learnCards').addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const ex=TYPES[b.dataset.t].example;openBook(TYPES[ex.t].build(ex),!!b.dataset.g)});
+  $('learnCards').addEventListener('click',e=>{
+    const lv=e.target.closest('.lv');
+    if(lv){const card=lv.closest('.qcard'),id=card.dataset.id,P=genQ(id,+lv.dataset.lv,true);cur[id]=P;
+      card.querySelectorAll('.lv').forEach(x=>x.setAttribute('aria-pressed',x===lv));
+      const q=card.querySelector('.qtext');q.innerHTML=TYPES[P.t].text(P);q.classList.remove('swap');void q.offsetWidth;q.classList.add('swap');return}
+    const b=e.target.closest('button[data-t]');if(!b)return;const P=cur[b.dataset.t];openBook(TYPES[P.t].build(P),!!b.dataset.g)});
   return {home};
 })();
 
@@ -1332,10 +1373,13 @@ function checkAnswer(a,raw){
   const v=parseFloat(String(raw).replace(/−/g,'-'));if(isNaN(v))return {bad:'Type a number.'};return {ok:Math.abs(v-a.val)<=Math.abs(a.val)*6e-4}}
 let pr=null;
 (function(){const pool=Object.values(TYPES).filter(t=>t.gen);$('pType').innerHTML='<option value="any">Any type (mixed)</option>'+GROUPS.map(([g,l])=>`<optgroup label="${l}">${pool.filter(t=>t.group===g).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('')})();
+let pLv=2;
+$('pLvWrap').insertAdjacentHTML('beforeend',lvSwitch(pLv,'id="pLv"'));
+$('pLv').addEventListener('click',e=>{const b=e.target.closest('.lv');if(!b)return;pLv=+b.dataset.lv;$('pLv').querySelectorAll('.lv').forEach(x=>x.setAttribute('aria-pressed',x===b));newPractice()});
 function newPractice(){const sel=$('pType').value;const pool=Object.keys(TYPES).filter(id=>TYPES[id].gen);const id=sel==='any'?pool[ri(0,pool.length-1)]:sel;
-  const P=TYPES[id].gen();pr={P,done:false,hint:0};const T2=TYPES[P.t],a=T2.ans(P);pr.a=a;
+  const P=genQ(id,pLv);pr={P,done:false,hint:0};const T2=TYPES[P.t],a=T2.ans(P);pr.a=a;
   const ph=a.kind==='poly'?'e.g. 2x^5 + 11x^4 − 3x':a.kind==='num'?'a number, or a fraction like 3/4':'a number';
-  $('pq').innerHTML=`<span class="tag">${T2.name}</span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off">
+  $('pq').innerHTML=`<span class="tag">${T2.name} · <span class="lvtag l${pLv}">${LEVELS[pLv-1][1]}</span></span><div class="m">${T2.text(P)}</div><input id="pIn" placeholder="${ph}" autocomplete="off">
     <div class="rowb"><button class="btn primary" id="pChk">Check</button><button class="btn" id="pHint">Hint</button><button class="btn" id="pShow">Show me the working</button></div>
     <p class="hint" id="pHintOut"></p><p class="fb" id="pFb"></p>`;
   $('pChk').onclick=()=>{const raw=$('pIn').value;if(!raw.trim())return;const r=checkAnswer(a,raw),fb=$('pFb');
