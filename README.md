@@ -1,6 +1,6 @@
 # Infinity Maths
 
-For students of IB Diploma Programme mathematics. On first open the app asks which course you take (AI SL, AI HL, AA SL or AA HL) and shows only the topics in that course. Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
+For students of IB Diploma Programme mathematics. Each time it opens, the app asks which course you take (AI SL, AI HL, AA SL or AA HL) and shows only the topics in that course. Step-by-step binomial expansion lessons: watch the working written out, try it yourself, practise at three difficulty levels, and play revision games.
 
 ## Working on it
 
@@ -32,7 +32,7 @@ source/
     games.css                      the revision games: cards, game stage, number pad, effects, results
     calculator.css                 the slide-out calculator
     study-settings.css             the course and paper bar, syllabus labels, and what each choice hides
-    welcome.css                    the "Which course do you take?" question on first open
+    welcome.css                    the "Which course do you take?" question shown when the app opens
     exam.css                       exam practice: the question list and the exam-paper layout
     maths-keyboard.css             the maths keyboard
     small-screens.css              phones, and less motion for people who ask for it
@@ -74,7 +74,7 @@ source/
     number-animation.js            numbers merging into the answer
   screens/
     home-screen.js                 search, and the topic folders for the chosen course
-    welcome-screen.js              asks which course you take the first time the app opens
+    welcome-screen.js              asks which course you take when the app opens
     tabs.js                        switching tabs
     learn-tab.js                   Learn folders and question cards
     your-own-question.js           the type-your-own-question form
@@ -138,4 +138,4 @@ Make a `topics/<topic>/` folder like `binomials/`, add a folder button to `page.
 
 ## Courses
 
-The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`. The first time the app opens, `welcome-screen.js` asks which one the student takes; the choice is saved and can be changed in the bar under the logo. The level (SL or HL) decides whether `hl-only` content is shown; the course decides which topics appear.
+The four courses are listed in `COURSES` in `settings.js`: `ai-sl`, `ai-hl`, `aa-sl` and `aa-hl`. When the app opens, `welcome-screen.js` asks which one the student takes, with last time's choice highlighted (set `ASK_COURSE_EVERY_TIME` to `false` in `settings.js` to ask only the first time). The choice is saved and can also be changed in the bar under the logo. The level (SL or HL) decides whether `hl-only` content is shown; the course decides which topics appear.

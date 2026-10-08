@@ -27,6 +27,8 @@ const COURSES=[['ai-sl','AI SL','Applications and interpretation','Standard leve
 const PAPERS=[['1','Paper 1','no calculator'],['2','Paper 2','calculator']];
 const COURSE_KEY='infinity_course';
 const PAPER_KEY='infinity_paper';
+/* true: ask which course every time the app opens (the last choice is highlighted); false: ask only the first time */
+const ASK_COURSE_EVERY_TIME=true;
 /* rough exam timing, used to suggest how long an exam-style question should take */
 const EXAM_MINUTES_PER_MARK=1.1;
 /* how many past calculations the calculator keeps in its history */
@@ -37,5 +39,5 @@ const SOUND_KEY='infinity_sound';
 /* one-line descriptions under each Learn folder */
 const GROUP_DESCRIPTIONS={expand:'Multiplying out brackets with a power',find:'Coefficients, the constant term, a particular term and more',
   unknown:'Finding k or n, estimates, negative and fractional powers',other:'nCr, and expanding with letters'};
-export {GROUPS,LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,WRITE_SPEED_MS,GROUP_DESCRIPTIONS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
+export {GROUPS,LEVELS,TABS,EXAM_MINUTES_PER_MARK,COURSES,PAPERS,COURSE_KEY,PAPER_KEY,ASK_COURSE_EVERY_TIME,WRITE_SPEED_MS,GROUP_DESCRIPTIONS,BEST_SCORE_KEY,SOUND_KEY,CALC_HISTORY_SIZE,
   GAME_SECONDS,GAME_LIVES,GAME_POINTS,GAME_COMBO_EVERY,GAME_MAX_COMBO,GAME_COMBO_BONUS_SECONDS,GAME_BOARD_BONUS_SECONDS,GAME_LEVEL_UP_EVERY,GAME_STARS};

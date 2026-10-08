@@ -3047,6 +3047,24 @@ input[type=checkbox] {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+.welcome-options button {
+  position: relative;
+}
+.welcome-options button.last {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+.wc-last {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--grad);
+  color: #fff;
+}
 .wc-short {
   font-weight: 800;
   font-size: 1.35rem;
@@ -5234,6 +5252,7 @@ input[type=checkbox] {
   var PAPERS = [["1", "Paper 1", "no calculator"], ["2", "Paper 2", "calculator"]];
   var COURSE_KEY = "infinity_course";
   var PAPER_KEY = "infinity_paper";
+  var ASK_COURSE_EVERY_TIME = true;
   var EXAM_MINUTES_PER_MARK = 1.1;
   var CALC_HISTORY_SIZE = 8;
   var BEST_SCORE_KEY = "bin_best_";
@@ -5316,7 +5335,9 @@ input[type=checkbox] {
 
   // source/screens/welcome-screen.js
   function initWelcome() {
-    if (hasChosenCourse()) return;
+    const chosen = hasChosenCourse();
+    if (chosen && !ASK_COURSE_EVERY_TIME) return;
+    const last = chosen ? getCourse() : null;
     const el = document.createElement("div");
     el.className = "welcome";
     el.setAttribute("role", "dialog");
@@ -5325,20 +5346,26 @@ input[type=checkbox] {
     el.innerHTML = `<div class="welcome-card">
     <div class="welcome-logo">${document.querySelector(".plate h1").innerHTML}</div>
     <h2 id="welcomeTitle">Which IB maths course do you take?</h2>
-    <p class="welcome-lead">You will only see the topics on your syllabus. You can change this any time in the bar under the logo.</p>
-    <div class="welcome-options">${COURSES.map(([code, short, name, lvl]) => `<button data-course="${code}"><span class="wc-short">${short}</span><span class="wc-name">${name}</span><span class="wc-level">${lvl}</span></button>`).join("")}</div>
+    <p class="welcome-lead">You will only see the topics on your syllabus. You can also change it any time in the bar under the logo.</p>
+    <div class="welcome-options">${COURSES.map(([code, short, name, lvl]) => `<button data-course="${code}"${code === last ? ' class="last"' : ""}><span class="wc-short">${short}</span>${code === last ? '<span class="wc-last">Last time</span>' : ""}<span class="wc-name">${name}</span><span class="wc-level">${lvl}</span></button>`).join("")}</div>
   </div>`;
     document.body.appendChild(el);
     document.body.classList.add("welcoming");
+    const close = () => {
+      document.body.classList.remove("welcoming");
+      el.classList.add("closing");
+      setTimeout(() => el.remove(), 350);
+    };
     el.addEventListener("click", (e) => {
       const b = e.target.closest("[data-course]");
       if (!b) return;
       setCourse(b.dataset.course);
-      document.body.classList.remove("welcoming");
-      el.classList.add("closing");
-      setTimeout(() => el.remove(), 350);
+      close();
     });
-    setTimeout(() => el.querySelector("button").focus({ preventScroll: true }), 60);
+    if (last) el.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+    setTimeout(() => (el.querySelector(".last") || el.querySelector("button")).focus({ preventScroll: true }), 60);
   }
 
   // source/notebook/number-animation.js
