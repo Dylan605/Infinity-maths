@@ -47,11 +47,14 @@ source/
   topics/binomials/
     binomials.js                   loads every question type for the topic
     question-list.js               the list of question types (TYPES) and how to add one
-    question-types/
-      expanding-brackets.js        expand and simplify, first three and last two terms
-      finding-terms.js             coefficients, constant term, a particular term, middle term …
-      unknowns-and-estimates.js    find k, find n, estimates, negative and fractional powers
-      other-skills.js              nCr, solve for n, expanding with letters
+    question-types/                one file per question type, in a folder per group
+      expanding-brackets/          expand-and-simplify, first-three-and-last-two-terms
+      finding-terms/               coefficient-of-a-power-of-x, constant-term, coefficient-in-a-product,
+                                   a-particular-term, middle-term, ascending-powers,
+                                   sum-of-the-coefficients, greatest-coefficient
+      unknowns-and-estimates/      find-k-from-a-coefficient, find-k-when-coefficients-are-equal,
+                                   find-n-from-a-coefficient, estimate-a-number, negative-or-fractional-power
+      other-skills/                evaluate-ncr, solve-ncr-for-n, expand-with-letters
     game-questions.js              questions for the revision games
   notebook/
     notebook.js                    writes the working line by line, asks Try-it questions
@@ -78,7 +81,7 @@ start.js ─┬─► topics/binomials/binomials.js       (loads the question ty
                                                                    settings.js is used where needed
 ```
 
-- `start.js` loads `topics/binomials/binomials.js` **first**. That runs each file in `question-types/`, and each one adds its questions to the shared list with `T(id, definition)`. The order of those files sets the order of questions inside each group.
+- `start.js` loads `topics/binomials/binomials.js` **first**. That imports every file in `question-types/`, and each one adds its question type to the shared list with `T(id, definition)`. The order of those imports is the order the questions appear in the app.
 - `start.js` then starts each screen in turn. The Learn tab hands back a `home()` function, which the home screen and tabs use to reset it.
 - Every screen opens a lesson the same way, with `openBook(lesson, tryIt)` from `notebook/notebook.js`.
 - `helpers/` knows nothing about the app, `maths/` is only the maths, and the notebook works on any lesson without knowing the question types.
@@ -86,7 +89,11 @@ start.js ─┬─► topics/binomials/binomials.js       (loads the question ty
 
 ## Adding a question type
 
-Add a `T('myType', {...})` block to the right file in `topics/binomials/question-types/`, copying its neighbours. Give it `name`, `group` (one of the groups in `settings.js`), `blurb`, `text`, `build`, plus `gen(level)` for difficulty and `ans` for Practice. It appears in Learn, Practice and the question form automatically.
+Make a new file in the right group folder under `topics/binomials/question-types/`, copying a neighbour, and add one import line for it to `topics/binomials/binomials.js`. The file holds one `T('myType', {...})` block. Give it `name`, `group` (one of the groups in `settings.js`), `blurb`, `text`, `build`, plus `gen(level)` for difficulty and `ans` for Practice. It appears in Learn, Practice and the question form automatically.
+
+## When to make a new file
+
+Whenever the new code is a separate thing: a question type, a screen, a topic, or styles for a new screen. Split any file that passes about 150 lines or starts doing two jobs. `CLAUDE.md` has the full rules.
 
 ## Adding a topic
 

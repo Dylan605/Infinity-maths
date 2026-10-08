@@ -1749,41 +1749,6 @@ input[type=checkbox] {
   };
   var qs = (h) => `<span class="qs">${h}</span>`;
 
-  // source/maths/binomial-expansion.js
-  function question(cfg) {
-    const a = BigInt(cfg.a), b = BigInt(cfg.b);
-    const A = raw(a, cfg.p), Bp = raw(b < 0n ? -b : b, cfg.q), sign = b < 0n ? ` ${MINUS} ` : " + ";
-    let left = "";
-    if (cfg.c !== void 0) {
-      const m = /* @__PURE__ */ new Map();
-      add(m, 1, BigInt(cfg.c));
-      add(m, 0, BigInt(cfg.d));
-      left = "(" + poly(m) + ")";
-    }
-    return { left, A, Bp, sign, B: raw(b, cfg.q), n: cfg.n, html: `${left}(${A}${sign}${Bp})<sup>${cfg.n}</sup>` };
-  }
-  function expand(cfg) {
-    const a = BigInt(cfg.a), b = BigInt(cfg.b), n = cfg.n, terms = [], map = /* @__PURE__ */ new Map();
-    for (let r = 0; r <= n; r++) {
-      const coef = C(n, r), ap = pw(a, n - r), bp = pw(b, r), ea = cfg.p * (n - r), eb = cfg.q * r;
-      const t = { r, coef, ap, bp, ea, eb, val: coef * ap * bp, e: ea + eb };
-      terms.push(t);
-      add(map, t.e, t.val);
-    }
-    return { terms, map };
-  }
-  var swapTerms = (c) => ({ ...c, a: c.b, p: c.q, b: c.a, q: c.p });
-  function productMap(cfg) {
-    const R = expand(cfg).map;
-    if (cfg.c === void 0) return R;
-    const c = BigInt(cfg.c), d = BigInt(cfg.d), t = /* @__PURE__ */ new Map();
-    R.forEach((v, e) => {
-      if (c !== 0n) add(t, e + 1, v * c);
-      if (d !== 0n) add(t, e, v * d);
-    });
-    return t;
-  }
-
   // source/worked-solutions/building-blocks.js
   function L(m, note, ask, more) {
     return { m, note, ask, more };
@@ -1818,6 +1783,142 @@ input[type=checkbox] {
     return s || "0";
   }
   var WHATCOEF = `In 5<i>x</i>\xB3 ${MINUS} 2<i>x</i> + 7, the <b>coefficient</b> of <i>x</i>\xB3 is 5 (the number in front), the coefficient of <i>x</i> is ${MINUS}2, and the <b>constant term</b> is 7 (the part with no <i>x</i>).`;
+
+  // source/topics/binomials/question-list.js
+  var TYPES = {};
+  function T(id, def) {
+    def.id = id;
+    TYPES[id] = def;
+  }
+  var exprField = (def) => ({ id: "expr", kind: "expr", label: "The expression", def });
+  var intField = (id, label, def) => ({ id, kind: "int", label, def });
+  var readLine = (P, more) => L(qs(TYPES[P.t].text(P)), "This is the question.", null, more);
+  var mk = (P, steps) => ({ title: TYPES[P.t].name + " \xB7 " + (TYPES[P.t].expr ? TYPES[P.t].expr(P) : ""), steps });
+  function genQ(id, lv, forLearn) {
+    const T2 = TYPES[id], f = forLearn && T2.learn || T2.gen;
+    let P;
+    for (let i = 0; i < 20; i++) {
+      P = f(lv);
+      const a = TYPES[P.t].ans;
+      if (!a) break;
+      const v = a(P).val;
+      if (!(v && v.n === 0n)) break;
+    }
+    return P;
+  }
+
+  // source/helpers/reading-input.js
+  function parseNum(s) {
+    s = String(s).replace(/−/g, "-").replace(/\s/g, "");
+    const m = s.match(/^(-?)(\d+)(?:\.(\d+))?(?:\/(\d+))?$/);
+    if (!m) return null;
+    let num = BigInt(m[2] + (m[3] || "")), den = 10n ** BigInt((m[3] || "").length);
+    if (m[4] !== void 0) {
+      if (BigInt(m[4]) === 0n) return null;
+      den *= BigInt(m[4]);
+    }
+    return F(m[1] === "-" ? -num : num, den);
+  }
+  var sameNum = (a, b) => {
+    const x = parseNum(a), y = parseNum(b);
+    return !!x && !!y && feq(x, y);
+  };
+  function parseTerm(s) {
+    const r = s.match(/^([+-]?)(\d*)(?:(x)(?:\^(\d))?|\/(x)(?:\^(\d))?)?$/);
+    if (!r) return null;
+    const [, sgn, dg, hx, px, dx, pdx] = r;
+    if (!hx && !dx && dg === "") return null;
+    const coef = (sgn === "-" ? -1 : 1) * (dg === "" ? 1 : +dg);
+    const p = hx ? px ? +px : 1 : dx ? -(pdx ? +pdx : 1) : 0;
+    if (Math.abs(p) > 2) return null;
+    return { coef, p };
+  }
+  function parseExpr(txt) {
+    const s = String(txt).replace(/−/g, "-").replace(/[×·*]/g, "").replace(/\s/g, "").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, (ch) => "^" + "\u2070\xB9\xB2\xB3\u2074\u2075\u2076\u2077\u2078\u2079".indexOf(ch)).replace(/X/g, "x").replace(/\^(\d+)\^/g, "^$1");
+    if (!s) return { err: "Type the bracket first, like (2x+3)^5." };
+    const m = s.match(/^(.*?)\(([^()]+)\)\^(\(?-?\d+(?:\/\d+)?\)?)(.*)$/);
+    if (!m) return { err: "I need a bracket with a power, like (x+2)^5." };
+    const [, l1, inner, pS, l2] = m;
+    const pm = pS.replace(/[()]/g, "").match(/^(-?)(\d+)(?:\/(\d+))?$/);
+    let pn = (pm[1] ? -1 : 1) * +pm[2], pd = pm[3] ? +pm[3] : 1;
+    if (pd === 0) return { err: "The bottom of a fraction cannot be 0." };
+    const g = Number(gcdB(BigInt(Math.abs(pn)), BigInt(pd))) || 1;
+    pn /= g;
+    pd /= g;
+    const two = inner.match(/^([+-]?[^+-]+)([+-][^+-]+)$/);
+    if (!two) return { err: "The bracket needs exactly two terms, like (3x + 2)." };
+    const A = parseTerm(two[1]), B = parseTerm(two[2]);
+    if (!A || !B) return { err: "I can read terms like 3x, 2, x^2 or 2/x." };
+    if (A.coef === 0 || B.coef === 0) return { err: "Neither term can be 0." };
+    if (Math.abs(A.coef) > 99 || Math.abs(B.coef) > 99) return { err: "Keep the numbers under 100." };
+    const cfg = { a: A.coef, p: A.p, b: B.coef, q: B.p };
+    if (l1 && l2) return { err: "Put the other bracket on one side only." };
+    const left = (l1 + l2).replace(/^\(|\)$/g, "");
+    if (left) {
+      const ts = left.match(/[+-]?[^+-]+/g);
+      if (!ts || ts.join("") !== left || ts.length > 2) return { err: "The other bracket should look like (2x+3) or x." };
+      let c = 0, d = 0;
+      for (const t of ts) {
+        const T2 = parseTerm(t);
+        if (!T2 || T2.p < 0 || T2.p > 1) return { err: "The other bracket can only have an x term and a number, like (2x \u2212 1)." };
+        if (T2.p === 1) c += T2.coef;
+        else d += T2.coef;
+      }
+      if (c === 0 && d === 0) return { err: "The other bracket cannot be 0." };
+      cfg.c = c;
+      cfg.d = d;
+    }
+    return { cfg, pw: { n: pn, d: pd } };
+  }
+  function intCfg(expr) {
+    const r = parseExpr(expr);
+    if (r.err !== void 0) return r;
+    if (r.pw.d !== 1 || r.pw.n < 1 || r.pw.n > 20) return { err: "For this type the power must be a whole number from 1 to 20." };
+    r.cfg.n = r.pw.n;
+    return { cfg: r.cfg };
+  }
+  var int = (s, lo, hi, name) => {
+    const t = String(s).trim().replace(/−/g, "-");
+    if (!/^-?\d+$/.test(t)) return { err: `${name} must be a whole number.` };
+    const v = +t;
+    if (v < lo || v > hi) return { err: `${name} must be between ${lo} and ${hi}.` };
+    return { v };
+  };
+
+  // source/maths/binomial-expansion.js
+  function question(cfg) {
+    const a = BigInt(cfg.a), b = BigInt(cfg.b);
+    const A = raw(a, cfg.p), Bp = raw(b < 0n ? -b : b, cfg.q), sign = b < 0n ? ` ${MINUS} ` : " + ";
+    let left = "";
+    if (cfg.c !== void 0) {
+      const m = /* @__PURE__ */ new Map();
+      add(m, 1, BigInt(cfg.c));
+      add(m, 0, BigInt(cfg.d));
+      left = "(" + poly(m) + ")";
+    }
+    return { left, A, Bp, sign, B: raw(b, cfg.q), n: cfg.n, html: `${left}(${A}${sign}${Bp})<sup>${cfg.n}</sup>` };
+  }
+  function expand(cfg) {
+    const a = BigInt(cfg.a), b = BigInt(cfg.b), n = cfg.n, terms = [], map = /* @__PURE__ */ new Map();
+    for (let r = 0; r <= n; r++) {
+      const coef = C(n, r), ap = pw(a, n - r), bp = pw(b, r), ea = cfg.p * (n - r), eb = cfg.q * r;
+      const t = { r, coef, ap, bp, ea, eb, val: coef * ap * bp, e: ea + eb };
+      terms.push(t);
+      add(map, t.e, t.val);
+    }
+    return { terms, map };
+  }
+  var swapTerms = (c) => ({ ...c, a: c.b, p: c.q, b: c.a, q: c.p });
+  function productMap(cfg) {
+    const R = expand(cfg).map;
+    if (cfg.c === void 0) return R;
+    const c = BigInt(cfg.c), d = BigInt(cfg.d), t = /* @__PURE__ */ new Map();
+    R.forEach((v, e) => {
+      if (c !== 0n) add(t, e + 1, v * c);
+      if (d !== 0n) add(t, e, v * d);
+    });
+    return t;
+  }
 
   // source/worked-solutions/expanding-lesson.js
   function buildExpand(cfg, mode) {
@@ -1991,107 +2092,6 @@ input[type=checkbox] {
     return { title: `Q: ${Q.html}`, steps };
   }
 
-  // source/topics/binomials/question-list.js
-  var TYPES = {};
-  function T(id, def) {
-    def.id = id;
-    TYPES[id] = def;
-  }
-  var exprField = (def) => ({ id: "expr", kind: "expr", label: "The expression", def });
-  var intField = (id, label, def) => ({ id, kind: "int", label, def });
-  var readLine = (P, more) => L(qs(TYPES[P.t].text(P)), "This is the question.", null, more);
-  var mk = (P, steps) => ({ title: TYPES[P.t].name + " \xB7 " + (TYPES[P.t].expr ? TYPES[P.t].expr(P) : ""), steps });
-  function genQ(id, lv, forLearn) {
-    const T2 = TYPES[id], f = forLearn && T2.learn || T2.gen;
-    let P;
-    for (let i = 0; i < 20; i++) {
-      P = f(lv);
-      const a = TYPES[P.t].ans;
-      if (!a) break;
-      const v = a(P).val;
-      if (!(v && v.n === 0n)) break;
-    }
-    return P;
-  }
-
-  // source/helpers/reading-input.js
-  function parseNum(s) {
-    s = String(s).replace(/−/g, "-").replace(/\s/g, "");
-    const m = s.match(/^(-?)(\d+)(?:\.(\d+))?(?:\/(\d+))?$/);
-    if (!m) return null;
-    let num = BigInt(m[2] + (m[3] || "")), den = 10n ** BigInt((m[3] || "").length);
-    if (m[4] !== void 0) {
-      if (BigInt(m[4]) === 0n) return null;
-      den *= BigInt(m[4]);
-    }
-    return F(m[1] === "-" ? -num : num, den);
-  }
-  var sameNum = (a, b) => {
-    const x = parseNum(a), y = parseNum(b);
-    return !!x && !!y && feq(x, y);
-  };
-  function parseTerm(s) {
-    const r = s.match(/^([+-]?)(\d*)(?:(x)(?:\^(\d))?|\/(x)(?:\^(\d))?)?$/);
-    if (!r) return null;
-    const [, sgn, dg, hx, px, dx, pdx] = r;
-    if (!hx && !dx && dg === "") return null;
-    const coef = (sgn === "-" ? -1 : 1) * (dg === "" ? 1 : +dg);
-    const p = hx ? px ? +px : 1 : dx ? -(pdx ? +pdx : 1) : 0;
-    if (Math.abs(p) > 2) return null;
-    return { coef, p };
-  }
-  function parseExpr(txt) {
-    const s = String(txt).replace(/−/g, "-").replace(/[×·*]/g, "").replace(/\s/g, "").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, (ch) => "^" + "\u2070\xB9\xB2\xB3\u2074\u2075\u2076\u2077\u2078\u2079".indexOf(ch)).replace(/X/g, "x").replace(/\^(\d+)\^/g, "^$1");
-    if (!s) return { err: "Type the bracket first, like (2x+3)^5." };
-    const m = s.match(/^(.*?)\(([^()]+)\)\^(\(?-?\d+(?:\/\d+)?\)?)(.*)$/);
-    if (!m) return { err: "I need a bracket with a power, like (x+2)^5." };
-    const [, l1, inner, pS, l2] = m;
-    const pm = pS.replace(/[()]/g, "").match(/^(-?)(\d+)(?:\/(\d+))?$/);
-    let pn = (pm[1] ? -1 : 1) * +pm[2], pd = pm[3] ? +pm[3] : 1;
-    if (pd === 0) return { err: "The bottom of a fraction cannot be 0." };
-    const g = Number(gcdB(BigInt(Math.abs(pn)), BigInt(pd))) || 1;
-    pn /= g;
-    pd /= g;
-    const two = inner.match(/^([+-]?[^+-]+)([+-][^+-]+)$/);
-    if (!two) return { err: "The bracket needs exactly two terms, like (3x + 2)." };
-    const A = parseTerm(two[1]), B = parseTerm(two[2]);
-    if (!A || !B) return { err: "I can read terms like 3x, 2, x^2 or 2/x." };
-    if (A.coef === 0 || B.coef === 0) return { err: "Neither term can be 0." };
-    if (Math.abs(A.coef) > 99 || Math.abs(B.coef) > 99) return { err: "Keep the numbers under 100." };
-    const cfg = { a: A.coef, p: A.p, b: B.coef, q: B.p };
-    if (l1 && l2) return { err: "Put the other bracket on one side only." };
-    const left = (l1 + l2).replace(/^\(|\)$/g, "");
-    if (left) {
-      const ts = left.match(/[+-]?[^+-]+/g);
-      if (!ts || ts.join("") !== left || ts.length > 2) return { err: "The other bracket should look like (2x+3) or x." };
-      let c = 0, d = 0;
-      for (const t of ts) {
-        const T2 = parseTerm(t);
-        if (!T2 || T2.p < 0 || T2.p > 1) return { err: "The other bracket can only have an x term and a number, like (2x \u2212 1)." };
-        if (T2.p === 1) c += T2.coef;
-        else d += T2.coef;
-      }
-      if (c === 0 && d === 0) return { err: "The other bracket cannot be 0." };
-      cfg.c = c;
-      cfg.d = d;
-    }
-    return { cfg, pw: { n: pn, d: pd } };
-  }
-  function intCfg(expr) {
-    const r = parseExpr(expr);
-    if (r.err !== void 0) return r;
-    if (r.pw.d !== 1 || r.pw.n < 1 || r.pw.n > 20) return { err: "For this type the power must be a whole number from 1 to 20." };
-    r.cfg.n = r.pw.n;
-    return { cfg: r.cfg };
-  }
-  var int = (s, lo, hi, name) => {
-    const t = String(s).trim().replace(/−/g, "-");
-    if (!/^-?\d+$/.test(t)) return { err: `${name} must be a whole number.` };
-    const v = +t;
-    if (v < lo || v > hi) return { err: `${name} must be between ${lo} and ${hi}.` };
-    return { v };
-  };
-
   // source/helpers/random-numbers.js
   var ri = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
   var rnz = (lo, hi) => {
@@ -2107,7 +2107,7 @@ input[type=checkbox] {
     return a;
   };
 
-  // source/topics/binomials/question-types/expanding-brackets.js
+  // source/topics/binomials/question-types/expanding-brackets/expand-and-simplify.js
   T("expand", {
     name: "Expand and simplify",
     group: "expand",
@@ -2143,6 +2143,8 @@ input[type=checkbox] {
     hints: (P) => ["Expand the bracket with the power first, using nCr and the pattern.", P.cfg.c !== void 0 ? "Then multiply every term by both parts of the other bracket, and collect like terms." : "Add the terms up, highest power first."],
     example: { t: "expand", cfg: { a: 1, p: 1, b: 1, q: 0, n: 4, c: 2, d: 3 } }
   });
+
+  // source/topics/binomials/question-types/expanding-brackets/first-three-and-last-two-terms.js
   T("terms", {
     name: "First three and last two terms",
     group: "expand",
@@ -2263,7 +2265,7 @@ input[type=checkbox] {
     return { lines: l, n };
   }
 
-  // source/topics/binomials/question-types/finding-terms.js
+  // source/topics/binomials/question-types/finding-terms/coefficient-of-a-power-of-x.js
   T("coef", {
     name: "Find the coefficient of x^k",
     group: "find",
@@ -2320,6 +2322,8 @@ input[type=checkbox] {
     hints: (P) => ["General term: nCr \xD7 (first)^(n\u2212r) \xD7 (second)^r.", "Work out the power of x in terms of r, set it equal to " + P.k + ", and solve for r.", "Put that r into the term and multiply the numbers."],
     example: { t: "coef", cfg: { a: 2, p: 1, b: 1, q: 0, n: 6 }, k: 3 }
   });
+
+  // source/topics/binomials/question-types/finding-terms/constant-term.js
   T("const", {
     name: "Find the constant term",
     group: "find",
@@ -2339,6 +2343,8 @@ input[type=checkbox] {
     },
     example: { t: "coef", cfg: { a: 2, p: 1, b: -3, q: -1, n: 10 }, k: 0 }
   });
+
+  // source/topics/binomials/question-types/finding-terms/coefficient-in-a-product.js
   T("pcoef", {
     name: "Coefficient in a product",
     group: "find",
@@ -2410,6 +2416,8 @@ input[type=checkbox] {
     hints: (P) => ["Only two pairs of terms multiply to make x^" + P.k + ": the x with the x^" + (P.k - 1) + " term, and the number with the x^" + P.k + " term.", "Find each coefficient from the general term, multiply by its partner, then add."],
     example: { t: "pcoef", cfg: { a: 3, p: 0, b: -1, q: 1, n: 7, c: 2, d: 1 }, k: 3 }
   });
+
+  // source/topics/binomials/question-types/finding-terms/a-particular-term.js
   T("rth", {
     name: "Find a particular term",
     group: "find",
@@ -2463,6 +2471,8 @@ input[type=checkbox] {
     hints: (P) => [`The ${ord(P.tn)} term uses r = ${P.tn - 1}.`, "T = nCr \xD7 (first)^(n\u2212r) \xD7 (second)^r. Work out each piece, then multiply."],
     example: { t: "rth", cfg: { a: 2, p: 1, b: 3, q: 0, n: 7 }, tn: 4 }
   });
+
+  // source/topics/binomials/question-types/finding-terms/middle-term.js
   T("middle", {
     name: "Find the middle term",
     group: "find",
@@ -2511,6 +2521,8 @@ input[type=checkbox] {
     hints: (P) => [`${P.cfg.n + 1} terms, so the middle one is term number ${P.cfg.n / 2 + 1}, which uses r = ${P.cfg.n / 2}.`, "Work out nCr \xD7 (first)^(n\u2212r) \xD7 (second)^r."],
     example: { t: "middle", cfg: { a: 1, p: 1, b: 2, q: 0, n: 8 } }
   });
+
+  // source/topics/binomials/question-types/finding-terms/ascending-powers.js
   T("ascend", {
     name: "Ascending powers of x",
     group: "find",
@@ -2575,6 +2587,8 @@ input[type=checkbox] {
     hints: (P) => ["Start with r = 0 (the plain number) and go up. The power of x is r.", "Use nCr \xD7 (first)^(n\u2212r) \xD7 (second)^r for each r."],
     example: { t: "ascend", cfg: { a: 2, p: 0, b: -3, q: 1, n: 6 }, upto: 2 }
   });
+
+  // source/topics/binomials/question-types/finding-terms/sum-of-the-coefficients.js
   T("sumcoef", {
     name: "Sum of the coefficients",
     group: "find",
@@ -2648,6 +2662,8 @@ input[type=checkbox] {
     hints: (P) => ["Put x = 1 to get the sum of all the coefficients.", P.which === "all" ? "Work out the bracket with x = 1." : "Also put x = \u22121, then add or subtract the two answers and halve."],
     example: { t: "sumcoef", cfg: { a: 2, p: 1, b: 3, q: 0, n: 5 }, which: "all" }
   });
+
+  // source/topics/binomials/question-types/finding-terms/greatest-coefficient.js
   T("greatest", {
     name: "Greatest coefficient",
     group: "find",
@@ -2712,7 +2728,7 @@ input[type=checkbox] {
     example: { t: "greatest", cfg: { a: 2, p: 1, b: 3, q: 0, n: 10 } }
   });
 
-  // source/topics/binomials/question-types/unknowns-and-estimates.js
+  // source/topics/binomials/question-types/unknowns-and-estimates/find-k-from-a-coefficient.js
   T("unkv", {
     name: "Find k from a coefficient",
     group: "unknown",
@@ -2803,6 +2819,8 @@ input[type=checkbox] {
     hints: (P) => [`The ${xp(P.m)} term uses r = ${P.m}. Its coefficient is nCr \xD7 a^(n\u2212r) \xD7 k^r.`, "Set that equal to the given value and solve for k."],
     example: { t: "unkv", a: 2, n: 6, m: 2, V: 960n, pos: true }
   });
+
+  // source/topics/binomials/question-types/unknowns-and-estimates/find-k-when-coefficients-are-equal.js
   T("unkeq", {
     name: "Find k when two coefficients are equal",
     group: "unknown",
@@ -2853,6 +2871,8 @@ input[type=checkbox] {
     hints: (P) => [`Coefficient of ${xp(P.m) || "the constant"} uses r = ${P.m}. Coefficient of ${xp(P.m + 1)} uses r = ${P.m + 1}.`, "Set them equal, divide away the shared factors, and solve for k."],
     example: { t: "unkeq", a: 3, n: 8, m: 2 }
   });
+
+  // source/topics/binomials/question-types/unknowns-and-estimates/find-n-from-a-coefficient.js
   T("unkn", {
     name: "Find n from a coefficient",
     group: "unknown",
@@ -2904,6 +2924,8 @@ input[type=checkbox] {
     hints: (P) => [`The ${xp(P.m)} term has coefficient nC${P.m} \xD7 b^${P.m}.`, "Divide by the b part, then solve nCr = number for n."],
     example: { t: "unkn", b: 2, m: 2, V: 180n }
   });
+
+  // source/topics/binomials/question-types/unknowns-and-estimates/estimate-a-number.js
   T("approx", {
     name: "Estimate a number",
     group: "unknown",
@@ -2966,6 +2988,8 @@ input[type=checkbox] {
     hints: (P) => [`Write ${P.val} as ${P.a} + (${sg(P.d)}).`, `Expand (${P.a} + (${sg(P.d)}))^${P.n} and keep the first ${P.nt} terms.`],
     example: { t: "approx", val: "1.02", a: 1, d: 0.02, n: 8, nt: 3 }
   });
+
+  // source/topics/binomials/question-types/unknowns-and-estimates/negative-or-fractional-power.js
   T("extended", {
     name: "Negative or fractional power",
     group: "unknown",
@@ -3068,7 +3092,7 @@ input[type=checkbox] {
     example: { t: "extended", cfg: { a: 1, p: 0, b: 2, q: 1, n: 0 }, m: F(-3), upto: 3 }
   });
 
-  // source/topics/binomials/question-types/other-skills.js
+  // source/topics/binomials/question-types/other-skills/evaluate-ncr.js
   T("ncr", {
     name: "Evaluate nCr",
     group: "other",
@@ -3113,6 +3137,8 @@ input[type=checkbox] {
     hints: (P) => ["nCr = n! \xF7 (r! (n\u2212r)!). Cancel the big factorials.", "Or use your calculator."],
     example: { t: "ncr", n: 10, r: 3 }
   });
+
+  // source/topics/binomials/question-types/other-skills/solve-ncr-for-n.js
   T("ncrn", {
     name: "Solve nCr = number for n",
     group: "other",
@@ -3147,6 +3173,8 @@ input[type=checkbox] {
     hints: (P) => [P.r === 2 ? "nC2 = n(n\u22121)/2. Multiply by 2 and solve the quadratic." : "nC3 = n(n\u22121)(n\u22122)/6. Multiply by 6 and try values."],
     example: { t: "ncrn", r: 2, V: 45n }
   });
+
+  // source/topics/binomials/question-types/other-skills/expand-with-letters.js
   var ltr = (u, e) => e === 0 ? "" : e === 1 ? u : `${u}<sup>${e}</sup>`;
   T("letters", {
     name: "Expand (a + b)^n with letters",
