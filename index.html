@@ -57,6 +57,7 @@ h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
 .explain p{margin:0 0 6px}.explain p:last-child{margin:0}
 .qlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 .qcard{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cbtns{display:flex;gap:8px;margin-top:auto;padding-top:4px}.cbtns .btn{flex:1}
 .tag{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);font-weight:700}
 .qcard .m{font-size:1.5rem;overflow-x:auto}
 .what{color:var(--pencil);font-size:.9rem;margin:0}
@@ -159,6 +160,15 @@ h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
 .bfields label.wide{grid-column:1/-1}
 .cname{font-family:var(--f-hand);font-size:1.5rem;margin:0;line-height:1.05}
 .qcard .m{font-size:1.15rem;overflow-x:auto}
+.lead{margin:0;max-width:70ch;color:var(--pencil)}
+.panel>h3{margin-top:10px}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{font-weight:700;font-size:.9rem;color:var(--ink);text-decoration:none;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:5px 12px}
+.jump a span{color:var(--pencil);font-weight:400;margin-left:2px}
+.jump a:hover{border-color:var(--ink)}
+.tgroup{display:flex;flex-direction:column;gap:10px;scroll-margin-top:12px;margin-top:6px}
+.tgroup+.tgroup{margin-top:20px}
+.gtitle{font:700 .8rem var(--f-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);margin:0;padding-bottom:4px;border-bottom:1.5px solid var(--line)}
 .cheat h3{margin-top:6px}
 .cheat table{border-collapse:collapse;width:100%;font-size:.95rem}
 .cheat th{text-align:left;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--pencil);border-bottom:2px solid var(--line);padding:6px 10px 6px 0}
@@ -193,8 +203,7 @@ h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
   <div id="folderView" hidden>
   <div class="crumb"><button class="btn small" id="backHub">◀ All topics</button><span class="crumbname">Binomials</span></div>
   <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-t="learn">Watch &amp; learn</button>
-    <button class="tab" role="tab" aria-selected="false" data-t="guided">Do it with me</button>
+    <button class="tab" role="tab" aria-selected="true" data-t="learn">Learn</button>
     <button class="tab" role="tab" aria-selected="false" data-t="practice">Practice</button>
     <button class="tab" role="tab" aria-selected="false" data-t="revise">Revision games</button>
     <button class="tab" role="tab" aria-selected="false" data-t="cheat">Cheat sheet</button>
@@ -202,22 +211,12 @@ h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
   <div class="sheetHome paper">
 
   <section class="panel" id="p-learn">
-    <div class="explain">
-      <p><b>What the words mean.</b> A <b>binomial</b> is a bracket with two things in it, like (2x + 3). The <b>power</b> on the bracket says how many times it is multiplied by itself. <b>Expand</b> means multiply it all out, and <b>simplify</b> means add terms with the same power of x.</p>
-      <p>Choose what your question asks, type it in, and the notebook writes the working one line at a time. If a line doesn't make sense, press <b>I don't get this</b> and it explains it another way.</p>
-    </div>
+    <p class="lead">Press <b>Watch</b> to see the working written out line by line, or <b>Try it</b> to fill in each step yourself. Stuck on a line? Press <b>I don't get this</b>.</p>
+    <h3>Solve your own question</h3>
     <div class="custom" id="bLearn"></div>
-    <h3>Every type of question</h3>
-    <p class="hint">Each type has a worked example. Press one to watch it.</p>
-    <div class="qlist" id="typeListLearn"></div>
-  </section>
-
-  <section class="panel" id="p-guided" hidden>
-    <div class="explain"><p>Same working, but the notebook stops and asks you to fill in a number or pick the next step before it writes it. Hints if you're stuck, and "Show me" after two tries.</p></div>
-    <div class="custom" id="bGuided"></div>
-    <h3>Every type of question</h3>
-    <p class="hint">Press one to work through its example with the notebook asking you questions.</p>
-    <div class="qlist" id="typeListGuided"></div>
+    <h3>Learn each type of question</h3>
+    <nav class="jump" id="jump" aria-label="Question groups"></nav>
+    <div id="typeGroups"></div>
   </section>
 
   <section class="panel" id="p-practice" hidden>
@@ -242,6 +241,12 @@ h3{font-family:var(--f-hand);font-size:1.7rem;margin:0;line-height:1}
 
   <section class="panel cheat" id="p-cheat" hidden>
     <div class="explain"><p>Everything you need in one place. Read it before a test, then try the revision games.</p></div>
+    <h3>Key words</h3>
+    <ul>
+      <li>A <b>binomial</b> is a bracket with two things in it, like (2x + 3).</li>
+      <li>The <b>power</b> on the bracket says how many times it is multiplied by itself.</li>
+      <li><b>Expand</b> means multiply it all out. <b>Simplify</b> means add terms with the same power of x.</li>
+    </ul>
     <h3>The three things to know</h3>
     <div class="formula">T<sub>r+1</sub> = <span class="bn"><span>n</span><span>r</span></span> (first)<sup>n−r</sup> (second)<sup>r</sup> &nbsp;&nbsp; r = 0, 1, 2 … n</div>
     <ul>
@@ -1191,7 +1196,7 @@ $('search').addEventListener('input',()=>{const q=$('search').value.trim().toLow
     const ok=!q||q.split(/\s+/).every(w=>hay.includes(w));f.hidden=!ok;if(ok)shown++});
   $('noresult').hidden=shown>0});
 $('search').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=[...document.querySelectorAll('.folder')].find(f=>!f.hidden);if(v)v.click()}});
-const TABS=['learn','guided','practice','revise','cheat'];
+const TABS=['learn','practice','revise','cheat'];
 document.querySelector('.tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(!t)return;
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
   TABS.forEach(k=>$('p-'+k).hidden=k!==t.dataset.t)});
@@ -1200,13 +1205,12 @@ document.querySelector('.tabs').addEventListener('click',e=>{const t=e.target.cl
 function makeBuilder(cid,pre,defG){
   const root=$(cid);
   const opts=GROUPS.map(([g,label])=>`<optgroup label="${label}">${Object.values(TYPES).filter(t=>t.group===g&&t.parse).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</optgroup>`).join('');
-  root.innerHTML=`<span class="tag">Your own question</span>
-    <label class="blab">What does the question ask?<select id="${pre}type">${opts}</select></label>
+  root.innerHTML=`<label class="blab">What does the question ask?<select id="${pre}type">${opts}</select></label>
     <p class="hint" id="${pre}help"></p>
     <div class="bfields" id="${pre}fields"></div>
     <div class="preview" id="${pre}prev"></div>
     <p class="err" id="${pre}err" hidden></p>
-    <div class="rowb">${defG?'':`<button class="btn primary" id="${pre}watch">Watch it solved</button>`}<button class="btn ${defG?'primary':''}" id="${pre}guided">Do it with me</button></div>`;
+    <div class="rowb">${defG?'':`<button class="btn primary" id="${pre}watch">Watch it solved</button>`}<button class="btn ${defG?'primary':''}" id="${pre}guided">Try it myself</button></div>`;
   const sel=$(pre+'type');
   const read=()=>{const t=TYPES[sel.value],v={};t.fields.forEach(f=>v[f.id]=$(pre+'f_'+f.id).value);return v};
   const parse=()=>{const t=TYPES[sel.value];return t.parse(read())};
@@ -1226,14 +1230,19 @@ function makeBuilder(cid,pre,defG){
   renderFields();
 }
 makeBuilder('bLearn','L_',false);
-makeBuilder('bGuided','G_',true);
 
-/* ============ question-type cards ============ */
-function typeCards(elId,isGuided){
-  $(elId).innerHTML=Object.values(TYPES).filter(t=>t.example).map(t=>{const ex=t.example,T2=TYPES[ex.t];
-    return `<div class="qcard"><span class="tag">${(GROUPS.find(g=>g[0]===t.group)||[0,''])[1]}</span><h4 class="cname">${t.name}</h4><p class="what">${t.blurb}</p><div class="m">${T2.text(ex)}</div><button class="btn primary" data-t="${t.id}">${isGuided?'Do the example with me':'Watch the example'}</button></div>`}).join('');
-  $(elId).addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const ex=TYPES[b.dataset.t].example;openBook(TYPES[ex.t].build(ex),isGuided)})}
-typeCards('typeListLearn',false);typeCards('typeListGuided',true);
+/* ============ question-type cards, grouped ============ */
+(function(){
+  const types=Object.values(TYPES).filter(t=>t.example);
+  const groups=GROUPS.map(([g,label])=>({g,label,list:types.filter(t=>t.group===g)})).filter(x=>x.list.length);
+  $('jump').innerHTML=groups.map(x=>`<a href="#grp-${x.g}">${x.label} <span>${x.list.length}</span></a>`).join('');
+  $('typeGroups').innerHTML=groups.map(x=>`<section class="tgroup" id="grp-${x.g}"><h4 class="gtitle">${x.label}</h4><div class="qlist">${
+    x.list.map(t=>`<div class="qcard"><h5 class="cname">${t.name}</h5><p class="what">${t.blurb}</p><div class="m">${TYPES[t.example.t].text(t.example)}</div>
+      <div class="cbtns"><button class="btn primary small" data-t="${t.id}">Watch</button><button class="btn small" data-t="${t.id}" data-g="1">Try it</button></div></div>`).join('')
+  }</div></section>`).join('');
+  $('typeGroups').addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const ex=TYPES[b.dataset.t].example;openBook(TYPES[ex.t].build(ex),!!b.dataset.g)});
+  $('jump').addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'})});
+})();
 
 /* ============ practice ============ */
 let score={ok:0,n:0};const upScore=()=>$('score').textContent=`Correct: ${score.ok} / ${score.n}`;
