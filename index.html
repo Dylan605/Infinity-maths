@@ -1140,9 +1140,15 @@ select:focus-visible {
     box-shadow: 0 0 0 14px rgba(124, 58, 237, 0);
   }
 }
+.row,
+.ask {
+  scroll-margin-bottom: 64px;
+}
 .tap {
-  position: absolute;
-  right: 18px;
+  position: sticky;
+  display: block;
+  width: max-content;
+  margin: -52px 18px 18px auto;
   bottom: 18px;
   font-size: .88rem;
   font-weight: 600;
@@ -3330,6 +3336,41 @@ input[type=checkbox] {
 
 /* source/styles/small-screens.css */
 @media (max-width: 520px) {
+  .study-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .study-group {
+    justify-content: space-between;
+    gap: 2px;
+  }
+  .study-group button {
+    flex: 1;
+    padding: 6px 4px;
+    font-size: .82rem;
+  }
+  .study-label {
+    padding: 0 4px;
+    font-size: .62rem;
+    width: 44px;
+    flex: none;
+  }
+  .calc-handle {
+    top: auto;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+    transform: none;
+    padding: 10px 7px 10px 9px;
+  }
+  .calc-handle-label {
+    display: none;
+  }
+  .reading .calc-wrap:not(.open),
+  .mkb-open .calc-wrap:not(.open) {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
   .topbar .title {
     order: 3;
     flex-basis: 100%;
@@ -4251,7 +4292,7 @@ input[type=checkbox] {
         i += fn[0].length;
         continue;
       }
-      if (vars && Object.hasOwn(vars, s[i])) {
+      if (vars && Object.prototype.hasOwnProperty.call(vars, s[i])) {
         out.push({ v: s[i] });
         i++;
         continue;
@@ -6917,7 +6958,7 @@ input[type=checkbox] {
   var word = (P) => P.want === "max" ? "maximum" : "minimum";
   function solve(P) {
     const f2 = FAM[P.k].f(P), all = turningPoints(f2, -6, 6), t = all.find((p) => p.kind === P.want);
-    const x = t && Math.abs(t.x - Math.round(t.x)) < 1e-6 ? Math.round(t.x) : t?.x;
+    const x = t && Math.abs(t.x - Math.round(t.x)) < 1e-6 ? Math.round(t.x) : t == null ? void 0 : t.x;
     return { f: f2, all, x, y: t && f2(x) };
   }
   T2("turning", {
@@ -8266,7 +8307,7 @@ ${SHAPES}
     return { x: wide([Math.min(xs[0], 0) - 1, Math.max(xs[xs.length - 1], 0) + 1]), y: wide([Math.min(...ys, 0) - 1, Math.max(...ys, 0) + 1]) };
   }
   var draw = (P, lines = [], points = [], desc = "The graph of y = f(x)") => {
-    const f2 = readFn(P), ends = P.kind === "lines" ? [{ x: P.xs[0], y: P.ys[0] }, { x: P.xs.at(-1), y: P.ys.at(-1) }] : [];
+    const f2 = readFn(P), ends = P.kind === "lines" ? [{ x: P.xs[0], y: P.ys[0] }, { x: P.xs[P.xs.length - 1], y: P.ys[P.ys.length - 1] }] : [];
     return graph({ ...view(P), curves: [{ f: f2, colour: 1, label: "y = f(x)" }], lines, points: [...ends, ...points], description: desc });
   };
   var fa = (P) => readFn(P)(P.a);
@@ -8276,7 +8317,7 @@ ${SHAPES}
     group: "concepts",
     syllabus: { aa: "SL 2.3", ai: "SL 2.3" },
     blurb: "f(a) is the height of the graph at x = a; f(x) = k asks where the graph is at height k.",
-    text: (P) => `The graph of ${Y12} = <i>f</i>(${X13})${P.kind === "lines" ? `, for ${val(P.xs[0])} \u2264 ${X13} \u2264 ${val(P.xs.at(-1))},` : ""} is shown below.${draw(P)}(a) Write down <i>f</i>(${val(P.a)}). (b) Find the ${xWord(P)} of ${X13} for which <i>f</i>(${X13}) = ${val(P.k)}.`,
+    text: (P) => `The graph of ${Y12} = <i>f</i>(${X13})${P.kind === "lines" ? `, for ${val(P.xs[0])} \u2264 ${X13} \u2264 ${val(P.xs[P.xs.length - 1])},` : ""} is shown below.${draw(P)}(a) Write down <i>f</i>(${val(P.a)}). (b) Find the ${xWord(P)} of ${X13} for which <i>f</i>(${X13}) = ${val(P.k)}.`,
     expr: (P) => `<i>f</i>(${val(P.a)}), <i>f</i>(${X13}) = ${val(P.k)}`,
     build(P) {
       const { a, k } = P, y = fa(P), sols = readSolutions(P), { steps, S } = newSteps(), n = sols.length;
@@ -8341,10 +8382,10 @@ ${SHAPES}
           xs.push(xs[i - 1] + dx);
           ys.push(ys[i - 1] + m * dx);
         }
-        if (xs.at(-1) > 6 || ys.some((y) => !Number.isInteger(y) || Math.abs(y) > 5)) continue;
+        if (xs[xs.length - 1] > 6 || ys.some((y) => !Number.isInteger(y) || Math.abs(y) > 5)) continue;
         const P = { t: "readgraph", kind: "lines", xs, ys }, f2 = readFn(P);
         const as = [];
-        for (let x = xs[0]; x <= xs.at(-1); x++) if (Number.isInteger(f2(x))) as.push(x);
+        for (let x = xs[0]; x <= xs[xs.length - 1]; x++) if (Number.isInteger(f2(x))) as.push(x);
         const ks = [];
         for (let k = Math.min(...ys); k <= Math.max(...ys); k++) {
           const s = readSolutions(P, k);
@@ -11757,7 +11798,10 @@ ${SHAPES}
     const prev = sup && sup.previousElementSibling;
     return !!(prev && prev.tagName === "I");
   };
-  var isOrdinal = (chars, i) => /^(st|nd|rd|th)/.test((chars[i + 1]?.textContent || "") + (chars[i + 2]?.textContent || ""));
+  var isOrdinal = (chars, i) => {
+    var _a, _b;
+    return /^(st|nd|rd|th)/.test((((_a = chars[i + 1]) == null ? void 0 : _a.textContent) || "") + (((_b = chars[i + 2]) == null ? void 0 : _b.textContent) || ""));
+  };
   function planCalc(chars) {
     const eqs = chars.map((c, i) => c.textContent === "=" ? i : -1).filter((i) => i >= 0);
     if (!eqs.length) return null;
@@ -11908,23 +11952,25 @@ ${SHAPES}
     finishFlights();
   }
   function openBook(les, isGuided) {
+    var _a, _b;
     lesson = les;
     guided = isGuided;
     si = 0;
     $("book").hidden = false;
     document.body.classList.add("reading");
     $("bkTitle").innerHTML = les.title;
-    document.documentElement.requestFullscreen?.().catch(() => {
+    (_b = (_a = document.documentElement).requestFullscreen) == null ? void 0 : _b.call(_a).catch(() => {
     });
     showStep(0);
   }
   function closeBook() {
+    var _a;
     run++;
     waiting = null;
     $("book").hidden = true;
     document.body.classList.remove("reading");
     $("auto").checked = false;
-    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {
+    if (document.fullscreenElement) (_a = document.exitFullscreen) == null ? void 0 : _a.call(document).catch(() => {
     });
   }
   async function showStep(i) {
@@ -11966,6 +12012,7 @@ ${SHAPES}
     }
   }
   async function advance() {
+    var _a;
     if (busy) {
       finishWriting();
       return;
@@ -12033,7 +12080,7 @@ ${SHAPES}
     if (run !== my) return;
     await sleep(150);
     note2.classList.add("on");
-    side.querySelector(".moreBtn")?.classList.add("on");
+    (_a = side.querySelector(".moreBtn")) == null ? void 0 : _a.classList.add("on");
     busy = false;
     $("tapHint").textContent = li >= st.lines.length ? si < lesson.steps.length - 1 ? "tap for the next step \u25B6" : "end of the working \u2713" : "tap to write the next line \u270D";
     autoNext();
@@ -12431,7 +12478,7 @@ ${SHAPES}
   var OPS = /(≤|≥|<|>|≠)/;
   var holds = (a, op, b) => op === "<" ? a < b : op === ">" ? a > b : op === "\u2264" ? a <= b : op === "\u2265" ? a >= b : a !== b;
   function read(raw2) {
-    let s = String(raw2).replace(/<=|=</g, "\u2264").replace(/>=|=>/g, "\u2265").replace(/!=|=\/=/g, "\u2260").replace(/[−–]/g, "-").replace(/[fgh](⁻¹|\^-1)?\(x\)/g, "v").replace(/\b[xyktn]\b|(?<![a-z])[xyktn](?![a-z])/g, "v");
+    let s = String(raw2).replace(/<=|=</g, "\u2264").replace(/>=|=>/g, "\u2265").replace(/!=|=\/=/g, "\u2260").replace(/[−–]/g, "-").replace(/[fgh](⁻¹|\^-1)?\(x\)/g, "v").replace(/(^|[^a-z])[xyktn](?![a-z])/g, "$1v");
     if (/all\s*real|ℝ|any\s*real|every\s*real/i.test(s)) return { test: () => true, values: [] };
     const pieces3 = s.split(/\s*(?:\bor\b|,|;|∪)\s*/i).filter((p) => p.trim());
     if (!pieces3.length) return null;
@@ -12555,7 +12602,8 @@ ${SHAPES}
   function markBoxes(root2, r2) {
     const ins = [...root2.querySelectorAll(".ans-in")];
     ins.forEach((inp2, i) => {
-      const ok = r2.each ? r2.each[i]?.ok : r2.ok;
+      var _a;
+      const ok = r2.each ? (_a = r2.each[i]) == null ? void 0 : _a.ok : r2.ok;
       inp2.classList.toggle("right", !!ok);
       inp2.classList.toggle("wrong", !ok);
     });
@@ -12764,10 +12812,11 @@ ${SHAPES}
     };
   }
   function markChoices(box3, ans, picked) {
+    var _a, _b;
     const tiles = box3.querySelectorAll(".g-choice");
-    tiles[ans]?.classList.add("good");
+    (_a = tiles[ans]) == null ? void 0 : _a.classList.add("good");
     if (picked !== ans) {
-      tiles[picked]?.classList.add("bad");
+      (_b = tiles[picked]) == null ? void 0 : _b.classList.add("bad");
       replay(tiles[picked], "g-shake");
     }
   }
@@ -12997,7 +13046,7 @@ ${SHAPES}
   // source/screens/games/game-round.js
   var current2 = null;
   function playRound(game24, { onExit }) {
-    current2?.stop();
+    current2 == null ? void 0 : current2.stop();
     const total = GAME_SECONDS * 1e3;
     const st = { score: 0, lives: GAME_LIVES, streak: 0, bestStreak: 0, correct: 0, answered: 0, level: 1, left: total, paused: true, over: false, keys: null };
     let frame = 0, last = 0, lastSecond = GAME_SECONDS, timers = [], detachResults = null;
@@ -13007,7 +13056,7 @@ ${SHAPES}
       cancelAnimationFrame(frame);
       timers.forEach(clearTimeout);
       document.removeEventListener("keydown", onKey);
-      detachResults?.();
+      detachResults == null ? void 0 : detachResults();
     };
     const quit = () => {
       stop();
@@ -13415,21 +13464,21 @@ ${SHAPES}
         const r2 = input.getBoundingClientRect();
         if (r2.bottom > innerHeight - kb.offsetHeight - 12) input.scrollIntoView({ block: "center", behavior: "smooth" });
       });
-      watch?.disconnect();
+      watch == null ? void 0 : watch.disconnect();
       watch = new MutationObserver(() => {
-        if (!target?.isConnected) hide();
+        if (!(target == null ? void 0 : target.isConnected)) hide();
       });
       watch.observe(document.body, { childList: true, subtree: true });
     }
     function hide() {
       kb.hidden = true;
       target = null;
-      watch?.disconnect();
+      watch == null ? void 0 : watch.disconnect();
       document.body.classList.remove("mkb-open");
     }
     const changed = () => target.dispatchEvent(new Event("input", { bubbles: true }));
     function act(btn) {
-      if (!target?.isConnected) return hide();
+      if (!(target == null ? void 0 : target.isConnected)) return hide();
       const t = target, a = t.selectionStart ?? t.value.length, b = t.selectionEnd ?? a;
       if (btn.dataset.t !== void 0) {
         t.setRangeText(btn.dataset.t, a, b, "end");
@@ -13452,16 +13501,19 @@ ${SHAPES}
       if (btn) act(btn);
     });
     document.addEventListener("pointerdown", (e) => {
-      const i = e.target.closest?.("input[data-maths]");
+      var _a, _b;
+      const i = (_b = (_a = e.target).closest) == null ? void 0 : _b.call(_a, "input[data-maths]");
       if (i && touch()) i.inputMode = "none";
     }, true);
     document.addEventListener("focusin", (e) => {
-      const i = e.target.closest?.("input[data-maths]");
+      var _a, _b;
+      const i = (_b = (_a = e.target).closest) == null ? void 0 : _b.call(_a, "input[data-maths]");
       if (i) show2(i);
       else if (!kb.contains(e.target)) hide();
     });
     document.addEventListener("click", (e) => {
-      const i = e.target.closest?.("input[data-maths]");
+      var _a, _b;
+      const i = (_b = (_a = e.target).closest) == null ? void 0 : _b.call(_a, "input[data-maths]");
       if (i && kb.hidden) show2(i);
     });
     document.addEventListener("focusout", (e) => {

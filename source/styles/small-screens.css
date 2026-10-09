@@ -1,3 +1,13 @@
 /* Small screens, and turning motion off for people who ask for less of it. */
+/* phones: the study bar fits the width, and the calculator is a small button that steps aside for lessons and the maths keys */
+@media (max-width:520px){
+  .study-bar{flex-direction:column;align-items:stretch;gap:8px}
+  .study-group{justify-content:space-between;gap:2px}
+  .study-group button{flex:1;padding:6px 4px;font-size:.82rem}
+  .study-label{padding:0 4px;font-size:.62rem;width:44px;flex:none}
+  .calc-handle{top:auto;bottom:calc(92px + env(safe-area-inset-bottom));transform:none;padding:10px 7px 10px 9px}
+  .calc-handle-label{display:none}
+  .reading .calc-wrap:not(.open),.mkb-open .calc-wrap:not(.open){display:none}
+}
 @media (max-width:520px){.topbar .title{order:3;flex-basis:100%;white-space:normal;font-size:1.05rem}.tabs{align-self:stretch;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:none;white-space:nowrap;padding:9px 12px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.sh{background-size:100% 3px}}

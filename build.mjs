@@ -8,8 +8,10 @@ const SRC = 'source';
 const OUT = 'index.html';
 const MIME = {'.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg'};
 
+/* older phones and tablets too: Safari on iOS 14.5 and later (exact fractions need BigInt, and esbuild can't work round a Safari 14.0 bug) */
+const TARGET = ['es2020', 'safari14.1', 'ios14.5', 'chrome87', 'firefox78', 'edge88'];
 const bundle = async (entry, options = {}) => {
-  const result = await esbuild.build({entryPoints: [path.join(SRC, entry)], bundle: true, write: false, legalComments: 'none', ...options});
+  const result = await esbuild.build({entryPoints: [path.join(SRC, entry)], bundle: true, write: false, legalComments: 'none', target: TARGET, ...options});
   return result.outputFiles[0].text;
 };
 

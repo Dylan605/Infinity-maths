@@ -41,7 +41,7 @@ function tokenize(text,shortcuts,vars){
     if(num){out.push({num:num[0]});i+=num[0].length;continue}
     if(/^ans/i.test(rest)){out.push('ans');i+=3;continue}
     const fn=rest.match(/^(ln|log)/i);if(fn){out.push(fn[0].toLowerCase());i+=fn[0].length;continue}
-    if(vars&&Object.hasOwn(vars,s[i])){out.push({v:s[i]});i++;continue}
+    if(vars&&Object.prototype.hasOwnProperty.call(vars,s[i])){out.push({v:s[i]});i++;continue}
     if(s[i]==='e'||s[i]==='π'){out.push({k:s[i]});i++;continue}
     if('+-*/^!()√'.includes(s[i])||s[i]==='C'||s[i]==='c'){out.push(s[i]==='c'?'C':s[i]);i++;continue}
     fail(`I don't understand "${s[i]}".`)}

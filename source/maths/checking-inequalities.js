@@ -7,7 +7,7 @@ const holds=(a,op,b)=>op==='<'?a<b:op==='>'?a>b:op==='≤'?a<=b:op==='≥'?a>=b:
 /* turn the typed answer into a test of a number, plus the numbers in it; null if it can't be read */
 function read(raw){
   let s=String(raw).replace(/<=|=</g,'≤').replace(/>=|=>/g,'≥').replace(/!=|=\/=/g,'≠').replace(/[−–]/g,'-')
-    .replace(/[fgh](⁻¹|\^-1)?\(x\)/g,'v').replace(/\b[xyktn]\b|(?<![a-z])[xyktn](?![a-z])/g,'v');
+    .replace(/[fgh](⁻¹|\^-1)?\(x\)/g,'v').replace(/(^|[^a-z])[xyktn](?![a-z])/g,'$1v');  // a letter on its own (not part of a word like ln) is the variable
   if(/all\s*real|ℝ|any\s*real|every\s*real/i.test(s))return {test:()=>true,values:[]};
   const pieces=s.split(/\s*(?:\bor\b|,|;|∪)\s*/i).filter(p=>p.trim());if(!pieces.length)return null;
   const values=[],tests=[];

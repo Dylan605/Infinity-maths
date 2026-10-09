@@ -22,14 +22,14 @@ export function readSolutions(P,k=P.k){if(P.kind==='quad'){const d2=(k-P.m)/P.s;
 function view(P){if(P.kind==='quad'){const up=P.s>0;return {x:[P.h-4,P.h+4],y:up?[Math.min(P.m-1,-1),P.m+10]:[P.m-10,Math.max(P.m+1,1)]}}
   const {xs,ys}=P,wide=([lo,hi])=>{while(hi-lo<8){lo--;if(hi-lo<8)hi++}return [lo,hi]};  // at least 8 wide, so the grid stays in 1s
   return {x:wide([Math.min(xs[0],0)-1,Math.max(xs[xs.length-1],0)+1]),y:wide([Math.min(...ys,0)-1,Math.max(...ys,0)+1])}}
-const draw=(P,lines=[],points=[],desc='The graph of y = f(x)')=>{const f=readFn(P),ends=P.kind==='lines'?[{x:P.xs[0],y:P.ys[0]},{x:P.xs.at(-1),y:P.ys.at(-1)}]:[];
+const draw=(P,lines=[],points=[],desc='The graph of y = f(x)')=>{const f=readFn(P),ends=P.kind==='lines'?[{x:P.xs[0],y:P.ys[0]},{x:P.xs[P.xs.length-1],y:P.ys[P.ys.length-1]}]:[];
   return graph({...view(P),curves:[{f,colour:1,label:'y = f(x)'}],lines,points:[...ends,...points],description:desc})};
 const fa=P=>readFn(P)(P.a);
 const xWord=P=>readSolutions(P).length===1?'value':'values';
 
 T('readgraph',{name:'Reading a graph',group:'concepts',syllabus:{aa:'SL 2.3',ai:'SL 2.3'},
   blurb:'f(a) is the height of the graph at x = a; f(x) = k asks where the graph is at height k.',
-  text:P=>`The graph of ${Y} = <i>f</i>(${X})${P.kind==='lines'?`, for ${val(P.xs[0])} ≤ ${X} ≤ ${val(P.xs.at(-1))},`:''} is shown below.${draw(P)}(a) Write down <i>f</i>(${val(P.a)}). (b) Find the ${xWord(P)} of ${X} for which <i>f</i>(${X}) = ${val(P.k)}.`,
+  text:P=>`The graph of ${Y} = <i>f</i>(${X})${P.kind==='lines'?`, for ${val(P.xs[0])} ≤ ${X} ≤ ${val(P.xs[P.xs.length-1])},`:''} is shown below.${draw(P)}(a) Write down <i>f</i>(${val(P.a)}). (b) Find the ${xWord(P)} of ${X} for which <i>f</i>(${X}) = ${val(P.k)}.`,
   expr:P=>`<i>f</i>(${val(P.a)}), <i>f</i>(${X}) = ${val(P.k)}`,
   build(P){const {a,k}=P,y=fa(P),sols=readSolutions(P),{steps,S}=newSteps(),n=sols.length;
     S('Read the question','What is being asked?',[readLine(P,[`On the graph of ${Y} = <i>f</i>(${X}), every point is (input, output) = (${X}, <i>f</i>(${X})). So the height of the graph above ${X} = 2 is <i>f</i>(2).`]),
@@ -61,9 +61,9 @@ T('readgraph',{name:'Reading a graph',group:'concepts',syllabus:{aa:'SL 2.3',ai:
     const n=lv===1?3:lv===2?ri(3,4):ri(4,5),slopes=lv===1?[1,-1,2,-2]:lv===2?[1,-1,2,-2,3,-3]:[1,-1,2,-2,3,-3,0,0.5,-0.5];
     for(;;){const xs=[ri(-5,-2)],ys=[ri(-3,3)];
       for(let i=1;i<n;i++){const dx=ri(2,3),m=slopes[ri(0,slopes.length-1)];xs.push(xs[i-1]+dx);ys.push(ys[i-1]+m*dx)}
-      if(xs.at(-1)>6||ys.some(y=>!Number.isInteger(y)||Math.abs(y)>5))continue;
+      if(xs[xs.length-1]>6||ys.some(y=>!Number.isInteger(y)||Math.abs(y)>5))continue;
       const P={t:'readgraph',kind:'lines',xs,ys},f=readFn(P);
-      const as=[];for(let x=xs[0];x<=xs.at(-1);x++)if(Number.isInteger(f(x)))as.push(x);
+      const as=[];for(let x=xs[0];x<=xs[xs.length-1];x++)if(Number.isInteger(f(x)))as.push(x);
       const ks=[];for(let k=Math.min(...ys);k<=Math.max(...ys);k++){const s=readSolutions(P,k);if(s&&s.length&&s.length<=3&&s.every(Number.isInteger)&&(lv===1||s.length>1))ks.push(k)}
       if(!ks.length||!as.length)continue;
       const as0=as.filter(x=>x!==0);return {...P,a:as0.length?as0[ri(0,as0.length-1)]:as[0],k:ks[ri(0,ks.length-1)]}}},
